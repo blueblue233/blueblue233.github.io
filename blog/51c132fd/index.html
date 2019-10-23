@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="5.1.1 JDBC 5.1.1.1 连接到数据库 如何打开一个数据库连接 必须在连接数据库之前完成驱动程序的加载 Class.forName加载驱动 要实现在java类路径中放入驱动程序jar包 其他数据库的驱动名称 协议     5.1.1.2 向数据库系统中传递SQL语句 通过数据库连接创建Statement对象 executeQuery方法执行查询语句 executeUpdate方法执行">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.1.1 JDBC">
+<meta property="og:url" content="https://blueblue233.github.io/blog/51c132fd/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="5.1.1 JDBC 5.1.1.1 连接到数据库 如何打开一个数据库连接 必须在连接数据库之前完成驱动程序的加载 Class.forName加载驱动 要实现在java类路径中放入驱动程序jar包 其他数据库的驱动名称 协议     5.1.1.2 向数据库系统中传递SQL语句 通过数据库连接创建Statement对象 executeQuery方法执行查询语句 executeUpdate方法执行">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-23T07:09:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5.1.1 JDBC">
+<meta name="twitter:description" content="5.1.1 JDBC 5.1.1.1 连接到数据库 如何打开一个数据库连接 必须在连接数据库之前完成驱动程序的加载 Class.forName加载驱动 要实现在java类路径中放入驱动程序jar包 其他数据库的驱动名称 协议     5.1.1.2 向数据库系统中传递SQL语句 通过数据库连接创建Statement对象 executeQuery方法执行查询语句 executeUpdate方法执行">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/51c132fd/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>5.1.1 JDBC | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/51c132fd/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">5.1.1 JDBC
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-23 13:30:41 / 修改时间：15:09:33" itemprop="dateCreated datePublished" datetime="2019-10-23T13:30:41+08:00">2019-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第5章-高级SQL/" itemprop="url" rel="index"><span itemprop="name">第5章 高级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第5章-高级SQL/5-1-使用程序设计语言访问数据库/" itemprop="url" rel="index"><span itemprop="name">5.1 使用程序设计语言访问数据库</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/null/#5-1-1-JDBC">5.1.1 JDBC</a></li>
+<li><a href="/blog/null/#5-1-1-1-连接到数据库">5.1.1.1 连接到数据库</a><ul>
+<li><a href="/blog/null/#如何打开一个数据库连接">如何打开一个数据库连接</a></li>
+<li><a href="/blog/null/#必须在连接数据库之前完成驱动程序的加载">必须在连接数据库之前完成驱动程序的加载</a><ul>
+<li><a href="/blog/null/#Class-forName加载驱动">Class.forName加载驱动</a></li>
+<li><a href="/blog/null/#要实现在java类路径中放入驱动程序jar包">要实现在java类路径中放入驱动程序jar包</a></li>
+<li><a href="/blog/null/#其他数据库的驱动名称">其他数据库的驱动名称</a></li>
+<li><a href="/blog/null/#协议">协议</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/null/#5-1-1-2-向数据库系统中传递SQL语句">5.1.1.2 向数据库系统中传递SQL语句</a><ul>
+<li><a href="/blog/null/#通过数据库连接创建Statement对象">通过数据库连接创建Statement对象</a></li>
+<li><a href="/blog/null/#executeQuery方法执行查询语句"><strong>executeQuery</strong>方法执行查询语句</a></li>
+<li><a href="/blog/null/#executeUpdate方法执行费非查询语句-更新-插入删除-建表等"><strong>executeUpdate</strong>方法执行费非查询语句 更新 插入删除 建表等</a></li>
+</ul>
+</li>
+<li><a href="/blog/null/#5-1-1-3-获取查询结果">5.1.1.3 获取查询结果</a><ul>
+<li><a href="/blog/null/#executeQuery方法返回结果集">executeQuery方法返回结果集</a></li>
+<li><a href="/blog/null/#结果集的next方法">结果集的next方法</a></li>
+<li><a href="/blog/null/#结果集的get方法">结果集的get方法</a></li>
+<li><a href="/blog/null/#结果集get方法的参数">结果集get方法的参数</a></li>
+<li><a href="/blog/null/#java成宿结束后一定要关闭数据库连接">java成宿结束后一定要关闭数据库连接</a></li>
+</ul>
+</li>
+<li><a href="/blog/null/#5-1-1-4-预备语句">5.1.1.4 预备语句</a><ul>
+<li><a href="/blog/null/#使用Connection类的prepareStatement方法创建PreparedStatement对象">使用Connection类的prepareStatement方法创建PreparedStatement对象</a></li>
+<li><a href="/blog/null/#优先使用预备语句">优先使用预备语句</a></li>
+<li><a href="/blog/null/#预备语句更加高效">预备语句更加高效</a></li>
+<li><a href="/blog/null/#预备语句可检查用户输入">预备语句可检查用户输入</a></li>
+<li><a href="/blog/null/#预备语句可防止SQL注入">预备语句可防止SQL注入</a></li>
+<li><a href="/blog/null/#一次执行多条SQL语句的情况">一次执行多条SQL语句的情况</a></li>
+</ul>
+</li>
+<li><a href="/blog/null/#5-1-1-5-可调用语句">5.1.1.5 可调用语句</a></li>
+<li><a href="/blog/null/#5-1-1-6-元数据特性">5.1.1.6 元数据特性</a><ul>
+<li><a href="/blog/null/#结果集元数据-ResultsetMetaData">结果集元数据 ResultsetMetaData</a><ul>
+<li><a href="/blog/null/#如何获取ResultsetMetaData对象-Resultset-getMetaData方法">如何获取ResultsetMetaData对象 <strong>Resultset.getMetaData</strong>方法</a></li>
+</ul>
+</li>
+<li><a href="/blog/null/#数据库元数据-DatabaseMetaData">数据库元数据 DatabaseMetaData</a><ul>
+<li><a href="/blog/null/#如何获取DatabaseMetaData-Connection实例-getMetaData方法">如何获取<strong>DatabaseMetaData</strong> <strong>Connection实例.getMetaData</strong>方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="5-1-1-JDBC"><a href="#5-1-1-JDBC" class="headerlink" title="5.1.1 JDBC"></a>5.1.1 JDBC</h1><p><code>JDBC</code>标准定义了<code>Java</code>程序连接数据库服务器的应用程序接口(<code>Application Program Interface,API</code>),<code>JDBC</code>原来是<code>Java</code>数据库连接(<code>Java Database Connectivity</code>)的缩写,但其全称现在已经不用了)。<br><code>Java</code>程序必须引用<code>java.sql.*</code>,它包含了<code>JDBC</code>所提供功能的接口定义。</p>
+<h1 id="5-1-1-1-连接到数据库"><a href="#5-1-1-1-连接到数据库" class="headerlink" title="5.1.1.1 连接到数据库"></a>5.1.1.1 连接到数据库</h1><p>要在<code>Java</code>程序中访问数据库,首先要打开一个数据库连接。这一步需要选择要使用哪个数据库,例如,可以是你的机器上的一个<code>Oracle</code>实例,也可以是运行在另一台机器上的一个<code>PostgreSQL</code>数据库。只有在打开数据库连接以后,<code>Java</code>程序才能执行<code>SQL</code>语句。</p>
+<h2 id="如何打开一个数据库连接"><a href="#如何打开一个数据库连接" class="headerlink" title="如何打开一个数据库连接"></a>如何打开一个数据库连接</h2><p>可以通过调用<code>java.sql</code>包中的<code>DriverManager</code>类的<code>getConnection</code>方法来打开一个数据库连接。该方法有三个参数:</p>
+<ol>
+<li><code>URL</code>:<code>getConnection</code>方法的第一个参数是以字符串类型表示的<code>URL</code>,指明服务器所在的<strong>主机名称</strong>以及可能包含的其他信息,例如:<ul>
+<li>与数据库通信所用的协议,</li>
+<li>数据库系统用来通信的端口号,</li>
+<li>还有服务器端使用的特定数据库。</li>
+</ul>
+</li>
+</ol>
+<p>注意<code>JDBC</code>只是指定<code>API</code>而不指定通信协议。一个<code>JDBC</code>驱动器可能支持多种协议,我们必须指定一个数据库和驱动器都支持的协议。协议的详细内容是由<code>提供商</code>设定的。<br>2. 数据库用户:<code>getConnection</code>方法的第二个参数用于指定一个数据库用户标识,它为字符串类型<br>3. 密码:<code>getConnection</code>方法的第三个参数是密码,它也是字符串类型。(注意,把密码直接写在<code>JDBC</code>代码中会增加安全性隐患,因为你的代码有可能会被某些未被授权的用户所访问。)</p>
+<h2 id="必须在连接数据库之前完成驱动程序的加载"><a href="#必须在连接数据库之前完成驱动程序的加载" class="headerlink" title="必须在连接数据库之前完成驱动程序的加载"></a>必须在连接数据库之前完成驱动程序的加载</h2><p>每个支持<code>JDBC</code>的数据库产品都会提供一个<code>JDBC</code>驱动程序(<code>JDBC driver</code>),该<strong>驱动程序必须被动态加载才能实现<code>Java</code>对数据库的访问</strong>。事实上,<strong>必须在连接数据库之前完成驱动程序的加载</strong>。</p>
+<h3 id="Class-forName加载驱动"><a href="#Class-forName加载驱动" class="headerlink" title="Class.forName加载驱动"></a>Class.forName加载驱动</h3><p>调用<code>Class.forName</code>方法完成驱动程序的加载,在调用时需要通过参数来<strong>指定一个实现了<code>java.sql.Driver</code>接口的实体类</strong>。<code>java.sql.Driver</code>接口的功能是为了实现不同层面的操作之间的转换,一边是与产品类型无关的<code>JDBC</code>操作,另一边是与产品相关的、在所使用的特定数据库管理系统中完成的操作。</p>
+<h3 id="要实现在java类路径中放入驱动程序jar包"><a href="#要实现在java类路径中放入驱动程序jar包" class="headerlink" title="要实现在java类路径中放入驱动程序jar包"></a>要实现在java类路径中放入驱动程序jar包</h3><p><code>Oracle</code>的驱动程序:<code>oracle.jdbe.driver.OracleDriver</code>。该驱动程序包含在一个<code>.jar</code>文件里,可以从提供商的网站下载,然后放在<code>Java</code>的类路径( <code>classpath</code>)里,用于<code>Java</code>编译器访问。</p>
+<h3 id="其他数据库的驱动名称"><a href="#其他数据库的驱动名称" class="headerlink" title="其他数据库的驱动名称"></a>其他数据库的驱动名称</h3><table>
+<thead>
+<tr>
+<th align="left">数据库</th>
+<th align="left">对应的驱动名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>IBM DB2</code>数据库驱动</td>
+<td align="left"><code>com.ibm.db2.jdbe.app.DB2Driver</code>;</td>
+</tr>
+<tr>
+<td align="left"><code>Microsoft SQL Server</code>数据库驱动</td>
+<td align="left"><code>com.microsoft.sqlserver.jdbc.SQLServerDriver</code>;</td>
+</tr>
+<tr>
+<td align="left"><code>Postgre SQL</code>数据库驱动</td>
+<td align="left"><code>org.postgresqL.Driver</code>;</td>
+</tr>
+<tr>
+<td align="left"><code>MySQL</code>数据库驱动</td>
+<td align="left"><code>com.mysql.jdbc.Driver</code>;</td>
+</tr>
+</tbody></table>
+<p><code>Sun</code>公司还提供了一种”<strong>桥接驱动器</strong>“,可以把<code>JDBC</code>调用转换成<code>ODBC</code>。该驱动仅是用于那些支持<code>ODBC</code>但不支持<code>JDBC</code>的厂商。</p>
+<h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>用来与数据库交换信息的具体协议并没有在<code>JDBC</code>标准中定义,而是由所使用的驱动程序决定的。有些驱动程序支持多种协议,使用哪一种更合适取决于所连接的数据库支持什么协议。<br>我们的例子里在打开一个数据库连接时,<strong>字符串<code>jdbe:oracle:thin</code>指定了<code>Oracle</code>支持的一个特定协议</strong>。</p>
+<h1 id="5-1-1-2-向数据库系统中传递SQL语句"><a href="#5-1-1-2-向数据库系统中传递SQL语句" class="headerlink" title="5.1.1.2 向数据库系统中传递SQL语句"></a>5.1.1.2 向数据库系统中传递SQL语句</h1><h2 id="通过数据库连接创建Statement对象"><a href="#通过数据库连接创建Statement对象" class="headerlink" title="通过数据库连接创建Statement对象"></a>通过数据库连接创建Statement对象</h2><p>旦打开了一个数据库连接,程序就可以利用该连接来向数据库发送<code>SQL</code>语句用于执行。这是通过<code>Statement</code>类的一个实例来完成的。一个<code>Statement</code>对象并不代表<code>SQL</code>语句本身,而是实现了可以被<code>Java</code>程序调用的一些方法,通过参数来传递<code>SQL</code>语句并被数据库系统所执行。我们的例子<strong>在连接变量</strong><code>conn</code>上<strong>创建</strong>了一个<code>Statement</code>句柄(<code>stmt</code>)。<br>使用</p>
+<h2 id="executeQuery方法执行查询语句"><a href="#executeQuery方法执行查询语句" class="headerlink" title="executeQuery方法执行查询语句"></a><code>executeQuery</code>方法执行查询语句</h2><p>用<code>executeUpdate</code>方法来执行查询语句,返回一个结果集。</p>
+<h2 id="executeUpdate方法执行费非查询语句-更新-插入删除-建表等"><a href="#executeUpdate方法执行费非查询语句-更新-插入删除-建表等" class="headerlink" title="executeUpdate方法执行费非查询语句 更新 插入删除 建表等"></a><code>executeUpdate</code>方法执行费非查询语句 更新 插入删除 建表等</h2><p><code>executeUpdate</code>方法可以执行像更新(<code>update</code>)、插入(<code>insert</code>)、删除(<code>delete</code>)、创建表(<code>create table</code>)等这样的<strong>非查询性语句</strong>。</p>
+<ul>
+<li>对于更新插入或删除<code>executeUpdate</code>方法它返回一个整数,表示被插入、更新或者删除的元组个数。</li>
+<li>对于<code>DDL</code>语句,<code>executeUpdate</code>方法返回值是0</li>
+</ul>
+<h1 id="5-1-1-3-获取查询结果"><a href="#5-1-1-3-获取查询结果" class="headerlink" title="5.1.1.3 获取查询结果"></a>5.1.1.3 获取查询结果</h1><h2 id="executeQuery方法返回结果集"><a href="#executeQuery方法返回结果集" class="headerlink" title="executeQuery方法返回结果集"></a>executeQuery方法返回结果集</h2><p>示例程序用<code>stmt.executeQuery</code>来执行一次查询。它可以把<strong>结果中的元组集合</strong>提取到<code>Resultset</code>对象变量<code>rset</code>中并每次取出一个进行处理。</p>
+<h2 id="结果集的next方法"><a href="#结果集的next方法" class="headerlink" title="结果集的next方法"></a>结果集的next方法</h2><p>结果集的<code>next</code>方法用来查看在集合中是否还存在至少一个尚未取回的元组,如果存在的话就取出。<code>next</code>方法的返回值是一个布尔变量,表示是否从结果集中取回了个元组。</p>
+<h2 id="结果集的get方法"><a href="#结果集的get方法" class="headerlink" title="结果集的get方法"></a>结果集的get方法</h2><p>可以通过一系列的名字以<code>get</code>为前缀的方法来得到所获取元组的各个属性。方法<code>setstring</code>可以返回所有的基本<code>SQL</code>数据类型的属性(被转换成<code>Java</code>中的<code>String</code>类型的值),当然也可以使用像<code>getFloat</code>那样一些约束性更强的方法。</p>
+<h2 id="结果集get方法的参数"><a href="#结果集get方法的参数" class="headerlink" title="结果集get方法的参数"></a>结果集get方法的参数</h2><p>这些不同的<code>get</code>方法的<code>参数</code>既可以是一个字<strong>符串类型的属性名称</strong>,又可以是一个<strong>整数</strong>,用来表示所需获取的属性在元组中的位置。图5-1给出了两种<strong>在元组中提取属性值</strong>的办法:<br><strong>利用属性名提取</strong>( <code>dept_name</code>)或者<strong>利用属性位置提取</strong>(2,代表第二个属性)。</p>
+<h2 id="java成宿结束后一定要关闭数据库连接"><a href="#java成宿结束后一定要关闭数据库连接" class="headerlink" title="java成宿结束后一定要关闭数据库连接"></a>java成宿结束后一定要关闭数据库连接</h2><p><code>Java</code>程序结束的时候<strong>语句</strong>和<strong>连接</strong>都将被关闭。注意关闭连接是很重要的,因为数据库连接的个数是有限制的;未关闭的连接可能导致超过这一限制。如果发生这种情况,应用将不能再打开任何数据库连接。</p>
+<h1 id="5-1-1-4-预备语句"><a href="#5-1-1-4-预备语句" class="headerlink" title="5.1.1.4 预备语句"></a>5.1.1.4 预备语句</h1><p>我们也可以通过以”<code>?</code>“来代表以后再给出的实际值,而创建一个预备语句。<br>数据库系统在准备查询语句的时候对它进行编译。在每次执行该语句时(用新值替换”?”),数据库可以重用预先编译的查询的形式,应用新值进行查询。<br>图5-2的代码框架给出了如何使用预备语句的示例。</p>
+<h2 id="使用Connection类的prepareStatement方法创建PreparedStatement对象"><a href="#使用Connection类的prepareStatement方法创建PreparedStatement对象" class="headerlink" title="使用Connection类的prepareStatement方法创建PreparedStatement对象"></a>使用Connection类的prepareStatement方法创建PreparedStatement对象</h2><p>可以使用<code>Connection</code>类的<code>prepareStatement</code>方法来提交<code>SQL</code>语句用于编译。它返回一个<code>PreparedStatement</code>类的对象。此时还没有执行<code>SQL</code>语句。执行需要<code>PreparedStatement</code>类的两个方法<code>executeQuery</code>和<code>executeUpdate</code>。<br>但是在它们被调用之前,我们必须使用<code>PreparedStatement</code>类的方法来为”<code>?</code>“参数设定具体的值。 </p>
+<p><code>setString</code>方法以及诸如<code>setInt</code>等用于其他的<code>SQL</code>基本类型的其他类似的方法使我们能够为参数指定值。</p>
+<ul>
+<li><code>set</code>第一个参数用来确定我们为哪个”<code>?</code>“设定值,<ul>
+<li>如果给第1个问号设置值,则<code>set</code>方法的第一个参数设置为1</li>
+</ul>
+</li>
+<li><code>set</code>方法的第二个参数是我们要设定的值。</li>
+</ul>
+<h2 id="优先使用预备语句"><a href="#优先使用预备语句" class="headerlink" title="优先使用预备语句"></a>优先使用预备语句</h2><h2 id="预备语句更加高效"><a href="#预备语句更加高效" class="headerlink" title="预备语句更加高效"></a>预备语句更加高效</h2><p>在同一查询编译一次然后设置不同的参数值执行多次的情况下,<strong>预备语句使得执行更加高效</strong>。</p>
+<h2 id="预备语句可检查用户输入"><a href="#预备语句可检查用户输入" class="headerlink" title="预备语句可检查用户输入"></a>预备语句可检查用户输入</h2><p>然而,预备语句有一个更加重要的优势,预备语句可以用户输入,<br>即使是只运行一次,预备语句都是执行<code>SQL</code>查询的首选方法。假设我们读取了一个用户输入的值,然后使用<code>Java</code>的字符串操作来构造<code>SQL</code>语句。如果用户输入了某些特殊字符,例如一个单引号,除非我们采取额外工作对用户输入进行检查,否则生成的<code>SQL</code>语句会出现语法错误。<br><strong><code>setString</code>方法为我们自动完成检查,并插入需要的转义字符,以确保语法的正确性</strong>。</p>
+<h2 id="预备语句可防止SQL注入"><a href="#预备语句可防止SQL注入" class="headerlink" title="预备语句可防止SQL注入"></a>预备语句可防止SQL注入</h2><p>一种叫做<code>SQL</code>注入(<code>SQL injecton</code>)的技术可以被恶意黑客用来窃取数据或损坏数据库。<br>假设一个<code>Java</code>程序输入一个字符串<code>name</code>,并且构建下面的查询:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"<span class="keyword">select</span> * <span class="keyword">from</span> instructor <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'"+name+"'</span>;"</span><br></pre></td></tr></table></figure>
+<p>如果用户没有输人一个名字,而是输入:<br><code>x&#39; or &#39;y&#39;=&#39;y&#39;</code><br>这样,产生的查询语句就变成:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> instructor <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'x'</span> <span class="keyword">or</span> <span class="string">'y'</span>=<span class="string">'y'</span>;</span><br></pre></td></tr></table></figure>
+<p>在生成的查询中, <code>where</code>子句总是真,所以查询结果返回整个<code>instructor</code>关系。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from instructor where name='x' or 'y'='y';</span><br><span class="line">+-------+------------+------------+-----------+</span><br><span class="line">| ID    | name       | dept_name  | salary    |</span><br><span class="line">+-------+------------+------------+-----------+</span><br><span class="line">| <span class="number">10101</span> | Srinivasan | <span class="built_in">Comp</span>. Sci. | <span class="number">65000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">12121</span> | Wu         | Finance    | <span class="number">90000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">15151</span> | Mozart     | Music      | <span class="number">40000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">22222</span> | Einstein   | Physics    | <span class="number">95000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">25566</span> | Brown      | Biology    | <span class="number">100000</span>.<span class="number">00</span> |</span><br><span class="line">| <span class="number">30765</span> | Green      | Music      | NULL      |</span><br><span class="line">| <span class="number">32343</span> | El Said    | History    | <span class="number">60000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">33456</span> | Gold       | Physics    | <span class="number">87000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">45565</span> | Katz       | <span class="built_in">Comp</span>. Sci. | <span class="number">75000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">58583</span> | Califieri  | History    | <span class="number">62000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">76543</span> | Singh      | Finance    | <span class="number">80000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">76766</span> | Crick      | Biology    | <span class="number">72000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">83821</span> | Brandt     | <span class="built_in">Comp</span>. Sci. | <span class="number">92000</span>.<span class="number">00</span>  |</span><br><span class="line">| <span class="number">98345</span> | Kim        | Elec. Eng. | <span class="number">80000</span>.<span class="number">00</span>  |</span><br><span class="line">+-------+------------+------------+-----------+</span><br><span class="line"><span class="number">14</span> rows <span class="keyword">in</span> <span class="built_in">set</span> (<span class="number">0</span>.<span class="number">05</span> sec)</span><br></pre></td></tr></table></figure>
+<p>更诡计多端的恶意用户甚至可以编写输入值以输出更多的数据。使用预备语句就可以防止这类问题,因为输入的字符串<code>setString</code>方法将被插入<code>转义字符</code>,因此最后的查询变为:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> instructor <span class="keyword">where</span> <span class="keyword">name</span> =<span class="string">'x\' or \'Y\'=\'Y'</span>;</span><br></pre></td></tr></table></figure>
+<p>这是无害的查询语句,返回结果为空集。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from instructor where name ='x\' or \'Y\'=\'Y';</span><br><span class="line">Empty <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="一次执行多条SQL语句的情况"><a href="#一次执行多条SQL语句的情况" class="headerlink" title="一次执行多条SQL语句的情况"></a>一次执行多条SQL语句的情况</h2><p>比较老的系统允许<strong>多个由分号隔开的语句在一次调用里被执行</strong>。<br>此功能正逐渐被淘汰,因为恶意的黑客会利用<code>SQL</code>注入技术插入整个<code>SQL</code>语句。由于这些语句在<code>Java</code>程序所有者的权限上运行,像删除表(<code>drop table</code>)这样毁灭性的<code>SQL</code>语句会被执行。<strong><code>SQL</code>应用程序开发者必须警惕这种潜在的安全漏洞</strong>。</p>
+<h1 id="5-1-1-5-可调用语句"><a href="#5-1-1-5-可调用语句" class="headerlink" title="5.1.1.5 可调用语句"></a>5.1.1.5 可调用语句</h1><p><code>JDBC</code>还提供了<code>CallableStatement</code>接口来允许调用<code>SQL</code>的存储过程和函数(稍后在5.2节描述)。此接口对函数和过程所扮演的角色跟<code>prepareStatement</code>对查询所扮演的角色一样。<br>函数返回值和过程的对外参数的数据类型必须先用方法<code>registerOutParameter()</code>注册,它们可以用与结果集用的方法类似的<code>get</code>方法获取。请参看<code>JDBC</code>手册以获得更细节的信息。</p>
+<h1 id="5-1-1-6-元数据特性"><a href="#5-1-1-6-元数据特性" class="headerlink" title="5.1.1.6 元数据特性"></a>5.1.1.6 元数据特性</h1><p>正如我们此前提到的,一个<code>Java</code>应用程序不包含数据库中存储的数据的声明。这些声明是<code>SQL</code>数据定义语言(<code>DDL</code>)的一部分。因此,使用<code>JDBC</code>的<code>Java</code>程序必须</p>
+<ul>
+<li>要么将关于数据库模式的假设硬编码到程序中,</li>
+<li>要么直接在运行时从数据库系统中得到那些信息。</li>
+</ul>
+<p>后一种方法更可取,因为它使得应用程序可以更健壮地处理数据库模式的变化。</p>
+<h2 id="结果集元数据-ResultsetMetaData"><a href="#结果集元数据-ResultsetMetaData" class="headerlink" title="结果集元数据 ResultsetMetaData"></a>结果集元数据 ResultsetMetaData</h2><p>回想一下,当我们提交一个使用<code>executeQuery</code>方法的查询时,查询结果被封装在一个<code>Resultset</code>对象中。</p>
+<h3 id="如何获取ResultsetMetaData对象-Resultset-getMetaData方法"><a href="#如何获取ResultsetMetaData对象-Resultset-getMetaData方法" class="headerlink" title="如何获取ResultsetMetaData对象 Resultset.getMetaData方法"></a>如何获取ResultsetMetaData对象 <code>Resultset.getMetaData</code>方法</h3><p>接口<code>Resultset</code>有一个<code>getMetaData()</code>方法,它返回一个包含<strong>结果集元数据</strong>的<code>ResultsetMetaData</code>对象。 <code>ResultSetMetaData</code>进一步又包含查找<strong>结果集元数据</strong>的方法,例如结果的<strong>列数</strong>、某个特定<strong>列的名称</strong>,或者某个特定<strong>列的数据类型</strong>。这样,即使不知道结果的模式,我们也可以方便地执行查询。</p>
+<p>实例省略</p>
+<p><code>ResultSetMetaData</code>对象的<code>getColumnCount</code>方法返回<strong>结果关系的属性个数</strong>(元数)。<br>这使得我们能够遍历每个属性(请注意,和<code>JDBC</code>的惯例一致,我们从1开始)。对于每一个属性,我们采用<code>getColumnName</code>和<code>getColumnTypeName</code>两个方法分别得到属性的名称和属性的数据类型。</p>
+<h2 id="数据库元数据-DatabaseMetaData"><a href="#数据库元数据-DatabaseMetaData" class="headerlink" title="数据库元数据 DatabaseMetaData"></a>数据库元数据 DatabaseMetaData</h2><p><code>DatabaseMetaData</code>接口提供了查找<strong>数据库元数据</strong>的机制。</p>
+<h3 id="如何获取DatabaseMetaData-Connection实例-getMetaData方法"><a href="#如何获取DatabaseMetaData-Connection实例-getMetaData方法" class="headerlink" title="如何获取DatabaseMetaData Connection实例.getMetaData方法"></a>如何获取<code>DatabaseMetaData</code> <code>Connection实例.getMetaData</code>方法</h3><p>接口<code>Connection</code>包含一个<code>getMetaData</code>方法用于返回一个<code>DatabaseMetaData</code>对象。接口<code>DatabaseMetaData</code>进一步又含有大量的方法可以用于获取程序所连接的<strong>数据库</strong>和<strong>数据库系统</strong>的元数据。<br>例如,有些方法可以返回<strong>数据库系统的产品名称和版本号</strong>。另外一些方法可以用来<strong>查询数据库系统所支持的特性</strong>。</p>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/34951b9e/" rel="next" title="5.1 使用程序设计语言访问数据库">
+                  <i class="fa fa-chevron-left"></i> 5.1 使用程序设计语言访问数据库
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-1-JDBC"><span class="nav-number">1.</span> <span class="nav-text">5.1.1 JDBC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-1-1-连接到数据库"><span class="nav-number">2.</span> <span class="nav-text">5.1.1.1 连接到数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何打开一个数据库连接"><span class="nav-number">2.1.</span> <span class="nav-text">如何打开一个数据库连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#必须在连接数据库之前完成驱动程序的加载"><span class="nav-number">2.2.</span> <span class="nav-text">必须在连接数据库之前完成驱动程序的加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-forName加载驱动"><span class="nav-number">2.2.1.</span> <span class="nav-text">Class.forName加载驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#要实现在java类路径中放入驱动程序jar包"><span class="nav-number">2.2.2.</span> <span class="nav-text">要实现在java类路径中放入驱动程序jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他数据库的驱动名称"><span class="nav-number">2.2.3.</span> <span class="nav-text">其他数据库的驱动名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协议"><span class="nav-number">2.2.4.</span> <span class="nav-text">协议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-1-2-向数据库系统中传递SQL语句"><span class="nav-number">3.</span> <span class="nav-text">5.1.1.2 向数据库系统中传递SQL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过数据库连接创建Statement对象"><span class="nav-number">3.1.</span> <span class="nav-text">通过数据库连接创建Statement对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#executeQuery方法执行查询语句"><span class="nav-number">3.2.</span> <span class="nav-text">executeQuery方法执行查询语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#executeUpdate方法执行费非查询语句-更新-插入删除-建表等"><span class="nav-number">3.3.</span> <span class="nav-text">executeUpdate方法执行费非查询语句 更新 插入删除 建表等</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-1-3-获取查询结果"><span class="nav-number">4.</span> <span class="nav-text">5.1.1.3 获取查询结果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#executeQuery方法返回结果集"><span class="nav-number">4.1.</span> <span class="nav-text">executeQuery方法返回结果集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果集的next方法"><span class="nav-number">4.2.</span> <span class="nav-text">结果集的next方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果集的get方法"><span class="nav-number">4.3.</span> <span class="nav-text">结果集的get方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果集get方法的参数"><span class="nav-number">4.4.</span> <span class="nav-text">结果集get方法的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java成宿结束后一定要关闭数据库连接"><span class="nav-number">4.5.</span> <span class="nav-text">java成宿结束后一定要关闭数据库连接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-1-4-预备语句"><span class="nav-number">5.</span> <span class="nav-text">5.1.1.4 预备语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Connection类的prepareStatement方法创建PreparedStatement对象"><span class="nav-number">5.1.</span> <span class="nav-text">使用Connection类的prepareStatement方法创建PreparedStatement对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优先使用预备语句"><span class="nav-number">5.2.</span> <span class="nav-text">优先使用预备语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预备语句更加高效"><span class="nav-number">5.3.</span> <span class="nav-text">预备语句更加高效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预备语句可检查用户输入"><span class="nav-number">5.4.</span> <span class="nav-text">预备语句可检查用户输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预备语句可防止SQL注入"><span class="nav-number">5.5.</span> <span class="nav-text">预备语句可防止SQL注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一次执行多条SQL语句的情况"><span class="nav-number">5.6.</span> <span class="nav-text">一次执行多条SQL语句的情况</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-1-5-可调用语句"><span class="nav-number">6.</span> <span class="nav-text">5.1.1.5 可调用语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-1-6-元数据特性"><span class="nav-number">7.</span> <span class="nav-text">5.1.1.6 元数据特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#结果集元数据-ResultsetMetaData"><span class="nav-number">7.1.</span> <span class="nav-text">结果集元数据 ResultsetMetaData</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何获取ResultsetMetaData对象-Resultset-getMetaData方法"><span class="nav-number">7.1.1.</span> <span class="nav-text">如何获取ResultsetMetaData对象 Resultset.getMetaData方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库元数据-DatabaseMetaData"><span class="nav-number">7.2.</span> <span class="nav-text">数据库元数据 DatabaseMetaData</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何获取DatabaseMetaData-Connection实例-getMetaData方法"><span class="nav-number">7.2.1.</span> <span class="nav-text">如何获取DatabaseMetaData Connection实例.getMetaData方法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1155</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">333</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>
