@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="13.4 执行SQL语句的方式 13.4.1 使用executeUpdate方法执行DDL和DML语句 executeUpdate()方法执行DDL语句 executeUpdate()方法执行DML语句">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.4 执行SQL语句的方式">
+<meta property="og:url" content="https://blueblue233.github.io/blog/514ad364/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="13.4 执行SQL语句的方式 13.4.1 使用executeUpdate方法执行DDL和DML语句 executeUpdate()方法执行DDL语句 executeUpdate()方法执行DML语句">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="13.4 执行SQL语句的方式">
+<meta name="twitter:description" content="13.4 执行SQL语句的方式 13.4.1 使用executeUpdate方法执行DDL和DML语句 executeUpdate()方法执行DDL语句 executeUpdate()方法执行DML语句">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/514ad364/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>13.4 执行SQL语句的方式 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/514ad364/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">13.4 执行SQL语句的方式
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-04 13:40:00" itemprop="dateCreated datePublished" datetime="2019-07-04T13:40:00+08:00">2019-07-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-4-执行SQL语句的方式/" itemprop="url" rel="index"><span itemprop="name">13.4 执行SQL语句的方式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/514ad364/#13-4-执行SQL语句的方式">13.4 执行SQL语句的方式</a><ul>
+<li><a href="/blog/514ad364/#13-4-1-使用executeUpdate方法执行DDL和DML语句">13.4.1 使用executeUpdate方法执行DDL和DML语句</a><ul>
+<li><a href="/blog/514ad364/#executeUpdate-方法执行DDL语句">executeUpdate()方法执行DDL语句</a></li>
+<li><a href="/blog/514ad364/#executeUpdate-方法执行DML语句">executeUpdate()方法执行DML语句</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="13-4-执行SQL语句的方式"><a href="#13-4-执行SQL语句的方式" class="headerlink" title="13.4 执行SQL语句的方式"></a>13.4 执行SQL语句的方式</h1><p>前面介绍了<code>JDBC</code>执行查询等示例程序,实际上,<code>JDBC</code>不仅可以执行查询,也可以执行<code>DDLML</code>等<code>SQL</code>语句,从而允许通过<code>JDBC</code>最大限度地控制数据库。</p>
+<h2 id="13-4-1-使用executeUpdate方法执行DDL和DML语句"><a href="#13-4-1-使用executeUpdate方法执行DDL和DML语句" class="headerlink" title="13.4.1 使用executeUpdate方法执行DDL和DML语句"></a>13.4.1 使用executeUpdate方法执行DDL和DML语句</h2><p><code>Statement</code>提供了三个方法来执行<code>SQL</code>语句,前面已经介绍了使用<code>executeQuery</code>来执行查询语句,下面将介绍使用<code>executeLargeUpdate()</code>或<code>executeUpdate()</code>来执行<code>DDL</code>和<code>DML</code>语句。使用<code>Statement</code>执行<code>DDL</code>和<code>DML</code>语句的步骤与执行普通查询语句的步骤基本相似,区别在于:</p>
+<ul>
+<li>执行了<code>DDL</code>语句后返回值为<code>0</code>,</li>
+<li>执行了<code>DML</code>语句后返回值为受影响的记录条数。</li>
+</ul>
+<blockquote>
+<p>数据库模式定义语言<code>DDL(Data Definition Language)</code>,主要由<code>create</code>(创建)、<code>alter</code>(修改)、<code>drop</code>(删除)和<code>truncate</code>(删除)四个关键字完成。<br>数据操纵语言(<code>Data Manipulation Language, DML</code>),由<code>insert</code>(插入),<code>update</code>(更新),<code>delete</code>(删除)<br>对于一个表:</p>
+</blockquote>
+<ul>
+<li>当不再需要该表时, 用<code>drop</code>;</li>
+<li>当你仍要保留该表,但要删除所有记录时,用<code>truncate</code>;</li>
+<li>当你要删除部分记录时,用<code>delete</code>.</li>
+</ul>
+<h3 id="executeUpdate-方法执行DDL语句"><a href="#executeUpdate-方法执行DDL语句" class="headerlink" title="executeUpdate()方法执行DDL语句"></a>executeUpdate()方法执行DDL语句</h3><p>下面程序示范了使用<code>executeUpdate()</code>方法创建数据表,如果<code>MySQL</code>驱动支持,也可以使用<code>executeLargeUpdate()</code>方法。</p>
+<p>下面的实例中没有直接把数据库连接信息写在程序里,而是使用一个<code>mysql.ini</code>文件(就是一个<code>properties</code>文件)来保存数据库连接信息,<code>mysql.ini</code>文件中的那内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">driver=com.mysql.jdbc.Driver</span><br><span class="line">url=jdbc:mysql://127.0.0.1:3306/select_test</span><br><span class="line">user=root</span><br><span class="line">pass=root</span><br></pre></td></tr></table></figure>
+<p>当需要把应用程序从开发环境移植到生产环境时,无须修改源代码,只需要修改<code>mysql.ini</code>配置文件即可.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExecuteDDL</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String driver;</span><br><span class="line">	<span class="keyword">private</span> String url;</span><br><span class="line">	<span class="keyword">private</span> String user;</span><br><span class="line">	<span class="keyword">private</span> String pass;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initParam</span><span class="params">(String paramFile)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 使用Properties类来加载属性文件</span></span><br><span class="line">		Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">		props.load(<span class="keyword">new</span> FileInputStream(paramFile));</span><br><span class="line">		driver = props.getProperty(<span class="string">"driver"</span>);</span><br><span class="line">		url = props.getProperty(<span class="string">"url"</span>);</span><br><span class="line">		user = props.getProperty(<span class="string">"user"</span>);</span><br><span class="line">		pass = props.getProperty(<span class="string">"pass"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createTable</span><span class="params">(String sql)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 1.加载驱动</span></span><br><span class="line">		Class.forName(driver);</span><br><span class="line">		<span class="keyword">try</span> (</span><br><span class="line">				<span class="comment">// 2.获取数据库连接</span></span><br><span class="line">				Connection conn = DriverManager.getConnection(url, user, pass);</span><br><span class="line">				<span class="comment">// 3.使用Connection来创建一个Statment对象</span></span><br><span class="line">				Statement stmt = conn.createStatement())</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 4.执行DDL,创建数据表</span></span><br><span class="line">			stmt.executeUpdate(sql);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		ExecuteDDL ed = <span class="keyword">new</span> ExecuteDDL();</span><br><span class="line">		ed.initParam(<span class="string">"mysql.ini"</span>);</span><br><span class="line">		ed.createTable(<span class="string">"create table jdbc_test "</span></span><br><span class="line">				+ <span class="string">"( jdbc_id int auto_increment primary key, "</span></span><br><span class="line">				+ <span class="string">"jdbc_name varchar(255), "</span> + <span class="string">"jdbc_desc text);"</span>);</span><br><span class="line">		System.out.println(<span class="string">"-----建表成功-----"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行上面程序,执行成功后会看到<code>select_test</code>数据库中添加了一个<code>jdbc_test</code>数据表,这表明<code>JDBC</code>执行<code>DDL</code>语句成功。</p>
+<h3 id="executeUpdate-方法执行DML语句"><a href="#executeUpdate-方法执行DML语句" class="headerlink" title="executeUpdate()方法执行DML语句"></a>executeUpdate()方法执行DML语句</h3><p>使用<code>executeUpdate()</code>执行<code>DML</code>语句与执行<code>DDL</code>语句基本相似,区别是<code>executeUpdate()</code>执行<code>DDL</code>语句后返回<code>0</code>,而执行<code>DML</code>语句后返回受影响的记录条数。<br>下面程序将会执行一条<code>insert</code>语句,这条<code>insert</code>语句会向刚刚建立的<code>jdbc_test</code>数据表中插入几条记录。因为使用了带子查询的<code>insert</code>语句,所以可以一次插入多条语句.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExecuteDML</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String driver;</span><br><span class="line">	<span class="keyword">private</span> String url;</span><br><span class="line">	<span class="keyword">private</span> String user;</span><br><span class="line">	<span class="keyword">private</span> String pass;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initParam</span><span class="params">(String paramFile)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 使用Properties类来加载属性文件</span></span><br><span class="line">		Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">		props.load(<span class="keyword">new</span> FileInputStream(paramFile));</span><br><span class="line">		driver = props.getProperty(<span class="string">"driver"</span>);</span><br><span class="line">		url = props.getProperty(<span class="string">"url"</span>);</span><br><span class="line">		user = props.getProperty(<span class="string">"user"</span>);</span><br><span class="line">		pass = props.getProperty(<span class="string">"pass"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">insertData</span><span class="params">(String sql)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 1.加载驱动</span></span><br><span class="line">		Class.forName(driver);</span><br><span class="line">		<span class="keyword">try</span> (</span><br><span class="line">				<span class="comment">// 2.获取数据库连接</span></span><br><span class="line">				Connection conn = DriverManager.getConnection(url, user, pass);</span><br><span class="line">				<span class="comment">// 3.使用Connection来创建一个Statment对象</span></span><br><span class="line">				Statement stmt = conn.createStatement())</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 4.执行DML,返回受影响的记录条数</span></span><br><span class="line">			<span class="keyword">return</span> stmt.executeUpdate(sql);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		ExecuteDML ed = <span class="keyword">new</span> ExecuteDML();</span><br><span class="line">		ed.initParam(<span class="string">"mysql.ini"</span>);</span><br><span class="line">		<span class="keyword">int</span> result = ed.insertData(<span class="string">"insert into jdbc_test(jdbc_name,jdbc_desc)"</span></span><br><span class="line">				+ <span class="string">"select s.student_name , t.teacher_name "</span></span><br><span class="line">				+ <span class="string">"from student_table s , teacher_table t "</span></span><br><span class="line">				+ <span class="string">"where s.java_teacher = t.teacher_id;"</span>);</span><br><span class="line">		System.out.println(<span class="string">"--系统中共有"</span> + result + <span class="string">"条记录受影响--"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行上面程序,执行成功将会看到<code>jdbc_test</code>数据表中多了几条记录,而且在程序控制台会看到输出有几条记录受影响的信息。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/514ad364/">13.4 执行SQL语句的方式</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/2ac92d84/" rel="next" title="13.3.2 JDBC编程步骤">
+                  <i class="fa fa-chevron-left"></i> 13.3.2 JDBC编程步骤
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/8b945643/" rel="prev" title="13.4.2 使用execute方法执行SQL语句">
+                  13.4.2 使用execute方法执行SQL语句 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#13-4-执行SQL语句的方式"><span class="nav-number">1.</span> <span class="nav-text">13.4 执行SQL语句的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#13-4-1-使用executeUpdate方法执行DDL和DML语句"><span class="nav-number">1.1.</span> <span class="nav-text">13.4.1 使用executeUpdate方法执行DDL和DML语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#executeUpdate-方法执行DDL语句"><span class="nav-number">1.1.1.</span> <span class="nav-text">executeUpdate()方法执行DDL语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#executeUpdate-方法执行DML语句"><span class="nav-number">1.1.2.</span> <span class="nav-text">executeUpdate()方法执行DML语句</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

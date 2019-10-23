@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="18.3.3 Java 8新增的方法参数反射 获取方法或构造器的形参个数 形参名 获取参数信息 程序示例 本文重点">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="18.3.3 Java 8新增的方法参数反射">
+<meta property="og:url" content="https://blueblue233.github.io/blog/40c6b384/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="18.3.3 Java 8新增的方法参数反射 获取方法或构造器的形参个数 形参名 获取参数信息 程序示例 本文重点">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="18.3.3 Java 8新增的方法参数反射">
+<meta name="twitter:description" content="18.3.3 Java 8新增的方法参数反射 获取方法或构造器的形参个数 形参名 获取参数信息 程序示例 本文重点">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/40c6b384/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>18.3.3 Java 8新增的方法参数反射 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/40c6b384/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">18.3.3 Java 8新增的方法参数反射
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-15 13:24:53" itemprop="dateCreated datePublished" datetime="2019-07-15T13:24:53+08:00">2019-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/" itemprop="url" rel="index"><span itemprop="name">第18章 类加载机制与反射</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/18-3-通过反射查看类信息/" itemprop="url" rel="index"><span itemprop="name">18.3 通过反射查看类信息</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/40c6b384/#18-3-3-Java-8新增的方法参数反射">18.3.3 Java 8新增的方法参数反射</a><ul>
+<li><a href="/blog/40c6b384/#获取方法或构造器的形参个数-形参名">获取方法或构造器的形参个数 形参名</a></li>
+<li><a href="/blog/40c6b384/#获取参数信息">获取参数信息</a></li>
+<li><a href="/blog/40c6b384/#程序示例">程序示例</a></li>
+<li><a href="/blog/40c6b384/#本文重点">本文重点</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="18-3-3-Java-8新增的方法参数反射"><a href="#18-3-3-Java-8新增的方法参数反射" class="headerlink" title="18.3.3 Java 8新增的方法参数反射"></a>18.3.3 Java 8新增的方法参数反射</h1><p><code>Java8</code>在<code>java.lang.reflect</code>包下新增了一个<code>Executable</code>抽象基类,<code>Executable</code>类对象代表<code>可执行的</code>类成员,该类派生了<code>Constructor</code>、 <code>Method</code>两个子类。</p>
+<h2 id="获取方法或构造器的形参个数-形参名"><a href="#获取方法或构造器的形参个数-形参名" class="headerlink" title="获取方法或构造器的形参个数 形参名"></a>获取方法或构造器的形参个数 形参名</h2><p><code>Executable</code>基类提供了大量方法来<code>获取修饰该方法</code>或<code>构造器的注解</code>信息;还提供了<code>isVarArgs()</code>方法用于判断该方法或构造器是否包含数量可变的形参,以及通过<code>getModifiers()</code>方法来获取该方法或构造器的修饰符。除此之外, <code>Executable</code>提供了如下两个方法来获取该方法或构造器的<code>形参个数</code>及<code>形参名</code>。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>int getParameter()</code></td>
+<td align="left">获取该构造器或方法的形参个数</td>
+</tr>
+<tr>
+<td align="left"><code>Parameter[] getParameters()</code></td>
+<td align="left">获取该构造器或方法的所有形参。</td>
+</tr>
+</tbody></table>
+<h2 id="获取参数信息"><a href="#获取参数信息" class="headerlink" title="获取参数信息"></a>获取参数信息</h2><p>上面第二个方法返回了一个<code>Parameter</code>数组, <code>Parameter</code>也是<code>Java 8</code>新增的<code>APl</code>,每个<code>Parameter</code>对象代表方法或构造器的一个参数。 <code>Parameter</code>也提供了大量方法来获取声明该参数的泛型信息,还提供了如下常用方法来获取参数信息。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>getModifiers()</code></td>
+<td align="left">获取修饰该形参的修饰符。</td>
+</tr>
+<tr>
+<td align="left"><code>String getName()</code></td>
+<td align="left">获取形参名</td>
+</tr>
+<tr>
+<td align="left"><code>Type getParameterizedType()</code></td>
+<td align="left">获取带泛型的形参类型。</td>
+</tr>
+<tr>
+<td align="left"><code>Cass&lt;?&gt; getType()</code></td>
+<td align="left">获取形参类型</td>
+</tr>
+<tr>
+<td align="left"><code>boolean isNamePresent()</code></td>
+<td align="left">该方法返回该类的<code>class</code>件中是否包含了方法的形参名信息。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean isVarArgs()</code></td>
+<td align="left">该方法用于判断该参数是否为个数可变的形参。</td>
+</tr>
+</tbody></table>
+<p>需要指出的是,使用<code>javac</code>命令编译<code>Java</code>源文件时,默认生成的<code>.class</code>文件并不包含方法的形参名信息,因此调用<code>isNamePresent()</code>方法将会返回<code>false</code>,调用<code>getName()</code>方法也不能得到该参数的形参名。如果希望<code>javac</code>命令编译<code>Java</code>源文件时可以保留形参信息,则需要为该命令指定<code>-parameters</code>选项。</p>
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><p>如下程序示范了Java 8的方法参数反射功能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.*;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">replace</span><span class="params">(String str, List&lt;String&gt; list)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MethodParameterTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 获取String的类</span></span><br><span class="line">		Class&lt;Test&gt; clazz = Test.class;</span><br><span class="line">		<span class="comment">// 获取String类的带两个参数的replace()方法</span></span><br><span class="line">		Method replace = clazz.getMethod(<span class="string">"replace"</span></span><br><span class="line">			, String.class, List.class);</span><br><span class="line">		<span class="comment">// 获取指定方法的参数个数</span></span><br><span class="line">		System.out.println(<span class="string">"replace方法参数个数："</span> + replace.getParameterCount());</span><br><span class="line">		<span class="comment">// 获取replace的所有参数信息</span></span><br><span class="line">		Parameter[] parameters = replace.getParameters();</span><br><span class="line">		<span class="keyword">int</span> index = <span class="number">1</span>;</span><br><span class="line">		<span class="comment">// 遍历所有参数</span></span><br><span class="line">		<span class="keyword">for</span> (Parameter p : parameters)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (p.isNamePresent())</span><br><span class="line">			&#123;</span><br><span class="line">				System.out.println(<span class="string">"---第"</span> + index++ + <span class="string">"个参数信息---"</span>);</span><br><span class="line">				System.out.println(<span class="string">"参数名："</span> + p.getName());</span><br><span class="line">				System.out.println(<span class="string">"形参类型："</span> + p.getType());</span><br><span class="line">				System.out.println(<span class="string">"泛型类型："</span> + p.getParameterizedType());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序先定义了一个包含简单的<code>Test</code>类,该类中包含一个<code>replace(String str,List&lt;String&gt; list)</code>方法,程序中先是获取了该方法,然后分别用于获取该方法的形参名,形参类型和泛型信息。<br>只有当该类的<code>.class</code>文件中包含形参名信息时,程序才会执行条件体内的三行粗体字代码。因此需要使用如下命令来编译该程序:<br><code>javac -parameters MethodParameterTest.java</code><br>上面命令中<code>-parameters</code>选项用于控制<code>javac</code>命令保留方法形参名信息。<br>运行该程序,即可看到如下输出:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">G:\<span class="title">Desktop</span>\随书源码\疯狂<span class="title">Java</span>讲义第三版光盘\<span class="title">codes</span>\18\18.3&gt;<span class="title">javac</span> -<span class="title">parameters</span> <span class="title">MethodParameterTest.java</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">G</span>:\<span class="title">Desktop</span>\随书源码\疯狂<span class="title">Java</span>讲义第三版光盘\<span class="title">codes</span>\18\18.3&gt;<span class="title">java</span> <span class="title">MethodParameterTest</span></span></span><br><span class="line"><span class="function"><span class="title">replace</span>方法参数个数：2</span></span><br><span class="line"><span class="function">---第1个参数信息---</span></span><br><span class="line"><span class="function">参数名：<span class="title">str</span></span></span><br><span class="line"><span class="function">形参类型：<span class="title">class</span> <span class="title">java.lang.String</span></span></span><br><span class="line"><span class="function">泛型类型：<span class="title">class</span> <span class="title">java.lang.String</span></span></span><br><span class="line"><span class="function">---第2个参数信息---</span></span><br><span class="line"><span class="function">参数名：<span class="title">list</span></span></span><br><span class="line"><span class="function">形参类型：<span class="title">interface</span> <span class="title">java.util.List</span></span></span><br><span class="line"><span class="function">泛型类型：<span class="title">java.util.List</span>&lt;<span class="title">java.lang.String</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="本文重点"><a href="#本文重点" class="headerlink" title="本文重点"></a>本文重点</h2><p> <code>Java 8</code>新增了方法参数反射功能,可以获取方法的参数的信息,如获取:</p>
+<ul>
+<li>形参的修饰符</li>
+<li>形参名</li>
+<li>形参个数等信息</li>
+</ul>
+<p>要想保留形参名信息到<code>.class</code>文件中,则在编译时要在<code>javac</code>命令后面加上<code>-parameters</code>选项.</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/40c6b384/">18.3.3 Java 8新增的方法参数反射</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/712f16a6/" rel="next" title="18.3.2 从Class中获取信息">
+                  <i class="fa fa-chevron-left"></i> 18.3.2 从Class中获取信息
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/1a37f8b/" rel="prev" title="18.4.4 操作数组">
+                  18.4.4 操作数组 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#18-3-3-Java-8新增的方法参数反射"><span class="nav-number">1.</span> <span class="nav-text">18.3.3 Java 8新增的方法参数反射</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取方法或构造器的形参个数-形参名"><span class="nav-number">1.1.</span> <span class="nav-text">获取方法或构造器的形参个数 形参名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取参数信息"><span class="nav-number">1.2.</span> <span class="nav-text">获取参数信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">1.3.</span> <span class="nav-text">程序示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文重点"><span class="nav-number">1.4.</span> <span class="nav-text">本文重点</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

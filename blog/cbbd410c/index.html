@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="6.2 数据转换 6.2.1 ConversionService 在Spring配置文件中配置 默认支持转换类型 注册自定义的类型转换器">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.2 数据转换 6.2.1 ConversionService">
+<meta property="og:url" content="https://blueblue233.github.io/blog/cbbd410c/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="6.2 数据转换 6.2.1 ConversionService 在Spring配置文件中配置 默认支持转换类型 注册自定义的类型转换器">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.2 数据转换 6.2.1 ConversionService">
+<meta name="twitter:description" content="6.2 数据转换 6.2.1 ConversionService 在Spring配置文件中配置 默认支持转换类型 注册自定义的类型转换器">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/cbbd410c/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>6.2 数据转换 6.2.1 ConversionService | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/cbbd410c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">6.2 数据转换 6.2.1 ConversionService
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-31 13:22:32" itemprop="dateCreated datePublished" datetime="2019-05-31T13:22:32+08:00">2019-05-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:41" itemprop="dateModified" datetime="2019-10-14T14:55:41+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第6章-SpringMVC的数据转换-格式化和数据校验/" itemprop="url" rel="index"><span itemprop="name">第6章 SpringMVC的数据转换 格式化和数据校验</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/cbbd410c/#6-2-数据转换">6.2 数据转换</a></li>
+<li><a href="/blog/cbbd410c/#6-2-1-ConversionService">6.2.1 ConversionService</a><ul>
+<li><a href="/blog/cbbd410c/#在Spring配置文件中配置">在Spring配置文件中配置</a></li>
+<li><a href="/blog/cbbd410c/#默认支持转换类型">默认支持转换类型</a></li>
+<li><a href="/blog/cbbd410c/#注册自定义的类型转换器">注册自定义的类型转换器</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="6-2-数据转换"><a href="#6-2-数据转换" class="headerlink" title="6.2 数据转换"></a>6.2 数据转换</h1><p>在<code>Java</code>语言中,在<code>java.beans</code>包中提供了一个<code>ProperyEditor</code>接口来进行数据转换。<strong><code>ProperyEditor</code>的核心功能是将一个字符串转换为一个<code>Java</code>对象</strong>,以便<strong>根据</strong>界面的输入或<strong>配置文件中的配置字符串构造出一个<code>Java</code>对象</strong>。但是<strong><code>ProperyEditor</code>存在以下不足</strong>:<br><strong>只能用于字符串和<code>Java</code>对象的转换,不适用于任意两个<code>Java</code>类型直接的转换</strong>。<br>对源对象及目标对象所在的上下文信息(如注解等)不敏感,<strong>在类型转换时不能利用这些上下文信息实施高级转换逻辑</strong>。</p>
+<h1 id="6-2-1-ConversionService"><a href="#6-2-1-ConversionService" class="headerlink" title="6.2.1 ConversionService"></a>6.2.1 ConversionService</h1><p><code>Spring</code>从3.0开始,添加了一个通用的类型转换模块,该类型转换模块位于<code>org.springframework.core.convert</code>包中。<code>Spring</code>希望用这个类型转换体系替换<code>Java</code>标准的<code>ProperyEditor</code>接口。但是由于历史原因,<code>Spring</code>还是同时支持两者。我们可以在<code>SpringMVC</code>处理方法的参数绑定中使用它们进行数据转换。<br><strong><code>org.springframework.core.convert.ConversionService</code>是<code>Spring</code>类型转换体系的核心接口</strong>,在该接口中定义了以下4个方法:</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>boolean canConvert(Class&lt;?&gt; sourceType,Class&lt;?&gt; targetType)</code></td>
+<td align="left"><strong>判断是否可以将一个<code>Java</code>类转换为另一个<code>Java</code>类</strong>。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean canConvert(TypeDescriptor sourceType,TypeDescriptor targetType)</code></td>
+<td align="left">需要转换的类将以成员变量的方式出现,<code>TypeDescriptor</code>不但描述了需要转换类的信息,还描述了类的上下文信息,例如成员变量上的注解成员变量是否以数组、集合或<code>Map</code>的方式呈现等。类型转换逻辑可以利用这些信息做出各种灵活的控制。</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;T&gt;T convert(Object source,Class&lt;T&gt; targetType)</code></td>
+<td align="left"><strong>将源类型对象转换为目标类型对象</strong>。</td>
+</tr>
+<tr>
+<td align="left"><code>Object convert(Object source ,TypeDescriptor sourceType,TypeDescriptor targetType)</code></td>
+<td align="left"><strong>将对象从源类型对象转换为目标类型对象</strong>,通常会利用到类中的上下文信息。</td>
+</tr>
+</tbody></table>
+<h2 id="在Spring配置文件中配置"><a href="#在Spring配置文件中配置" class="headerlink" title="在Spring配置文件中配置"></a>在Spring配置文件中配置</h2><p>可以利用<code>org.springframework.context.support.ConversionServiceFactoryBean</code>在<code>Spring</code>的上下文中定义一个<code>ConversionService</code>。<code>Spring</code>将自动识别出上下文中的<code>ConversionService</code>,并在<code>SpringMVC</code>处理方法的参数绑定中使用它进行数据转换。示例配置代码如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此处有代码后面补上</span><br></pre></td></tr></table></figure>
+<h2 id="默认支持转换类型"><a href="#默认支持转换类型" class="headerlink" title="默认支持转换类型"></a>默认支持转换类型</h2><p>在<code>ConversionServiceFactoryBean</code>中可以内置很多的类型转换器,使用它们可以完成大多数<code>Java</code>类型的转换工作,其除了包括将<code>Spring</code>对象转换为各种基础类型的对象外,还包括<code>String</code>、<code>Number</code>、<code>Array</code>、<code>Collection</code>、<code>Map</code>、<code>Properties</code>及<code>Object</code>之间的转换器。</p>
+<h2 id="注册自定义的类型转换器"><a href="#注册自定义的类型转换器" class="headerlink" title="注册自定义的类型转换器"></a>注册自定义的类型转换器</h2><p>可以通过<code>ConversionServiceFactoryBean</code>的<code>converters</code>属性注册自定义的类型转换器,示例配置代码如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此处有代码后面补上</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/cbbd410c/">6.2 数据转换 6.2.1 ConversionService</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/51ca583b/" rel="next" title="6.1 数据绑定流程">
+                  <i class="fa fa-chevron-left"></i> 6.1 数据绑定流程
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/2a435480/" rel="prev" title="6.2.2 Spring支持的转换器  示例 使用ConversionService转换数据">
+                  6.2.2 Spring支持的转换器  示例 使用ConversionService转换数据 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-2-数据转换"><span class="nav-number">1.</span> <span class="nav-text">6.2 数据转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-2-1-ConversionService"><span class="nav-number">2.</span> <span class="nav-text">6.2.1 ConversionService</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在Spring配置文件中配置"><span class="nav-number">2.1.</span> <span class="nav-text">在Spring配置文件中配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认支持转换类型"><span class="nav-number">2.2.</span> <span class="nav-text">默认支持转换类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册自定义的类型转换器"><span class="nav-number">2.3.</span> <span class="nav-text">注册自定义的类型转换器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

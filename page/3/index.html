@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="website">
+<meta property="og:title" content="蓝蓝的读书笔记">
+<meta property="og:url" content="https://blueblue233.github.io/page/3/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="蓝蓝的读书笔记">
+  <link rel="canonical" href="https://blueblue233.github.io/page/3/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/4286b88a/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/4286b88a/" class="post-title-link" itemprop="url">4.4 完整性约束 4.4.1 单个关系上的约束</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-21 11:03:14" itemprop="dateCreated datePublished" datetime="2019-10-21T11:03:14+08:00">2019-10-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-4-完整性约束/" itemprop="url" rel="index"><span itemprop="name">4.4 完整性约束</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/4286b88a/#4-4-完整性约束">4.4 完整性约束</a><ul>
+<li><a href="/blog/4286b88a/#完整性约束例子">完整性约束例子</a></li>
+<li><a href="/blog/4286b88a/#创建关系时指定完整性约束">创建关系时指定完整性约束</a></li>
+<li><a href="/blog/4286b88a/#创建关系后指定完整性约束">创建关系后指定完整性约束</a><ul>
+<li><a href="/blog/4286b88a/#创建关系后指定的完整性约束有什么要求">创建关系后指定的完整性约束有什么要求</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/4286b88a/#4-4-1-单个关系上的约束">4.4.1 单个关系上的约束</a><ul>
+<li><a href="/blog/4286b88a/#可以在创建关系时指定的完整性约束">可以在创建关系时指定的完整性约束</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/4286b88a/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/2e30f7e8/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/2e30f7e8/" class="post-title-link" itemprop="url">4.3 事务</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 21:39:14" itemprop="dateCreated datePublished" datetime="2019-10-20T21:39:14+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-3-事务/" itemprop="url" rel="index"><span itemprop="name">4.3 事务</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/2e30f7e8/#4-3-事务">4.3 事务</a><ul>
+<li><a href="/blog/2e30f7e8/#结束事务">结束事务</a></li>
+<li><a href="/blog/2e30f7e8/#系统出现不一致例子">系统出现不一致例子</a><ul>
+<li><a href="/blog/2e30f7e8/#银行例子">银行例子</a></li>
+<li><a href="/blog/2e30f7e8/#大学应用例子">大学应用例子</a></li>
+</ul>
+</li>
+<li><a href="/blog/2e30f7e8/#原子性">原子性</a></li>
+<li><a href="/blog/2e30f7e8/#不是commit或Rollback的命令出错时是提交还是回滚得看具体的数据库实现">不是commit或Rollback的命令出错时是提交还是回滚得看具体的数据库实现</a></li>
+<li><a href="/blog/2e30f7e8/#默认一条SQL语句一个事务">默认一条<strong>SQL</strong>语句一个事务</a></li>
+<li><a href="/blog/2e30f7e8/#关闭自动提交-一个事务执行多条SQL">关闭自动提交 一个事务执行多条SQL</a></li>
+<li><a href="/blog/2e30f7e8/#后续章节对事务的介绍">后续章节对事务的介绍</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/2e30f7e8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d8d00e0a/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/d8d00e0a/" class="post-title-link" itemprop="url">4.2.4 视图更新</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 20:58:57" itemprop="dateCreated datePublished" datetime="2019-10-20T20:58:57+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-2-视图/" itemprop="url" rel="index"><span itemprop="name">4.2 视图</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/d8d00e0a/#4-2-4-视图更新">4.2.4 视图更新</a><ul>
+<li><a href="/blog/d8d00e0a/#向视图插入数据">向视图插入数据</a><ul>
+<li><a href="/blog/d8d00e0a/#更新一个表上的的视图的情况">更新一个表上的的视图的情况</a></li>
+<li><a href="/blog/d8d00e0a/#更新多个表上的视图的情况">更新多个表上的视图的情况</a></li>
+</ul>
+</li>
+<li><a href="/blog/d8d00e0a/#一般不允许对视图关系进行修改">一般不允许对视图关系进行修改</a></li>
+<li><a href="/blog/d8d00e0a/#可更新的视图要满足的条件">可更新的视图要满足的条件</a><ul>
+<li><a href="/blog/d8d00e0a/#实例-可更新的视图">实例 可更新的视图</a></li>
+<li><a href="/blog/d8d00e0a/#可更新的视图存在的问题">可更新的视图存在的问题</a></li>
+<li><a href="/blog/d8d00e0a/#拒绝向视图插入一条不满足视图的where子句条件的元组">拒绝向视图插入一条不满足视图的<strong>where</strong>子句条件的元组</a></li>
+<li><a href="/blog/d8d00e0a/#SQL-1999对视图更新的规则">SQL:1999对视图更新的规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/d8d00e0a/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/7bb06130/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/7bb06130/" class="post-title-link" itemprop="url">4.2.3 物化视图</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 20:11:36" itemprop="dateCreated datePublished" datetime="2019-10-20T20:11:36+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-2-视图/" itemprop="url" rel="index"><span itemprop="name">4.2 视图</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/7bb06130/#4-2-3-物化视图">4.2.3 物化视图</a><ul>
+<li><a href="/blog/7bb06130/#物化视图">物化视图</a></li>
+<li><a href="/blog/7bb06130/#物化视图的内容也必须更新">物化视图的内容也必须更新</a></li>
+<li><a href="/blog/7bb06130/#物化视图维护">物化视图维护</a></li>
+<li><a href="/blog/7bb06130/#视图维护的时机">视图维护的时机</a></li>
+<li><a href="/blog/7bb06130/#物化视图的优点">物化视图的优点</a></li>
+<li><a href="/blog/7bb06130/#物化视图由使用的数据库系统实现">物化视图由使用的数据库系统实现</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/7bb06130/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/4f9aad4e/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/4f9aad4e/" class="post-title-link" itemprop="url">4.2.2 SQL查询中使用视图</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 19:38:45" itemprop="dateCreated datePublished" datetime="2019-10-20T19:38:45+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-2-视图/" itemprop="url" rel="index"><span itemprop="name">4.2 视图</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/4f9aad4e/#4-2-2-SQL查询中使用视图">4.2.2 SQL查询中使用视图</a><ul>
+<li><a href="/blog/4f9aad4e/#视图和关系的用法一样">视图和关系的用法一样</a></li>
+<li><a href="/blog/4f9aad4e/#定义视图时指定视图的属性名">定义视图时指定视图的属性名</a></li>
+<li><a href="/blog/4f9aad4e/#视图关系的结果通过计算产生">视图关系的结果通过计算产生</a></li>
+<li><a href="/blog/4f9aad4e/#一个视图可能被用到定义另一个视图的表达式中">一个视图可能被用到定义另一个视图的表达式中</a><ul>
+<li><a href="/blog/4f9aad4e/#等价视图">等价视图</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/4f9aad4e/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/bd569939/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/bd569939/" class="post-title-link" itemprop="url">4.2.1 视图定义</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 18:33:10" itemprop="dateCreated datePublished" datetime="2019-10-20T18:33:10+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-2-视图/" itemprop="url" rel="index"><span itemprop="name">4.2 视图</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/bd569939/#4-2-1-视图定义">4.2.1 视图定义</a><ul>
+<li><a href="/blog/bd569939/#创建视图的格式">创建视图的格式</a></li>
+<li><a href="/blog/bd569939/#实例">实例</a></li>
+<li><a href="/blog/bd569939/#视图关系是在需要的时候才被创建的">视图关系是在需要的时候才被创建的</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/bd569939/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/21939206/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/21939206/" class="post-title-link" itemprop="url">4.2 视图</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 18:21:32" itemprop="dateCreated datePublished" datetime="2019-10-20T18:21:32+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-2-视图/" itemprop="url" rel="index"><span itemprop="name">4.2 视图</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/21939206/#4-2-视图">4.2 视图</a><ul>
+<li><a href="/blog/21939206/#虚关系">虚关系</a></li>
+<li><a href="/blog/21939206/#什么是视图">什么是视图</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/21939206/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/bb8cb4f2/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/bb8cb4f2/" class="post-title-link" itemprop="url">4.1.3 连接类型和条件</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 17:30:48" itemprop="dateCreated datePublished" datetime="2019-10-20T17:30:48+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-1-连接表达式/" itemprop="url" rel="index"><span itemprop="name">4.1 连接表达式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/bb8cb4f2/#4-1-3-连接类型和条件">4.1.3 连接类型和条件</a><ul>
+<li><a href="/blog/bb8cb4f2/#默认是内连接">默认是内连接</a></li>
+<li><a href="/blog/bb8cb4f2/#连接类型和连接条件">连接类型和连接条件</a><ul>
+<li><a href="/blog/bb8cb4f2/#连接类型">连接类型</a></li>
+<li><a href="/blog/bb8cb4f2/#连接条件">连接条件</a></li>
+<li><a href="/blog/bb8cb4f2/#任意的连接形式都可以和任意的连接条件进行组合">任意的连接形式都可以和任意的连接条件进行组合</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/bb8cb4f2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ca319795/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/ca319795/" class="post-title-link" itemprop="url">4.1.2 外连接</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 11:39:53" itemprop="dateCreated datePublished" datetime="2019-10-20T11:39:53+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-1-连接表达式/" itemprop="url" rel="index"><span itemprop="name">4.1 连接表达式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/ca319795/#4-1-2-外连接">4.1.2 外连接</a><ul>
+<li><a href="/blog/ca319795/#外连接不会丢失元组">外连接不会丢失元组</a></li>
+<li><a href="/blog/ca319795/#内连接定义">内连接定义</a></li>
+<li><a href="/blog/ca319795/#外连接定义">外连接定义</a></li>
+<li><a href="/blog/ca319795/#外连接分类">外连接分类</a></li>
+<li><a href="/blog/ca319795/#左外连接运算过程">左外连接运算过程</a><ul>
+<li><a href="/blog/ca319795/#实例">实例</a></li>
+<li><a href="/blog/ca319795/#内连接结果">内连接结果</a></li>
+<li><a href="/blog/ca319795/#找出所有一门课程也没有选修的学生">找出所有一门课程也没有选修的学生</a></li>
+</ul>
+</li>
+<li><a href="/blog/ca319795/#右外连接">右外连接</a><ul>
+<li><a href="/blog/ca319795/#实例">实例</a></li>
+</ul>
+</li>
+<li><a href="/blog/ca319795/#全外连接">全外连接</a><ul>
+<li><a href="/blog/ca319795/#实例">实例</a></li>
+<li><a href="/blog/ca319795/#MySQL8-0不支持全外连接">MySQL8.0不支持全外连接</a></li>
+<li><a href="/blog/ca319795/#MySQL中实现全外连接">MySQL中实现全外连接</a></li>
+<li><a href="/blog/ca319795/#左外连接结果">左外连接结果</a></li>
+<li><a href="/blog/ca319795/#右外连接结果">右外连接结果</a></li>
+<li><a href="/blog/ca319795/#全外连接结果">全外连接结果</a></li>
+</ul>
+</li>
+<li><a href="/blog/ca319795/#on子句和外连接一起使用">on子句和外连接一起使用</a></li>
+<li><a href="/blog/ca319795/#外连接中on子句和where子句">外连接中on子句和where子句</a><ul>
+<li><a href="/blog/ca319795/#外连接补空值的条件">外连接补空值的条件</a></li>
+<li><a href="/blog/ca319795/#外连接中on子句和where子句的不同">外连接中on子句和where子句的不同</a></li>
+</ul>
+</li>
+<li><a href="/blog/ca319795/#小结">小结</a></li>
+</ul>
+</li>
+<li><a href="/blog/ca319795/#使用的表">使用的表</a><ul>
+<li><a href="/blog/ca319795/#student关系内容">student关系内容</a></li>
+<li><a href="/blog/ca319795/#takes关系内容">takes关系内容</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/ca319795/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d4b47bf9/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/d4b47bf9/" class="post-title-link" itemprop="url">4.1 连接表达式 4.1.1 连接条件</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-20 10:35:19" itemprop="dateCreated datePublished" datetime="2019-10-20T10:35:19+08:00">2019-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-1-连接表达式/" itemprop="url" rel="index"><span itemprop="name">4.1 连接表达式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/d4b47bf9/#4-1-连接表达式">4.1 连接表达式</a><ul>
+<li><a href="/blog/d4b47bf9/#student关系内容">student关系内容</a></li>
+<li><a href="/blog/d4b47bf9/#takes关系内容">takes关系内容</a></li>
+</ul>
+</li>
+<li><a href="/blog/d4b47bf9/#4-1-1-连接条件">4.1.1 连接条件</a><ul>
+<li><a href="/blog/d4b47bf9/#on条件">on条件</a></li>
+<li><a href="/blog/d4b47bf9/#on条件和自然连接的区别">on条件和自然连接的区别</a></li>
+<li><a href="/blog/d4b47bf9/#on条件改成where">on条件改成where</a></li>
+<li><a href="/blog/d4b47bf9/#on条件只显示一次重复的属性-不使用select-*">on条件只显示一次重复的属性 不使用<strong>select *</strong></a></li>
+<li><a href="/blog/d4b47bf9/#on条件比自然连接功能更强">on条件比自然连接功能更强</a></li>
+<li><a href="/blog/d4b47bf9/#on条件可以使用where替代">on条件可以使用where替代</a></li>
+<li><a href="/blog/d4b47bf9/#on条件的优点">on条件的优点</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/d4b47bf9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  </div>
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/116/">116</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

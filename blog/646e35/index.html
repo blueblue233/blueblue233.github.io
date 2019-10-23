@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.10 扩展jQuery和jQuery插件">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.10 扩展jQuery和jQuery插件">
+<meta property="og:url" content="https://blueblue233.github.io/blog/646e35/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.10 扩展jQuery和jQuery插件">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.10 扩展jQuery和jQuery插件">
+<meta name="twitter:description" content="3.10 扩展jQuery和jQuery插件">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/646e35/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.10 扩展jQuery和jQuery插件 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/646e35/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.10 扩展jQuery和jQuery插件
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-26 18:59:49" itemprop="dateCreated datePublished" datetime="2019-07-26T18:59:49+08:00">2019-07-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/" itemprop="url" rel="index"><span itemprop="name">第3章 jQuery库详解</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/3-10-扩展jQuery和jQuery插件/" itemprop="url" rel="index"><span itemprop="name">3.10 扩展jQuery和jQuery插件</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/646e35/#3-10-扩展jQuery和jQuery插件">3.10 扩展jQuery和jQuery插件</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-10-扩展jQuery和jQuery插件"><a href="#3-10-扩展jQuery和jQuery插件" class="headerlink" title="3.10 扩展jQuery和jQuery插件"></a>3.10 扩展jQuery和jQuery插件</h1><p><code>jQuery</code>具有极好的可扩展性,如果开发者需要为<code>jQuery</code>增加新的函数和功能,则可通过<code>jQuery</code>提供的以下两个方法来进行扩展。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>jQuery.fn.extend(object)</code></td>
+<td align="left">为所有<code>jQuery</code>对象扩展新的方法。其中<code>object</code> 是一个形如<code>{name1:fn1,name2,fn2...}</code>的对象。经过这种扩展之后,所有<code>jQuery</code>对象都可使用<code>name1</code>、<code>name2</code>等方法。</td>
+</tr>
+<tr>
+<td align="left"><code>jQuery.extend(object)</code></td>
+<td align="left">为<code>jQuery</code>命名空间扩展新的方法。其中<code>object</code> 是一个形如<code>{name1:fn1,name2,fn2...}</code>的对象。经过这种扩展之后,<code>jQuery</code> 命名空间下就会增加<code>name1</code>、<code>name2</code>等方法。</td>
+</tr>
+</tbody></table>
+<p>下面的程序示范了如何利用这两个方法来扩展<code>jQuery</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"author"</span> <span class="attr">content</span>=<span class="string">"Yeeku.H.Lee(CrazyIt.org)"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span> 使用fn.extends扩展jQuery <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	用户名：</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"text"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span> 喜欢的颜色：</span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span> 红色：</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"color"</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">value</span>=<span class="string">"red"</span> /&gt;</span> 绿色：</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"color"</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">value</span>=<span class="string">"green"</span> /&gt;</span> 蓝色：</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"color"</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">value</span>=<span class="string">"blue"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"check"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"选中所有复选框"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"uncheck"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"取消选中所有复选框"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"bn"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"单击我"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"../jquery-3.1.1.js"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 为所有jQuery对象扩展新的方法</span></span></span><br><span class="line"><span class="javascript">		$.fn.extend(</span></span><br><span class="line">			&#123;</span><br><span class="line"><span class="javascript">				<span class="comment">// 为jQuery对象扩展check方法</span></span></span><br><span class="line"><span class="javascript">				check: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">					<span class="comment">// 遍历jQuery里每个DOM对象，指定其checked属性为true</span></span></span><br><span class="line"><span class="javascript">					<span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">						<span class="keyword">this</span>.checked = <span class="literal">true</span>;</span></span><br><span class="line">					&#125;);</span><br><span class="line">				&#125;,</span><br><span class="line"><span class="javascript">				<span class="comment">// 为jQuery对象扩展uncheck方法</span></span></span><br><span class="line"><span class="javascript">				uncheck: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">					<span class="comment">// 遍历jQuery里每个DOM对象，指定其checked属性为false</span></span></span><br><span class="line"><span class="javascript">					<span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">						<span class="keyword">this</span>.checked = <span class="literal">false</span>;</span></span><br><span class="line">					&#125;);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;);</span><br><span class="line"><span class="javascript">		<span class="comment">// 为jQuery命名空间扩展新方法</span></span></span><br><span class="line"><span class="javascript">		$.extend(</span></span><br><span class="line">			&#123;</span><br><span class="line"><span class="javascript">				<span class="comment">// 为jQuery命名空间扩展test方法</span></span></span><br><span class="line"><span class="javascript">				test: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">					alert(<span class="string">"为jQuery命名空间扩展的测试方法"</span>);</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;);</span><br><span class="line"><span class="javascript">		<span class="comment">// 为id为check的按钮绑定事件处理函数</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#check"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			$(<span class="string">":input"</span>).check();</span></span><br><span class="line">		&#125;);</span><br><span class="line"><span class="javascript">		<span class="comment">// 为id为uncheck的按钮绑定事件处理函数</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#uncheck"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			$(<span class="string">":input"</span>).uncheck();</span></span><br><span class="line">		&#125;);</span><br><span class="line"><span class="javascript">		<span class="comment">// 为id为bn的按钮绑定事件处理函数</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#bn"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 调用为jQuery命名空间扩展的新方法</span></span></span><br><span class="line"><span class="javascript">			$.test();</span></span><br><span class="line">		&#125;);</span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>该程序中分别为<code>jQuery</code>对象和<code>jQuery</code>命名空间扩展了新的方法,从而允许后面的粗体字代码使用这些新扩展的方法</strong>。通过这个程序可以看出,不论是第三方还是开发者,都能非常方便地扩展<code>jQuery</code>,从而为<code>jQuery</code>引入新的功能。<br>实际上,由于<code>jQuery</code>越来越受欢迎,已经出现了大量的<code>jQuery</code>插件,这些插件极大地丰富了<code>jQuery</code>的功能。<a href="http://plugins.jquery.com" target="_blank" rel="noopener">登录jQuery插件站点</a>即可看到在<code>jQuery</code>官方注册的一系列<code>jQuery</code>插件,读者可以根据自己的需要选择合适的插件。</p>
+<!--replace:jQueryUI=j Query UI-->
+<p>值得一提的是,<code>jQuery</code>官方提供了一套优秀的界面库<code>jQueryUI</code>,登录<a href="http://ui.jquery.com/" target="_blank" rel="noopener">jQueryUI的官方站点</a>即可看到这些丰富的<code>UI</code>效果。如果读者需要使用这些<code>UI</code>效果,则可以在项目中使用<code>jQueryUI</code>。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/646e35/">3.10 扩展jQuery和jQuery插件</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/8ab5fe88/" rel="next" title="3.9.4 jQuery对象的promise方法">
+                  <i class="fa fa-chevron-left"></i> 3.9.4 jQuery对象的promise方法
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/6c35a4d4/" rel="prev" title="3.11 本章小结">
+                  3.11 本章小结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-10-扩展jQuery和jQuery插件"><span class="nav-number">1.</span> <span class="nav-text">3.10 扩展jQuery和jQuery插件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

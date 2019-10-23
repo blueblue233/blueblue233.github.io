@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="6.10.3 finalize方法 Java默认垃圾回收机制 finalize方法不一定会被调用 finalize方法特点 如何强制调用可恢复对象的finalize()方法 实例 可恢复状态状态对象重新变成可达状态">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.10.3 finalize方法">
+<meta property="og:url" content="https://blueblue233.github.io/blog/a8c402d9/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="6.10.3 finalize方法 Java默认垃圾回收机制 finalize方法不一定会被调用 finalize方法特点 如何强制调用可恢复对象的finalize()方法 实例 可恢复状态状态对象重新变成可达状态">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.10.3 finalize方法">
+<meta name="twitter:description" content="6.10.3 finalize方法 Java默认垃圾回收机制 finalize方法不一定会被调用 finalize方法特点 如何强制调用可恢复对象的finalize()方法 实例 可恢复状态状态对象重新变成可达状态">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/a8c402d9/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>6.10.3 finalize方法 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/a8c402d9/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">6.10.3 finalize方法
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-28 17:15:45" itemprop="dateCreated datePublished" datetime="2019-09-28T17:15:45+08:00">2019-09-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第6章-面向对象-下/" itemprop="url" rel="index"><span itemprop="name">第6章 面向对象(下)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第6章-面向对象-下/6-10-对象与垃圾回收/" itemprop="url" rel="index"><span itemprop="name">6.10 对象与垃圾回收</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/a8c402d9/#6-10-3-finalize方法">6.10.3 finalize方法</a><ul>
+<li><a href="/blog/a8c402d9/#Java默认垃圾回收机制">Java默认垃圾回收机制</a></li>
+<li><a href="/blog/a8c402d9/#finalize方法不一定会被调用">finalize方法不一定会被调用</a></li>
+<li><a href="/blog/a8c402d9/#finalize方法特点">finalize方法特点</a></li>
+<li><a href="/blog/a8c402d9/#如何强制调用可恢复对象的finalize-方法">如何强制调用可恢复对象的finalize()方法</a></li>
+<li><a href="/blog/a8c402d9/#实例-可恢复状态状态对象重新变成可达状态">实例 可恢复状态状态对象重新变成可达状态</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="6-10-3-finalize方法"><a href="#6-10-3-finalize方法" class="headerlink" title="6.10.3 finalize方法"></a>6.10.3 finalize方法</h1><h2 id="Java默认垃圾回收机制"><a href="#Java默认垃圾回收机制" class="headerlink" title="Java默认垃圾回收机制"></a>Java默认垃圾回收机制</h2><p>在垃圾回收机制回收某个对象所占用的内存之前,通常要求程序调用适当的方法来清理资源,在没有明确指定清理资源的情况下,<code>Java</code>提供了默认机制来清理该对象的资源,这个机制就是<code>finalize()</code>方法。该方法是定义在<code>Object</code>类里的实例方法,方法原型为:<br><code>protected void finalize() throws Throwable</code><br>当<code>finalize</code>方法<code>返回后</code>,对象消失,垃圾回收机制开始执行。方法原型中的<code>throws Throwable</code>表示它可以抛出任何类型的异常。<br>任何<code>Java</code>类都可以重写<code>Object</code>类的<code>finalize()</code>方法,在该方法中清理该对象占用的资源。</p>
+<h2 id="finalize方法不一定会被调用"><a href="#finalize方法不一定会被调用" class="headerlink" title="finalize方法不一定会被调用"></a>finalize方法不一定会被调用</h2><p>如果程序终止之前始终没有进行垃圾回收,则不会调用失去引用对象的<code>finalize</code>方法来清理资源。<br>只有当程序认为需要更多的额外内存时,垃圾回收机制才会进行垃圾回收。因此,完全有可能出现这样一种情形:</p>
+<ul>
+<li>某个失去引用的对象只占用了少量内存,而且系统没有产生严重的内存需求,因此垃圾回收机制并没有试图回收该对象所占用的资源,所以该对象的<code>finalize()</code>方法也<strong>不会得到调用</strong>。</li>
+</ul>
+<h2 id="finalize方法特点"><a href="#finalize方法特点" class="headerlink" title="finalize方法特点"></a>finalize方法特点</h2><p><code>finalize()</code>方法具有如下4个特点:</p>
+<ol>
+<li>永远不要主动调用某个对象的<code>finalize()</code>方法,该方法应交给垃圾回收机制调用。</li>
+<li><code>finalize()</code>方法何时被调用,是否被调用具有不确定性,不要把<code>finalize()</code>方法当成一定会被执行的方法.</li>
+<li>当<code>JVM</code>执行可恢复对象的<code>finalize()</code>方法时,可能使该对象或系统中其他对象重新变成可达状态。</li>
+<li>当<code>JVM</code>执行<code>finalize()</code>方法时出现异常时,垃圾回收机制不会报告异常,程序继续执行。</li>
+</ol>
+<p>由于<code>finalize</code>方法并不一定会被执行,因此如果想清理某个类里打开的资源,则不要放在<code>finalize</code>方法中进行清理</p>
+<h2 id="如何强制调用可恢复对象的finalize-方法"><a href="#如何强制调用可恢复对象的finalize-方法" class="headerlink" title="如何强制调用可恢复对象的finalize()方法"></a>如何强制调用可恢复对象的finalize()方法</h2><p><code>finalize()</code>方法要等到系统垃圾回收的时候才会执行,但是可能系统都不会进行垃圾回收。如果有必要,可以通过如下两个方法来强制执行所有可恢复对象的<code>finalize()</code>方法:</p>
+<ul>
+<li><code>Runtime.getRuntime().runFinalization();</code></li>
+<li><code>System.runFinalization();</code></li>
+</ul>
+<!--SSTStop-->
+<h2 id="实例-可恢复状态状态对象重新变成可达状态"><a href="#实例-可恢复状态状态对象重新变成可达状态" class="headerlink" title="实例 可恢复状态状态对象重新变成可达状态"></a>实例 可恢复状态状态对象重新变成可达状态</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalizeTest</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> FinalizeTest ft = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"测试资源清理的finalize方法"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 创建FinalizeTest对象立即进入可恢复状态</span></span><br><span class="line">		<span class="keyword">new</span> FinalizeTest();</span><br><span class="line">		<span class="comment">// 通知系统进行资源回收</span></span><br><span class="line">		System.gc(); <span class="comment">// ①</span></span><br><span class="line">		<span class="comment">// 强制垃圾回收机制调用可恢复对象的finalize()方法</span></span><br><span class="line">		<span class="comment">// Runtime.getRuntime().runFinalization(); // ②</span></span><br><span class="line">		System.runFinalization(); <span class="comment">// ③</span></span><br><span class="line">		<span class="comment">// 执行对象的方法,如果注释掉上面的`System.gc();`,则不会强制垃圾回收,finalize方法不会执行,ft为null,则下面语句将会抛出空指针异常.</span></span><br><span class="line">		<span class="comment">// 如果注释掉上面的`System.runFinalization();`,则finalize方法要等到系统进行垃圾回收时才会执行,系统可以不会进行垃圾回收,下面语句还是会抛出空指针异常.</span></span><br><span class="line">		<span class="comment">// `System.runFinalization();`将会强制执行所有可恢复对象的finalize方法.</span></span><br><span class="line">		<span class="comment">// 下面语句将会抛出空指针异常</span></span><br><span class="line">		ft.info();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 重新引用 可恢复状态的对象,该对象将重新变成可达状态</span></span><br><span class="line">		ft = <span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/a8c402d9/">6.10.3 finalize方法</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/7e99fbdf/" rel="next" title="6.10.2 强制垃圾回收">
+                  <i class="fa fa-chevron-left"></i> 6.10.2 强制垃圾回收
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/f55bf23d/" rel="prev" title="6.10.4 对象的软引用 弱引用和虚引用">
+                  6.10.4 对象的软引用 弱引用和虚引用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-10-3-finalize方法"><span class="nav-number">1.</span> <span class="nav-text">6.10.3 finalize方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java默认垃圾回收机制"><span class="nav-number">1.1.</span> <span class="nav-text">Java默认垃圾回收机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finalize方法不一定会被调用"><span class="nav-number">1.2.</span> <span class="nav-text">finalize方法不一定会被调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finalize方法特点"><span class="nav-number">1.3.</span> <span class="nav-text">finalize方法特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何强制调用可恢复对象的finalize-方法"><span class="nav-number">1.4.</span> <span class="nav-text">如何强制调用可恢复对象的finalize()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例-可恢复状态状态对象重新变成可达状态"><span class="nav-number">1.5.</span> <span class="nav-text">实例 可恢复状态状态对象重新变成可达状态</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

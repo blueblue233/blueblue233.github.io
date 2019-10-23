@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.8 Ajax相关方法 3.8.1 三个工具方法 jQuery名字空间下的param方法 jQuery对象的方法 程序示例 总结">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.8 Ajax相关方法 3.8.1 三个工具方法">
+<meta property="og:url" content="https://blueblue233.github.io/blog/26ec18ec/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.8 Ajax相关方法 3.8.1 三个工具方法 jQuery名字空间下的param方法 jQuery对象的方法 程序示例 总结">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.8 Ajax相关方法 3.8.1 三个工具方法">
+<meta name="twitter:description" content="3.8 Ajax相关方法 3.8.1 三个工具方法 jQuery名字空间下的param方法 jQuery对象的方法 程序示例 总结">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/26ec18ec/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.8 Ajax相关方法 3.8.1 三个工具方法 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/26ec18ec/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.8 Ajax相关方法 3.8.1 三个工具方法
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-25 14:12:30" itemprop="dateCreated datePublished" datetime="2019-07-25T14:12:30+08:00">2019-07-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/" itemprop="url" rel="index"><span itemprop="name">第3章 jQuery库详解</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/3-8-Ajax相关方法/" itemprop="url" rel="index"><span itemprop="name">3.8 Ajax相关方法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/26ec18ec/#3-8-Ajax相关方法">3.8 Ajax相关方法</a></li>
+<li><a href="/blog/26ec18ec/#3-8-1-三个工具方法">3.8.1 三个工具方法</a><ul>
+<li><a href="/blog/26ec18ec/#jQuery名字空间下的param方法">jQuery名字空间下的param方法</a></li>
+<li><a href="/blog/26ec18ec/#jQuery对象的方法">jQuery对象的方法</a></li>
+<li><a href="/blog/26ec18ec/#程序示例">程序示例</a></li>
+<li><a href="/blog/26ec18ec/#总结">总结</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-8-Ajax相关方法"><a href="#3-8-Ajax相关方法" class="headerlink" title="3.8 Ajax相关方法"></a>3.8 Ajax相关方法</h1><p><code>jQuery</code>的另一个吸引人的功能就是它所提供的<code>Ajax</code> 支持。<code>jQuery</code> 提供了大量关于<code>Ajax</code>的工具方法,这些工具方法可以帮助开发者完成<code>Ajax</code>开发的大量通用操作,<strong>开发者只需指定发送<code>Ajax</code>请求的<code>URL</code>、回调函数即可,甚至连回调函数都可以省略</strong>。</p>
+<h1 id="3-8-1-三个工具方法"><a href="#3-8-1-三个工具方法" class="headerlink" title="3.8.1 三个工具方法"></a>3.8.1 三个工具方法</h1><p><code>jQuery</code>为<code>Ajax</code>提供了三个工具方法,这三个工具方法的功能很强大,它们不仅可用于处理表单,也可用于处理一个或多个表单控件。下面是关于这三个方法的简要说明</p>
+<h2 id="jQuery名字空间下的param方法"><a href="#jQuery名字空间下的param方法" class="headerlink" title="jQuery名字空间下的param方法"></a>jQuery名字空间下的param方法</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>jQuery.param(object)</code></td>
+<td align="left">将<code>object</code>参数(对象或数组)<code>转换成查询字符串</code>。</td>
+</tr>
+<tr>
+<td align="left">## jQuery对象的方法 ##</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">方法</td>
+<td align="left">描述</td>
+</tr>
+<tr>
+<td align="left">:—</td>
+<td align="left">:—</td>
+</tr>
+<tr>
+<td align="left"><code>serialize()</code></td>
+<td align="left">将<code>jQuery</code>对象包含的表单或表单控件<code>转换成查询字符串</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>serializeArray()</code></td>
+<td align="left">将<code>jQuery</code>对象包含的表单或表单控件<code>转换为一个对象数组</code>,每个数组元素都是形如<code>{name:fieldName,value:fieldValue}</code>的对象,其中<code>fieldName</code> 是对应表单控件的<code>name</code>属性,<code>fieldValue</code>是对应表单控件的<code>value</code>属性。</td>
+</tr>
+<tr>
+<td align="left"><!--SSTStop--></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><p>下面的页面程序示范了这两个工具方法的用法。<br>程序清单：codes\03\3.8\serialize.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"author"</span> <span class="attr">content</span>=<span class="string">"Yeeku.H.Lee(CrazyIt.org)"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span> 处理表单 <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"test"</span>&gt;</span></span><br><span class="line">		用户名：<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">name</span>=<span class="string">"user"</span> <span class="attr">type</span>=<span class="string">"text"</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">		个人介绍：<span class="tag">&lt;<span class="name">textarea</span> <span class="attr">id</span>=<span class="string">"desc"</span> <span class="attr">name</span>=<span class="string">"desc"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">		喜欢的图书：</span><br><span class="line">		<span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"book"</span> <span class="attr">name</span>=<span class="string">"book"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"java"</span>&gt;</span>疯狂Java讲义<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"javaee"</span>&gt;</span>轻量级Java EE企业应用实战<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"ajax"</span>&gt;</span>疯狂前端开发讲义<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"bn1"</span>&gt;</span>查询字符串<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"bn2"</span>&gt;</span>查询JSON对象<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"bn3"</span>&gt;</span>将对象转换为查询字符串<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">hr</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"show"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"../jquery-3.1.1.js"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 为id为bn1的按钮绑定事件处理函数</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#bn1"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 将id为test1的表单转换为查询字符串</span></span></span><br><span class="line"><span class="javascript">			$(<span class="string">"#show"</span>).html($(<span class="string">"#test"</span>).serialize());</span></span><br><span class="line">		&#125;);</span><br><span class="line"><span class="javascript">		<span class="comment">// 为id为bn2的按钮绑定事件处理函数</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#bn2"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 将所有输入元素转换为 对象数组</span></span></span><br><span class="line"><span class="javascript">			<span class="keyword">var</span> arr = $(<span class="string">":input"</span>).serializeArray();</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 清空</span></span></span><br><span class="line"><span class="javascript">			$(<span class="string">"#show"</span>).empty();</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 遍历 对象数组</span></span></span><br><span class="line"><span class="javascript">			<span class="keyword">for</span> (<span class="keyword">var</span> index <span class="keyword">in</span> arr) &#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">"#show"</span>).append(<span class="string">"第"</span> + index + <span class="string">"表单控件名为："</span> +</span></span><br><span class="line"><span class="javascript">					arr[index].name + <span class="string">",值为："</span> + arr[index].value + <span class="string">"&lt;br /&gt;"</span>);</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line"><span class="javascript">		$(<span class="string">"#bn3"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 调用$.param将对象转换为查询字符串</span></span></span><br><span class="line"><span class="javascript">			$(<span class="string">"#show"</span>).html(<span class="string">'&#123;name:"疯狂Java讲义", price:109&#125;'</span> +</span></span><br><span class="line"><span class="javascript">				<span class="string">'转换出的查询字符串为：&lt;br/&gt;'</span> +</span></span><br><span class="line"><span class="javascript">				$.param(&#123;</span></span><br><span class="line"><span class="javascript">					name: <span class="string">"疯狂Java讲义"</span>,</span></span><br><span class="line">					price: 109</span><br><span class="line">				&#125;));</span><br><span class="line">		&#125;);</span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个页面程序中的两个按钮分别使用了<code>serialize</code>方法和<code>serializeArray</code>方法来处理表单,第三个按钮则<strong>使用<code>param</code>方法将<code>JavaScript</code>对象转换成查询字符串</strong>。<br>在浏览器中浏览该页面,为页面上两个<code>文本框</code>输入内容,为1个下拉列表框选择值,然后<br>单击页面上第一个按钮。第一个按钮调用<strong><code>serialize</code>方法将表单内所有<code>表单控件的名值对</code>转换为<code>查询字符串</code></strong>。此时可以看到如下输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user=xiaoming&amp;desc=%E6%88%91%E6%98%AF%E5%B0%8F%E6%98%8E&amp;book=java</span><br></pre></td></tr></table></figure>
+<p>单击页面上的第二个按钮。第二个按钮<strong>调用<code>serializeArray</code>方法将该表单内所有表单控件名值对转换为<code>JavaScript</code>对象数组</strong>。此时可以看到如下输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第0表单控件名为：user,值为：xiaoming</span><br><span class="line">第1表单控件名为：desc,值为：我是小明</span><br><span class="line">第2表单控件名为：book,值为：java</span><br></pre></td></tr></table></figure>
+<p>单击页面上的第三个按钮。第三个按钮调用<code>param</code>方法将<code>JavaScript</code>对象转换为<code>查询字符串</code>。此时可以看到如下输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;name:&quot;疯狂Java讲义&quot;, price:109&#125;转换出的查询字符串为：</span><br><span class="line">name=%E7%96%AF%E7%8B%82Java%E8%AE%B2%E4%B9%89&amp;price=109</span><br></pre></td></tr></table></figure>
+<!--SSTStart-->
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><code>jQuery.param</code>方法可以把<code>JavaScript</code>对象转换成<code>查询字符串</code></li>
+<li><code>jQuery对象.serialize</code>方法可以把所有表单控件的值转换成<code>查询字符串</code></li>
+<li><code>jQuery对象.serializeArray</code>方法可以把所有表单控件的值转换为<code>JavaScript</code>对象数组<!--SSTStop-->
+</li>
+</ul>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/26ec18ec/">3.8 Ajax相关方法 3.8.1 三个工具方法</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d8e55de4/" rel="next" title="3.7.2 创建Callbacks对象支持的选项">
+                  <i class="fa fa-chevron-left"></i> 3.7.2 创建Callbacks对象支持的选项
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/8d1698d/" rel="prev" title="3.8.2 使用load方法">
+                  3.8.2 使用load方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-8-Ajax相关方法"><span class="nav-number">1.</span> <span class="nav-text">3.8 Ajax相关方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-8-1-三个工具方法"><span class="nav-number">2.</span> <span class="nav-text">3.8.1 三个工具方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery名字空间下的param方法"><span class="nav-number">2.1.</span> <span class="nav-text">jQuery名字空间下的param方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">2.2.</span> <span class="nav-text">程序示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

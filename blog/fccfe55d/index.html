@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.1 与用户互动 7.1.1 运行Java程序的参数 main()方法的方法签名 main方法修饰符详解   main方法的形参由JVM赋值 JVM根据命令行参数给main方法的字符串形参赋值">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.1 与用户互动 7.1.1 运行Java程序的参数">
+<meta property="og:url" content="https://blueblue233.github.io/blog/fccfe55d/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.1 与用户互动 7.1.1 运行Java程序的参数 main()方法的方法签名 main方法修饰符详解   main方法的形参由JVM赋值 JVM根据命令行参数给main方法的字符串形参赋值">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.1 与用户互动 7.1.1 运行Java程序的参数">
+<meta name="twitter:description" content="7.1 与用户互动 7.1.1 运行Java程序的参数 main()方法的方法签名 main方法修饰符详解   main方法的形参由JVM赋值 JVM根据命令行参数给main方法的字符串形参赋值">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/fccfe55d/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.1 与用户互动 7.1.1 运行Java程序的参数 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/fccfe55d/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.1 与用户互动 7.1.1 运行Java程序的参数
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-29 21:31:04" itemprop="dateCreated datePublished" datetime="2019-09-29T21:31:04+08:00">2019-09-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:47" itemprop="dateModified" datetime="2019-10-14T14:01:47+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/" itemprop="url" rel="index"><span itemprop="name">第7章 Java基础类库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/7-1-与用户互动/" itemprop="url" rel="index"><span itemprop="name">7.1 与用户互动</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/fccfe55d/#7-1-与用户互动">7.1 与用户互动</a></li>
+<li><a href="/blog/fccfe55d/#7-1-1-运行Java程序的参数">7.1.1 运行Java程序的参数</a><ul>
+<li><a href="/blog/fccfe55d/#main-方法的方法签名">main()方法的方法签名</a><ul>
+<li><a href="/blog/fccfe55d/#main方法修饰符详解">main方法修饰符详解</a></li>
+</ul>
+</li>
+<li><a href="/blog/fccfe55d/#main方法的形参由JVM赋值">main方法的形参由JVM赋值</a></li>
+<li><a href="/blog/fccfe55d/#JVM根据命令行参数给main方法的字符串形参赋值">JVM根据命令行参数给main方法的字符串形参赋值</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="7-1-与用户互动"><a href="#7-1-与用户互动" class="headerlink" title="7.1 与用户互动"></a>7.1 与用户互动</h1><p>绝大部分程序都需要处理用户动作,包括接收用户的键盘输入、鼠标动作等。因为现在还未涉及图形用户接口(<code>GUI</code>)编程,故本节主要介绍程序如何获得用户的<code>键盘输入</code>。</p>
+<h1 id="7-1-1-运行Java程序的参数"><a href="#7-1-1-运行Java程序的参数" class="headerlink" title="7.1.1 运行Java程序的参数"></a>7.1.1 运行Java程序的参数</h1><h2 id="main-方法的方法签名"><a href="#main-方法的方法签名" class="headerlink" title="main()方法的方法签名"></a><code>main()</code>方法的方法签名</h2><p><code>public static void main(String[] args){ }</code></p>
+<h3 id="main方法修饰符详解"><a href="#main方法修饰符详解" class="headerlink" title="main方法修饰符详解"></a>main方法修饰符详解</h3><p>下面详细讲解<code>main()</code>方法为什么采用这个方法签名。</p>
+<ol>
+<li><code>public</code>修饰符:<code>Java</code>类由<code>JVM</code>调用,为了让<code>JVM</code>可以自由调用这个<code>main()</code>方法,所以需要使用<code>public</code>修饰符把这个方法暴露出来。</li>
+<li><code>static</code>修饰符:<code>JVM</code>直接通过该类来调用主方法,因此使用<code>static</code>修饰该主方法。</li>
+<li><code>void</code>返回值:因为主方法被<code>JVM</code>调用,该方法的返回值将返回给<code>JVM</code>,不会返回给当前类,因此<code>main()</code>方法没有返回值。</li>
+</ol>
+<h2 id="main方法的形参由JVM赋值"><a href="#main方法的形参由JVM赋值" class="headerlink" title="main方法的形参由JVM赋值"></a>main方法的形参由JVM赋值</h2><p>根据方法调用的规则:谁调用方法,谁负责为形参赋值也就是说, <code>main()</code>方法由<code>JVM</code>调用,即<code>main</code>方法的字符串数组形参<code>args</code>应该由<code>JVM</code>负责赋值。</p>
+<h2 id="JVM根据命令行参数给main方法的字符串形参赋值"><a href="#JVM根据命令行参数给main方法的字符串形参赋值" class="headerlink" title="JVM根据命令行参数给main方法的字符串形参赋值"></a>JVM根据命令行参数给main方法的字符串形参赋值</h2><ul>
+<li>如果没有运行程序是没有给出命令行参数,则<code>main</code>方法的字符串数组形参的长度为0是个空数组.</li>
+<li>命令行参数以空格作为参数的分隔符<ul>
+<li>如果某个参数本身有空格,则需要用双引号将这个参数包裹起来.</li>
+<li>否则<code>JVM</code>会把这个空格当成参数分隔符.</li>
+</ul>
+</li>
+</ul>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/fccfe55d/">7.1 与用户互动 7.1.1 运行Java程序的参数</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/9743dae3/" rel="next" title="7.0 第7章 Java基础类库 前言">
+                  <i class="fa fa-chevron-left"></i> 7.0 第7章 Java基础类库 前言
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/ab4e77f1/" rel="prev" title="7.1.2 使用Scanner获取键盘输入">
+                  7.1.2 使用Scanner获取键盘输入 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-1-与用户互动"><span class="nav-number">1.</span> <span class="nav-text">7.1 与用户互动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-1-1-运行Java程序的参数"><span class="nav-number">2.</span> <span class="nav-text">7.1.1 运行Java程序的参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#main-方法的方法签名"><span class="nav-number">2.1.</span> <span class="nav-text">main()方法的方法签名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#main方法修饰符详解"><span class="nav-number">2.1.1.</span> <span class="nav-text">main方法修饰符详解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#main方法的形参由JVM赋值"><span class="nav-number">2.2.</span> <span class="nav-text">main方法的形参由JVM赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM根据命令行参数给main方法的字符串形参赋值"><span class="nav-number">2.3.</span> <span class="nav-text">JVM根据命令行参数给main方法的字符串形参赋值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

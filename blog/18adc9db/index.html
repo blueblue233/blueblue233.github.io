@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术">
+<meta property="og:url" content="https://blueblue233.github.io/blog/18adc9db/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术">
+<meta name="twitter:description" content="1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/18adc9db/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/18adc9db/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-16 11:15:32" itemprop="dateCreated datePublished" datetime="2019-08-16T11:15:32+08:00">2019-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第1章-Java-EE应用/" itemprop="url" rel="index"><span itemprop="name">第1章 Java EE应用</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第1章-Java-EE应用/1-2-轻量级Java-EE应用相关技术/" itemprop="url" rel="index"><span itemprop="name">1.2 轻量级Java EE应用相关技术</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/18adc9db/#1-2-轻量级Java-EE应用相关技术">1.2 轻量级Java EE应用相关技术</a></li>
+<li><a href="/blog/18adc9db/#1-2-1-JSP,Servlet和JavaBean及替代技术">1.2.1 JSP,Servlet和JavaBean及替代技术</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="1-2-轻量级Java-EE应用相关技术"><a href="#1-2-轻量级Java-EE应用相关技术" class="headerlink" title="1.2 轻量级Java EE应用相关技术"></a>1.2 轻量级Java EE应用相关技术</h1><p>轻量级<code>Java EE</code>应用以传统的<code>JSP</code>作为表现层技术,以一系列开源框架作为<strong><code>MVC</code>层</strong>，<strong>中间层</strong>、<strong>持久层</strong>解决方案,并将这些开源框架有机地组合在一起,使得<code>Java EE</code>应用具有高度的<strong>可扩展性</strong>、<strong>可维护性</strong>。</p>
+<h1 id="1-2-1-JSP-Servlet和JavaBean及替代技术"><a href="#1-2-1-JSP-Servlet和JavaBean及替代技术" class="headerlink" title="1.2.1 JSP,Servlet和JavaBean及替代技术"></a>1.2.1 JSP,Servlet和JavaBean及替代技术</h1><p><code>JSP</code>是最早的<code>Java EE</code>规范之一,也是最经典的<code>Java EE</code>技术之一。直到今天,<code>JSP</code>依然广泛地应用于各种<code>Java EE</code>应用中,充当<code>Java EE</code>应用的表现层角色。<br><code>JSP</code>具有简单、易用的特点,<code>JSP</code>的学习路线平坦,而且国内有大量<code>JSP</code>学习资料,所以大部分<code>Java</code>学习者学习<code>Java EE</code>开发都会选择从<code>JSP</code>开始。<br><code>Servlet</code>和<code>JSP</code>其实是完全统一的,二者底层的运行原理是完全一样的。实际上<strong><code>JSP</code>必须被<code>Web</code>服务器编译成<code>Servlet</code>,真正在<code>Web</code>服务器内运行的是<code>Servlet</code></strong>。从这个意义上来看,<strong><code>JSP</code>相当于一个”草稿”文件,<code>Web</code>服务器根据该”草稿”文件生成<code>Servlet</code>,真正提供<code>HTTP</code>服务的是<code>Servlet</code></strong>,因此广义的<code>Servlet</code>包含了<code>JSP</code>和<code>Servlet</code>。<br>从目前的<code>Java EE</code>应用来看,纯粹的<code>Servlet</code>已经很少使用了,毕竟<code>Servlet</code>的开发成本太高,而且使用<code>Servlet</code>充当表现层将导致表现层页面难以维护,不利于美工人员参与<code>Servlet</code>开发,所以<strong>在实际开发中大都使用<code>JSP</code>充当表现层技术</strong><br><code>Servlet3.x</code>规范的出现,再次为<code>Java Web</code>开发带来了巨大的便捷。 <code>Servlet3.x</code>提供了<strong>异步请求</strong>、<strong>注解</strong>、<strong>增强的<code>Servlet API</code></strong>、<strong>非阻塞<code>I/O</code></strong>等功能,这些功能都极大地简化了<code>Java Web</code>开发。<br><strong>由于<code>JSP</code>只负责简单的显示逻辑,因此<code>JSP</code>无法直接访问应用的底层状态,</strong> <code>Java EE</code>应用会选择使用<code>JavaBean</code>来传输数据。在严格的<code>Java EE</code>应用中,中间层的组件会将应用底层的状态信息封装成<code>JavaBean</code>集,这些<code>JavaBean</code>也被称为<code>DTO</code>(<code>Data Transfer Object</code>,数据传输对象),并<strong>将这些<code>DTO</code>集传到<code>JSP</code>页面,从而让<code>JSP</code>可以显示应用的底层状态</strong>。<br>在目前阶段, <code>Java EE</code>应用除了可以使用<code>JSP</code>作为表现层技术之外,还可以使用<code>FreeMarker</code>或<code>Velocity</code>作为表现层技术,这些表现层技术更加纯粹,使用起来更加便捷,完全可作为<code>JSP</code>的替代。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/18adc9db/">1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/e35901ab/" rel="next" title="12.2 准备所需的jar包">
+                  <i class="fa fa-chevron-left"></i> 12.2 准备所需的jar包
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/925434c7/" rel="prev" title="1.2.2 MyBatis3及替代技术">
+                  1.2.2 MyBatis3及替代技术 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-2-轻量级Java-EE应用相关技术"><span class="nav-number">1.</span> <span class="nav-text">1.2 轻量级Java EE应用相关技术</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-2-1-JSP-Servlet和JavaBean及替代技术"><span class="nav-number">2.</span> <span class="nav-text">1.2.1 JSP,Servlet和JavaBean及替代技术</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

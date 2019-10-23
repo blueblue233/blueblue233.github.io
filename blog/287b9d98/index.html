@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.3.1 tag指令语法格式 tag指令的属性">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.3.1 tag指令">
+<meta property="og:url" content="https://blueblue233.github.io/blog/287b9d98/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.3.1 tag指令语法格式 tag指令的属性">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.3.1 tag指令">
+<meta name="twitter:description" content="7.3.1 tag指令语法格式 tag指令的属性">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/287b9d98/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.3.1 tag指令 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/287b9d98/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.3.1 tag指令
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-04-07 18:31:47" itemprop="dateCreated datePublished" datetime="2019-04-07T18:31:47+08:00">2019-04-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:21" itemprop="dateModified" datetime="2019-10-14T14:00:21+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/" itemprop="url" rel="index"><span itemprop="name">Serlet JSP和Spring MVC初学指南</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/" itemprop="url" rel="index"><span itemprop="name">第一部分 Servlets和JSP</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/第7章/" itemprop="url" rel="index"><span itemprop="name">第7章</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/287b9d98/#7-3-1-tag指令语法格式">7.3.1 tag指令语法格式</a><ul>
+<li><a href="/blog/287b9d98/#tag指令的属性">tag指令的属性</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h2 id="7-3-1-tag指令语法格式"><a href="#7-3-1-tag指令语法格式" class="headerlink" title="7.3.1 tag指令语法格式"></a>7.3.1 tag指令语法格式</h2><p><code>tag</code>指令和<code>JSP</code>页面中的<code>page</code>指令类似。以下是它的使用语法：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ tag attribute1=<span class="string">"value1"</span> attribute2=<span class="string">"value2"</span> ... %&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="tag指令的属性"><a href="#tag指令的属性" class="headerlink" title="tag指令的属性"></a>tag指令的属性</h3><p>下表中列出了<code>tag</code>指令的全部属性，这些属性<strong>都是非必须的</strong>。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>display-name</code></td>
+<td align="left">在<code>XML</code>工具中显示的名称。默认值是不包含后缀的<code>tag file</code>名</td>
+</tr>
+<tr>
+<td align="left"><code>body-content</code></td>
+<td align="left">指定标签<code>body</code>的类型，<code>body-content</code>属性值有<code>empty</code>、<code>tagdependent</code>、<code>scriptless</code>，默认值是<code>scriptless</code></td>
+</tr>
+<tr>
+<td align="left"><code>dynamic-attributes</code></td>
+<td align="left">指定<code>tag file</code>动态属性的名称。当<code>dynamicattributes</code>值被设定时，会产生一个<code>Map</code>来存放这些动态属性的名称和对应的值</td>
+</tr>
+<tr>
+<td align="left"><code>small-icon</code></td>
+<td align="left">指定一个图片路径，用于在<code>XML</code>工具上显示小图标。一般不会用到</td>
+</tr>
+<tr>
+<td align="left"><code>large-icon</code></td>
+<td align="left">指定一个图片路径，用于在<code>XML</code>工具上显示大图标。一般也不会用到</td>
+</tr>
+<tr>
+<td align="left"><code>description</code></td>
+<td align="left">标签的描述信息</td>
+</tr>
+<tr>
+<td align="left"><code>example</code></td>
+<td align="left">标签使用实例的描述</td>
+</tr>
+<tr>
+<td align="left"><code>language</code></td>
+<td align="left"><code>tag file</code>中使用的脚本语言类型。当前版本的<code>JSP</code>中，该值必须设为“<code>java</code>”</td>
+</tr>
+<tr>
+<td align="left"><code>import</code></td>
+<td align="left">用于导入一个<code>java</code>类型，和<code>JSP</code>页面中的<code>import</code>相同</td>
+</tr>
+<tr>
+<td align="left"><code>pageEncoding</code></td>
+<td align="left">指定<code>tag file</code>使用的编码格式，可以使用“<code>CHARSET</code>”中的值。和<code>JSP</code>页面中的<code>pageEncoding</code>相同</td>
+</tr>
+</tbody></table>
+<p><strong>除了<code>import</code>属性，其他所有的属性在一个<code>tag</code>指令或一个<code>tag file</code>中都只能出现一次。</strong>例如，以下的<code>tag file</code>就是无效的，因为<code>body-content</code>属性在同一个<code>tag file</code>中出现了多次：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ tag display-name=<span class="string">"first tag file"</span> body-content=<span class="string">"scriptless"</span>%&gt;</span><br><span class="line">&lt;%@ tag body-content=<span class="string">"empty"</span> %&gt;</span><br></pre></td></tr></table></figure>
+<p>下面是一个有效的<code>tag</code>指令，尽管<code>import</code>属性出现了两次，但这是被允许的：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ tag <span class="keyword">import</span>=<span class="string">"java.util.ArrayList"</span> <span class="keyword">import</span>=<span class="string">"java.util.Iterator"</span> %&gt;</span><br></pre></td></tr></table></figure>
+<p>同理，下面的<code>tag</code>指令也是有效的：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ tag body-content=<span class="string">"empty"</span> <span class="keyword">import</span>=<span class="string">"java.util.Enumeration"</span> %&gt;</span><br><span class="line">&lt;%@ tag <span class="keyword">import</span>=<span class="string">"java.sql.*"</span> %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/287b9d98/">7.3.1 tag指令</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/e0f83d4/" rel="next" title="7.3tag file指令">
+                  <i class="fa fa-chevron-left"></i> 7.3tag file指令
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/d41cc340/" rel="prev" title="7.3.2 include指令">
+                  7.3.2 include指令 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-1-tag指令语法格式"><span class="nav-number">1.</span> <span class="nav-text">7.3.1 tag指令语法格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tag指令的属性"><span class="nav-number">1.1.</span> <span class="nav-text">tag指令的属性</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

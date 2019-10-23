@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="示例 接收XML格式的数据 sendxml.jsp Book.java   示例 返回XML格式的数据 readxml.jsp">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="示例 接收XML格式的数据">
+<meta property="og:url" content="https://blueblue233.github.io/blog/bcd788ad/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="示例 接收XML格式的数据 sendxml.jsp Book.java   示例 返回XML格式的数据 readxml.jsp">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="示例 接收XML格式的数据">
+<meta name="twitter:description" content="示例 接收XML格式的数据 sendxml.jsp Book.java   示例 返回XML格式的数据 readxml.jsp">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/bcd788ad/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>示例 接收XML格式的数据 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/bcd788ad/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">示例 接收XML格式的数据
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-21 00:20:01" itemprop="dateCreated datePublished" datetime="2019-08-21T00:20:01+08:00">2019-08-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第3章-Spring-MVC的常用注解/" itemprop="url" rel="index"><span itemprop="name">第3章 Spring MVC的常用注解</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第3章-Spring-MVC的常用注解/3-15-转换XML数据/" itemprop="url" rel="index"><span itemprop="name">3.15 转换XML数据</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/bcd788ad/#示例-接收XML格式的数据">示例 接收XML格式的数据</a><ul>
+<li><a href="/blog/bcd788ad/#sendxml-jsp">sendxml.jsp</a></li>
+<li><a href="/blog/bcd788ad/#Book-java">Book.java</a></li>
+</ul>
+</li>
+<li><a href="/blog/bcd788ad/#示例-返回XML格式的数据">示例 返回XML格式的数据</a><ul>
+<li><a href="/blog/bcd788ad/#readxml-jsp">readxml.jsp</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="示例-接收XML格式的数据"><a href="#示例-接收XML格式的数据" class="headerlink" title="示例 接收XML格式的数据"></a>示例 接收XML格式的数据</h1><p>创建一个<code>XmlTest</code>项目,在<code>WebContent</code>目录下创建一个<code>js</code>目录,加入<code>jQuery</code>和<code>json2</code>的<code>js</code>文件。</p>
+<!--replace:sendxml=send XML&xml=X M L-->
+<h2 id="sendxml-jsp"><a href="#sendxml-jsp" class="headerlink" title="sendxml.jsp"></a>sendxml.jsp</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;测试接收XML格式的数据&lt;/title&gt;</span><br><span class="line">&lt;script type="text/javascript" src="js/jquery-1.11.0.min.js"&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type="text/javascript" src="js/json2.js"&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">	$(document).ready(function() &#123;</span><br><span class="line">		sendxml();</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="function">function <span class="title">sendxml</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> xmlData = <span class="string">"&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?&gt;&lt;book&gt;&lt;id&gt;1&lt;/id&gt;&lt;name&gt;书的名称&lt;/name&gt;&lt;author&gt;作者&lt;/author&gt;&lt;/book&gt;"</span>;</span><br><span class="line">		$.ajax(<span class="string">"$&#123;pageContext.request.contextPath&#125;/sendxml"</span>,<span class="comment">// 发送请求的URL字符串。</span></span><br><span class="line">		&#123;</span><br><span class="line">			type : <span class="string">"POST"</span>, <span class="comment">//  请求方式 POST或GET</span></span><br><span class="line">			contentType : <span class="string">"application/xml"</span>, <span class="comment">//  发送信息至服务器时的内容编码类型</span></span><br><span class="line">			<span class="comment">// 发送到服务器的数据。</span></span><br><span class="line">			data : xmlData,</span><br><span class="line">			async : <span class="keyword">true</span>, <span class="comment">// 默认设置下，所有请求均为异步请求。如果设置为false，则发送同步请求</span></span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<!--replace:sendxml=send xml-->
+<p><code>sendxml.jsp</code>页面代码分析如下:<br>(1)页面使用<code>jQuery</code>发送<code>JSON</code>数据,在页面的<code>&lt;head&gt;</code>部分,引入了<code>jQuery</code>和<code>json2</code>的js文件<br>(2)载入页面时调用<code>sendxml</code>函数。<br>(3)<code>sendxml</code>函数发送异步请求到<code>&quot;sendxml&quot;</code>,</p>
+<ul>
+<li><code>ajax</code>方法的contentType选项:<code>contentType:&quot;application/xml&quot;</code>表示发送的内容编码格式为<code>XML</code>;</li>
+<li><code>ajax</code>方法的<code>data</code>选项表示要发送的数据是<code>XML</code>数据。</li>
+</ul>
+<h2 id="Book-java"><a href="#Book-java" class="headerlink" title="Book.java"></a>Book.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.fkit.domain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> javax.xml.bind.annotation.XmlElement;</span><br><span class="line"><span class="keyword">import</span> javax.xml.bind.annotation.XmlRootElement;</span><br><span class="line"></span><br><span class="line"><span class="comment">// @XmlRootElement表示XML文档的根元素</span></span><br><span class="line"><span class="meta">@XmlRootElement</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">	<span class="keyword">private</span> Integer id;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line">	<span class="keyword">private</span> String author;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">(Integer id, String name, String author)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">		<span class="keyword">this</span>.id = id;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">		<span class="keyword">this</span>.author = author;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Integer <span class="title">getId</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> id;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 该属性作为xml的element</span></span><br><span class="line">	<span class="meta">@XmlElement</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.id = id;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> name;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@XmlElement</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getAuthor</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> author;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@XmlElement</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAuthor</span><span class="params">(String author)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.author = author;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"Book [id="</span> + id + <span class="string">", name="</span> + name + <span class="string">", author="</span> + author + <span class="string">"]"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>Book</code>类中定义了3个属性:<code>id</code>、<code>nane</code>和<code>author</code>,分别对应<code>XML</code>的元素。 <code>toString</code>方法用来输出获取的数据对象信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.fkit.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> javax.xml.bind.JAXBContext;</span><br><span class="line"><span class="keyword">import</span> javax.xml.bind.Unmarshaller;</span><br><span class="line"><span class="keyword">import</span> org.fkit.domain.Book;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PostMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestBody;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// @RequestBody Book book会将传递的xml数据自动绑定到Book对象</span></span><br><span class="line">	<span class="meta">@PostMapping</span>(value = <span class="string">"/sendxml"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendxml</span><span class="params">(@RequestBody Book book)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"接收XML数据成功"</span>);</span><br><span class="line">		System.out.println(book);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// @ResponseBody 会将Book自动转成XML数据返回</span></span><br><span class="line">	<span class="meta">@PostMapping</span>(value = <span class="string">"/readxml"</span>)</span><br><span class="line">	<span class="comment">// @ResponseBody注解把方法返回的Book对象转换成XML并发给客户端.</span></span><br><span class="line">	<span class="meta">@ResponseBody</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Book <span class="title">readXml</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 通过JAXBContext的newInstance方法，传递一个class就可以获得一个上下文</span></span><br><span class="line">		JAXBContext context = JAXBContext.newInstance(Book.class);</span><br><span class="line">		<span class="comment">// 创建一个Unmarshall对象</span></span><br><span class="line">		Unmarshaller unmar = context.createUnmarshaller();</span><br><span class="line">		<span class="comment">// 读取资源目录下的文件</span></span><br><span class="line">		InputStream is = <span class="keyword">this</span>.getClass().getResourceAsStream(<span class="string">"/book.xml"</span>);</span><br><span class="line">		<span class="comment">// Unmarshall对象的unmarshal方法可以进行xml到Java对象的转换</span></span><br><span class="line">		Book book = (Book) unmar.unmarshal(is);</span><br><span class="line">		System.out.println(book);</span><br><span class="line">		<span class="keyword">return</span> book;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>sendxml</code>方法中的第一个参数<code>@RequestBody Book book</code>表示,使用<code>@RequestBody</code>注解获取到<code>XML</code>数据后,将<code>XML</code>数据设置到<code>Book</code>对象的对应属性中。为了测试接收数据,将接收到XML数据的<code>Book</code>对象打印在控制台上。<br><code>springmvc-config.xml</code>文件和<code>JsonRequestTest</code>项目的一致,重点在于<code>&lt;mvc:annotation-driven /&gt;</code>,该配置默认装配了<code>Jaxb2RootElementHttpMessageConverter</code>来处理<code>XML</code>数据的转换。<br>部署<code>XmlTest</code>这个<code>Web</code>应用,在浏览器中输入如下<code>URL</code>来测试应用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/XmlTest/sendxml.jsp</span><br></pre></td></tr></table></figure>
+<p>载λ <code>sendxml.jsp</code>页面时会发送<code>Ajax</code>请求,传递<code>XML</code>数据。<code>BookController</code>接收到请求后,<code>@RequestBody</code>注解会将<code>XML</code>数据设置到<code>Book</code>参数对应的属性中。控制台输出如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">接收XML数据成功</span><br><span class="line">Book [id=1, name=书的名称, author=作者]</span><br></pre></td></tr></table></figure>
+<p>可以看到,<code>XML</code>数据传递的<code>id</code>、<code>name</code>、 <code>author</code>元素被赋值到了<code>Book</code>对象对应的属性当中。</p>
+<h1 id="示例-返回XML格式的数据"><a href="#示例-返回XML格式的数据" class="headerlink" title="示例 返回XML格式的数据"></a>示例 返回XML格式的数据</h1><!--replace:readxml=read X M L-->
+<h2 id="readxml-jsp"><a href="#readxml-jsp" class="headerlink" title="readxml.jsp"></a>readxml.jsp</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;测试返回XML格式的数据&lt;/title&gt;</span><br><span class="line">&lt;script type="text/javascript" src="js/jquery-1.11.0.min.js"&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type="text/javascript" src="js/json2.js"&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">	$(document).ready(function() &#123;</span><br><span class="line">		readxml();</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="function">function <span class="title">readxml</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		$.ajax(<span class="string">"$&#123;pageContext.request.contextPath&#125;/readxml"</span>,<span class="comment">// 发送请求的URL字符串。</span></span><br><span class="line">		&#123;</span><br><span class="line">			dataType : <span class="string">"text"</span>, <span class="comment">// 预期服务器返回的数据类型。</span></span><br><span class="line">			type : <span class="string">"POST"</span>, <span class="comment">//  请求方式 POST或GET</span></span><br><span class="line">			async : <span class="keyword">true</span>, <span class="comment">// 默认设置下，所有请求均为异步请求。如果设置为false，则发送同步请求</span></span><br><span class="line">			<span class="comment">// 请求成功后的回调函数。</span></span><br><span class="line">			success : function(xml) &#123;</span><br><span class="line">				<span class="comment">// 获得xml数据的id，name，author</span></span><br><span class="line">				<span class="keyword">var</span> id = $(<span class="string">"id"</span>, xml).text();</span><br><span class="line">				<span class="keyword">var</span> name = $(<span class="string">"name"</span>, xml).text();</span><br><span class="line">				<span class="keyword">var</span> author = $(<span class="string">"author"</span>, xml).text();</span><br><span class="line">				<span class="keyword">var</span> tr = $(<span class="string">"&lt;tr align='center'/&gt;"</span>);</span><br><span class="line">				$(<span class="string">"&lt;td/&gt;"</span>).html(id).appendTo(tr);</span><br><span class="line">				$(<span class="string">"&lt;td/&gt;"</span>).html(name).appendTo(tr);</span><br><span class="line">				$(<span class="string">"&lt;td/&gt;"</span>).html(author).appendTo(tr);</span><br><span class="line">				$(<span class="string">"#booktable"</span>).append(tr);</span><br><span class="line">			&#125;,</span><br><span class="line">			<span class="comment">// 请求出错时调用的函数</span></span><br><span class="line">			error : function() &#123;</span><br><span class="line">				alert(<span class="string">"数据接收失败"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;table id=<span class="string">"booktable"</span> border=<span class="string">"1"</span> style=<span class="string">"border-collapse: collapse;"</span>&gt;</span><br><span class="line">        &lt;tr align=<span class="string">"center"</span>&gt;</span><br><span class="line">            &lt;th&gt;编号&lt;/th&gt;</span><br><span class="line">            &lt;th&gt;书名&lt;/th&gt;</span><br><span class="line">            &lt;th&gt;作者&lt;/th&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><code>readxml.jsp</code>页面代码分析如下:<br>(1)页面使用<code>jQuery</code>发送M数据,在页面的<code>&lt;head&gt;</code>部分,引入了<code>jQuery</code>和<code>json2</code>的js文件。<br>(2)载入页面时调用<code>readxml</code>函数。<br>(3) <code>readxml</code>函数发送异步请求到<code>readxml</code>,请求成功将返回一个<code>XML</code>数据,接到返回的数据后将<code>XML</code>数据中的元素读取出来并将其设置到页面的<code>&lt;span&gt;</code>中。<br><code>BookController</code>的<code>readxml</code>方法使用<code>JAXB</code>读取一个<code>XML</code>文件的数据并生成一个<code>Book</code>对象返回。<code>@ResponseBody</code>会将<code>Book</code>对象转换成<code>XML</code>数据返回到前台<code>JSP</code>页面。<br>在浏览器中输入如下<code>URL</code>来测试应用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/XmlTest/readxml.jsp</span><br></pre></td></tr></table></figure>
+<p>浏览器显示内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">编号 	书名 	作者</span><br><span class="line">1	书的名称	书的作者</span><br></pre></td></tr></table></figure>
+<p>这表示<code>Spring MVC</code>成功将<code>XML</code>数据返回到客户端。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/bcd788ad/">示例 接收XML格式的数据</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/e3c6a322/" rel="next" title="3.15 转换XML数据">
+                  <i class="fa fa-chevron-left"></i> 3.15 转换XML数据
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/c0366e83/" rel="prev" title="3.16 @RestController注解">
+                  3.16 @RestController注解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-接收XML格式的数据"><span class="nav-number">1.</span> <span class="nav-text">示例 接收XML格式的数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sendxml-jsp"><span class="nav-number">1.1.</span> <span class="nav-text">sendxml.jsp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Book-java"><span class="nav-number">1.2.</span> <span class="nav-text">Book.java</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-返回XML格式的数据"><span class="nav-number">2.</span> <span class="nav-text">示例 返回XML格式的数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#readxml-jsp"><span class="nav-number">2.1.</span> <span class="nav-text">readxml.jsp</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

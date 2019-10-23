@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口 HttpMessageConverter接口方法 Spring提供的HttpMessageConverter接口实现类 默认装配的HandlerAdapter实现类 自定义RequestMappingHandlerAdapter">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口">
+<meta property="og:url" content="https://blueblue233.github.io/blog/ad4b3bb7/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口 HttpMessageConverter接口方法 Spring提供的HttpMessageConverter接口实现类 默认装配的HandlerAdapter实现类 自定义RequestMappingHandlerAdapter">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口">
+<meta name="twitter:description" content="3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口 HttpMessageConverter接口方法 Spring提供的HttpMessageConverter接口实现类 默认装配的HandlerAdapter实现类 自定义RequestMappingHandlerAdapter">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/ad4b3bb7/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ad4b3bb7/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-20 15:42:10" itemprop="dateCreated datePublished" datetime="2019-08-20T15:42:10+08:00">2019-08-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第3章-Spring-MVC的常用注解/" itemprop="url" rel="index"><span itemprop="name">第3章 Spring MVC的常用注解</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第3章-Spring-MVC的常用注解/3-13-RequestBody注解/" itemprop="url" rel="index"><span itemprop="name">3.13 @RequestBody注解</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/ad4b3bb7/#3-13-RequestBody注解">3.13 @RequestBody注解</a></li>
+<li><a href="/blog/ad4b3bb7/#3-13-1-HttpMessageConverter<T>接口">3.13.1 HttpMessageConverter<t>接口</t></a><ul>
+<li><a href="/blog/ad4b3bb7/#HttpMessageConverter<T>接口方法">HttpMessageConverter<t>接口方法</t></a></li>
+<li><a href="/blog/ad4b3bb7/#Spring提供的HttpMessageConverter<T>接口实现类">Spring提供的HttpMessageConverter<t>接口实现类</t></a></li>
+<li><a href="/blog/ad4b3bb7/#默认装配的HandlerAdapter实现类">默认装配的HandlerAdapter实现类</a></li>
+<li><a href="/blog/ad4b3bb7/#自定义RequestMappingHandlerAdapter">自定义RequestMappingHandlerAdapter</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-13-RequestBody注解"><a href="#3-13-RequestBody注解" class="headerlink" title="3.13 @RequestBody注解"></a>3.13 @RequestBody注解</h1><!--replace:urlencoded=U R L encoded-->
+<p><code>org.springframework.web.bind.annotation.RequestBody</code>注解常用来处理<code>ContentType</code>不是<code>application/x-ww-form-urlencoded</code>编码的内容,例如<code>application/json</code>,<code>application/</code>等。<code>@RequestBody</code>注解通过使用<code>HandlerAdapter</code>配置的<code>HttpMessageConverters</code>来解析<code>JSON</code>或<code>xml</code>数据,然后绑定到相应的<code>Bean</code>上。</p>
+<h1 id="3-13-1-HttpMessageConverter接口"><a href="#3-13-1-HttpMessageConverter接口" class="headerlink" title="3.13.1 HttpMessageConverter接口"></a>3.13.1 HttpMessageConverter<t>接口</t></h1><p><code>HttpMessageConverter&lt;T&gt;</code>是<code>Spring3.0</code>之后新增的一个重要接口,它负责<strong>将请求信息转换为一个对象(类型为T),并将对象(类型为T)绑定到请求方法的参数上或输出为响应信息</strong>。<br><code>DispatcherServlet</code>默认已经装配了<code>RequestMappingHandlerAdapter</code>作为<code>HandlerAdapter</code>组件的实现类,即<code>HttpMessageConverter</code>由<code>RequestMappingHandlerAdapter</code>使用,<strong>将请求信息转换为对象</strong>,或<strong>将对象转换为响应信息</strong>。</p>
+<h2 id="HttpMessageConverter接口方法"><a href="#HttpMessageConverter接口方法" class="headerlink" title="HttpMessageConverter接口方法"></a>HttpMessageConverter<t>接口方法</t></h2><p><code>HttpMessageConverter&lt;T&gt;</code>接口中定义了以下几个方法</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>boolean canRead(Class&lt;?&gt;clazz,MediaType mediaType)</code></td>
+<td align="left">该方法指定转换器可以读取的对象类型,即转换器可将请求信息转换为<code>clazz</code>类型的对象,同时指定支持的<code>MIME</code>类型(<code>text/html</code>、<code>application/json</code>等)。<code>MIME</code>媒体类型在<code>RFC2616</code>中定义,具体请参考<code>http://tools.ietf.org/html/rfc2616</code>＃<code>section-3.7</code>上的说明。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean canWrite(Class&lt;?&gt;clazz,MediaType mediaType)</code></td>
+<td align="left">该方法指定转换器可以将<code>clazz</code>类型的对象写到响应流当中,响应流支持的媒体类型在<code>mediaType</code>中定义。</td>
+</tr>
+<tr>
+<td align="left"><code>List&lt;MediaType&gt; getSupportedMediaTypes()</code></td>
+<td align="left">该方法返回当前转换器支持的媒体类型。</td>
+</tr>
+<tr>
+<td align="left"><code>T read(Class&lt;?extendsT&gt; clazz,HttpInputMessage inputMessage)</code></td>
+<td align="left">该方法将请求信息流转换为T类型的对象</td>
+</tr>
+<tr>
+<td align="left"><code>void write(T t,MediaType contentType,HttpOutputMessage outputMessage)</code></td>
+<td align="left">该方法将T类型的对象写到响应流当中,同时指定响应的媒体类型为<code>contentType</code>。</td>
+</tr>
+</tbody></table>
+<h2 id="Spring提供的HttpMessageConverter接口实现类"><a href="#Spring提供的HttpMessageConverter接口实现类" class="headerlink" title="Spring提供的HttpMessageConverter接口实现类"></a>Spring提供的HttpMessageConverter<t>接口实现类</t></h2><p><code>Spring</code>为<code>HttpMessageConverter&lt;T&gt;</code>提供了多个实现类,这些实现类组成了一个功能强大、用途广泛的信息转换家族。详细说明如下:</p>
+<table>
+<thead>
+<tr>
+<th align="left">实现类</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>StringHttpMessageConverter</code></td>
+<td align="left">将请求信息转换为字符串,泛型T为<code>String</code>类型,可以读取所有媒体类型（<em>/</em>）的请求信息，可通过设置<code>supportedMediaTypes</code>属性指定媒体类型。响应信息的媒体类型为<code>text/plain</code>（即<code>Content-Type</code>的值）。</td>
+</tr>
+<tr>
+<td align="left"><code>FormHttpMessageConverter</code></td>
+<td align="left">将表单数据读取到<code>MultiValueMap</code>中,泛型T为<code>org.springframework.util.MultiValueMap&lt;String,?&gt;</code>类型,支持读取<code>application/x-www-form-urlencoded</code>类型的信息,但不支持读取<code>multipart/form-data</code>类型的信息。可以写<code>application/x-www-form-urlencoded</code>及<code>multipart/form-data</code>类型的响应信息。</td>
+</tr>
+<tr>
+<td align="left"><code>SourceHttpMessageConverter</code></td>
+<td align="left">如果部分表单属性是<code>XML</code>数据，则可用该转换器进行转换。</td>
+</tr>
+<tr>
+<td align="left"><code>ResourceHttpMessageConverter</code></td>
+<td align="left">读写<code>org.springframework.core.io.Resource</code>对象,泛型T为<code>org.springframework.core.io.Resource</code>对象,可以读取所有媒体类型（<em>/</em>）的请求信息。如果类路径下提供了<code>JAF</code>（<code>JavaActivationFramework</code>）,则根据<code>Resource</code>的类型指定响应的类型，否则响应的类型为<code>application/octet-stream</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>BufferedImageHttpMessageConverter</code></td>
+<td align="left">读写<code>BufferedImage</code>对象,泛型T为<code>BufferedImage</code>对象,可以读取所有类型（<em>/</em>）的请求信息，返回<code>BufferedImage</code>相应的类型，也可以通过<code>contentType</code>显式指定。</td>
+</tr>
+<tr>
+<td align="left"><code>ByteArrayHttpMessageConverter</code></td>
+<td align="left">读写二进制数据,泛型T为<code>byte</code>[]类型,可以读取所有类型（<em>/</em>）的请求信息，可以通过设置<code>supportMediaTypes</code>属性指定类型，响应信息的媒体类型为<code>application/octet-stream</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>SourceHttpMessageConverter</code></td>
+<td align="left">读写<code>javax.xml.transform.Source</code>类型的数据,泛型T为<code>javax.xml.transform.Source</code>类型及其扩展类型包括<code>javax.xml.transform.dom.DOMSource</code>、<code>javax.xml.transform.sax.SAXSource</code>及<code>javax.xml.transform.stream.StreamSource</code>;可以读取<code>text/xml</code>和<code>application/xml</code>类型请求，响应信息的类型为<code>text/xml</code>和<code>application/xml</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>MarshallingHttpMessageConverter</code></td>
+<td align="left">通过<code>Spring</code>的<code>org.springframework.oxm.Marshalling</code>（将<code>Java</code>对象转换成<code>XML</code>）和<code>Unmarshaller</code>（将<code>XML</code>解析为<code>Java</code>对象）读写<code>XML</code>消息。泛型T为<code>Object</code>类型;可以读取<code>text/xml</code>和<code>application/xml</code>类型请求，响应信息的类型为<code>text/xml</code>和<code>application/xml</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>Jaxb2RootElementHttpMessageConverter</code></td>
+<td align="left">通过<code>JAXB2</code>读写<code>XML</code>消息，将请求消息转换到注解<code>@XmlRootElement</code>和<code>XmlType</code>作用的类中。泛型T为<code>Object</code>类型;可以读取<code>text/xml</code>和<code>application/xml</code>类型请求，响应信息的类型为<code>text/xml</code>和<code>application/xml</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>MappingJackson2HttpMessageConverter</code></td>
+<td align="left">利用<code>Jackson</code>开源类包读写<code>JSON</code>数据。泛型T为<code>Object</code>类型;可以读取<code>application/json</code>类型的数据，响应信息的类型为<code>application/json</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>RssChannelHttpMessageConverter</code></td>
+<td align="left">能够读写<code>RSS</code>种子消息;泛型T为<code>com.sun.syndication.feed.rss.Channel</code>类型;可以读取<code>application/rss+xml</code>类型的数据，响应信息的类型为<code>application/rss+xml</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>AtomFeedHttpMessageConverter</code></td>
+<td align="left">能够读写<code>RSS</code>种子消息。泛型T为<code>com.sun.syndication.feed.atom.Feed</code>类型;可以读取<code>application/atom+xml</code>类型的数据，响应信息的类型为<code>application/atom+xml</code>。</td>
+</tr>
+</tbody></table>
+<h2 id="默认装配的HandlerAdapter实现类"><a href="#默认装配的HandlerAdapter实现类" class="headerlink" title="默认装配的HandlerAdapter实现类"></a>默认装配的HandlerAdapter实现类</h2><p><code>DispatcherServlet</code>默认已经装配了<code>RequestMappingHandlerAdapter</code>作为<code>HandlerAdapter</code>组件的实现类;<code>RequestMappingHandlerAdapter</code>默认已经装配了以下的<code>HttpMessageConverter</code>:</p>
+<ul>
+<li><code>StringHttpMessageConverter</code></li>
+<li><code>ByteArrayHttpMessageConverter</code></li>
+<li><code>SourceHttpMessageConverter</code></li>
+</ul>
+<h2 id="自定义RequestMappingHandlerAdapter"><a href="#自定义RequestMappingHandlerAdapter" class="headerlink" title="自定义RequestMappingHandlerAdapter"></a>自定义RequestMappingHandlerAdapter</h2><p>如果需要装配其他类型的<code>HttpMessageConverter</code>,则可以在<code>Spring</code>的<code>Web</code>容器的上下文中自定义一个<code>RequestMappingHandlerAdapter</code>,如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这里有代码,我懒得抄,有空再贴上吧</span><br></pre></td></tr></table></figure>
+<p>提示如果在<code>Spring Web</code>容器中显式定义了一个<code>RequestMappingHandlerAdapter</code>,则<code>Spring MVC</code>的<code>RequestMappingHandlerAdapter</code>默认装配的<code>HttpMessageConverter</code>将不再起作用。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/ad4b3bb7/">3.13 @RequestBody注解 3.13.1 HttpMessageConverter接口</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d2cd4a56/" rel="next" title="3.12 @ModelAttribute注解">
+                  <i class="fa fa-chevron-left"></i> 3.12 @ModelAttribute注解
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/1dfcdf0c/" rel="prev" title="3.13.2 转换JSON数据">
+                  3.13.2 转换JSON数据 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-13-RequestBody注解"><span class="nav-number">1.</span> <span class="nav-text">3.13 @RequestBody注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-13-1-HttpMessageConverter接口"><span class="nav-number">2.</span> <span class="nav-text">3.13.1 HttpMessageConverter接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HttpMessageConverter接口方法"><span class="nav-number">2.1.</span> <span class="nav-text">HttpMessageConverter接口方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring提供的HttpMessageConverter接口实现类"><span class="nav-number">2.2.</span> <span class="nav-text">Spring提供的HttpMessageConverter接口实现类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认装配的HandlerAdapter实现类"><span class="nav-number">2.3.</span> <span class="nav-text">默认装配的HandlerAdapter实现类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义RequestMappingHandlerAdapter"><span class="nav-number">2.4.</span> <span class="nav-text">自定义RequestMappingHandlerAdapter</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

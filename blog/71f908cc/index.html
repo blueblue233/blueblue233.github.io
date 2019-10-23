@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="16.4 解耦控制器代码 Controller接口 InputProductController类 SaveProductController类 DispatcherServlet类">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.4 解耦控制器代码">
+<meta property="og:url" content="https://blueblue233.github.io/blog/71f908cc/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="16.4 解耦控制器代码 Controller接口 InputProductController类 SaveProductController类 DispatcherServlet类">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="16.4 解耦控制器代码">
+<meta name="twitter:description" content="16.4 解耦控制器代码 Controller接口 InputProductController类 SaveProductController类 DispatcherServlet类">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/71f908cc/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>16.4 解耦控制器代码 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/71f908cc/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">16.4 解耦控制器代码
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-04-29 16:05:18" itemprop="dateCreated datePublished" datetime="2019-04-29T16:05:18+08:00">2019-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:21" itemprop="dateModified" datetime="2019-10-14T14:00:21+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/" itemprop="url" rel="index"><span itemprop="name">Serlet JSP和Spring MVC初学指南</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第二部分-SpringMVC/" itemprop="url" rel="index"><span itemprop="name">第二部分 SpringMVC</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第二部分-SpringMVC/第16章-模型2和MVC模式/" itemprop="url" rel="index"><span itemprop="name">第16章 模型2和MVC模式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/71f908cc/#16-4-解耦控制器代码">16.4 解耦控制器代码</a><ul>
+<li><a href="/blog/71f908cc/#Controller接口">Controller接口</a></li>
+<li><a href="/blog/71f908cc/#InputProductController类">InputProductController类</a></li>
+<li><a href="/blog/71f908cc/#SaveProductController类">SaveProductController类</a></li>
+<li><a href="/blog/71f908cc/#DispatcherServlet类">DispatcherServlet类</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="16-4-解耦控制器代码"><a href="#16-4-解耦控制器代码" class="headerlink" title="16.4 解耦控制器代码"></a>16.4 解耦控制器代码</h1><p><strong><code>app16a</code>中的业务逻辑代码都写在了<code>Servlet</code>控制器中，这个<code>Servlet</code>类将随着应用复杂度的增加而不断膨胀</strong>。为避免此问题，<strong>我们应该将业务逻辑代码提取到独立的被称为<code>controller</code>的类中</strong>。<br>在<code>app16b</code>应用（<code>app16a</code>的升级版）中，<code>controller</code>目录下有两个<code>controller</code>类，分别是<code>InputProductController</code>和<code>SaveProductController</code>。<code>app16b</code>应用的目录结构如下所示：<br><strong>这里有一张图</strong><br>这两个<code>controller</code>都实现了<code>Controller</code>接口（见清单16.6）。<code>Controller</code>接口只有<code>handleRequest</code>一个方法。<code>Controller</code>接口的实现类通过该方法访问到当前请求的<code>HttpServletRequest</code>和<code>HttpServletResponse</code>对象。</p>
+<h2 id="Controller接口"><a href="#Controller接口" class="headerlink" title="Controller接口"></a>Controller接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> app16b.controller;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">handleRequest</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">        HttpServletResponse response)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>InputProductController</code>类直接返回了<code>ProductForm.jsp</code>的路径。<br>而<code>SaveProductController</code>类则会读取请求参数来构造一个<code>ProductForm</code>对象，之后用<code>ProductForm</code>对象来构造一个<code>Product</code>对象，并返回<code>ProductDetail.jsp</code>路径。</p>
+<h2 id="InputProductController类"><a href="#InputProductController类" class="headerlink" title="InputProductController类"></a>InputProductController类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> app16b.controller;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InputProductController</span> <span class="keyword">implements</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">handleRequest</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"/WEB-INF/jsp/ProductForm.jsp"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="SaveProductController类"><a href="#SaveProductController类" class="headerlink" title="SaveProductController类"></a>SaveProductController类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> app16b.controller;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> app16b.domain.Product;</span><br><span class="line"><span class="keyword">import</span> app16b.form.ProductForm;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SaveProductController</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span></span></span><br><span class="line"><span class="class">        <span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">handleRequest</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">        HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        ProductForm productForm = <span class="keyword">new</span> ProductForm();</span><br><span class="line">        <span class="comment">// populate form properties</span></span><br><span class="line">        productForm.setName(</span><br><span class="line">            request.getParameter(<span class="string">"name"</span>));</span><br><span class="line">        productForm.setDescription(</span><br><span class="line">            request.getParameter(<span class="string">"description"</span>));</span><br><span class="line">        productForm.setPrice(request.getParameter(<span class="string">"price"</span>));</span><br><span class="line">        <span class="comment">// create model</span></span><br><span class="line">        Product product = <span class="keyword">new</span> Product();</span><br><span class="line">        product.setName(productForm.getName());</span><br><span class="line">        product.setDescription(productForm.getDescription());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            product.setPrice(Float.parseFloat(</span><br><span class="line">                productForm.getPrice()));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;&#125;</span><br><span class="line">        <span class="comment">// insert code to add product to the database</span></span><br><span class="line">        request.setAttribute(<span class="string">"product"</span>, product);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"/WEB-INF/jsp/ProductDetails.jsp"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将业务逻辑代码迁移到<code>controller</code>类的好处很明显：<code>ControllerServlet</code>变得更加专注。现在作用更像一个<code>dispatcher</code>，而非一个<code>controller</code>，因此，我们将其改名为<code>DispatcherServlet</code>。<code>DispatcherServlet</code>类（见清单16.9）检查每个<code>URI</code>，创建相应的<code>controller</code>，并调用其<code>handleRequest</code>方法。</p>
+<h2 id="DispatcherServlet类"><a href="#DispatcherServlet类" class="headerlink" title="DispatcherServlet类"></a>DispatcherServlet类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> app16b.servlet;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.RequestDispatcher;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> app16b.controller.InputProductController;</span><br><span class="line"><span class="keyword">import</span> app16b.controller.SaveProductController;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DispatcherServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">748495L</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">        HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException,ServletException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        process(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">        HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException,ServletException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        process(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">        HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException,ServletException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String uri = request.getRequestURI();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * uri is in this form: /contextName/resourceName, </span></span><br><span class="line"><span class="comment">         * for example: /app10a/product_input. </span></span><br><span class="line"><span class="comment">         * However, in the event of a default context, the </span></span><br><span class="line"><span class="comment">         * context name is empty, and uri has this form</span></span><br><span class="line"><span class="comment">         * /resourceName, e.g.: /product_input</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">int</span> lastIndex = uri.lastIndexOf(<span class="string">"/"</span>);</span><br><span class="line">        String action = uri.substring(lastIndex + <span class="number">1</span>);</span><br><span class="line">        String dispatchUrl = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span>(action.equals(<span class="string">"product_input.action"</span>)) &#123;</span><br><span class="line">            InputProductController controller = <span class="keyword">new</span> InputProductController();</span><br><span class="line">            dispatchUrl = controller.handleRequest(request, response);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(action.equals(<span class="string">"product_save.action"</span>)) &#123;</span><br><span class="line">            SaveProductController controller = <span class="keyword">new</span> SaveProductController();</span><br><span class="line">            dispatchUrl = controller.handleRequest(request, response);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(dispatchUrl != <span class="keyword">null</span>) &#123;</span><br><span class="line">            RequestDispatcher rd = request</span><br><span class="line">                .getRequestDispatcher(dispatchUrl);</span><br><span class="line">            rd.forward(request, response);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，可以在浏览器中输入如下<code>URL</code>测试应用了：<br><a href="http://localhost:8080/app16b/product_input.action" target="_blank" rel="noopener">http://localhost:8080/app16b/product_input.action</a></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/71f908cc/">16.4 解耦控制器代码</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/9cd8fe67/" rel="next" title="1.8 GenericServlet抽象类">
+                  <i class="fa fa-chevron-left"></i> 1.8 GenericServlet抽象类
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/ded70994/" rel="prev" title="16.5 校验器">
+                  16.5 校验器 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#16-4-解耦控制器代码"><span class="nav-number">1.</span> <span class="nav-text">16.4 解耦控制器代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Controller接口"><span class="nav-number">1.1.</span> <span class="nav-text">Controller接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InputProductController类"><span class="nav-number">1.2.</span> <span class="nav-text">InputProductController类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SaveProductController类"><span class="nav-number">1.3.</span> <span class="nav-text">SaveProductController类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DispatcherServlet类"><span class="nav-number">1.4.</span> <span class="nav-text">DispatcherServlet类</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

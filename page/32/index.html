@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="website">
+<meta property="og:title" content="蓝蓝的读书笔记">
+<meta property="og:url" content="https://blueblue233.github.io/page/32/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="蓝蓝的读书笔记">
+  <link rel="canonical" href="https://blueblue233.github.io/page/32/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1d0796bb/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/1d0796bb/" class="post-title-link" itemprop="url">8.2.6 自动装配和精确装配3 @Qualifier注解</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-01 18:00:19" itemprop="dateCreated datePublished" datetime="2019-09-01T18:00:19+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/1d0796bb/#-Qualifier注解">@Qualifier注解</a><ul>
+<li><a href="/blog/1d0796bb/#-Qualifier修饰实例变量">@Qualifier修饰实例变量</a></li>
+<li><a href="/blog/1d0796bb/#-Qualifier修饰方法的形式参数">@Qualifier修饰方法的形式参数</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/1d0796bb/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/74d114c0/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/74d114c0/" class="post-title-link" itemprop="url">8.2.6 自动装配和精确装配2 @Primary注解</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-01 17:57:16" itemprop="dateCreated datePublished" datetime="2019-09-01T17:57:16+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/74d114c0/#-Primary注解">@Primary注解</a><ul>
+<li><a href="/blog/74d114c0/#程序示例">程序示例</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/74d114c0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/adf82bcd/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/adf82bcd/" class="post-title-link" itemprop="url">8.2.6 自动装配和精确装配1 @Autowired注解</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-01 11:28:49" itemprop="dateCreated datePublished" datetime="2019-09-01T11:28:49+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/adf82bcd/#8-2-6-自动装配和精确装配">8.2.6 自动装配和精确装配</a></li>
+<li><a href="/blog/adf82bcd/#-Autowired注解">@Autowired注解</a><ul>
+<li><a href="/blog/adf82bcd/#-Autowired修饰setter时">@Autowired修饰setter时</a></li>
+<li><a href="/blog/adf82bcd/#-Autowired修饰普通方法时">@Autowired修饰普通方法时</a></li>
+<li><a href="/blog/adf82bcd/#-Autowired修饰实例变量时">@Autowired修饰实例变量时</a></li>
+<li><a href="/blog/adf82bcd/#-Autowired修饰构造时">@Autowired修饰构造时</a></li>
+<li><a href="/blog/adf82bcd/#-Autowired修饰数组类型的成员变量时">@Autowired修饰数组类型的成员变量时</a></li>
+<li><a href="/blog/adf82bcd/#-Autowired修饰集合类型的实例变量时">@Autowired修饰集合类型的实例变量时</a><ul>
+<li><a href="/blog/adf82bcd/#-Autowired修饰集合类型的实例变量时-必须使用泛型">@Autowired修饰集合类型的实例变量时 必须使用泛型</a></li>
+</ul>
+</li>
+<li><a href="/blog/adf82bcd/#-Autowired主机默认使用byType策略来自动装配">@Autowired主机默认使用byType策略来自动装配</a></li>
+<li><a href="/blog/adf82bcd/#-Autowired根据泛型进行自动装配">@Autowired根据泛型进行自动装配</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/adf82bcd/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1446d3d6/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/1446d3d6/" class="post-title-link" itemprop="url">8.2.5 使用@DependsOn和@Lazy改变初始化行为</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-01 11:16:08" itemprop="dateCreated datePublished" datetime="2019-09-01T11:16:08+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/1446d3d6/#8-2-5-使用-DependsOn和-Lazy改变初始化行为">8.2.5 使用@DependsOn和@Lazy改变初始化行为</a><ul>
+<li><a href="/blog/1446d3d6/#-DependsOn注解介绍">@DependsOn注解介绍</a></li>
+<li><a href="/blog/1446d3d6/#-Lazy注解介绍">@Lazy注解介绍</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/1446d3d6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/454c8117/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/454c8117/" class="post-title-link" itemprop="url">8.2.4 使用@PostConstruct和@PreDestroy定制生命周期行为</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-01 10:53:20" itemprop="dateCreated datePublished" datetime="2019-09-01T10:53:20+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/454c8117/#8-2-4-使用-PostConstruct和-PreDestroy定制生命周期行为">8.2.4 使用@PostConstruct和@PreDestroy定制生命周期行为</a><ul>
+<li><a href="/blog/454c8117/#XML配置如何指定生命周期方法">XML配置如何指定生命周期方法</a></li>
+<li><a href="/blog/454c8117/#使用注解如何指定生命周期方法">使用注解如何指定生命周期方法</a></li>
+</ul>
+</li>
+<li><a href="/blog/454c8117/#程序示例">程序示例</a></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/454c8117/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/4535a34/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/4535a34/" class="post-title-link" itemprop="url">8.2.3 使用@Resource和@Value配置依赖</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-01 10:33:01" itemprop="dateCreated datePublished" datetime="2019-09-01T10:33:01+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/4535a34/#8-2-3-使用-Resource和-Value配置依赖">8.2.3 使用@Resource和@Value配置依赖</a><ul>
+<li><a href="/blog/4535a34/#使用-Resource来注入其他Bean">使用@Resource来注入其他Bean</a></li>
+<li><a href="/blog/4535a34/#使用-Value来注入直接量">使用@Value来注入直接量</a></li>
+<li><a href="/blog/4535a34/#-Resource-Value直接修饰实例变量">@Resource @Value直接修饰实例变量</a></li>
+<li><a href="/blog/4535a34/#省略name属性时-Resource注解如何确定要注入哪个Bean">省略name属性时@Resource注解如何确定要注入哪个Bean</a><ul>
+<li><a href="/blog/4535a34/#使用setter方法名称来确定要注入的Bean">使用setter方法名称来确定要注入的Bean</a></li>
+<li><a href="/blog/4535a34/#使用示例变量的名称来确定要注入的Bean">使用示例变量的名称来确定要注入的Bean</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/4535a34/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/fc99568b/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/fc99568b/" class="post-title-link" itemprop="url">8.2.2 指定Bean的作用域</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-31 22:20:08" itemprop="dateCreated datePublished" datetime="2019-08-31T22:20:08+08:00">2019-08-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/fc99568b/#8-2-2-指定Bean的作用域">8.2.2 指定Bean的作用域</a><ul>
+<li><a href="/blog/fc99568b/#XML方式如何指定Bean的作用域">XML方式如何指定Bean的作用域</a></li>
+<li><a href="/blog/fc99568b/#通过-Scope指定作用域">通过@Scope指定作用域</a></li>
+<li><a href="/blog/fc99568b/#自定义作用域">自定义作用域</a></li>
+<li><a href="/blog/fc99568b/#新增的简写的作用域注解">新增的简写的作用域注解</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/fc99568b/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/3a81c2f8/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/3a81c2f8/" class="post-title-link" itemprop="url">8.2 Spring的 零配置 支持 8.2.1 搜索Bean类</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-31 20:43:35" itemprop="dateCreated datePublished" datetime="2019-08-31T20:43:35+08:00">2019-08-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-2-Spring的-零配置-支持/" itemprop="url" rel="index"><span itemprop="name">8.2 Spring的 零配置 支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/3a81c2f8/#8-2-Spring的" 零配置"支持">8.2 Spring的”零配置”支持</a></li>
+<li><a href="/blog/3a81c2f8/#8-2-1-搜索Bean类">8.2.1 搜索Bean类</a><ul>
+<li><a href="/blog/3a81c2f8/#Rails框架的做法">Rails框架的做法</a></li>
+<li><a href="/blog/3a81c2f8/#Spring框架的做法">Spring框架的做法</a></li>
+<li><a href="/blog/3a81c2f8/#标注Bean类的注解">标注Bean类的注解</a></li>
+<li><a href="/blog/3a81c2f8/#使用context-Schema指定搜索路径">使用context Schema指定搜索路径</a></li>
+<li><a href="/blog/3a81c2f8/#使用注解方式时将类名首字母变小写得到Bean的名称">使用注解方式时将类名首字母变小写得到Bean的名称</a></li>
+<li><a href="/blog/3a81c2f8/#使用注解设置Bean的名称">使用注解设置Bean的名称</a></li>
+<li><a href="/blog/3a81c2f8/#-Lookup注解执行方法注入">@Lookup注解执行方法注入</a><ul>
+<li><a href="/blog/3a81c2f8/#lookup-method元素复习">lookup-method元素复习</a></li>
+<li><a href="/blog/3a81c2f8/#-Lookup注解通过value属性指定要注入的Bean的id">@Lookup注解通过value属性指定要注入的Bean的id</a></li>
+</ul>
+</li>
+<li><a href="/blog/3a81c2f8/#扫描bean的时候对bean进行过滤">扫描bean的时候对bean进行过滤</a><ul>
+<li><a href="/blog/3a81c2f8/#include-filte元素">include-filte元素</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/3a81c2f8/#程序示例">程序示例</a><ul>
+<li><a href="/blog/3a81c2f8/#beans-xml">beans.xml</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/3a81c2f8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ba66180b/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/ba66180b/" class="post-title-link" itemprop="url">8.1.5 重写占位符配置器</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-31 15:03:57" itemprop="dateCreated datePublished" datetime="2019-08-31T15:03:57+08:00">2019-08-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-1-两种后处理器/" itemprop="url" rel="index"><span itemprop="name">8.1 两种后处理器</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/ba66180b/#8-1-5-重写占位符配置器">8.1.5 重写占位符配置器</a><ul>
+<li><a href="/blog/ba66180b/#程序示例">程序示例</a></li>
+<li><a href="/blog/ba66180b/#beans-xml">beans.xml</a></li>
+<li><a href="/blog/ba66180b/#使用context-property-override元素简化配置">使用context:property-override元素简化配置</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/ba66180b/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/c624476c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/c624476c/" class="post-title-link" itemprop="url">8.1.4 属性占位符配置器</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-31 12:14:12" itemprop="dateCreated datePublished" datetime="2019-08-31T12:14:12+08:00">2019-08-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-1-两种后处理器/" itemprop="url" rel="index"><span itemprop="name">8.1 两种后处理器</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/c624476c/#8-1-4-属性占位符配置器">8.1.4 属性占位符配置器</a></li>
+<li><a href="/blog/c624476c/#程序示例">程序示例</a><ul>
+<li><a href="/blog/c624476c/#beans-xml">beans.xml</a></li>
+<li><a href="/blog/c624476c/#dbconn-properties">dbconn.properties</a></li>
+<li><a href="/blog/c624476c/#使用context-property-placeholder元素简化配置">使用context:property-placeholder元素简化配置</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/c624476c/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  </div>
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/31/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><span class="page-number current">32</span><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/116/">116</a><a class="extend next" rel="next" href="/page/33/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

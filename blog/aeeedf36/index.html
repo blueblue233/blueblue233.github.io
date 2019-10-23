@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="1.8 事务管理 原子性 一致性 持久性 什么是事务 事务管理器 恢复管理器 并发控制管理器   事务已经应用广泛了">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.8 事务管理">
+<meta property="og:url" content="https://blueblue233.github.io/blog/aeeedf36/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="1.8 事务管理 原子性 一致性 持久性 什么是事务 事务管理器 恢复管理器 并发控制管理器   事务已经应用广泛了">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1.8 事务管理">
+<meta name="twitter:description" content="1.8 事务管理 原子性 一致性 持久性 什么是事务 事务管理器 恢复管理器 并发控制管理器   事务已经应用广泛了">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/aeeedf36/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>1.8 事务管理 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/aeeedf36/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">1.8 事务管理
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-10 20:33:08" itemprop="dateCreated datePublished" datetime="2019-10-10T20:33:08+08:00">2019-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:43" itemprop="dateModified" datetime="2019-10-14T14:00:43+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第1章-引言/" itemprop="url" rel="index"><span itemprop="name">第1章 引言</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/aeeedf36/#1-8-事务管理">1.8 事务管理</a><ul>
+<li><a href="/blog/aeeedf36/#原子性">原子性</a></li>
+<li><a href="/blog/aeeedf36/#一致性">一致性</a></li>
+<li><a href="/blog/aeeedf36/#持久性">持久性</a></li>
+<li><a href="/blog/aeeedf36/#什么是事务">什么是事务</a></li>
+<li><a href="/blog/aeeedf36/#事务管理器">事务管理器</a><ul>
+<li><a href="/blog/aeeedf36/#恢复管理器">恢复管理器</a></li>
+<li><a href="/blog/aeeedf36/#并发控制管理器">并发控制管理器</a></li>
+</ul>
+</li>
+<li><a href="/blog/aeeedf36/#事务已经应用广泛了">事务已经应用广泛了</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="1-8-事务管理"><a href="#1-8-事务管理" class="headerlink" title="1.8 事务管理"></a>1.8 事务管理</h1><p>通常,对数据库的几个操作合起来形成一个逻辑单元。如1.2节所示的例子是一个资金转账,其中一个系(A系)的账户进行取出操作,而另一个系(B系)的账户进行存入操作。显然,这两个操作必须保证要么都发生要么都不发生。也就是说,资金转账必须完成或根本不发生。</p>
+<h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p>这种要么完成要么不发生的要求称为<strong>原子性</strong>( <code>atomicity)</code>。</p>
+<h2 id="一致性"><a href="#一致性" class="headerlink" title="一致性"></a>一致性</h2><p>除此以外,资金转账还必须保持数据库的一致性。也就是说,<strong>A和B的余额之和应该是保持不变的</strong>。这种正确性的要求称作<strong>一致性</strong>(<code>consistency</code>)。</p>
+<h2 id="持久性"><a href="#持久性" class="headerlink" title="持久性"></a>持久性</h2><p>最后,当资金转账成功结束后,即使发生系统故障,账户A和账户B的余额也应该保持转账成功结束后的新值。这种保持的要求称作<strong>持久性</strong>(<code>durability</code>)。</p>
+<h2 id="什么是事务"><a href="#什么是事务" class="headerlink" title="什么是事务"></a>什么是事务</h2><p><strong>事务(<code>transaction</code>)是数据库应用中<code>完成单一逻辑功能的操作集合</code></strong>。每一个事务是一个既具原子性又具一致性的单元。因此,我们要求事务不违反任何的数据库一致性约束,也就是说,<strong>如果事务启动时数据库是一致的,那么当这个事务成功结束时数据库也应该是一致的</strong>。然而,在事务执行过程中,必要时允许暂时的不一致,因为无论是A取出的操作在前还是B存入的操作在前,这两个操作都必然有一个先后次序。这种暂时的不一致虽然是必需的,但在故障发生时,很可能导致问题的产生。</p>
+<p><strong>适当地定义各个事务是程序员的职责</strong>,事务的定义应使之能保持数据库的一致性。<br>例如,资金从A系的账户转到B系的账户这个事务可以被定义为由两个单独的程序组成:一个对账户A执行取出操作,另一个对账户B执行存入操作。这两个程序的依次执行可以保持一致性。但是,这两个程序自身都不是把数据库从一个一致的状态转入一个新的一致的状态,因此它们都不是事务。</p>
+<h2 id="事务管理器"><a href="#事务管理器" class="headerlink" title="事务管理器"></a>事务管理器</h2><p><strong>事务管理器</strong>(<code>transaction manager</code>)包括<code>并发控制管理器</code>和<code>恢复管理器</code>。</p>
+<h3 id="恢复管理器"><a href="#恢复管理器" class="headerlink" title="恢复管理器"></a>恢复管理器</h3><p><strong>原子性和持久性的保证是数据库系统自身的职责</strong>,确切地说,是<strong>恢复管理器</strong>(<code>recovery manager</code>)的职责。在没有故障发生的情况下,所有事务均成功完成,这时要保证原子性很容易。但是,由于各种各样的故障,事务并不总能成功执行完毕。为了保证原子性,失败的事务必须对数据库状态不产生任何影响。因此,数据库必须被恢复到该失败事务开始执行以前的状态。这种情况下数据库系统必须进行故障恢复( <code>failure recovery)</code>,即<strong>检测系统故障并将数据库恢复到故障发生以前的状态</strong>。</p>
+<h3 id="并发控制管理器"><a href="#并发控制管理器" class="headerlink" title="并发控制管理器"></a>并发控制管理器</h3><p>最后,当多个事务同时对数据库进行更新时,即使每个单独的事务都是正确的,数据的一致性也可能被破坏。<strong>并发控制管理器</strong>(<code>concurrency-control manager</code>)控制并发事务间的相互影响,保证数据库致性。</p>
+<h2 id="事务已经应用广泛了"><a href="#事务已经应用广泛了" class="headerlink" title="事务已经应用广泛了"></a>事务已经应用广泛了</h2><p>事务的概念已经广泛应用在数据库系统和应用当中。虽然最初是在金融应用中使用事务,现在事务已经使用在电信业的实时应用中,以及长时间的活动如产品设计和工作流管理中。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/aeeedf36/">1.8 事务管理</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/293a982a/" rel="next" title="1.7 数据存储和查询">
+                  <i class="fa fa-chevron-left"></i> 1.7 数据存储和查询
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/d2a689c8/" rel="prev" title="1.9 数据库体系结构">
+                  1.9 数据库体系结构 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-8-事务管理"><span class="nav-number">1.</span> <span class="nav-text">1.8 事务管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原子性"><span class="nav-number">1.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一致性"><span class="nav-number">1.2.</span> <span class="nav-text">一致性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久性"><span class="nav-number">1.3.</span> <span class="nav-text">持久性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是事务"><span class="nav-number">1.4.</span> <span class="nav-text">什么是事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务管理器"><span class="nav-number">1.5.</span> <span class="nav-text">事务管理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复管理器"><span class="nav-number">1.5.1.</span> <span class="nav-text">恢复管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发控制管理器"><span class="nav-number">1.5.2.</span> <span class="nav-text">并发控制管理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务已经应用广泛了"><span class="nav-number">1.6.</span> <span class="nav-text">事务已经应用广泛了</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

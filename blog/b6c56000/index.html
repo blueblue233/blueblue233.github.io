@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="6.8.3 方法引用与构造器引用 Lambda表达式的几种引用方式 1. 引用类方法 2. 引用特定对象的实例方法 3. 引用某类对象的实例方法 4. 引用构造器">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.8.3 方法引用与构造器引用">
+<meta property="og:url" content="https://blueblue233.github.io/blog/b6c56000/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="6.8.3 方法引用与构造器引用 Lambda表达式的几种引用方式 1. 引用类方法 2. 引用特定对象的实例方法 3. 引用某类对象的实例方法 4. 引用构造器">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.8.3 方法引用与构造器引用">
+<meta name="twitter:description" content="6.8.3 方法引用与构造器引用 Lambda表达式的几种引用方式 1. 引用类方法 2. 引用特定对象的实例方法 3. 引用某类对象的实例方法 4. 引用构造器">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/b6c56000/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>6.8.3 方法引用与构造器引用 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/b6c56000/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">6.8.3 方法引用与构造器引用
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-27 18:02:25" itemprop="dateCreated datePublished" datetime="2019-09-27T18:02:25+08:00">2019-09-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:47" itemprop="dateModified" datetime="2019-10-14T14:01:47+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第6章-面向对象-下/" itemprop="url" rel="index"><span itemprop="name">第6章 面向对象(下)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第6章-面向对象-下/6-8-Java8新增的Lambda表达式/" itemprop="url" rel="index"><span itemprop="name">6.8 Java8新增的Lambda表达式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/b6c56000/#6-8-3-方法引用与构造器引用">6.8.3 方法引用与构造器引用</a><ul>
+<li><a href="/blog/b6c56000/#Lambda表达式的几种引用方式">Lambda表达式的几种引用方式</a></li>
+<li><a href="/blog/b6c56000/#1-引用类方法">1. 引用类方法</a></li>
+<li><a href="/blog/b6c56000/#2-引用特定对象的实例方法">2. 引用特定对象的实例方法</a></li>
+<li><a href="/blog/b6c56000/#3-引用某类对象的实例方法">3. 引用某类对象的实例方法</a></li>
+<li><a href="/blog/b6c56000/#4-引用构造器">4. 引用构造器</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="6-8-3-方法引用与构造器引用"><a href="#6-8-3-方法引用与构造器引用" class="headerlink" title="6.8.3 方法引用与构造器引用"></a>6.8.3 方法引用与构造器引用</h1><p>如果<code>Lambda</code>表达式的代码块只有一条代码,程序就可以省略<code>Lambda</code>表达式中代码块的花括号。<br>如果<code>L ambda</code>表达式的代码块只有一条代码,还可以在代码块中使用<code>方法引用</code>和<code>构造器引用</code>。</p>
+<p><code>方法引用</code>和<code>构造器引用</code>可以让<code>Lambda</code>表达式的代码块更加简洁。方法引用和构造器引用都需要使用<code>两个英文冒号</code>。 </p>
+<h2 id="Lambda表达式的几种引用方式"><a href="#Lambda表达式的几种引用方式" class="headerlink" title="Lambda表达式的几种引用方式"></a><code>Lambda</code>表达式的几种引用方式</h2><table>
+<thead>
+<tr>
+<th align="left">种类</th>
+<th align="left">示例</th>
+<th align="left">说明</th>
+<th align="left">对应的<code>Lambda</code>表达式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">引用类方法</td>
+<td align="left"><code>类名::类方法</code></td>
+<td align="left">调用该类的类方法,并把函数式接口中被实现的抽象方法的全部参数传给该<code>类方法</code>作为参数</td>
+<td align="left"><code>(a,b,...)-&gt;类名.类方法(a,b,…)</code></td>
+</tr>
+<tr>
+<td align="left">引用特定对象的实例方法</td>
+<td align="left"><code>特定对象::实例方法</code></td>
+<td align="left">调用该对象的方法,并把函数式接口中被实现的抽象方法的全部参数传给该<code>实例方法</code>作为参数</td>
+<td align="left"><code>(ab,…)-&gt;特定对象.实例方法(a,b,…)</code></td>
+</tr>
+<tr>
+<td align="left">引用某类对象的实例方法</td>
+<td align="left"><code>类名::实例方法</code></td>
+<td align="left">函数式接口中被实现的抽象方法的<code>第一个参数作为调用者</code>,剩下的参数全部传给该<code>实例方法</code>作为参数</td>
+<td align="left"><code>(ab,…)-&gt;a.实例方法(b,…)</code></td>
+</tr>
+<tr>
+<td align="left">引用构造器</td>
+<td align="left"><code>类名::new</code></td>
+<td align="left">函数式接口中被实现的抽象方法的全部参数传给该构造器作为参数</td>
+<td align="left"><code>(a,b,...)-&gt;new 类名(a,b,…)</code></td>
+</tr>
+<tr>
+<td align="left"><!--SSTStop--></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">## 1. 引用类方法 ##</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面代码使用Lambda表达式创建Converter对象</span></span><br><span class="line">Converter converter1 = from -&gt; Integer.valueOf(from);</span><br><span class="line">Integer value1 = converter1.convert(<span class="string">"99"</span>);</span><br><span class="line">System.out.println(value1); <span class="comment">// 输出整数99</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 引用Integer类的valueOf类方法,</span></span><br><span class="line"><span class="comment">// 并将函数式接口Converter中的convert方法的参数from传递给valueOf方法作为参数</span></span><br><span class="line">Converter converter2 = Integer::valueOf;</span><br><span class="line">Integer value2 = converter2.convert(<span class="string">"99"</span>);</span><br><span class="line">System.out.println(value2); <span class="comment">// 输出整数99</span></span><br></pre></td></tr></table></figure></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="2-引用特定对象的实例方法"><a href="#2-引用特定对象的实例方法" class="headerlink" title="2. 引用特定对象的实例方法"></a>2. 引用特定对象的实例方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"HelloWorld"</span>;</span><br><span class="line">String subStr = <span class="string">"World"</span>;</span><br><span class="line"><span class="comment">// 下面代码使用Lambda表达式创建Converter对象</span></span><br><span class="line">Converter converter1 = from -&gt; testStr.indexOf(from);</span><br><span class="line">Integer value1 = converter1.convert(subStr);</span><br><span class="line">System.out.println(value1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引用Stringd对象的indexOf方法,indexOf方法的参数和Converter的convert方法的参数一样。</span></span><br><span class="line">Converter converter2 = testStr::indexOf;</span><br><span class="line">Integer value2 = converter2.convert(subStr);</span><br><span class="line">System.out.println(value2);</span><br></pre></td></tr></table></figure>
+<h2 id="3-引用某类对象的实例方法"><a href="#3-引用某类对象的实例方法" class="headerlink" title="3. 引用某类对象的实例方法"></a>3. 引用某类对象的实例方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"HelloWorld"</span>;</span><br><span class="line"><span class="comment">// 下面代码使用Lambda表达式创建MyTest对象</span></span><br><span class="line">MyTest mt1 = (a, b, c) -&gt; a.substring(b, c);</span><br><span class="line">String str1 = mt1.test(testStr, <span class="number">5</span>, testStr.length());</span><br><span class="line">System.out.println(str1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引用String类的substring实例方法,</span></span><br><span class="line"><span class="comment">// 通过test方法的第一个参数来调用substring,</span></span><br><span class="line"><span class="comment">// test方法的剩余参数,传给substring方法</span></span><br><span class="line">MyTest mt2 = String::substring;</span><br><span class="line">String str2 = mt2.test(testStr, <span class="number">5</span>, testStr.length());</span><br><span class="line">System.out.println(str2);</span><br></pre></td></tr></table></figure>
+<h2 id="4-引用构造器"><a href="#4-引用构造器" class="headerlink" title="4. 引用构造器"></a>4. 引用构造器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">YourTest yt1 = (String a) -&gt; <span class="keyword">new</span> JFrame(a);</span><br><span class="line">JFrame jf1 = yt1.win(<span class="string">"我的窗口"</span>);</span><br><span class="line">System.out.println(jf1);</span><br><span class="line"><span class="comment">// 引用JFrame的构造器,以win方法的参数作为构造器的参数</span></span><br><span class="line">YourTest yt2 = JFrame::<span class="keyword">new</span>;</span><br><span class="line">JFrame jf2 = yt2.win(<span class="string">"我的窗口"</span>);</span><br><span class="line">System.out.println(jf2);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/b6c56000/">6.8.3 方法引用与构造器引用</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/27a4e5f/" rel="next" title="6.8.2 Lambda表达式与函数式接口">
+                  <i class="fa fa-chevron-left"></i> 6.8.2 Lambda表达式与函数式接口
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/5c11b881/" rel="prev" title="6.8.4 Lambda表达式与匿名内部类的联系和区别">
+                  6.8.4 Lambda表达式与匿名内部类的联系和区别 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-8-3-方法引用与构造器引用"><span class="nav-number">1.</span> <span class="nav-text">6.8.3 方法引用与构造器引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lambda表达式的几种引用方式"><span class="nav-number">1.1.</span> <span class="nav-text">Lambda表达式的几种引用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-引用特定对象的实例方法"><span class="nav-number">1.2.</span> <span class="nav-text">2. 引用特定对象的实例方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-引用某类对象的实例方法"><span class="nav-number">1.3.</span> <span class="nav-text">3. 引用某类对象的实例方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-引用构造器"><span class="nav-number">1.4.</span> <span class="nav-text">4. 引用构造器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="8.3 Set集合 8.3.1 HashSet类 HashSet特点 重写hashCode()方法的基本规则 重写hashCode()方法的一般步骤">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.3 Set集合 8.3.1 HashSet类">
+<meta property="og:url" content="https://blueblue233.github.io/blog/8e0ef597/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="8.3 Set集合 8.3.1 HashSet类 HashSet特点 重写hashCode()方法的基本规则 重写hashCode()方法的一般步骤">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8.3 Set集合 8.3.1 HashSet类">
+<meta name="twitter:description" content="8.3 Set集合 8.3.1 HashSet类 HashSet特点 重写hashCode()方法的基本规则 重写hashCode()方法的一般步骤">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/8e0ef597/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>8.3 Set集合 8.3.1 HashSet类 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/8e0ef597/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">8.3 Set集合 8.3.1 HashSet类
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-07 00:54:19" itemprop="dateCreated datePublished" datetime="2019-07-07T00:54:19+08:00">2019-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:47" itemprop="dateModified" datetime="2019-10-14T14:01:47+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第8章-Java集合/" itemprop="url" rel="index"><span itemprop="name">第8章 Java集合</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第8章-Java集合/8-3-Set集合/" itemprop="url" rel="index"><span itemprop="name">8.3 Set集合</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/8e0ef597/#8-3-Set集合">8.3 Set集合</a></li>
+<li><a href="/blog/8e0ef597/#8-3-1-HashSet类">8.3.1 HashSet类</a><ul>
+<li><a href="/blog/8e0ef597/#HashSet特点">HashSet特点</a></li>
+<li><a href="/blog/8e0ef597/#重写hashCode-方法的基本规则">重写hashCode()方法的基本规则</a></li>
+<li><a href="/blog/8e0ef597/#重写hashCode-方法的一般步骤">重写hashCode()方法的一般步骤</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="8-3-Set集合"><a href="#8-3-Set集合" class="headerlink" title="8.3 Set集合"></a>8.3 Set集合</h1><p>前面已经介绍过<code>Set</code>集合,它类似于一个罐子,程序可以依次把多个对象”丢进”<code>Set</code>集合,而<code>Set</code>集合通常不能记住元素的添加顺序。<code>Set</code>集合与<code>Collection</code>基本相同,没有提供任何额外的方法。实际上<code>Set</code>就是<code>Collection</code>,只是行为略有不同(<strong><code>Set</code>不允许包含重复元素</strong>)。<br><strong><code>Set</code>集合不允许包含相同的元素</strong>,如果试图把两个相同的元素加入同一个<code>Set</code>集合中,则添加操作失败,<code>add()</code>方法返回<code>false</code>,并且新元素不会覆盖旧元素。<br>上面介绍的是<code>Set</code>集合的通用知识,因此完全适合后面介绍的<code>HashSet</code>、 <code>TreeSet</code>和<code>EnumSet</code>三个实现类,只是三个实现类还各有特色。</p>
+<h1 id="8-3-1-HashSet类"><a href="#8-3-1-HashSet类" class="headerlink" title="8.3.1 HashSet类"></a>8.3.1 HashSet类</h1><p><code>HashSet</code>是<code>Set</code>接口的典型实现,大多数时候使用<code>Set</code>集合时就是使用这个实现类。 <code>HashSet</code>按<code>Hash</code>算法来存储集合中的元素,具有很好的存取和査找性能.</p>
+<h2 id="HashSet特点"><a href="#HashSet特点" class="headerlink" title="HashSet特点"></a>HashSet特点</h2><p><code>HashSet</code>具有以下特点。</p>
+<ul>
+<li>不能保证元素的排列顺序,顺序可能与添加顺序不同,顺序也有可能发生变化。</li>
+<li><code>HashSet</code>不是同步的,如果多个线程同时访问一个<code>HashSet</code>,假设有两个或者两个以上线程同时修改了<code>HashSet</code>集合时,则必须通过代码来保证其同步。</li>
+<li>集合元素值可以是<code>null</code></li>
+</ul>
+<p>当向<code>HashSet</code>集合中存入一个元素时, <code>HashSet</code>会调用该对象的<code>hashCode()</code>方法来得到该对象的<code>hashCode</code>值,然后根据该<code>hashCode</code>值决定该对象在<code>HashSet</code>中的存储位置。如果有两个元素通过<code>equals()</code>方法比较返回<code>true</code>,但它们的<code>hashCode()</code>方法返回值不相等, <code>HashSet</code>将会把它们存储在不同的位置,依然可以添加成功。<br>也就是说, <code>HashSet</code>集合判断两个元素相等的标准是<strong>两个对象通过<code>equals</code>方法比较相等,并且两个对象的<code>hashCode()</code>方法返回值也相等</strong>.<br>下面程序分别提供了三个类A、B和C,它们分别重写了<code>equals</code>、 <code>hashCode()</code>两个方法的一个或全部,通过此程序可以让读者看到<code>HashSet</code>判断集合元素相同的标准。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类A的equals方法总是返回true，但没有重写其hashCode()方法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 类B的hashCode()方法总是返回1，但没有重写其equals()方法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 类C的hashCode()方法总是返回2，且重写其equals()方法总是返回true</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashSetTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		HashSet books = <span class="keyword">new</span> HashSet();</span><br><span class="line">		<span class="comment">// 分别向books集合中添加两个A对象，两个B对象，两个C对象</span></span><br><span class="line">		books.add(<span class="keyword">new</span> A());</span><br><span class="line">		books.add(<span class="keyword">new</span> A());</span><br><span class="line">		books.add(<span class="keyword">new</span> B());</span><br><span class="line">		books.add(<span class="keyword">new</span> B());</span><br><span class="line">		books.add(<span class="keyword">new</span> C());</span><br><span class="line">		books.add(<span class="keyword">new</span> C());</span><br><span class="line">		System.out.println(books);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中向<code>books</code>集合中分别添加了两个A对象、两个B对象和两个C对象,其中C类重写了<code>equals</code>方法总是返回<code>true</code>, <code>hashCode()</code>方法总是返回2,这将导致<code>HashSet</code>把两个C对象当成同一个对象。运行上面程序,看到如下运行结果:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[A@<span class="number">7852</span>e922, B@<span class="number">1</span>, B@<span class="number">1</span>, C@<span class="number">2</span>, A@<span class="number">4</span>e25154f]</span><br></pre></td></tr></table></figure>
+<p>从上面程序可以看出,即使两个A对象通过<code>equals()</code>方法比较返回<code>true</code>,但<code>HashSet</code>依然把它们当成两个对象;即使两个B对象的<code>hashCode()</code>返回相同值(都是1),但<code>HashSet</code>依然把它们当成两个对象。<br>这里有一个注意点:当把一个对象放入<code>HashSet</code>中时,如果需要重写该对象对应类的<code>equals()</code>方法,则也应该重写其<code>hashCode()</code>方法。规则是:<strong>如果两个对象通过<code>equals</code>方法比较返回<code>true</code>,这两个对象的<code>hashCode()</code>方法的返回值也应该相同</strong><br>如果两个对象的<code>hashCode()</code>方法返回的<code>hashCode</code>值相同,但它们通过<code>equals()</code>方法比较返回<code>false</code>时将更麻烦:因为两个对象的<code>hashCode</code>值相同, <code>HashSet</code>将试图把它们保存在同一个位置,但是放在同一个位置是不行的,因为新的对象会覆盖旧的对象导致数据丢失,所以实际上会在这个位置用链式结构来保存多个对象;而<code>HashSet</code>访问集合元素时也是根据元素的<code>hashCode</code>值来快速定位的,如果<code>HashSet</code>中两个以上的元素具有相同的<code>hashCode</code>值,将会导致性能下降。</p>
+<p><strong>学生提问:<code>hashCode()</code>方法对于<code>HashSet</code>是不是十分重要?</strong><br>答:hash算法的能快速查找被检索的对象,hash算法的价值在于速度。当需要查询集合中某个元素时,hash算法可以直接根据该元素的hashCode值计算出该元素的存储位置,从而快速定位到该元素。<br>为了理解这个概念,可以先看数组(数组是所有能存储一组元素里最快的数据结构)数组可以包含多个元素,每个元素都有索引,如果需要访问某个数组元素,只需提供该元素的索引,接下来即可根据索引计算该元素在内存里的存储位置。<br>表面上看起来, <code>HashSet</code>集合里的元素都没有索引,实陈上当程序向<code>HashSet</code>集合中添加元素时, <code>HashSet</code>会根据该元素的<code>hashCode</code>值来计算它的存储位置,这样也可快速定位到该元素。</p>
+<p><strong>为什么不直接使用数组、还需要使用<code>HashSet</code>呢?</strong></p>
+<p>为什么不直接使用数组、还需要使用<code>HashSet</code>呢?因为数组元素的索引是连续的,而且数组的长度是固定的,无法自由增加数组的长度。而<code>HashSet</code>就不一样了, <code>HashSet</code>采用每个元素的<code>hashCode</code>值来计算其存储位置,从而可以自由增加<code>HashSet</code>的长度,并可以根据元素的<code>hashCode</code>值来访问元素。因此,当从<code>HashSet</code>中访问元素时, <code>HashSet</code>先计算该元素的<code>hashCode</code>值(也就是调用该对象的<code>hashCode</code>方法的返回值),然后直接到该<code>hashCode</code>值对应的位置去取出该元素——这就是<code>HashSet</code>速度很怏的原因。</p>
+<p><code>HashSet</code>中每个能存储元素的”槽位”(<code>slot)</code>通常称为”桶”( <code>bucket)</code>,如果有多个元素的<code>hashCode</code>值相同,但它们通过<code>equals</code>方法比较返回<code>false</code>,就需要在一个”桶”里放多个元素,这样会导致性能下降。</p>
+<h2 id="重写hashCode-方法的基本规则"><a href="#重写hashCode-方法的基本规则" class="headerlink" title="重写hashCode()方法的基本规则"></a>重写hashCode()方法的基本规则</h2><p>前面介绍了<code>hashCode()</code>方法对于<code>HashSet</code>的重要性(实际上,对象的<code>hashCode</code>值对于后面的<code>HashMap</code>同样重要),下面给出重写<code>hashCode()</code>方法的基本规则。</p>
+<ol>
+<li>在程序运行过程中,同一个对象多次调用<code>hashCode()</code>方法应该返回相同的值。</li>
+<li>当两个对象通过<code>equals()</code>方法比较返回<code>true</code>时,这两个对象的<code>hashCode()</code>方法应返回相等的值.</li>
+<li>对象中用作<code>equals</code>方法比较标准的实例变量,都应该用于计算<code>hashCode</code>值。</li>
+</ol>
+<h2 id="重写hashCode-方法的一般步骤"><a href="#重写hashCode-方法的一般步骤" class="headerlink" title="重写hashCode()方法的一般步骤"></a>重写hashCode()方法的一般步骤</h2><p>下面给出重写<code>hashCode()</code>方法的一般步骤。<br>1.把对象内每个有意义的实例变量(即每个参与<code>equals</code>方法比较标准的实例变量)计算出一个<code>int</code>类型的<code>hashCode</code>值。计算方式如表8.1所示。</p>
+<center><strong>表8.1 hashCode值的计算方式</strong></center>
+<table>
+<thead>
+<tr>
+<th align="left">实例变量类型</th>
+<th align="left">计算方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>boolean</code>变量f</td>
+<td align="left"><code>hashCode=(f?0:1)</code></td>
+</tr>
+<tr>
+<td align="left">整数类型(<code>byte,short,char,int</code>)变量f</td>
+<td align="left"><code>hashCode=(int) f;</code></td>
+</tr>
+<tr>
+<td align="left"><code>long</code>类型变量f</td>
+<td align="left"><code>hashCode=(int)(f^(f&gt;&gt;&gt;32));</code></td>
+</tr>
+<tr>
+<td align="left"><code>float</code>类型变量f</td>
+<td align="left"><code>hashCode=Float.frontToIntBits(f)</code>;</td>
+</tr>
+<tr>
+<td align="left"><code>double</code>类型变量f</td>
+<td align="left"><code>long l=Double.doubleToLongBits(f); hashCode=(int)(l^(l&gt;&gt;&gt;32));</code></td>
+</tr>
+<tr>
+<td align="left">引用类型变量f</td>
+<td align="left"><code>hashCode=f.hashCode();</code></td>
+</tr>
+</tbody></table>
+<p>2.用第1步计算出来的多个<code>hashCode</code>值组合计算出一个<code>hashCode</code>值返回。例如如下代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> f1.hashCode()+(<span class="keyword">int</span>)f2;</span><br></pre></td></tr></table></figure>
+<p>为了避免直接相加产生偶然相等(两个对象的<code>f1</code>、<code>f2</code>实例变量并不相等,但它们的<code>hash Code</code>的和恰好相等),可以通过<strong>为各实例变量的<code>hashCode</code>值各自乘以任意一个<code>质数</code>后再相加</strong>。例如如下代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> f1.hashCode() * <span class="number">19</span> +(<span class="keyword">int</span>) f2 *<span class="number">31</span>;</span><br></pre></td></tr></table></figure>
+<p>如果向<code>HashSet</code>中添加一个可变对象后,后面程序修改了该可变对象的实例变量,则可能导致它与集合中的其他元素相同(即两个对象通过<code>equals</code>方法比较返回<code>true</code>,两个对象的<code>hashCode</code>值也相等),这就有可能导致<code>HashSet</code>中包含两个相同的对象。下面程序演示了这种情况。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">R</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">R</span><span class="params">(<span class="keyword">int</span> count)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.count = count;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"R[count:"</span> + count + <span class="string">"]"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">this</span> == obj)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">if</span> (obj != <span class="keyword">null</span> &amp;&amp; obj.getClass() == R.class)</span><br><span class="line">		&#123;</span><br><span class="line">			R r = (R)obj;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">this</span>.count == r.count;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.count;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashSetTest2</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		HashSet hs = <span class="keyword">new</span> HashSet();</span><br><span class="line">		hs.add(<span class="keyword">new</span> R(<span class="number">5</span>));</span><br><span class="line">		hs.add(<span class="keyword">new</span> R(-<span class="number">3</span>));</span><br><span class="line">		hs.add(<span class="keyword">new</span> R(<span class="number">9</span>));</span><br><span class="line">		hs.add(<span class="keyword">new</span> R(-<span class="number">2</span>));</span><br><span class="line">		<span class="comment">// 打印HashSet集合，集合元素没有重复</span></span><br><span class="line">		System.out.println(hs);</span><br><span class="line">		<span class="comment">// 取出第一个元素</span></span><br><span class="line">		Iterator it = hs.iterator();</span><br><span class="line">		R first = (R)it.next();</span><br><span class="line">		<span class="comment">// 为第一个元素的count实例变量赋值</span></span><br><span class="line">		first.count = -<span class="number">3</span>;     <span class="comment">// ①</span></span><br><span class="line">		<span class="comment">// 再次输出HashSet集合，集合元素有重复元素</span></span><br><span class="line">		System.out.println(hs);</span><br><span class="line">		<span class="comment">// 删除count为-3的R对象</span></span><br><span class="line">		hs.remove(<span class="keyword">new</span> R(-<span class="number">3</span>));    <span class="comment">// ②</span></span><br><span class="line">		<span class="comment">// 可以看到被删除了一个R元素</span></span><br><span class="line">		System.out.println(hs);</span><br><span class="line">		System.out.println(<span class="string">"hs是否包含count为-3的R对象？"</span></span><br><span class="line">			+ hs.contains(<span class="keyword">new</span> R(-<span class="number">3</span>))); <span class="comment">// 输出false</span></span><br><span class="line">		System.out.println(<span class="string">"hs是否包含count为-2的R对象？"</span></span><br><span class="line">			+ hs.contains(<span class="keyword">new</span> R(-<span class="number">2</span>))); <span class="comment">// 输出false</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中提供了R类,R类重写了<code>equals(Object object)</code>方法和<code>hashCode()</code>方法,这两个方法都是根据R对象的<code>count</code>实例变量来判断的。上面程序的①号代码处改变了<code>Set</code>集合中第一个R对象的<code>count</code>实例变量的值,这将导致该R对象与集合中的其他对象相同。程序运行结果下所示:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[R[count:-<span class="number">2</span>], R[count:-<span class="number">3</span>], R[count:<span class="number">5</span>], R[count:<span class="number">9</span>]]</span><br><span class="line">[R[count:-<span class="number">3</span>], R[count:-<span class="number">3</span>], R[count:<span class="number">5</span>], R[count:<span class="number">9</span>]]</span><br><span class="line">[R[count:-<span class="number">3</span>], R[count:<span class="number">5</span>], R[count:<span class="number">9</span>]]</span><br><span class="line">hs是否包含count为-<span class="number">3</span>的R对象？<span class="keyword">false</span></span><br><span class="line">hs是否包含count为-<span class="number">2</span>的R对象？<span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+<p>正如图8.4中所见到的, <code>HashSet</code>集合中的第1个元素和第2个元素完全相同,这表明两个元素已经重复。此时<code>HashSet</code>会比较混乱:当试图删除<code>count</code>为<code>-3</code>的R对象时, <code>HashSet</code>会计算出该对象的<code>hashCode</code>值,从而找出该对象在集合中的保存位置,然后把此处的对象与<code>count</code>为<code>-3</code>的R对象通过<code>equals</code>方法进行比较,如果相等则删除该对象<br><code>HashSet</code>只有第2个元素才满足该条件(第1个元素实际上保存在<code>count</code>为<code>-2</code>的R对象对应的位置),所以第2个元素被删除。<br>至于第一个<code>count</code>为<code>-3</code>的R对象,它保存在<code>count</code>为<code>-2</code>的R对象对应的位置,但使用<code>equals</code>方法拿它和<code>count</code>为<code>-2</code>的R对象比较时又返回<code>false</code><br>这将导致<code>HashSet</code>不可能准确访问该元素。<br>由此可见,<strong>当程序把可变对象添加到<code>HashSet</code>中之后,尽量不要去修改该集合元素中参与计算<code>hashCode()</code>、 <code>equals()</code>的实例变量,否则将会导致<code>HashSet</code>无法正确操作这些集合元素</strong>。<br><strong>注意:</strong><br>当向<code>HashSet</code>中添加可变对象时,必须十分小心。如果修改<code>HashSet</code>集合中的对象,有可能导致该对象与集合中的其他对象相等,从而导致<code>HashSet</code>无法准确访问该对象.</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/8e0ef597/">8.3 Set集合 8.3.1 HashSet类</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/b351b699/" rel="next" title="8.2.6 使用Java8新增的Stream操作集合">
+                  <i class="fa fa-chevron-left"></i> 8.2.6 使用Java8新增的Stream操作集合
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/e6cbfb40/" rel="prev" title="8.3.2 LinkedHashSet类">
+                  8.3.2 LinkedHashSet类 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#8-3-Set集合"><span class="nav-number">1.</span> <span class="nav-text">8.3 Set集合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-3-1-HashSet类"><span class="nav-number">2.</span> <span class="nav-text">8.3.1 HashSet类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashSet特点"><span class="nav-number">2.1.</span> <span class="nav-text">HashSet特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重写hashCode-方法的基本规则"><span class="nav-number">2.2.</span> <span class="nav-text">重写hashCode()方法的基本规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重写hashCode-方法的一般步骤"><span class="nav-number">2.3.</span> <span class="nav-text">重写hashCode()方法的一般步骤</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

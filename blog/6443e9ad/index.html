@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="9.4 深入Mapper XML映射文件 9.4.1 select select元素的属性 select元素的属性描述">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9.4 深入Mapper XML映射文件 9.4.1 select">
+<meta property="og:url" content="https://blueblue233.github.io/blog/6443e9ad/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="9.4 深入Mapper XML映射文件 9.4.1 select select元素的属性 select元素的属性描述">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="9.4 深入Mapper XML映射文件 9.4.1 select">
+<meta name="twitter:description" content="9.4 深入Mapper XML映射文件 9.4.1 select select元素的属性 select元素的属性描述">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/6443e9ad/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>9.4 深入Mapper XML映射文件 9.4.1 select | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6443e9ad/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">9.4 深入Mapper XML映射文件 9.4.1 select
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-03 21:30:06" itemprop="dateCreated datePublished" datetime="2019-06-03T21:30:06+08:00">2019-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:41" itemprop="dateModified" datetime="2019-10-14T14:55:41+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第9章-MyBatis的基本用法/" itemprop="url" rel="index"><span itemprop="name">第9章 MyBatis的基本用法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/6443e9ad/#9-4-深入Mapper-XML映射文件-9-4-1-select">9.4 深入Mapper XML映射文件 9.4.1 select</a></li>
+<li><a href="/blog/6443e9ad/#select元素的属性">select元素的属性</a><ul>
+<li><a href="/blog/6443e9ad/#select元素的属性描述">select元素的属性描述</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="9-4-深入Mapper-XML映射文件-9-4-1-select"><a href="#9-4-深入Mapper-XML映射文件-9-4-1-select" class="headerlink" title="9.4 深入Mapper XML映射文件 9.4.1 select"></a>9.4 深入Mapper XML映射文件 9.4.1 select</h1><p><code>select</code>元素用来映射查询语句,它是<code>MyBatis</code>中最常用的元素之一。<br>执行简单查询的<code>select</code>元素是非常简单的。例如:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- select操作</span></span><br><span class="line"><span class="comment">    parameterType="int"表示该查询语句需要一个int类型的参数</span></span><br><span class="line"><span class="comment">    resultType="user"表示返回的是一个user对象 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectUser"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">parameterType</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultType</span>=<span class="string">"hashmap"</span>&gt;</span> select * from tb_user where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个语句被称作<code>selectUser</code>,其接受一个<code>int</code>(或<code>Integer)</code>类型的参数,并返回一个<code>HashMap</code>类型的对象,<code>HashMap</code>中的键是列名,值便是结果行中的对应值。<br>注意参数符号<code>#{id}</code>,这是告诉<code>MyBatis</code>创建一个预处理语句参数。通过<code>JDBC</code>,这样的一个参数在<code>SQL</code>中会由一个”<code>?</code>“来标识,并被传递到一个新的预处理语句中。以上<code>MyBatis</code>配置文件执行时会生成如下<code>JDBC</code>代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String selectUser=<span class="string">"select * from tb_user where id=?"</span>;</span><br><span class="line">PrepareStatement ps=conn.prepareStatement(selectUser);</span><br><span class="line">ps.setInt(<span class="number">1</span>,id);</span><br></pre></td></tr></table></figure>
+<h1 id="select元素的属性"><a href="#select元素的属性" class="headerlink" title="select元素的属性"></a>select元素的属性</h1><p><code>select</code>元素有很多属性可以配置,它们用来决定每条语句的作用细节。例如</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectUser"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">parameterType</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultType</span>=<span class="string">"hashmap"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultMap</span>=<span class="string">"userResultMap"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">flushCache</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">useCacher</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">timeout</span>=<span class="string">"10000"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">fetchSize</span>=<span class="string">"256"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">statementType</span>=<span class="string">"PREPARED"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultSetType</span>=<span class="string">"FORWARD_ONLY"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="select元素的属性描述"><a href="#select元素的属性描述" class="headerlink" title="select元素的属性描述"></a>select元素的属性描述</h2><p><code>select</code>元素的属性描述如下:</p>
+<ul>
+<li><code>id</code>,在命名空间中唯一的标识符,可以被用来引用这条语句。</li>
+<li><code>parameterType</code>,将会传入这条语句的参数类的完全限定名或别名。这个属性是可选的,因为<code>MyBatis</code>可以通过<code>TypeHandler</code>推断出具体传入语句的参数,默认值为<code>unset</code>。</li>
+<li><code>resultType</code>,从这条语句中返回的期望类型的类的完全限定名或别名。注意如果是集合情形,那应该是集合可以包含的类型,而不能是集合本身。返回时可以使用<code>resultType</code>或 <code>resultMap</code>,但不能同时使用。</li>
+<li><code>resultMap</code>,外部<code>resultMap</code>的命名引用。<strong>结果集的映射是<code>MyBatis</code>最强大的特性对其有一个很好的理解的话,许多复杂映射的情形都能迎刃而解</strong>。返回时可以使用<code>resultMap</code>或<code>resultType</code>,但不能同时使用。</li>
+<li><code>flushCache</code>,如果设置为<code>true</code>,则任何时候只要语句被调用,都会导致本地缓存和二级缓存都被清空,默认值为<code>false</code>。</li>
+<li><code>useCache</code>,如果设置为<code>true</code>,将会导致本条语句的结果被二级缓存,在<code>select</code>元素当中默认值为<code>true</code>。</li>
+<li><code>timeout</code>,这个设置是在抛出异常之前,驱动程序等待数据库返回请求结果的秒数默认值为<code>unset</code>(依赖驱动)。</li>
+<li><code>fetchSize</code>,其尝试使得驱动程序每次批量返回的结果行数和这个设置值相等。默认值为 <code>unset</code>(依赖驱动).</li>
+<li><code>statementType</code>,值为<code>STATEMENT</code>、<code>PREPARED</code>或<code>CALLABLE</code>。这会让<code>MyBatis</code>分别使用<code>JDBC</code>中的<code>Statement</code>,<code>PreparedStatement</code>或<code>CallableStatement</code>,默认值为<code>PREPARED</code></li>
+<li><code>resultSetType</code>,结果集的类型,值为<code>FORWARDONLY</code>、<code>SCROLLSENSITIVE</code>或<code>SCROLL_INSENSITIVE</code>,默认值为<code>unset(</code>依赖驱动)</li>
+<li><code>databased</code>,如果配置了<code>databaseldProvider</code>,<code>MyBatis</code>会加载所有的不带<code>databased</code>或匹配当前<code>databased</code>的语句;如果带或者不带的语句都有,则不带的会被忽略。</li>
+<li><code>resultOrdered</code>,这个设置仅针对嵌套结果<code>select</code>语句适用:如果为<code>true</code>,就是假设包含了嵌套结果集或分组,这样的话当返回一个主结果行的时候,就不会发生对前面结果集引用的情况。这就使得在获取嵌套的结果集时不至于导致内存不够用。默认值为<code>false</code>.</li>
+<li><code>resultSets</code>,这个设置仅对多结果集的情况适用,它将列出语句执行后返回的结果集并给每个结果集起一个名称,名称是逗号分隔的.</li>
+</ul>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/6443e9ad/">9.4 深入Mapper XML映射文件 9.4.1 select</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/2c5d511f/" rel="next" title="9.4 深入Mapper XML映射文件">
+                  <i class="fa fa-chevron-left"></i> 9.4 深入Mapper XML映射文件
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/f097c266/" rel="prev" title="9.4 深入Mapper XML映射文件 9.4.2 insert,update和delete">
+                  9.4 深入Mapper XML映射文件 9.4.2 insert,update和delete <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#9-4-深入Mapper-XML映射文件-9-4-1-select"><span class="nav-number">1.</span> <span class="nav-text">9.4 深入Mapper XML映射文件 9.4.1 select</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#select元素的属性"><span class="nav-number">2.</span> <span class="nav-text">select元素的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#select元素的属性描述"><span class="nav-number">2.1.</span> <span class="nav-text">select元素的属性描述</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

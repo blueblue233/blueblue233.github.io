@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="11.2 注解的使用示例2 一对一关联关系 目录结构 创建数据库表   创建tb_card表 插入一条数据 创建tb_person表 插入一条数据 创建持久化类 Card.java Person.java   mapper接口 CardMapper接口 PersonMapper接口   测试类 运行效果">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="11.2 注解的使用示例2 一对一关联关系">
+<meta property="og:url" content="https://blueblue233.github.io/blog/39213702/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="11.2 注解的使用示例2 一对一关联关系 目录结构 创建数据库表   创建tb_card表 插入一条数据 创建tb_person表 插入一条数据 创建持久化类 Card.java Person.java   mapper接口 CardMapper接口 PersonMapper接口   测试类 运行效果">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="11.2 注解的使用示例2 一对一关联关系">
+<meta name="twitter:description" content="11.2 注解的使用示例2 一对一关联关系 目录结构 创建数据库表   创建tb_card表 插入一条数据 创建tb_person表 插入一条数据 创建持久化类 Card.java Person.java   mapper接口 CardMapper接口 PersonMapper接口   测试类 运行效果">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/39213702/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>11.2 注解的使用示例2 一对一关联关系 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/39213702/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">11.2 注解的使用示例2 一对一关联关系
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-14 09:45:58" itemprop="dateCreated datePublished" datetime="2019-06-14T09:45:58+08:00">2019-06-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第11章-MyBatis的注解配置/" itemprop="url" rel="index"><span itemprop="name">第11章 MyBatis的注解配置</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/39213702/#11-2-注解的使用示例2-一对一关联关系">11.2 注解的使用示例2 一对一关联关系</a><ul>
+<li><a href="/blog/39213702/#目录结构">目录结构</a></li>
+<li><a href="/blog/39213702/#创建数据库表">创建数据库表</a></li>
+</ul>
+</li>
+<li><a href="/blog/39213702/#创建tb-card表">创建tb_card表</a></li>
+<li><a href="/blog/39213702/#插入一条数据">插入一条数据</a></li>
+<li><a href="/blog/39213702/#创建tb-person表">创建tb_person表</a></li>
+<li><a href="/blog/39213702/#插入一条数据">插入一条数据</a><ul>
+<li><a href="/blog/39213702/#创建持久化类">创建持久化类</a><ul>
+<li><a href="/blog/39213702/#Card-java">Card.java</a></li>
+<li><a href="/blog/39213702/#Person-java">Person.java</a></li>
+</ul>
+</li>
+<li><a href="/blog/39213702/#mapper接口">mapper接口</a><ul>
+<li><a href="/blog/39213702/#CardMapper接口">CardMapper接口</a></li>
+<li><a href="/blog/39213702/#PersonMapper接口">PersonMapper接口</a></li>
+</ul>
+</li>
+<li><a href="/blog/39213702/#测试类">测试类</a></li>
+<li><a href="/blog/39213702/#运行效果">运行效果</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="11-2-注解的使用示例2-一对一关联关系"><a href="#11-2-注解的使用示例2-一对一关联关系" class="headerlink" title="11.2 注解的使用示例2 一对一关联关系"></a>11.2 注解的使用示例2 一对一关联关系</h1><h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E:\<span class="title">workspace_web2</span>\<span class="title">MyAOneToOneTest</span></span></span><br><span class="line"><span class="function">├─<span class="title">src</span></span></span><br><span class="line"><span class="function">│ ├─<span class="title">db.properties</span></span></span><br><span class="line"><span class="function">│ ├─<span class="title">domain</span></span></span><br><span class="line"><span class="function">│ │ ├─<span class="title">Card.java</span></span></span><br><span class="line"><span class="function">│ │ └─<span class="title">Person.java</span></span></span><br><span class="line"><span class="function">│ ├─<span class="title">fractory</span></span></span><br><span class="line"><span class="function">│ │ └─<span class="title">SqlSessionFratoryTools.java</span></span></span><br><span class="line"><span class="function">│ ├─<span class="title">log4j.xml</span></span></span><br><span class="line"><span class="function">│ ├─<span class="title">mapper</span></span></span><br><span class="line"><span class="function">│ │ ├─<span class="title">CardMapper.java</span></span></span><br><span class="line"><span class="function">│ │ └─<span class="title">PersonMapper.java</span></span></span><br><span class="line"><span class="function">│ ├─<span class="title">mybatis</span>-<span class="title">config.xml</span></span></span><br><span class="line"><span class="function">│ ├─<span class="title">mybatis_tb_card_tb_person.sql</span></span></span><br><span class="line"><span class="function">│ └─<span class="title">test</span></span></span><br><span class="line"><span class="function">│   └─<span class="title">OneToOneTest.java</span></span></span><br><span class="line"><span class="function">└─<span class="title">WebContent</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">META</span>-<span class="title">INF</span></span></span><br><span class="line"><span class="function">  └─<span class="title">WEB</span>-<span class="title">INF</span></span></span><br><span class="line"><span class="function">    └─<span class="title">lib</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">ant</span>-1.9.6.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">ant</span>-<span class="title">launcher</span>-1.9.6.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">asm</span>-5.2.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">cglib</span>-3.2.5.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">commons</span>-<span class="title">logging</span>-1.2.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">javassist</span>-3.22.0-<span class="title">CR2.jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">log4j</span>-1.2.17.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">log4j</span>-<span class="title">api</span>-2.3.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">log4j</span>-<span class="title">core</span>-2.3.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">mybatis</span>-3.4.5.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">mysql</span>-<span class="title">connector</span>-<span class="title">java</span>-5.1.44-<span class="title">bin.jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">ognl</span>-3.1.15.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      ├─<span class="title">slf4j</span>-<span class="title">api</span>-1.7.25.<span class="title">jar</span></span></span><br><span class="line"><span class="function">      └─<span class="title">slf4j</span>-<span class="title">log4j12</span>-1.7.25.<span class="title">jar</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h2><p>首先,给之前创建的<code>mybatis</code>数据库创建两个表<code>tb_card</code>和<code>tb_person</code>,并插入测试数据。<code>SQL</code>脚本如下使用方式:<br>保存成<code>.sql</code>文件,然后使用<code>Navicat</code>导入(设置编码格式<code>utf-8</code>,免得乱码).</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建tb_card表</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`tb_card`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_card`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`code`</span> <span class="built_in">varchar</span>(<span class="number">18</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"><span class="comment"># 插入一条数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_card`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'43280119980091'</span>);</span><br><span class="line"><span class="comment"># 创建tb_person表</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`tb_person`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_person`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">18</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`sex`</span> <span class="built_in">varchar</span>(<span class="number">18</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`card_id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">UNIQUE</span> <span class="keyword">KEY</span> <span class="string">`card_id`</span> (<span class="string">`card_id`</span>),</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> <span class="string">`tb_person_ibfk_1`</span> <span class="keyword">FOREIGN</span> <span class="keyword">KEY</span> (<span class="string">`card_id`</span>)</span><br><span class="line">    <span class="keyword">REFERENCES</span> <span class="string">`tb_card`</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"><span class="comment"># 插入一条数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`tb_person`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'小明'</span>, <span class="string">'男'</span>, <span class="string">'22'</span>, <span class="string">'1'</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="创建持久化类"><a href="#创建持久化类" class="headerlink" title="创建持久化类"></a>创建持久化类</h2><h3 id="Card-java"><a href="#Card-java" class="headerlink" title="Card.java"></a>Card.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> domain;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Card</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Card</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Card</span><span class="params">(Integer id, String code)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Card [id="</span> + id + <span class="string">", code="</span> + code + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Person-java"><a href="#Person-java" class="headerlink" title="Person.java"></a>Person.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> domain;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> Card card;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Person [id="</span> + id + <span class="string">", name="</span> + name + <span class="string">", sex="</span> + sex + <span class="string">", age="</span> + age + <span class="string">", card="</span></span><br><span class="line">                + card + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="mapper接口"><a href="#mapper接口" class="headerlink" title="mapper接口"></a>mapper接口</h2><h3 id="CardMapper接口"><a href="#CardMapper接口" class="headerlink" title="CardMapper接口"></a>CardMapper接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mapper;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Select;</span><br><span class="line"><span class="keyword">import</span> domain.Card;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CardMapper</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Select</span>(<span class="string">"select * from tb_card where id=#&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function">Card <span class="title">selectCardById</span><span class="params">(Integer id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="PersonMapper接口"><a href="#PersonMapper接口" class="headerlink" title="PersonMapper接口"></a>PersonMapper接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mapper;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.One;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Param;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Result;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Results;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Select;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.mapping.FetchType;</span><br><span class="line"><span class="keyword">import</span> domain.Person;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PersonMapper</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Select</span>(<span class="string">"select * from tb_person where id=#&#123;id&#125;"</span>)</span><br><span class="line">    <span class="meta">@Results</span>(</span><br><span class="line">        &#123;<span class="meta">@Result</span>(</span><br><span class="line">            property = <span class="string">"id"</span>,</span><br><span class="line">            column = <span class="string">"id"</span>,</span><br><span class="line">            id = <span class="keyword">true</span></span><br><span class="line">        ), <span class="meta">@Result</span>(</span><br><span class="line">            property = <span class="string">"name"</span>,</span><br><span class="line">            column = <span class="string">"name"</span></span><br><span class="line">        ), <span class="meta">@Result</span>(</span><br><span class="line">            property = <span class="string">"sex"</span>,</span><br><span class="line">            column = <span class="string">"sex"</span></span><br><span class="line">        ), <span class="meta">@Result</span>(</span><br><span class="line">            property = <span class="string">"age"</span>,</span><br><span class="line">            column = <span class="string">"age"</span></span><br><span class="line">        ), <span class="meta">@Result</span>(</span><br><span class="line">            property = <span class="string">"card"</span>,</span><br><span class="line">            column = <span class="string">"card_id"</span>,</span><br><span class="line">            one = <span class="meta">@One</span>(</span><br><span class="line">                select = <span class="string">"mapper.CardMapper.selectCardByCardID"</span>,</span><br><span class="line">                fetchType = FetchType.EAGER</span><br><span class="line">            )</span><br><span class="line">        )&#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="function">Person <span class="title">selectPersonById</span><span class="params">(@Param(<span class="string">"id"</span>)</span> Integer id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>selectPersonById</code>方法使用了<code>@Select</code>注解,其根据<code>id</code>查询对应的<code>Person</code>数据。因为需要将<code>Person</code>对应的<code>Card</code>数据也查询出来,所以<code>Person</code>的<code>Card</code>属性使用了一个<code>@Result</code>结果映射。<code>column=&quot;card_id&quot;</code>,<code>property=&quot;card&quot;</code>表示<code>Person</code>的<code>Card</code>属性对应<code>tb_person</code>表的<code>card_id</code>列,<code>one</code>属性表示是一个一对一关联关系,<code>@one</code>注解的<code>select</code>属性表示需要关联执行的<code>SQL</code>语句,<code>fetchType</code>表示查询的类型是立即加载(<code>EAGER</code>)还是懒加载(<code>LAZY</code>)。</p>
+<h2 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</span><br><span class="line"><span class="keyword">import</span> domain.Person;</span><br><span class="line"><span class="keyword">import</span> fractory.SqlSessionFratoryTools;</span><br><span class="line"><span class="keyword">import</span> mapper.PersonMapper;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OneToOneTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        SqlSession sqlSession = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            sqlSession = SqlSessionFratoryTools.getSqlSession();</span><br><span class="line">            PersonMapper personMapper = sqlSession.getMapper(PersonMapper.class);</span><br><span class="line">            Person person = personMapper.selectPersonById(<span class="number">1</span>);</span><br><span class="line">            System.out.println(person);</span><br><span class="line">            <span class="comment">// 提交事务</span></span><br><span class="line">            sqlSession.commit();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 出错回滚事务</span></span><br><span class="line">            sqlSession.rollback();</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 关闭会话</span></span><br><span class="line">            <span class="keyword">if</span> (sqlSession != <span class="keyword">null</span>)</span><br><span class="line">                sqlSession.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="运行效果"><a href="#运行效果" class="headerlink" title="运行效果"></a>运行效果</h2><p>运行<code>OneToOneTest</code>类的<code>main</code>方法,该方法通过<code>SqlSession</code>的<code>getMapper(Class&lt;T&gt; type)</code>方法获得<code>mapper</code>接口的代理对象<code>PersonMapper</code>。调用<code>PersonMapper</code>的<code>selectPersonById</code>方法时会执行该方法上的注解。需要注意的是,<code>Person</code>的一对一关联使用的注解<code>@one</code>的<code>select</code>属性,要执行的<code>SQL</code>语句在<code>CardMapper</code>接口的<code>selectCardById</code>方法的注解中。控制台显示如</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] ==&gt;  Preparing: select * from tb_person where id=? </span><br><span class="line">DEBUG [main] ==&gt; Parameters: <span class="number">1</span>(Integer)</span><br><span class="line">DEBUG [main] ====&gt;  Preparing: select * from tb_card where id=? </span><br><span class="line">DEBUG [main] ====&gt; Parameters: <span class="number">1</span>(Integer)</span><br><span class="line">DEBUG [main] &lt;====      Total: <span class="number">1</span></span><br><span class="line">DEBUG [main] &lt;==      Total: <span class="number">1</span></span><br><span class="line">Person [id=<span class="number">1</span>, name=小明, sex=男, age=<span class="number">22</span>, card=Card [id=<span class="number">1</span>, code=<span class="number">43280119980091</span>]]</span><br></pre></td></tr></table></figure>
+<p>可以看到,查询<code>Peson</code>信息时<code>Person</code>对应的<code>Card</code>对象也被查询出来了.</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/39213702/">11.2 注解的使用示例2 一对一关联关系</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/f646a666/" rel="next" title="11.2 注解的使用示例1 select insert update和delete操作">
+                  <i class="fa fa-chevron-left"></i> 11.2 注解的使用示例1 select insert update和delete操作
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/d9b66b83/" rel="prev" title="11.2 注解的使用示例3 一对多关联关系">
+                  11.2 注解的使用示例3 一对多关联关系 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#11-2-注解的使用示例2-一对一关联关系"><span class="nav-number">1.</span> <span class="nav-text">11.2 注解的使用示例2 一对一关联关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库表"><span class="nav-number">1.2.</span> <span class="nav-text">创建数据库表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建持久化类"><span class="nav-number">1.3.</span> <span class="nav-text">创建持久化类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Card-java"><span class="nav-number">1.3.1.</span> <span class="nav-text">Card.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Person-java"><span class="nav-number">1.3.2.</span> <span class="nav-text">Person.java</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapper接口"><span class="nav-number">1.4.</span> <span class="nav-text">mapper接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CardMapper接口"><span class="nav-number">1.4.1.</span> <span class="nav-text">CardMapper接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PersonMapper接口"><span class="nav-number">1.4.2.</span> <span class="nav-text">PersonMapper接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试类"><span class="nav-number">1.5.</span> <span class="nav-text">测试类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行效果"><span class="nav-number">1.6.</span> <span class="nav-text">运行效果</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

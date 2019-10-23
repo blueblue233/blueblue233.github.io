@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="4.5.2 处理多组元素">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.5.2 处理多组元素">
+<meta property="og:url" content="https://blueblue233.github.io/blog/f80559a9/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="4.5.2 处理多组元素">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.5.2 处理多组元素">
+<meta name="twitter:description" content="4.5.2 处理多组元素">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/f80559a9/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>4.5.2 处理多组元素 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/f80559a9/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">4.5.2 处理多组元素
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-20 21:56:38" itemprop="dateCreated datePublished" datetime="2019-07-20T21:56:38+08:00">2019-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:20" itemprop="dateModified" datetime="2019-10-14T14:00:20+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jQuery基础教程-第4版/" itemprop="url" rel="index"><span itemprop="name">jQuery基础教程 第4版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jQuery基础教程-第4版/第4章-样式与动画/" itemprop="url" rel="index"><span itemprop="name">第4章 样式与动画</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jQuery基础教程-第4版/第4章-样式与动画/4-5-并发与排队效果/" itemprop="url" rel="index"><span itemprop="name">4.5 并发与排队效果</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/f80559a9/#4-5-2-处理多组元素">4.5.2 处理多组元素</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="4-5-2-处理多组元素"><a href="#4-5-2-处理多组元素" class="headerlink" title="4.5.2 处理多组元素"></a>4.5.2 处理多组元素</h1><p>与一组元素的情况不同,当为不同组的元素应用效果时,这些效果几乎会同时发生。为了示范这种并发的效果,我们可以在向上滑出一个段落时,向下滑入另一个段落。首先,要用到示例文档中的如下三、四段文本:<br>接着,为了更清楚地看到效果发生期间的变化,我们为第三段和第四段分别添加1像素宽的边框和灰色的背景。同时,在<code>DOM</code>就绪时立即隐藏第4段,参见代码清单4-23。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">  $(<span class="string">'p'</span>).eq(<span class="number">2</span>).css(<span class="string">'border'</span>, <span class="string">'1px solid #333'</span>); </span><br><span class="line">  $(<span class="string">'p'</span>).eq(<span class="number">3</span>).css(<span class="string">'backgroundColor'</span>, <span class="string">'#ccc'</span>).hide(); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样,示例文档会显示开始的段落,然后是<code>read more</code>链接和带边框的段落,如图4-11所示。<br>最后,为第三段添加<code>click</code>处理程序,以便单击它时会将第3段向上滑(最终滑出视图) ,同时将第4段向下滑(最终滑入视图),参见代码清单4-24。<br>通过截取到的这两个滑动效果变化过程中的屏幕截图,如图4-12所示,可以证实,它们确实是同时发生的。<br>原来可见的第三个段落,正处于向上滑到一半的状态;与此同时,原来隐藏的第四个段落,正处于向下滑到一半的状态。<br><strong>排队回调函数</strong><br>为了对不同元素上的效果实现排队,<code>jQuery</code>为每个效果方法都提供了回调函数。同我们在事件处理程序和<code>.queue()</code>方法中看到的一样,回调函数就是作为方法的参数传递的一个普通函数。在效果方法中,它们是方法的最后一个参数。<br>当使用回调函数排队两个滑动效果时,可以在第3个段落滑上之前,先将第4个段落滑下。首先,我们看一看怎样通过回调函数设置<code>.slideDown()</code>方法,如代码清单4-25所示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">  $(<span class="string">'p'</span>).eq(<span class="number">2</span>) </span><br><span class="line">    .css(<span class="string">'border'</span>, <span class="string">'1px solid #333'</span>) </span><br><span class="line">    .click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">      $(<span class="keyword">this</span>).next().slideDown(<span class="string">'slow'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        $(<span class="keyword">this</span>).slideUp(<span class="string">'slow'</span>);  </span><br><span class="line">      &#125;); </span><br><span class="line">    &#125;); </span><br><span class="line">  $(<span class="string">'p'</span>).eq(<span class="number">3</span>).css(<span class="string">'backgroundColor'</span>, <span class="string">'#ccc'</span>).hide(); </span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<p>不过,这里我们需要注意的是,必须搞清楚要滑上的到底是哪个段落。因为回调函数位于<code>.slideDown()</code>方法中,所以<code>$(this)</code>的环境已经发生了改变。现在,<code>$(this)</code>已经不再是指向<code>.click()</code>的第三个段落了——由于<code>.slideDown()</code>方法是通过<code>$(this).next()</code>调用的,所以该方法中的一切现在都将<code>$(this)</code>视为下一个同辈元素,即第四个段落。因而,如果在回调函数中放入<code>$(this).slideUp(&#39;slow&#39;)</code>, 那么我们最终还会把刚刚显示出来的段落给隐藏起来。<br>可靠地引用<code>$(this)</code>的一种简单方法,就是在<code>.click()</code>方法内部把它保存到一个变量中,比如<code>var</code> <code>$ clickedItem</code> = <code>$(this)</code>。<br>这样,无论是在回调函数的外部还是内部,<code>$clickedItem</code>引用的都是第三个段落。使用了新变量之后的代码,参见代码清单4-26。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">  $(<span class="string">'p'</span>).eq(<span class="number">2</span>) </span><br><span class="line">    .css(<span class="string">'border'</span>, <span class="string">'1px solid #333'</span>) </span><br><span class="line">    .click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">      <span class="keyword">var</span> $clickedItem = $(<span class="keyword">this</span>); </span><br><span class="line">      $clickedItem.next().slideDown(<span class="string">'slow'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">       $clickedItem.slideUp(<span class="string">'slow'</span>);  </span><br><span class="line">      &#125;); </span><br><span class="line">    &#125;); </span><br><span class="line">  $(<span class="string">'p'</span>).eq(<span class="number">3</span>).css(<span class="string">'backgroundColor'</span>, <span class="string">'#ccc'</span>).hide(); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这次效果中途的屏幕截图如图4-13所示,第三段和第四段同时都是可见的,而且,第四段已经完成下滑,第三段刚要开始上滑。<br>既然讨论了回调函数,那么就可以回过头来基于代码清单4-22解决在接近一系列效果结束时改变背景颜色的问题了。这次,我们不像前面那样使用<code>.queue()</code>方法,而是使用回调函数,如代码清单4-27所示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">  $(<span class="string">'div.label'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> paraWidth = $(<span class="string">'div.speech p'</span>).outerWidth(); </span><br><span class="line">    <span class="keyword">var</span> $switcher = $(<span class="keyword">this</span>).parent(); </span><br><span class="line">    <span class="keyword">var</span> switcherWidth = $switcher.outerWidth(); </span><br><span class="line">    $switcher </span><br><span class="line">      .css(&#123;<span class="attr">position</span>: <span class="string">'relative'</span>&#125;) </span><br><span class="line">      .fadeTo(<span class="string">'fast'</span>, <span class="number">0.5</span>) </span><br><span class="line">      .animate(&#123; </span><br><span class="line">        left: paraWidth - switcherWidth </span><br><span class="line">      &#125;, &#123; </span><br><span class="line">        duration: <span class="string">'slow'</span>, </span><br><span class="line">        queue: <span class="literal">false</span> </span><br><span class="line">      &#125;) </span><br><span class="line">      .fadeTo(<span class="string">'slow'</span>, <span class="number">1.0</span>) </span><br><span class="line">      .slideUp(<span class="string">'slow'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        $switcher.css(&#123;<span class="attr">backgroundColor</span>: <span class="string">'#f00'</span>&#125;); </span><br><span class="line">      &#125;) </span><br><span class="line">      .slideDown(<span class="string">'slow'</span>); </span><br><span class="line">  &#125;); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>同前面一样,<code>&lt;div id=&quot;switcher&quot;&gt;</code>的背景颜色在它滑上之后滑下之前,变成了红色。注意,在使用交互的完成回调函数而不是<code>.queue()</code>时,不必在回调中调用<code>next()</code>。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/f80559a9/">4.5.2 处理多组元素</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/8d0f89ac/" rel="next" title="4.5 并发与排队效果 4.5.1 处理一组元素">
+                  <i class="fa fa-chevron-left"></i> 4.5 并发与排队效果 4.5.1 处理一组元素
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/54d133df/" rel="prev" title="4.5.3 简单概括">
+                  4.5.3 简单概括 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-5-2-处理多组元素"><span class="nav-number">1.</span> <span class="nav-text">4.5.2 处理多组元素</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

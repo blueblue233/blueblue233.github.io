@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="16.1 线程概述 16.1.1 线程和进程 进程的三个特征 并发性和并行性的区别   多进程并发策略">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.1 线程概述 16.1.1 线程和进程">
+<meta property="og:url" content="https://blueblue233.github.io/blog/11feab9f/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="16.1 线程概述 16.1.1 线程和进程 进程的三个特征 并发性和并行性的区别   多进程并发策略">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="16.1 线程概述 16.1.1 线程和进程">
+<meta name="twitter:description" content="16.1 线程概述 16.1.1 线程和进程 进程的三个特征 并发性和并行性的区别   多进程并发策略">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/11feab9f/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>16.1 线程概述 16.1.1 线程和进程 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/11feab9f/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">16.1 线程概述 16.1.1 线程和进程
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-15 20:45:38" itemprop="dateCreated datePublished" datetime="2019-07-15T20:45:38+08:00">2019-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/" itemprop="url" rel="index"><span itemprop="name">第16章 多线程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/16-1-线程概述/" itemprop="url" rel="index"><span itemprop="name">16.1 线程概述</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/11feab9f/#16-1-线程概述">16.1 线程概述</a></li>
+<li><a href="/blog/11feab9f/#16-1-1-线程和进程">16.1.1 线程和进程</a><ul>
+<li><a href="/blog/11feab9f/#进程的三个特征">进程的三个特征</a><ul>
+<li><a href="/blog/11feab9f/#并发性和并行性的区别">并发性和并行性的区别</a></li>
+</ul>
+</li>
+<li><a href="/blog/11feab9f/#多进程并发策略">多进程并发策略</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="16-1-线程概述"><a href="#16-1-线程概述" class="headerlink" title="16.1 线程概述"></a>16.1 线程概述</h1><p>几乎所有的操作系统都支持同时运行多个任务,一个任务通常就是一个程序,每个运行中的程序就是一个进程。<br>当一个程序运行时,内部可能包含了多个顺序执行流,每个顺序执行流就是一个线程。</p>
+<h1 id="16-1-1-线程和进程"><a href="#16-1-1-线程和进程" class="headerlink" title="16.1.1 线程和进程"></a>16.1.1 线程和进程</h1><p>几乎所有的操作系统都支持进程的概念,所有运行中的任务通常对应一个进程(<code>Process</code>)。<strong>当一个程序进入内存运行时,即变成一个进程</strong>。进程是处于运行过程中的程序,并且具有一定的独立功能,<strong>进程是系统进行资源分配和调度的一个独立单位</strong>。</p>
+<h2 id="进程的三个特征"><a href="#进程的三个特征" class="headerlink" title="进程的三个特征"></a>进程的三个特征</h2><p>一般而言,进程包含如下三个特征。</p>
+<ul>
+<li><code>独立性</code>:进程是系统中独立存在的实体,它可以拥有自己独立的资源,每一个进程都拥有自己私有的地址空间。在没有经过进程本身允许的情况下,一个用户进程不可以直接访问其他进程的地址空间。</li>
+<li><code>动态性</code>:进程与程序的区别在于,<code>程序只是一个静态的指令集合</code>,而进程是一个正在系统中活动的指令集合。在进程中加入了时间的概念。进程具有自己的生命周期和各种不同的状态,这些概念在程序中都是不具备的。</li>
+<li><code>并发性</code>:多个进程可以在单个处理器上并发执行,多个进程之间不会互相影响。</li>
+</ul>
+<h3 id="并发性和并行性的区别"><a href="#并发性和并行性的区别" class="headerlink" title="并发性和并行性的区别"></a>并发性和并行性的区别</h3><p>并发性(<code>concurrency</code>)和并行性(<code>parallel</code>)是两个概念,</p>
+<ul>
+<li>并行指在同一时刻,<code>有多条指令在多个处理器上同时执行</code>;</li>
+<li>并发指在<code>同一时刻只能有一条指令执行,但多个进程指令被快速轮换执行</code>,使得在宏观上具有多个进程同时执行的效果。</li>
+</ul>
+<p>对于一个<code>CPU</code>而言,它在某个时间点只能执行一个程序,也就是说,只能运行一个进程,<code>CPU</code>不断地在这些进程之间轮换执行。不过因为<code>CPU</code>的执行速度相对人的感觉来说实在是太快了,所以虽然<code>CPU</code>在多个进程之间轮换执行,但用户感觉到好像有多个进程在同时执行。</p>
+<h2 id="多进程并发策略"><a href="#多进程并发策略" class="headerlink" title="多进程并发策略"></a>多进程并发策略</h2><p>现代的操作系统都支持多进程的并发,但在具体的实现细节上可能因为硬件和操作系统的不同而采用不同的策略。比较常用的方式有:</p>
+<ul>
+<li><code>共用式的多任务操作策略</code>,例如 <code>Windows3.1</code>和 <code>Mac OS9</code>;</li>
+<li><code>抢占式多任务操作策略</code>,这种策略效率更高,目前操作系统大多采用这种策略,例如 <code>Windows NT</code>、 <code>Windows 2000</code>以及 <code>UNIX/Linux</code>等操作系统。</li>
+</ul>
+<p>多线程则扩展了多进程的概念,使得同一个进程可以同时并发处理多个任务。线程(<code>Thread)</code>也被称作轻量级进程( <code>Lightweight Process</code>),<code>线程是进程的执行单元</code>。就像进程在操作系统中的地位一样,<code>线程在程序中是独立的、并发的执行流</code>。当进程被初始化后,<code>主线程</code>就被创建了。对于绝大多数的应用程序来说,通常仅要求有一个主线程,但也可以在该进程内创建多条顺序执行流,这些顺序执行流就是线程,<code>每个线程也是互相独立的</code>。</p>
+<p><code>线程是进程的组成部分</code>,<code>一个进程可以拥有多个线程,一个线程必须有一个父进程</code>。线程可以拥有自己的<code>堆栈</code>、自己的<code>程序计数器</code>和自己的<code>局部变量</code>,<code>但不拥有系统资源</code>,它与父进程的其他线程<code>共享该进程所拥有的全部资源</code>。因为多个线程共享父进程里的全部资源,因此编程更加方便;但必须更加小心,因为需要确保线程不会妨碍同一进程里的其他线程。<br>线程可以完成一定的任务,可以与其他线程共享父进程中的共享变量及部分环境,相互之间协同来完成进程所要完成的任务。<br>线程是独立运行的,它并不知道进程中是否还有其他线程存在。<code>线程的执行是抢占式的</code>,也就是说,当前运行的线程在任何时候都可能被挂起,以便另外一个线程可以运行。<br><code>一个线程可以创建和撤销另一个线程</code>,同一个进程中的多个线程之间可以并发执行。<br>从逻辑角度来看,多线程存在于一个应用程序中,让一个应用程序中可以有多个执行部分同时执行,但操作系统无须将多个线程看作多个独立的应用,对多线程实现调度和管理以及资源分配。<code>线程的调度和管理由进程本身负责完成</code>。<br><strong>简而言之,一个程序运行后至少有一个进程,一个进程里可以包含多个线程,但至少要包含一个线程</strong></p>
+<p><strong>归纳起来可以这样说:操作系统可以同时执行多个任务,每个任务就是进程;进程可以同时执行多个任务,每个任务就是线程。</strong></p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/11feab9f/">16.1 线程概述 16.1.1 线程和进程</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d184d1d1/" rel="next" title="第16章 多线程">
+                  <i class="fa fa-chevron-left"></i> 第16章 多线程
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/17942968/" rel="prev" title="16.1.2 多线程的优势">
+                  16.1.2 多线程的优势 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#16-1-线程概述"><span class="nav-number">1.</span> <span class="nav-text">16.1 线程概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#16-1-1-线程和进程"><span class="nav-number">2.</span> <span class="nav-text">16.1.1 线程和进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的三个特征"><span class="nav-number">2.1.</span> <span class="nav-text">进程的三个特征</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#并发性和并行性的区别"><span class="nav-number">2.1.1.</span> <span class="nav-text">并发性和并行性的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多进程并发策略"><span class="nav-number">2.2.</span> <span class="nav-text">多进程并发策略</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

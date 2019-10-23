@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="5.2 Spring MVC的国际化处理 5.2.1 AcceptHeaderLocaleResolver 示例:基于浏览器请求的国际化实现 message_enUs.properties message_zh_CN.properties   loginForm.jsp springmvc-config.xml 国际化配置   UserController.java success.jsp 测试">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.2 Spring MVC的国际化处理 5.2.1 基于浏览器请求的国际化">
+<meta property="og:url" content="https://blueblue233.github.io/blog/85d4b26/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="5.2 Spring MVC的国际化处理 5.2.1 AcceptHeaderLocaleResolver 示例:基于浏览器请求的国际化实现 message_enUs.properties message_zh_CN.properties   loginForm.jsp springmvc-config.xml 国际化配置   UserController.java success.jsp 测试">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/1.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/2.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/3.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/4.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/5.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/6.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/7.png">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5.2 Spring MVC的国际化处理 5.2.1 基于浏览器请求的国际化">
+<meta name="twitter:description" content="5.2 Spring MVC的国际化处理 5.2.1 AcceptHeaderLocaleResolver 示例:基于浏览器请求的国际化实现 message_enUs.properties message_zh_CN.properties   loginForm.jsp springmvc-config.xml 国际化配置   UserController.java success.jsp 测试">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/1.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/85d4b26/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>5.2 Spring MVC的国际化处理 5.2.1 基于浏览器请求的国际化 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/85d4b26/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">5.2 Spring MVC的国际化处理 5.2.1 基于浏览器请求的国际化
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-02 13:18:15" itemprop="dateCreated datePublished" datetime="2019-06-02T13:18:15+08:00">2019-06-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第5章-Spring-MVC的国际化/" itemprop="url" rel="index"><span itemprop="name">第5章 Spring MVC的国际化</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/85d4b26/#5-2-Spring-MVC的国际化处理">5.2 Spring MVC的国际化处理</a><ul>
+<li><a href="/blog/85d4b26/#5-2-1-AcceptHeaderLocaleResolver">5.2.1 AcceptHeaderLocaleResolver</a></li>
+<li><a href="/blog/85d4b26/#示例-基于浏览器请求的国际化实现">示例:基于浏览器请求的国际化实现</a><ul>
+<li><a href="/blog/85d4b26/#message-enUs-properties">message_enUs.properties</a></li>
+<li><a href="/blog/85d4b26/#message-zh-CN-properties">message_zh_CN.properties</a></li>
+</ul>
+</li>
+<li><a href="/blog/85d4b26/#loginForm-jsp">loginForm.jsp</a></li>
+<li><a href="/blog/85d4b26/#springmvc-config-xml">springmvc-config.xml</a><ul>
+<li><a href="/blog/85d4b26/#国际化配置">国际化配置</a></li>
+</ul>
+</li>
+<li><a href="/blog/85d4b26/#UserController-java">UserController.java</a></li>
+<li><a href="/blog/85d4b26/#success-jsp">success.jsp</a></li>
+<li><a href="/blog/85d4b26/#测试">测试</a></li>
+<li><a href="/blog/85d4b26/#测试国际化">测试国际化</a><ul>
+<li><a href="/blog/85d4b26/#设置浏览器语言">设置浏览器语言</a></li>
+<li><a href="/blog/85d4b26/#显示效果">显示效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="5-2-Spring-MVC的国际化处理"><a href="#5-2-Spring-MVC的国际化处理" class="headerlink" title="5.2 Spring MVC的国际化处理"></a>5.2 Spring MVC的国际化处理</h1><h2 id="5-2-1-AcceptHeaderLocaleResolver"><a href="#5-2-1-AcceptHeaderLocaleResolver" class="headerlink" title="5.2.1 AcceptHeaderLocaleResolver"></a>5.2.1 AcceptHeaderLocaleResolver</h2><p><code>AcceptHeaderLocaleResolver</code>是默认的,也是最容易使用的语言区域解析器。使用它,<code>Spring MVC</code>会读取浏览器的<code>accept-language</code>标题,来确定使用哪个语言区域。<code>AcceptHeaderLocaleResolver</code>可以不用显式配置,当然也可以显式配置。 </p>
+<h2 id="示例-基于浏览器请求的国际化实现"><a href="#示例-基于浏览器请求的国际化实现" class="headerlink" title="示例:基于浏览器请求的国际化实现"></a>示例:基于浏览器请求的国际化实现</h2><p>首先,准备两个资源文件</p>
+<h3 id="message-enUs-properties"><a href="#message-enUs-properties" class="headerlink" title="message_enUs.properties"></a>message_enUs.properties</h3><p>第一个资源文件是<code>message_enUs.properties</code>,该文件内容如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">loginname= Login name:</span><br><span class="line">password = Password:</span><br><span class="line">submit = Submit</span><br><span class="line">welcome = Welcom &#123;0&#125;</span><br><span class="line">title = Login Page</span><br><span class="line">username = administrator</span><br></pre></td></tr></table></figure>
+<h3 id="message-zh-CN-properties"><a href="#message-zh-CN-properties" class="headerlink" title="message_zh_CN.properties"></a>message_zh_CN.properties</h3><p>第二个资源文件的内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">loginname=登录名:</span><br><span class="line">password=密码:</span><br><span class="line">submit=提交</span><br><span class="line">welcome=欢迎 &#123;0&#125;</span><br><span class="line">title=登录页面</span><br><span class="line">username=管理员</span><br></pre></td></tr></table></figure>
+<p>将上面两个国际化资源文件报错为<code>UTF-8</code>编码.接下来在<code>JSP</code>页面中通过<code>&lt; spring: message/&gt;</code>标签来输出国际化消息。</p>
+<h2 id="loginForm-jsp"><a href="#loginForm-jsp" class="headerlink" title="loginForm.jsp"></a>loginForm.jsp</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span> pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;%<span class="meta">@taglib</span> prefix=<span class="string">"form"</span> uri=<span class="string">"http://www.springframework.org/tags/form"</span>%&gt;</span><br><span class="line">&lt;%<span class="meta">@taglib</span> prefix=<span class="string">"spring"</span> uri=<span class="string">"http://www.springframework.org/tags"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;测试基于浏览器请求的国际化&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;!-- 使用message标签来输出国际化信息 --&gt;</span><br><span class="line">    &lt;h3&gt;</span><br><span class="line">        &lt;spring:message code=<span class="string">"title"</span> /&gt;</span><br><span class="line">    &lt;/h3&gt;</span><br><span class="line">    &lt;form:form modelAttribute=<span class="string">"user"</span> method=<span class="string">"post"</span> action=<span class="string">"login"</span>&gt;</span><br><span class="line">        &lt;table&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;&lt;spring:message code="loginname" /&gt;&lt;/td&gt;</span><br><span class="line">                &lt;td&gt;&lt;form:input path="loginname" /&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;&lt;spring:message code="password" /&gt;&lt;/td&gt;</span><br><span class="line">                &lt;td&gt;&lt;form:input path="password" /&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="submit" value="&lt;spring:message code="submit"/&gt;" /&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">        &lt;/table&gt;</span><br><span class="line">    &lt;/form:form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="springmvc-config-xml"><a href="#springmvc-config-xml" class="headerlink" title="springmvc-config.xml"></a>springmvc-config.xml</h2><p>接下来在 <code>Spring MVC</code>配置文件中加载国际化资源文件。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:p</span>=<span class="string">"http://www.springframework.org/schema/p"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:mvc</span>=<span class="string">"http://www.springframework.org/schema/mvc"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/mvc</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context/spring-context-4.3.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- spring可以自动去扫描base-pack下面的包或者子包下面的java文件，</span></span><br><span class="line"><span class="comment">        如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"org.fkit"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 默认配置方案 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 静态资源处理 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:default-servlet-handler</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 视图解析器 p:prefix属性表示前缀 p:suffix 表示后缀 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span></span></span><br><span class="line"><span class="tag">        <span class="attr">id</span>=<span class="string">"viewResolver"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.view.InternalResourceViewResolver"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">p:prefix</span>=<span class="string">"/WEB-INF/content/"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">p:suffix</span>=<span class="string">".jsp"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 国际化 p:basenames属性用于指定国际化资源文件名 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 国际化 p:defaultEncoding属性指定国际化资源文件的编码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span></span></span><br><span class="line"><span class="tag">        <span class="attr">id</span>=<span class="string">"messageSource"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.springframework.context.support.ResourceBundleMessageSource"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">p:basenames</span>=<span class="string">"message"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">p:defaultEncoding</span>=<span class="string">"UTF-8"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 国际化操作拦截器 如果采用基于（Session/Cookie）则必需配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.i18n.LocaleChangeInterceptor"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- AcceptHeaderLocaleResolver 配置,因为AcceptHeaderLocaleResolver是默认语言区域解析器，不配置也可以 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span></span></span><br><span class="line"><span class="tag">        <span class="attr">id</span>=<span class="string">"localeResolver"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="国际化配置"><a href="#国际化配置" class="headerlink" title="国际化配置"></a>国际化配置</h3><p>国际化配置如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 国际化 p:basenames属性用于指定国际化资源文件名 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 国际化 p:defaultEncoding属性指定国际化资源文件的编码 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"messageSource"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"org.springframework.context.support.ResourceBundleMessageSource"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">p:basenames</span>=<span class="string">"message"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">p:defaultEncoding</span>=<span class="string">"UTF-8"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="指定国际化资源文件路径"><a href="#指定国际化资源文件路径" class="headerlink" title="指定国际化资源文件路径"></a>指定国际化资源文件路径</h4><p>其中<code>p:basenames</code>属性用于指定国际化文件的路径,这个路径是相对于src目录的路径,例如这里对应的路径为:<code>src/message_en_US.properties</code>和<code>message_zh_CN.properties</code>,指定国际化路径的时候只需要指定文件的前缀就行类,后面的<code>语言</code>,<code>地区</code>以及<code>文件名后缀</code>不需要指出.也就是对于:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">message_zh_CN.properties</span><br><span class="line">message_en_US.properties</span><br></pre></td></tr></table></figure>
+<h4 id="指定国际化资源文件编码"><a href="#指定国际化资源文件编码" class="headerlink" title="指定国际化资源文件编码"></a>指定国际化资源文件编码</h4><p><code>p:defaultEncoding=&quot;UTF-8&quot;</code>这个属性用于指定这些国际化文件使用的编码,默认编码是<code>ISO-8859-1</code>,这样中文将会变成<code>unicode</code>代码,不方便我们阅读修改.所以我这里使用<code>UTF-8</code>编码<br>这组国际化资源文件,只需要指定<code>message</code>即可</p>
+<h2 id="UserController-java"><a href="#UserController-java" class="headerlink" title="UserController.java"></a>UserController.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/loginForm"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">loginForm</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 创建一个user对象给表单标签库使用</span></span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">        <span class="comment">// 跳转页面</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"loginForm"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@PostMapping</span>(value = <span class="string">"/login"</span>)</span><br><span class="line">    <span class="comment">// @ModelAttribute User user:将提交表单的数据保存到user对象中</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(@ModelAttribute User user, Model model, HttpServletRequest request)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(user);</span><br><span class="line">        <span class="comment">// 如果登录名是xiaoming，密码是123456，则验证通过</span></span><br><span class="line">        <span class="keyword">if</span> (user.getLoginname() != <span class="keyword">null</span> &amp;&amp; user.getLoginname().equals(<span class="string">"xiaoming"</span>)</span><br><span class="line">                &amp;&amp; user.getPassword() != <span class="keyword">null</span> &amp;&amp; user.getPassword().equals(<span class="string">"123456"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 从后台代码获取国际化信息username</span></span><br><span class="line">            RequestContext requestContext = <span class="keyword">new</span> RequestContext(request);</span><br><span class="line">            String username = requestContext.getMessage(<span class="string">"username"</span>);</span><br><span class="line">            <span class="comment">// 将获取的username信息设置到User对象并设置到Model当中</span></span><br><span class="line">            user.setUsername(username);</span><br><span class="line">            model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"error"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>login()</code>方法接收请求,如果验证通过,则使用<code>RequestContext</code>对象的<code>getMessage()</code>方法来获取国际化消息,并跳转到<code>success.jsp</code>页面。</p>
+<h2 id="success-jsp"><a href="#success-jsp" class="headerlink" title="success.jsp"></a>success.jsp</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span> pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;%<span class="meta">@taglib</span> prefix=<span class="string">"spring"</span> uri=<span class="string">"http://www.springframework.org/tags"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;测试基于浏览器请求的国际化&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;spring:message code=<span class="string">"welcome"</span> arguments=<span class="string">"$&#123;requestScope.user.username&#125;"</span> /&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>在<code>success.Jjsp</code>页面中,使用<code>message</code>标签读取资源文件中名为<code>welcome</code>的消息,并设置了一个参数,参数值为<code>user</code>对象的<code>username</code>属性</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>正确填写登陆名<code>xiaoming</code>,密码<code>123456</code>,<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/1.png" alt="这里有一张图片"><br>将会成功跳转到成功界面如下图所示:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/2.png" alt="这里有一张图片"></p>
+<h2 id="测试国际化"><a href="#测试国际化" class="headerlink" title="测试国际化"></a>测试国际化</h2><h3 id="设置浏览器语言"><a href="#设置浏览器语言" class="headerlink" title="设置浏览器语言"></a>设置浏览器语言</h3><p>点击火狐浏览器右边的菜单按钮,然后选中选项:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/3.png" alt="这里有一张图片"><br>找到语言,点击右边的选择按钮:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/4.png" alt="这里有一张图片"><br>把英语(美国)移动到最上面:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/5.png" alt="这里有一张图片"></p>
+<h3 id="显示效果"><a href="#显示效果" class="headerlink" title="显示效果"></a>显示效果</h3><p>刷新登陆表单,即可看到提示信息变成英文的了:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/6.png" alt="这里有一张图片"><br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter5/7.png" alt="这里有一张图片"></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/85d4b26/">5.2 Spring MVC的国际化处理 5.2.1 基于浏览器请求的国际化</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/afaabccf/" rel="next" title="5.1 Spring MVC国际化的相关知识">
+                  <i class="fa fa-chevron-left"></i> 5.1 Spring MVC国际化的相关知识
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/dff20a30/" rel="prev" title="5.2 Spring MVC的国际化处理 5.2.2 基于HttpSession的国际化">
+                  5.2 Spring MVC的国际化处理 5.2.2 基于HttpSession的国际化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-2-Spring-MVC的国际化处理"><span class="nav-number">1.</span> <span class="nav-text">5.2 Spring MVC的国际化处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-1-AcceptHeaderLocaleResolver"><span class="nav-number">1.1.</span> <span class="nav-text">5.2.1 AcceptHeaderLocaleResolver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例-基于浏览器请求的国际化实现"><span class="nav-number">1.2.</span> <span class="nav-text">示例:基于浏览器请求的国际化实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#message-enUs-properties"><span class="nav-number">1.2.1.</span> <span class="nav-text">message_enUs.properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#message-zh-CN-properties"><span class="nav-number">1.2.2.</span> <span class="nav-text">message_zh_CN.properties</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loginForm-jsp"><span class="nav-number">1.3.</span> <span class="nav-text">loginForm.jsp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#springmvc-config-xml"><span class="nav-number">1.4.</span> <span class="nav-text">springmvc-config.xml</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#国际化配置"><span class="nav-number">1.4.1.</span> <span class="nav-text">国际化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指定国际化资源文件路径"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">指定国际化资源文件路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指定国际化资源文件编码"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">指定国际化资源文件编码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UserController-java"><span class="nav-number">1.5.</span> <span class="nav-text">UserController.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#success-jsp"><span class="nav-number">1.6.</span> <span class="nav-text">success.jsp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">1.7.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试国际化"><span class="nav-number">1.8.</span> <span class="nav-text">测试国际化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置浏览器语言"><span class="nav-number">1.8.1.</span> <span class="nav-text">设置浏览器语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示效果"><span class="nav-number">1.8.2.</span> <span class="nav-text">显示效果</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

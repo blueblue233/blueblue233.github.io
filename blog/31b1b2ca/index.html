@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="16.3.2 运行状态和阻塞状态 什么时候线程处于运行状态 什么时候线程进入阻塞状态 什么时候线程由阻塞状态进入就绪状态 线程状态转换图">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.3.2 运行状态和阻塞状态">
+<meta property="og:url" content="https://blueblue233.github.io/blog/31b1b2ca/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="16.3.2 运行状态和阻塞状态 什么时候线程处于运行状态 什么时候线程进入阻塞状态 什么时候线程由阻塞状态进入就绪状态 线程状态转换图">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/fangkuangJavaJiangYi3/16/1.png">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="16.3.2 运行状态和阻塞状态">
+<meta name="twitter:description" content="16.3.2 运行状态和阻塞状态 什么时候线程处于运行状态 什么时候线程进入阻塞状态 什么时候线程由阻塞状态进入就绪状态 线程状态转换图">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/fangkuangJavaJiangYi3/16/1.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/31b1b2ca/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>16.3.2 运行状态和阻塞状态 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/31b1b2ca/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">16.3.2 运行状态和阻塞状态
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-16 09:58:14" itemprop="dateCreated datePublished" datetime="2019-07-16T09:58:14+08:00">2019-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/" itemprop="url" rel="index"><span itemprop="name">第16章 多线程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/16-3-线程的生命周期/" itemprop="url" rel="index"><span itemprop="name">16.3 线程的生命周期</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/31b1b2ca/#16-3-2-运行状态和阻塞状态">16.3.2 运行状态和阻塞状态</a><ul>
+<li><a href="/blog/31b1b2ca/#什么时候线程处于运行状态">什么时候线程处于运行状态</a></li>
+<li><a href="/blog/31b1b2ca/#什么时候线程进入阻塞状态">什么时候线程进入阻塞状态</a></li>
+<li><a href="/blog/31b1b2ca/#什么时候线程由阻塞状态进入就绪状态">什么时候线程由阻塞状态进入就绪状态</a></li>
+<li><a href="/blog/31b1b2ca/#线程状态转换图">线程状态转换图</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="16-3-2-运行状态和阻塞状态"><a href="#16-3-2-运行状态和阻塞状态" class="headerlink" title="16.3.2 运行状态和阻塞状态"></a>16.3.2 运行状态和阻塞状态</h1><h2 id="什么时候线程处于运行状态"><a href="#什么时候线程处于运行状态" class="headerlink" title="什么时候线程处于运行状态"></a>什么时候线程处于运行状态</h2><p>如果<strong>处于就绪状态的线程获得了<code>CPU</code>,开始执行<code>run()</code>方法的线程执行体,则该线程处于<code>运行状态</code></strong>,如果计算机只有一个<code>CPU</code>,那么在任何时刻只有一个线程处于运行状态。当然,在一个多处理器的机器上,将会有多个线程<strong><code>并行</code>执行</strong>;不过当线程数大于处理器数时,依然会存在多个线程在同一个<code>CPU</code>上轮换的现象。(注意多处理器的机器上是并行: <code>parallel</code>,单处理器上是<code>并发</code>)<br>当一个线程开始运行后,它不可能一直处于运行状态(除非它的线程执行体足够短,瞬间就执行结束了),<strong>线程在运行过程中需要被中断,目的是使其他线程获得执行的机会</strong>,线程调度的细节取决于底层平台所采用的策略。对于采用<code>抢占式策略</code>的系统而言,系统会给每个可执行的线程一个<code>小时间段</code>来处理任务;当该时间段用完后,系统就会剥夺该线程所占用的资源,让其他线程获得执行的机会。在选择下一个线程时,系统会考虑线程的优先级。<br>所有现代的桌面和服务器操作系统都采用<code>抢占式调度策略</code>,但一些小型设备如<code>手机</code>则可能采用<code>协作式调度策略</code>,在这样的系统中,只有当一个线程调用了它的<code>sleep()</code>或<code>yield()</code>方法后才会放弃所占用的资源,也就是必须由该线程主动放弃所占用的资源。</p>
+<h2 id="什么时候线程进入阻塞状态"><a href="#什么时候线程进入阻塞状态" class="headerlink" title="什么时候线程进入阻塞状态"></a>什么时候线程进入阻塞状态</h2><p>当发生如下情况时,线程将会进入阻塞状态。</p>
+<ol>
+<li>线程调用<code>sleep()</code>方法主动放弃所占用的处理器资源。</li>
+<li>线程调用了一个<code>阻塞式IO方法</code>,在<code>阻塞式IO方法</code>返回之前,该线程被阻塞。</li>
+<li>线程试图获得一个同步监视器,但该<code>同步监视器正被其他线程所持有的时候</code>。</li>
+<li>线程在等待某个通知(<code>notify</code>)。</li>
+<li>程序调用了线程的<code>suspend()</code>方法将该线程挂起。但这个方法容易导致死锁,所以应该尽量避免使用该方法。</li>
+</ol>
+<p>当前正在执行的线程被阻塞之后,其他线程就可以获得执行的机会。<strong>被阻塞的线程会在合适的时候重新进入<code>就绪状态</code></strong>,注意是<code>就绪状态</code>而不是运行状态。也就是说,<strong>被阻塞线程的阻塞解除后,必须重新等待线程调度器再次调度它</strong>。</p>
+<h2 id="什么时候线程由阻塞状态进入就绪状态"><a href="#什么时候线程由阻塞状态进入就绪状态" class="headerlink" title="什么时候线程由阻塞状态进入就绪状态"></a>什么时候线程由阻塞状态进入就绪状态</h2><p>针对上面几种情况,当发生如下特定的情况时可以解除上面的阻塞,让该线程重新进入就绪状态。</p>
+<ol>
+<li>调用<code>sleep</code>方法的线程经过了指定时间</li>
+<li>线程调用的<code>阻塞式IO方法</code>已经返回。</li>
+<li>线程成功地获得了试图取得的同步监视器。</li>
+<li>线程正在等待某个通知时,<code>其他线程发出了一个通知</code>。</li>
+<li>处于挂起状态的线程被调用了<code>resumed()</code>恢复方法。</li>
+</ol>
+<h2 id="线程状态转换图"><a href="#线程状态转换图" class="headerlink" title="线程状态转换图"></a>线程状态转换图</h2><p>图16.4显示了线程状态转换图。<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/fangkuangJavaJiangYi3/16/1.png" alt="这里有一张图片"><br>从图16.4中可以看出,<strong>线程从<code>阻塞状态</code>只能进入<code>就绪状态</code>,无法直接进入运行状态</strong>。而<strong>就绪状态和运行状态之间的转换通常不受程序控制,而是由系统线程调度所决定</strong>,当处于就绪状态的线程获得处理器资源时,该线程进入运行状态;当处于运行状态的线程失去处理器资源时,该线程进入就绪状态。但有个方法例外,<strong>调用<code>yield()</code>方法可以让运行状态的线程转入就绪状态</strong>。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/31b1b2ca/">16.3.2 运行状态和阻塞状态</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/53914314/" rel="next" title="16.3.1 新建状态和就绪状态">
+                  <i class="fa fa-chevron-left"></i> 16.3.1 新建状态和就绪状态
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/336e1e5c/" rel="prev" title="16.3.3 线程死亡">
+                  16.3.3 线程死亡 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#16-3-2-运行状态和阻塞状态"><span class="nav-number">1.</span> <span class="nav-text">16.3.2 运行状态和阻塞状态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候线程处于运行状态"><span class="nav-number">1.1.</span> <span class="nav-text">什么时候线程处于运行状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候线程进入阻塞状态"><span class="nav-number">1.2.</span> <span class="nav-text">什么时候线程进入阻塞状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候线程由阻塞状态进入就绪状态"><span class="nav-number">1.3.</span> <span class="nav-text">什么时候线程由阻塞状态进入就绪状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程状态转换图"><span class="nav-number">1.4.</span> <span class="nav-text">线程状态转换图</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

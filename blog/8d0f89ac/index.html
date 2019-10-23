@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="4.5 并发与排队效果 4.5.1 处理一组元素 1. 越过队列 2. 手工队列">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.5 并发与排队效果 4.5.1 处理一组元素">
+<meta property="og:url" content="https://blueblue233.github.io/blog/8d0f89ac/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="4.5 并发与排队效果 4.5.1 处理一组元素 1. 越过队列 2. 手工队列">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.5 并发与排队效果 4.5.1 处理一组元素">
+<meta name="twitter:description" content="4.5 并发与排队效果 4.5.1 处理一组元素 1. 越过队列 2. 手工队列">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/8d0f89ac/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>4.5 并发与排队效果 4.5.1 处理一组元素 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/8d0f89ac/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">4.5 并发与排队效果 4.5.1 处理一组元素
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-20 21:18:02" itemprop="dateCreated datePublished" datetime="2019-07-20T21:18:02+08:00">2019-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:20" itemprop="dateModified" datetime="2019-10-14T14:00:20+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jQuery基础教程-第4版/" itemprop="url" rel="index"><span itemprop="name">jQuery基础教程 第4版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jQuery基础教程-第4版/第4章-样式与动画/" itemprop="url" rel="index"><span itemprop="name">第4章 样式与动画</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jQuery基础教程-第4版/第4章-样式与动画/4-5-并发与排队效果/" itemprop="url" rel="index"><span itemprop="name">4.5 并发与排队效果</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/8d0f89ac/#4-5-并发与排队效果">4.5 并发与排队效果</a><ul>
+<li><a href="/blog/8d0f89ac/#4-5-1-处理一组元素">4.5.1 处理一组元素</a></li>
+<li><a href="/blog/8d0f89ac/#1-越过队列">1. 越过队列</a></li>
+<li><a href="/blog/8d0f89ac/#2-手工队列">2. 手工队列</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="4-5-并发与排队效果"><a href="#4-5-并发与排队效果" class="headerlink" title="4.5 并发与排队效果"></a>4.5 并发与排队效果</h1><p>通过刚才的例子,可以看出<code>.animate()</code>方法在为一组特定的元素创建并发效果时非常有用。然而,有的时候我们需要的则是排队效果,即让效果一个接一个地发生。</p>
+<h2 id="4-5-1-处理一组元素"><a href="#4-5-1-处理一组元素" class="headerlink" title="4.5.1 处理一组元素"></a>4.5.1 处理一组元素</h2><p>当为同一组元素应用多重效果时,可以通过连缀这些效果轻易地实现排队。为了示范排队效果,我们仍以代码清单4-17为例,移动<code>Text Size</code>盒子、增加其高度、加宽其边框。不过,这次<strong>我们相继地执行这三个效果——很简单,只要把它们分别放在<code>.animate()</code>方法中并连缀起来即可</strong>,参见代码清单4-18。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">  $(<span class="string">'div.label'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> paraWidth = $(<span class="string">'div.speech p'</span>).outerWidth(); </span><br><span class="line">    <span class="keyword">var</span> $switcher = $(<span class="keyword">this</span>).parent(); </span><br><span class="line">    <span class="keyword">var</span> switcherWidth = $switcher.outerWidth(); </span><br><span class="line">    $switcher </span><br><span class="line">      .css(&#123;<span class="attr">position</span>: <span class="string">'relative'</span>&#125;) </span><br><span class="line">      .animate(&#123;<span class="attr">left</span>: paraWidth - switcherWidth&#125;, <span class="string">'slow'</span>) </span><br><span class="line">      .animate(&#123;<span class="attr">height</span>: <span class="string">'+=20px'</span>&#125;, <span class="string">'slow'</span>) </span><br><span class="line">      .animate(&#123;<span class="attr">borderWidth</span>: <span class="string">'5px'</span>&#125;, <span class="string">'slow'</span>); </span><br><span class="line">  &#125;); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>虽然连缀允许我们把这两个<code>.animate()</code>方法放在同一行,但为了更好的可读性,这里故意将它们分开放在了各自的一行中。<br><strong>通过使用连缀,可以对其他任何<code>jQuery</code>效果进行排队</strong>,而并不限于<code>.animate()</code>方法。比如说,我们可以按照下列顺序对<code>&lt;div id=&quot;switcher&quot;&gt;</code>上的效果进行排队。<br>(1) 通过<code>.fadeTo()</code>将其不透明度减退为0.5。<br>(2) 通过<code>.animate()</code>将其移动到右侧。<br>(3) 通过<code>.fadeTo()</code>将其渐增回完全不透明。<br>(4) 通过<code>.slideUp()</code>隐藏它。<br>(5) 通过<code>.slideDown()</code>再将其显示出来。<br>我们所要做的,就是在代码中按照相同的顺序连缀这些效果,如代码清单4-19所示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">'div.label'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> paraWidth = $(<span class="string">'div.speech p'</span>).outerWidth();</span><br><span class="line">        <span class="keyword">var</span> $switcher = $(<span class="keyword">this</span>).parent();</span><br><span class="line">        <span class="keyword">var</span> switcherWidth = $switcher.outerWidth();</span><br><span class="line">        $switcher</span><br><span class="line">            .css(&#123; <span class="attr">position</span>: <span class="string">'relative'</span> &#125;)</span><br><span class="line">            .fadeTo(<span class="string">'fast'</span>, <span class="number">0.5</span>)</span><br><span class="line">            .animate(&#123; <span class="attr">left</span>: paraWidth - switcherWidth &#125;, <span class="string">'slow'</span>)</span><br><span class="line">            .fadeTo(<span class="string">'slow'</span>, <span class="number">1.0</span>)</span><br><span class="line">            .slideUp(<span class="string">'slow'</span>)</span><br><span class="line">            .slideDown(<span class="string">'slow'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="1-越过队列"><a href="#1-越过队列" class="headerlink" title="1. 越过队列"></a>1. 越过队列</h2><p>不过,要是想在这个<code>&lt;div&gt;</code>不透明度减退至一半的同时,把它移动到右侧应该怎么办呢?如果两个动画以相同速度执行,则可以简单地把它们组合到一个<code>.animate()</code>方法中。但这个例子中的<code>.fadeTo()</code>使用的速度字符串是’<code>fast&#39;</code>,而向右移动的动画使用的速度字符串是’<code>slow&#39;</code>。在这种情况下,第二种形式的<code>.animate()</code>方法又可以派上用场了,参见代码清单4-20。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">  $(<span class="string">'div.label'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> paraWidth = $(<span class="string">'div.speech p'</span>).outerWidth(); </span><br><span class="line">    <span class="keyword">var</span> $switcher = $(<span class="keyword">this</span>).parent(); </span><br><span class="line">    <span class="keyword">var</span> switcherWidth = $switcher.outerWidth(); </span><br><span class="line">    $switcher </span><br><span class="line">      .css(&#123;<span class="attr">position</span>: <span class="string">'relative'</span>&#125;) </span><br><span class="line">      .fadeTo(<span class="string">'fast'</span>, <span class="number">0.5</span>) </span><br><span class="line">      .animate(&#123; </span><br><span class="line">        left: paraWidth - switcherWidth </span><br><span class="line">      &#125;, &#123; </span><br><span class="line">        duration: <span class="string">'slow'</span>, </span><br><span class="line">        queue: <span class="literal">false</span> </span><br><span class="line">      &#125;) </span><br><span class="line">      .fadeTo(<span class="string">'slow'</span>, <span class="number">1.0</span>) </span><br><span class="line">      .slideUp(<span class="string">'slow'</span>) </span><br><span class="line">      .slideDown(<span class="string">'slow'</span>); </span><br><span class="line">  &#125;); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>第二个参数(即选项对象)包含了<code>queue</code>选项,把该选项设置为<code>false</code>即可让当前动画与前一个动画同时开始。</p>
+<h2 id="2-手工队列"><a href="#2-手工队列" class="headerlink" title="2. 手工队列"></a>2. 手工队列</h2><p>有关为一组元素应用排队效果的最后一个需要注意的问题,就是排队不能自动应用到其他的非效果方法,如<code>.css()</code>。下面,假设我们想在<code>.slideUp()</code>执行后但在<code>.slideDown()</code>执行前,把<code>&lt;div id=&quot;switcher&quot;&gt;</code>的背景颜色修改为红色,可以尝试像代码清单4-21这样来做。</p>
+<p>然而,即使把修改背景颜色的代码放在连缀序列中正确的位置上,它也会在单击后立即执行。把非效果方法添加到队列中的一种方式,就是使用<code>.queue()</code>方法。代码清单4-22就是在这个例子中使用<code>.queue()</code>方法的代码片段。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//其他代码...</span></span><br><span class="line">    $(<span class="string">'div.label'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> paraWidth = $(<span class="string">'div.speech p'</span>).outerWidth();</span><br><span class="line">        <span class="keyword">var</span> $switcher = $(<span class="keyword">this</span>).parent();</span><br><span class="line">        <span class="keyword">var</span> switcherWidth = $switcher.outerWidth();</span><br><span class="line">        $switcher</span><br><span class="line">            .css(&#123; <span class="attr">position</span>: <span class="string">'relative'</span> &#125;)</span><br><span class="line">            .fadeTo(<span class="string">'fast'</span>, <span class="number">0.5</span>)</span><br><span class="line">            .animate(&#123;</span><br><span class="line">                left: paraWidth - switcherWidth</span><br><span class="line">            &#125;, &#123;</span><br><span class="line">                    duration: <span class="string">'slow'</span>,</span><br><span class="line">                    queue: <span class="literal">false</span></span><br><span class="line">                &#125;)</span><br><span class="line">            .fadeTo(<span class="string">'slow'</span>, <span class="number">1.0</span>)</span><br><span class="line">            .slideUp(<span class="string">'slow'</span>)</span><br><span class="line">            .queue(<span class="function"><span class="keyword">function</span> (<span class="params">next</span>) </span>&#123;</span><br><span class="line">                $switcher.css(&#123; <span class="attr">backgroundColor</span>: <span class="string">'#f00'</span> &#125;);</span><br><span class="line">                next();</span><br><span class="line">            &#125;)</span><br><span class="line">            .slideDown(<span class="string">'slow'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>像这样传递一个回调函数,<code>.queue()</code>方法就可以把该函数添加到相应元素的效果队列中。在这个函数内部,我们把背景颜色设置为红色,然后又调用了<code>next()</code>方法,其返回的结果将作为参数传给回调函数。添加的这个<code>next</code> ()方法可以让队列在中断的地方再接续起来,然后再与后续的<code>.slideDown(&#39;slow&#39;)</code>连缀在一起。如果在此不使用<code>next()</code>方法,动画就会中断。<br>在下面讨论多组元素的效果之后,我们会介绍另一种向队列中添加非效果方法的方式。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/8d0f89ac/">4.5 并发与排队效果 4.5.1 处理一组元素</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/ec993adb/" rel="next" title="4.4 创建自定义动画">
+                  <i class="fa fa-chevron-left"></i> 4.4 创建自定义动画
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/f80559a9/" rel="prev" title="4.5.2 处理多组元素">
+                  4.5.2 处理多组元素 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-5-并发与排队效果"><span class="nav-number">1.</span> <span class="nav-text">4.5 并发与排队效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-1-处理一组元素"><span class="nav-number">1.1.</span> <span class="nav-text">4.5.1 处理一组元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-越过队列"><span class="nav-number">1.2.</span> <span class="nav-text">1. 越过队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-手工队列"><span class="nav-number">1.3.</span> <span class="nav-text">2. 手工队列</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

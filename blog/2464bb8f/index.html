@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="11.3 编写异步Servlet 编写异步Servlet或过滤器步骤 异步Servlet的doGet或doPost模板   实例1 一个简单的异步调度的Servlet threadNames.jsp 运行效果   实例2 发送最新进度更新的异步servle 部署描述符web.xml 小结 显示效果">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="11.3 编写异步Servlet">
+<meta property="og:url" content="https://blueblue233.github.io/blog/2464bb8f/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="11.3 编写异步Servlet 编写异步Servlet或过滤器步骤 异步Servlet的doGet或doPost模板   实例1 一个简单的异步调度的Servlet threadNames.jsp 运行效果   实例2 发送最新进度更新的异步servle 部署描述符web.xml 小结 显示效果">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/1.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/4.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/2.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/3.png">
+<meta property="og:updated_time" content="2019-10-14T06:00:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="11.3 编写异步Servlet">
+<meta name="twitter:description" content="11.3 编写异步Servlet 编写异步Servlet或过滤器步骤 异步Servlet的doGet或doPost模板   实例1 一个简单的异步调度的Servlet threadNames.jsp 运行效果   实例2 发送最新进度更新的异步servle 部署描述符web.xml 小结 显示效果">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/1.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/2464bb8f/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>11.3 编写异步Servlet | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/2464bb8f/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">11.3 编写异步Servlet
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-04-19 23:56:16" itemprop="dateCreated datePublished" datetime="2019-04-19T23:56:16+08:00">2019-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:20" itemprop="dateModified" datetime="2019-10-14T14:00:20+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/" itemprop="url" rel="index"><span itemprop="name">Serlet JSP和Spring MVC初学指南</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/" itemprop="url" rel="index"><span itemprop="name">第一部分 Servlets和JSP</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/第11章-异步处理/" itemprop="url" rel="index"><span itemprop="name">第11章 异步处理</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/2464bb8f/#11-3-编写异步Servlet">11.3 编写异步Servlet</a><ul>
+<li><a href="/blog/2464bb8f/#编写异步Servlet或过滤器步骤">编写异步Servlet或过滤器步骤</a></li>
+<li><a href="/blog/2464bb8f/#异步Servlet的doGet或doPost模板">异步Servlet的doGet或doPost模板</a></li>
+</ul>
+</li>
+<li><a href="/blog/2464bb8f/#实例1">实例1</a><ul>
+<li><a href="/blog/2464bb8f/#一个简单的异步调度的Servlet">一个简单的异步调度的Servlet</a></li>
+<li><a href="/blog/2464bb8f/#threadNames-jsp">threadNames.jsp</a></li>
+<li><a href="/blog/2464bb8f/#运行效果">运行效果</a></li>
+</ul>
+</li>
+<li><a href="/blog/2464bb8f/#实例2">实例2</a><ul>
+<li><a href="/blog/2464bb8f/#发送最新进度更新的异步servle">发送最新进度更新的异步servle</a></li>
+<li><a href="/blog/2464bb8f/#部署描述符web-xml">部署描述符web.xml</a></li>
+<li><a href="/blog/2464bb8f/#小结">小结</a></li>
+<li><a href="/blog/2464bb8f/#显示效果">显示效果</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="11-3-编写异步Servlet"><a href="#11-3-编写异步Servlet" class="headerlink" title="11.3 编写异步Servlet"></a>11.3 编写异步Servlet</h1><p>写一个异步或异步<code>Servlet</code>或<code>过滤器</code>比较简单。<strong>当有一个需要相当长的时间完成的任务时，就需要为之创建一个异步的<code>Servlet</code>或<code>过滤器</code></strong>。</p>
+<h2 id="编写异步Servlet或过滤器步骤"><a href="#编写异步Servlet或过滤器步骤" class="headerlink" title="编写异步Servlet或过滤器步骤"></a>编写异步Servlet或过滤器步骤</h2><p>在异步<code>Servlet</code>或<code>过滤器</code>类中需要做如下操作：<br>（1）调用<code>ServletRequest</code>中的<code>startAsync</code>方法。该<code>startAsync</code>返一个<code>AsyncContext</code>。<br>（2）<strong>调用<code>AsyncContext</code>的<code>setTimeout()</code>方法，设置容器等待任务完成的超时时间的毫秒数。</strong>此步骤是可选的，但如果你不设置超时，容器的将使用默认的超时时间。如果任务未能在指定的超时时间内完成，将会抛出一个超时异常。<br>（3）调用<code>asyncContext.start()</code>方法，传递一个<code>Runnable</code>来执行一个长时间运行的任务。<br>（4）调用<code>Runnable</code>的<code>asynccontext.complete</code>或<code>asynccontext.dispatch</code>方法来完成任务。</p>
+<h2 id="异步Servlet的doGet或doPost模板"><a href="#异步Servlet的doGet或doPost模板" class="headerlink" title="异步Servlet的doGet或doPost模板"></a>异步Servlet的doGet或doPost模板</h2><p>这里是一个异步<code>Servlet</code>的<code>doGet</code>或<code>doPost</code>方法的框架：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//(1)获取AsyncContext对象</span></span><br><span class="line"><span class="keyword">final</span> AsyncContext asyncContext = servletRequest.startAsync();</span><br><span class="line"><span class="comment">//(2)设置超时时间</span></span><br><span class="line">asyncContext.setTimeout( ... );</span><br><span class="line"><span class="comment">//(3)调用asyncContext.start方法,传入一个Runable来执行任务</span></span><br><span class="line">asyncContext.start(<span class="keyword">new</span> Runnable() </span><br><span class="line">&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        .....</span><br><span class="line">        <span class="comment">// 上面是一个需要运行长时间的任务</span></span><br><span class="line">        <span class="comment">// (4)任务完成,调用下面函数表示任务完成</span></span><br><span class="line">        asyncContext.complete() or asyncContext.dispatch()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="实例1"><a href="#实例1" class="headerlink" title="实例1"></a>实例1</h1><h2 id="一个简单的异步调度的Servlet"><a href="#一个简单的异步调度的Servlet" class="headerlink" title="一个简单的异步调度的Servlet"></a>一个简单的异步调度的Servlet</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> servlet;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.AsyncContext;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="meta">@WebServlet</span>(</span><br><span class="line">    name = <span class="string">"AsyncDispatchServlet"</span>,urlPatterns =</span><br><span class="line">    &#123;<span class="string">"/asyncDispatch"</span>&#125;,asyncSupported = <span class="keyword">true</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncDispatchServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">222L</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(<span class="keyword">final</span> HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">        HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> ServletException,IOException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 1.获取AsyncContext实例</span></span><br><span class="line">        <span class="keyword">final</span> AsyncContext asyncContext = request.startAsync();</span><br><span class="line">        <span class="comment">// 保存主线程的名称</span></span><br><span class="line">        request.setAttribute(<span class="string">"mainThread"</span>, </span><br><span class="line">            Thread.currentThread().getName());</span><br><span class="line">        <span class="comment">// 2.设置超时时间为5秒钟</span></span><br><span class="line">        asyncContext.setTimeout(<span class="number">5000</span>);</span><br><span class="line">        <span class="comment">// 3.启动任务</span></span><br><span class="line">        asyncContext.start(<span class="keyword">new</span> Runnable()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                <span class="comment">// 一个长时间的任务</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;&#125;</span><br><span class="line">                <span class="comment">// 保存耗时任务线程的名称</span></span><br><span class="line">                request.setAttribute(<span class="string">"workerThread"</span>,</span><br><span class="line">                    Thread.currentThread().getName());</span><br><span class="line">                <span class="comment">// 4.任务结束了,调用JSP页面展示</span></span><br><span class="line">                asyncContext.dispatch(<span class="string">"/threadNames.jsp"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>Servlet</code>支持异步处理,其长期运行的任务就是简单地休眠<code>5</code>秒钟。为了证明这个耗时的任务是在不同的线程中执行的，而不是在主线程中执行的（即执行 <code>Servlet</code>的<code>doGet</code>方法），它将主线程的名字和工作线程的<code>ServletRequest</code>分派到一个<code>threadNames.jsp</code>页面。该<code>threadNames.jsp</code>页面显示<code>mainThread</code>和<code>WorkerThread</code>变量。它们应打印不同的线程名字。</p>
+<h2 id="threadNames-jsp"><a href="#threadNames-jsp" class="headerlink" title="threadNames.jsp"></a>threadNames.jsp</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Asynchronous servlet&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">Main thread: $&#123;mainThread&#125;</span><br><span class="line">&lt;br/&gt;</span><br><span class="line">Worker thread: $&#123;workerThread&#125;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>注意，<strong>你需要在任务结束后调用<code>asyncContext</code>的<code>dispatch</code>方法或<code>complete</code>方法</strong>，所以它不会等待，直到它超时。<br>你可以把你的这个<code>URL</code>输入到浏览器来测试<code>servlet</code>：<br><a href="http://localhost:8080/app11a/asyncDispatch" target="_blank" rel="noopener">http://localhost:8080/app11a/asyncDispatch</a></p>
+<h2 id="运行效果"><a href="#运行效果" class="headerlink" title="运行效果"></a>运行效果</h2><p>下图显示了主线程的名称和工作线程的名称。你在你的浏览器中看到的可能是不同的，但打印出的线程名字会有所不同，证明了工作线程与主线程不同。<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/1.png" alt="这里有一张图片"></p>
+<p><strong>除了调度到其他资源去完成任务，你也可以调用<code>AsyncContext</code>的<code>complete</code>方法。此方法通知<code>servlet</code>容器该任务已完成。</strong></p>
+<h1 id="实例2"><a href="#实例2" class="headerlink" title="实例2"></a>实例2</h1><h2 id="发送最新进度更新的异步servle"><a href="#发送最新进度更新的异步servle" class="headerlink" title="发送最新进度更新的异步servle"></a>发送最新进度更新的异步servle</h2><p>该<code>Servlet</code>每秒发送一次进度更新，使用户能够监测进展情况。它发送<code>HTML</code>响应和一个简单的<code>JavaScript</code>代码来更新<code>HTML div</code>元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> servlet;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.AsyncContext;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncCompleteServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">78234L</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request,HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ServletException,IOException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        response.setContentType(<span class="string">"text/html"</span>);</span><br><span class="line">        <span class="keyword">final</span> PrintWriter writer = response.getWriter();</span><br><span class="line">        writer.println(<span class="string">"&lt;html&gt;&lt;head&gt;&lt;title&gt;"</span> + <span class="string">"Async Servlet&lt;/title&gt;&lt;/head&gt;"</span>);</span><br><span class="line">        writer.println(<span class="string">"&lt;body&gt;&lt;div id='progress'&gt;&lt;/div&gt;"</span>);</span><br><span class="line">        <span class="comment">// 1.获取AsyncContext实例</span></span><br><span class="line">        <span class="keyword">final</span> AsyncContext asyncContext = request.startAsync();</span><br><span class="line">        <span class="comment">// 2.设置超时时间</span></span><br><span class="line">        asyncContext.setTimeout(<span class="number">60000</span>);</span><br><span class="line">        <span class="comment">// 3.启动任务</span></span><br><span class="line">        asyncContext.start(<span class="keyword">new</span> Runnable()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"new thread:"</span> </span><br><span class="line">                    + Thread.currentThread());</span><br><span class="line">                <span class="comment">// 向浏览器发送循环发送JS代码</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; <span class="number">10</span>;i++) &#123;</span><br><span class="line">                    writer.println(<span class="string">"&lt;script&gt;"</span>);</span><br><span class="line">                    writer.println(<span class="string">"document.getElementById("</span> </span><br><span class="line">                            + <span class="string">"'progress').innerHTML = '"</span></span><br><span class="line">                            + (i * <span class="number">10</span>) + <span class="string">"% complete'"</span>);</span><br><span class="line">                    writer.println(<span class="string">"&lt;/script&gt;"</span>);</span><br><span class="line">                    writer.flush();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 向浏览器发送最后一个JS</span></span><br><span class="line">                writer.println(<span class="string">"&lt;script&gt;"</span>);</span><br><span class="line">                writer.println(<span class="string">"document.getElementById("</span></span><br><span class="line">                    + <span class="string">"'progress').innerHTML = 'DONE'"</span>);</span><br><span class="line">                writer.println(<span class="string">"&lt;/script&gt;"</span>);</span><br><span class="line">                writer.println(<span class="string">"&lt;/body&gt;&lt;/html&gt;"</span>);</span><br><span class="line">                <span class="comment">// 上面的是代码是一个耗时的任务</span></span><br><span class="line">                <span class="comment">// 4.任务结束</span></span><br><span class="line">                asyncContext.complete();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下这段代码负责发送进度更新：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">writer.println(<span class="string">"&lt;script&gt;"</span>);</span><br><span class="line">writer.println(<span class="string">"document.getElementById("</span> </span><br><span class="line">        + <span class="string">"'progress').innerHTML = '"</span></span><br><span class="line">        + (i * <span class="number">10</span>) + <span class="string">"% complete'"</span>);</span><br><span class="line">writer.println(<span class="string">"&lt;/script&gt;"</span>);</span><br><span class="line">writer.flush();</span><br></pre></td></tr></table></figure>
+<p>浏览器将收到此字符串，其中x是10和100之间的数字。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">'progress'</span>).innerHTML = <span class="string">'x% complete'</span></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因为该更新代码放在<code>for</code>循环中,将发送10次,浏览器也接收到10次<code>javascript</code>代码,进而执行<code>javascript</code>代码10次,也就是更新<code>div</code>标签10次从而呈现动态的效果.</p>
+<h2 id="部署描述符web-xml"><a href="#部署描述符web-xml" class="headerlink" title="部署描述符web.xml"></a>部署描述符web.xml</h2><p>为了向你展示如何通过在部署描述符中声明来编写一个<code>Servlet</code>异步，上面的<code>AsyncCompleteServlet</code>不用<code>@WebServlet</code>注解。而是使用下面的部署描述符（<code>web.xml</code>文件）来配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">version</span>=<span class="string">"3.0"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>AsyncComplete<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>servlet.AsyncCompleteServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>AsyncComplete<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/asyncComplete<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p><strong>在部署描述符中把<code>servlet</code>标签的<code>async-supported</code>子标签设置为<code>true</code>就可以支持异步的<code>Servlet</code>.</strong></p>
+<h2 id="显示效果"><a href="#显示效果" class="headerlink" title="显示效果"></a>显示效果</h2><p>你可以把你的<code>URL</code>输入到浏览器来测试<code>AsyncCompleteServlet</code>：<br><a href="http://localhost:8080/app11a/asyncComplete" target="_blank" rel="noopener">http://localhost:8080/app11a/asyncComplete</a><br>部分显示效果如下:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/4.png" alt><strong>……</strong><br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/2.png" alt><strong>……</strong><br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/ServlerJSPAndSpring%20MVCChuXueZhiNan/Chapter11/3.png" alt></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/2464bb8f/">11.3 编写异步Servlet</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/f8968903/" rel="next" title="11.2 编写异步Servlet和过滤器">
+                  <i class="fa fa-chevron-left"></i> 11.2 编写异步Servlet和过滤器
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/66fdc05a/" rel="prev" title="11.4 异步监听器">
+                  11.4 异步监听器 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#11-3-编写异步Servlet"><span class="nav-number">1.</span> <span class="nav-text">11.3 编写异步Servlet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编写异步Servlet或过滤器步骤"><span class="nav-number">1.1.</span> <span class="nav-text">编写异步Servlet或过滤器步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步Servlet的doGet或doPost模板"><span class="nav-number">1.2.</span> <span class="nav-text">异步Servlet的doGet或doPost模板</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例1"><span class="nav-number">2.</span> <span class="nav-text">实例1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一个简单的异步调度的Servlet"><span class="nav-number">2.1.</span> <span class="nav-text">一个简单的异步调度的Servlet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#threadNames-jsp"><span class="nav-number">2.2.</span> <span class="nav-text">threadNames.jsp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行效果"><span class="nav-number">2.3.</span> <span class="nav-text">运行效果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例2"><span class="nav-number">3.</span> <span class="nav-text">实例2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#发送最新进度更新的异步servle"><span class="nav-number">3.1.</span> <span class="nav-text">发送最新进度更新的异步servle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署描述符web-xml"><span class="nav-number">3.2.</span> <span class="nav-text">部署描述符web.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.3.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示效果"><span class="nav-number">3.4.</span> <span class="nav-text">显示效果</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="第18章 基于注解的控制器 18.1 SpringMVC注解类型 基于注解的控制器的优点 18.1.1 Controller注解类型 18.1.2 RequestMapping注解类型">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第18章 基于注解的控制器 18.1 SpringMVC注解类型">
+<meta property="og:url" content="https://blueblue233.github.io/blog/1379b55c/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="第18章 基于注解的控制器 18.1 SpringMVC注解类型 基于注解的控制器的优点 18.1.1 Controller注解类型 18.1.2 RequestMapping注解类型">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/JavaEE/IDE/Eclipse/Spring/SpringTools/Namespaces/1.png">
+<meta property="og:updated_time" content="2019-10-14T06:00:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第18章 基于注解的控制器 18.1 SpringMVC注解类型">
+<meta name="twitter:description" content="第18章 基于注解的控制器 18.1 SpringMVC注解类型 基于注解的控制器的优点 18.1.1 Controller注解类型 18.1.2 RequestMapping注解类型">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/JavaEE/IDE/Eclipse/Spring/SpringTools/Namespaces/1.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/1379b55c/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>第18章 基于注解的控制器 18.1 SpringMVC注解类型 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1379b55c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">第18章 基于注解的控制器 18.1 SpringMVC注解类型
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-01 14:03:11" itemprop="dateCreated datePublished" datetime="2019-05-01T14:03:11+08:00">2019-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:21" itemprop="dateModified" datetime="2019-10-14T14:00:21+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/" itemprop="url" rel="index"><span itemprop="name">Serlet JSP和Spring MVC初学指南</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第二部分-SpringMVC/" itemprop="url" rel="index"><span itemprop="name">第二部分 SpringMVC</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第二部分-SpringMVC/第18章-基于注解的控制器/" itemprop="url" rel="index"><span itemprop="name">第18章 基于注解的控制器</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/1379b55c/#第18章-基于注解的控制器">第18章 基于注解的控制器</a></li>
+<li><a href="/blog/1379b55c/#18-1-SpringMVC注解类型">18.1 SpringMVC注解类型</a><ul>
+<li><a href="/blog/1379b55c/#基于注解的控制器的优点">基于注解的控制器的优点</a></li>
+<li><a href="/blog/1379b55c/#18-1-1-Controller注解类型">18.1.1 Controller注解类型</a></li>
+<li><a href="/blog/1379b55c/#18-1-2-RequestMapping注解类型">18.1.2 RequestMapping注解类型</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="第18章-基于注解的控制器"><a href="#第18章-基于注解的控制器" class="headerlink" title="第18章 基于注解的控制器"></a>第18章 基于注解的控制器</h1><p>在第17章中，我们创建了两个采用传统风格控制器的<code>Spring MVC</code>应用程序，其控制器是实现了<code>Controller</code>接口的类。<code>Spring 2.5</code>版本引入了一个新途径：通过使用控制器注释类型。本章介绍了<strong>基于注解的控制器</strong>，以及各种对应用程序有用的注解类型。</p>
+<h1 id="18-1-SpringMVC注解类型"><a href="#18-1-SpringMVC注解类型" class="headerlink" title="18.1 SpringMVC注解类型"></a>18.1 SpringMVC注解类型</h1><h2 id="基于注解的控制器的优点"><a href="#基于注解的控制器的优点" class="headerlink" title="基于注解的控制器的优点"></a>基于注解的控制器的优点</h2><p>使用基于注解的控制器有几个优点。其一，<strong>一个控制器类可以处理多个动作</strong>（而<strong>一个实现了<code>Controller</code>接口的控制器只能处理一个动作</strong>）。这就允许将相关的操作写在同一个控制器类中，从而减少应用程序中类的数量。<br>其二，基于注解的控制器的请求映射不需要存储在配置文件中。使用<code>RequestMapping</code>注解类型，可以对一个方法进行请求处理。</p>
+<p><code>Controller</code>和<code>RequestMapping</code>注解类型是<code>SpringMVC API</code>最重要的两个注解类型。本章重点介绍这两个，并简要介绍了一些其他不太流行的注解类型。</p>
+<h2 id="18-1-1-Controller注解类型"><a href="#18-1-1-Controller注解类型" class="headerlink" title="18.1.1 Controller注解类型"></a>18.1.1 Controller注解类型</h2><p><code>org.springframework.stereotype.Controller</code>注解类型用于指示<code>Spring</code>类的实例是一个控制器。下面是一个带注解<code>@Controller</code>的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerController</span> </span>&#123;</span><br><span class="line">    <span class="comment">// request-handling methods here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><code>Spring</code>使用<code>扫描机制</code>来找到应用程序中所有基于注解的控制器类</strong>。为了保证<code>Spring</code>能找到你的控制器，需要完成两件事情。首先，需要在<code>Spring MVC</code>的配置文件中声明<code>spring- context</code>，如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span></span></span><br><span class="line"><span class="tag">    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当然这个自己肯定是背不出来的,安装来<code>Spring Toos3</code>后可以点击文件下方的<code>Namespaces</code>标签,然后勾选上<code>context</code>即可:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/JavaEE/IDE/Eclipse/Spring/SpringTools/Namespaces/1.png" alt="这里有一张图片"></p>
+</blockquote>
+<p>然后，需要应用<code>&lt;component-scan/&gt;</code>元素，如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"basePackage"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>请在<code>&lt;component-scan/&gt;</code>元素中指定控制器类的基本包。例如，若所有的控制器类都在<code>com.example.controller</code>及其子包下，则需要写一个如下所示的<code>&lt;component-scan/&gt;</code>元素：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.example.controller"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>现在，整个配置文件如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:p</span>=<span class="string">"http://www.springframework.org/schema/p"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context/spring-</span></span></span><br><span class="line"><span class="tag"><span class="string">       context.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.example.controller"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- ... --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>请确保所有控制器类都在基本包下，并且<strong>不要指定一个太广泛的基本包</strong>（例如不要指定大范围的<code>com.example</code>，而是指定小范围的<code>com.example.controller</code>），因为这会使得<code>Spring MVC</code>扫描了无关的包。</p>
+<h2 id="18-1-2-RequestMapping注解类型"><a href="#18-1-2-RequestMapping注解类型" class="headerlink" title="18.1.2 RequestMapping注解类型"></a>18.1.2 RequestMapping注解类型</h2><p>现在，我们需要在控制类的内部为每一个动作开发相应的处理方法。要让<code>Spring</code>知道用哪一种方法来处理它的动作，需要使用<code>org.springframework.web.bind.annotation.RequestMapping</code>注释类型映射的<code>URI</code>与方法。</p>
+<p><code>RequestMapping</code>注解类型的作用就如同其名字所暗示的：<strong>映射一个请求和一种方法</strong>。<strong>可以使用<code>@RequestMapping</code>注解一种<code>方法</code>或<code>类</code>。</strong><br><strong>一个采用<code>@RequestMapping</code>注解的方法将成为一个请求处理方法</strong>，并由调度程序在接收到对应<code>URL</code>请求时调用。<br>下面是一个<code>RequestMapping</code>注解方法的控制器类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerController</span> </span>&#123;</span><br><span class="line">    <span class="comment">//设置该方法为请求处理方法,触发该方法的RUL为</span></span><br><span class="line">    <span class="comment">///`customer_input`</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/customer_input"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">inputCustomer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something here</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"CustomerForm"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>RequestMapping</code>注解的<code>value</code>属性将<code>URI</code>映射到方法。在上面的例子中，我们将<code>customer_input</code>映射到<code>inputCustomer</code>方法。这样，可以使用如下<code>URL</code>访问<code>inputCustomer</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://domain/context/customer_input</span><br></pre></td></tr></table></figure>
+<p>由于<code>value</code>属性是<code>RequestMapping</code>注解的默认属性，因此，若只有唯一的属性，则可以省略属性名称。换句话说，如下两个标注含义相同：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/customer_input"</span>)</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/customer_input"</span>)</span><br></pre></td></tr></table></figure>
+<p>但如果<code>@RequestMapping</code>有超过一个属性时，就必须写入<code>value</code>属性名称。<br>请求映射的值可以是一个空字符串，此时该方法被映射到以下网址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://domain/context</span><br></pre></td></tr></table></figure>
+<p><code>RequestMapping</code>除了具有<code>value</code>属性外，还有其他属性。例如,<strong><code>method</code>属性用来指示该方法仅处理哪些<code>HTTP</code>方法</strong>。<br>例如，仅在使用<code>HTTP POST</code>或<code>PUT</code>方法时，才调用下面的<code>ProcessOrder</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line">...</span><br><span class="line">    <span class="comment">//只响应Post或put方法</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value=<span class="string">"/order_process"</span>,</span><br><span class="line">            method=&#123;RequestMethod.POST, RequestMethod.PUT&#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">processOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something here</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"OrderForm"</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>若<code>method</code>属性只有一个<code>HTTP</code>方法值，则无需花括号。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/order_process"</span>, method=RequestMethod.POST)</span><br></pre></td></tr></table></figure>
+<p>如果没有指定<code>method</code>属性值，则请求处理方法可以处理任意<code>HTTP</code>方法。<br>此外，<code>RequestMapping</code>注解类型也可以用来注解一个控制器类，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="comment">//设置该控制器对应的URL</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/customer"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerController</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这种情况下，所有的方法都将映射为相对于类级别的请求。例如下面的 <code>deleteCustomer</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/customer"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(value=<span class="string">"/delete"</span>,</span><br><span class="line">            method=&#123;RequestMethod.POST, RequestMethod.PUT&#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">deleteCustomer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something here</span></span><br><span class="line">        <span class="keyword">return</span> ...;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>由于控制器类的映射使用“<code>/customer</code>”，而<code>deleteCustomer</code>方法映射为“<code>/delete</code>”，则如下<code>URL</code>会映射到该方法上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://domain/context/customer/delete</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/1379b55c/">第18章 基于注解的控制器 18.1 SpringMVC注解类型</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/ef8ed1c6/" rel="next" title="17.6 小结">
+                  <i class="fa fa-chevron-left"></i> 17.6 小结
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/f9091724/" rel="prev" title="18.2 编写请求处理方法">
+                  18.2 编写请求处理方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第18章-基于注解的控制器"><span class="nav-number">1.</span> <span class="nav-text">第18章 基于注解的控制器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#18-1-SpringMVC注解类型"><span class="nav-number">2.</span> <span class="nav-text">18.1 SpringMVC注解类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于注解的控制器的优点"><span class="nav-number">2.1.</span> <span class="nav-text">基于注解的控制器的优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-1-1-Controller注解类型"><span class="nav-number">2.2.</span> <span class="nav-text">18.1.1 Controller注解类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-1-2-RequestMapping注解类型"><span class="nav-number">2.3.</span> <span class="nav-text">18.1.2 RequestMapping注解类型</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

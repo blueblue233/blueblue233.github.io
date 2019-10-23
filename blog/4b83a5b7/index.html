@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.1 文件上传 示例 Spring MVC的文件上传 Spring配置文件中添加配置 引入CommonsFileUpload的jar包 MultipartFile对象 error.jsp success.jsp uploadForm.jsp 测试链接 上传文件 上传效果 控制台输出   示例 使用对象接收上传文件 域对象 测试链接 请求处理方法 registerForm.jsp 设置用户名和头">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.1 文件上传">
+<meta property="og:url" content="https://blueblue233.github.io/blog/4b83a5b7/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.1 文件上传 示例 Spring MVC的文件上传 Spring配置文件中添加配置 引入CommonsFileUpload的jar包 MultipartFile对象 error.jsp success.jsp uploadForm.jsp 测试链接 上传文件 上传效果 控制台输出   示例 使用对象接收上传文件 域对象 测试链接 请求处理方法 registerForm.jsp 设置用户名和头">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/10.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/11.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/12.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/13.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/14.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/15.png">
+<meta property="og:updated_time" content="2019-10-14T06:55:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.1 文件上传">
+<meta name="twitter:description" content="7.1 文件上传 示例 Spring MVC的文件上传 Spring配置文件中添加配置 引入CommonsFileUpload的jar包 MultipartFile对象 error.jsp success.jsp uploadForm.jsp 测试链接 上传文件 上传效果 控制台输出   示例 使用对象接收上传文件 域对象 测试链接 请求处理方法 registerForm.jsp 设置用户名和头">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/10.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/4b83a5b7/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.1 文件上传 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/4b83a5b7/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.1 文件上传
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-29 08:51:00" itemprop="dateCreated datePublished" datetime="2019-05-29T08:51:00+08:00">2019-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:41" itemprop="dateModified" datetime="2019-10-14T14:55:41+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第7章-Spring-MVC的文件上传下载和拦截器机制/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring MVC的文件上传下载和拦截器机制</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/4b83a5b7/#7-1-文件上传">7.1 文件上传</a><ul>
+<li><a href="/blog/4b83a5b7/#示例-Spring-MVC的文件上传">示例 Spring MVC的文件上传</a><ul>
+<li><a href="/blog/4b83a5b7/#Spring配置文件中添加配置">Spring配置文件中添加配置</a></li>
+<li><a href="/blog/4b83a5b7/#引入CommonsFileUpload的jar包">引入CommonsFileUpload的jar包</a></li>
+<li><a href="/blog/4b83a5b7/#MultipartFile对象">MultipartFile对象</a></li>
+<li><a href="/blog/4b83a5b7/#error-jsp">error.jsp</a></li>
+<li><a href="/blog/4b83a5b7/#success-jsp">success.jsp</a></li>
+<li><a href="/blog/4b83a5b7/#uploadForm-jsp">uploadForm.jsp</a></li>
+<li><a href="/blog/4b83a5b7/#测试链接">测试链接</a></li>
+<li><a href="/blog/4b83a5b7/#上传文件">上传文件</a></li>
+<li><a href="/blog/4b83a5b7/#上传效果">上传效果</a></li>
+<li><a href="/blog/4b83a5b7/#控制台输出">控制台输出</a></li>
+</ul>
+</li>
+<li><a href="/blog/4b83a5b7/#示例-使用对象接收上传文件">示例 使用对象接收上传文件</a><ul>
+<li><a href="/blog/4b83a5b7/#域对象">域对象</a></li>
+<li><a href="/blog/4b83a5b7/#测试链接">测试链接</a></li>
+<li><a href="/blog/4b83a5b7/#请求处理方法">请求处理方法</a></li>
+<li><a href="/blog/4b83a5b7/#registerForm-jsp">registerForm.jsp</a></li>
+<li><a href="/blog/4b83a5b7/#设置用户名和头像">设置用户名和头像</a></li>
+<li><a href="/blog/4b83a5b7/#注册请求处理方法">注册请求处理方法</a></li>
+<li><a href="/blog/4b83a5b7/#userInfo-jsp">userInfo.jsp</a></li>
+</ul>
+</li>
+<li><a href="/blog/4b83a5b7/#示例-SpringMVC的文件下载">示例 SpringMVC的文件下载</a><ul>
+<li><a href="/blog/4b83a5b7/#download请求处理方法">download请求处理方法</a></li>
+<li><a href="/blog/4b83a5b7/#下载效果">下载效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="7-1-文件上传"><a href="#7-1-文件上传" class="headerlink" title="7.1 文件上传"></a>7.1 文件上传</h1><p>文件上传是项目开发当中最常用的功能。<strong>为了能上传文件,必须将表单的<code>method</code>设置为<code>POST</code>,并将<code>enctype</code>设置为<code>multipart/form-data</code>。只有在这种情况下,浏览器才会把用户选择的文件二进制数据发送给服务器</strong>。<br>一旦将<code>enctype</code>设置为<code>multipart/form-data</code>,浏览器即会采用二进制流的方式来处理表单数据,而对于文件上传的处理则涉及在服务器端解析原始的<code>HTTP</code>响应。2003年,<code>Apache Software Foundation</code>发布了开源的<code>Commons File Upload</code>组件,其很快成为<code>Servlet/JSP</code>程序员上传文件的最佳选择。<br><code>Servlet3.0</code>规范的<code>HttpServletRequest</code>已经提供了方法来处理文件上传,但这种上传需要在<code>Servlet</code>中完成。而<code>Spring MVC</code>则提供了更简单的封装。<br><code>Spring MVC</code>为文件上传提供了直接的支持,这种支持是用即插即用的<code>MultipartResolver</code>实现的。<code>SpringMVC</code>使用<code>ApacheCommonsFileUpload</code>技术实现了一个<code>MultipartResolver</code>实现类:<code>CommonsMultipartResolver</code>。因此,<strong><code>SpringMVC</code>的文件上传还需要依赖<code>Apache Commons File Upload</code>的组件</strong>。<br><code>Apache Commons File Upload</code>的组件共有两个,最新版本分别是<code>commons-fileupload-1.3.3.jar</code>和<code>commons-io-2.6.jar</code>。<br><code>commons-fileupload-1.3.3.jar</code>的官网下载地址为:<code>http://commons.apache.org/proper/commons-fileupload/download_fileupload.cgi</code>。<br><code>commons-io-2.6.jar</code>的官网下载地址为:<code>http://commons.apache.org/proper/commons-io/download_io.cgi</code></p>
+<h2 id="示例-Spring-MVC的文件上传"><a href="#示例-Spring-MVC的文件上传" class="headerlink" title="示例 Spring MVC的文件上传"></a>示例 Spring MVC的文件上传</h2><h3 id="Spring配置文件中添加配置"><a href="#Spring配置文件中添加配置" class="headerlink" title="Spring配置文件中添加配置"></a>Spring配置文件中添加配置</h3><p><code>Spring MVC</code>上下文中默认没有装配<code>MultipartResolver</code>,因此<strong>默认情况下其不能处理文件上传工作</strong>。<strong>如果想使用<code>Spring</code>的文件上传功能,则需要在上下文中配置<code>MultipartResolver</code></strong>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 文件上传配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"multipartResolver"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"org.springframework.web.multipart.commons.CommonsMultipartResolver"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 上传文件大小上限，单位为字节（10MB） --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxUploadSize"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>10485760<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 请求的编码格式，必须和jSP的pageEncoding属性一致，以便正确读取表单的内容，默认为ISO-8859-1 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"defaultEncoding"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="引入CommonsFileUpload的jar包"><a href="#引入CommonsFileUpload的jar包" class="headerlink" title="引入CommonsFileUpload的jar包"></a>引入CommonsFileUpload的jar包</h3><p>需要注意的是,<code>CommonsMultipartResolver</code>必须依赖于<code>ApacheCommonsFileUpload</code>的组件,所以需要将<code>Apache</code>的<code>CommonsFileUpload</code>的<code>jar</code>包放到项目的类路径下。</p>
+<h3 id="MultipartFile对象"><a href="#MultipartFile对象" class="headerlink" title="MultipartFile对象"></a>MultipartFile对象</h3><p><code>Spring MVC</code>会将上传文件绑定到<code>MultipartFile</code>对象。<code>MultipartFile</code>提供了获取上传文件内容、文件名等方法。通过<code>transferTo()</code>方法可以将文件上传。<code>MultipartFile</code>对象中的常用方法如下:</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>byte[] getBytes()</code></td>
+<td align="left">获取文件数据</td>
+</tr>
+<tr>
+<td align="left"><code>String getContentType()</code></td>
+<td align="left">获取文件<code>MIME</code>类型,如<code>image/jpeg</code>等</td>
+</tr>
+<tr>
+<td align="left"><code>InputStream getInputStream()</code></td>
+<td align="left">获取文件流</td>
+</tr>
+<tr>
+<td align="left"><code>String getName()</code></td>
+<td align="left">获取表单中文件组件的名称</td>
+</tr>
+<tr>
+<td align="left"><code>Stringg etOriginalFilename()</code></td>
+<td align="left">获取上传文件的原名</td>
+</tr>
+<tr>
+<td align="left"><code>long getSize()</code></td>
+<td align="left">获取文件的字节大小,单位为<code>byte</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean isEmpty()</code></td>
+<td align="left">是否有上传的文件</td>
+</tr>
+<tr>
+<td align="left"><code>void transferTo(Filedest)</code></td>
+<td align="left">将上传文件保存到一个目标文件中。</td>
+</tr>
+<tr>
+<td align="left">### error.jsp ###</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;测试文件上传&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;strong&gt;上传文件失败!&lt;/strong&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="success-jsp"><a href="#success-jsp" class="headerlink" title="success.jsp"></a>success.jsp</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;测试文件上传&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;strong&gt;上传文件成功!&lt;/strong&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="uploadForm-jsp"><a href="#uploadForm-jsp" class="headerlink" title="uploadForm.jsp"></a>uploadForm.jsp</h3><p>负责上传文件的表单和一般表单有一些区别,<strong>负责上传文件的表单的编码类型(<code>enctype</code>)必须是”<code>multipart/form-data</code>“</strong>。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;文件上传&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h2&gt;文件上传&lt;/h2&gt;</span><br><span class="line">    &lt;form action=<span class="string">"upload"</span> enctype=<span class="string">"multipart/form-data"</span> method=<span class="string">"post"</span>&gt;</span><br><span class="line">        &lt;table&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;文件描述:&lt;/td&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="text" name="description"&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;请选择文件:&lt;/td&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="file" name="file"&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="submit" value="上传"&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">        &lt;/table&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="测试链接"><a href="#测试链接" class="headerlink" title="测试链接"></a>测试链接</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"uploadForm"</span>&gt;</span>Spring MVC的文件上传功能<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><p>输入文件描述信息并选择上传文件,如下图所示:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/10.png" alt="这里有一张图片"><br>单击”<code>上传</code>“按钮,文件会被上传并保存到服务器部署项目的<code>images</code>文件夹下面。</p>
+<h3 id="上传效果"><a href="#上传效果" class="headerlink" title="上传效果"></a>上传效果</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/11.png" alt="这里有一张图片"></p>
+<h3 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用Spring MVC上传</span><br><span class="line">上传文件路径：E:\apache-tomcat-<span class="number">8</span>.<span class="number">5</span>.<span class="number">35</span>\webapps\FileUploadTest\images\<span class="number">2</span>-<span class="number">2</span>.jpg</span><br></pre></td></tr></table></figure>
+<p>进入该目录可以看到上传后的图片:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/12.png" alt="这里有一张图片"></p>
+<h2 id="示例-使用对象接收上传文件"><a href="#示例-使用对象接收上传文件" class="headerlink" title="示例 使用对象接收上传文件"></a>示例 使用对象接收上传文件</h2><p>在实际的项目开发中,很多时候上传的文件会作为对象的属性被保存。<code>Spring MVC</code>的处理也非常简单。</p>
+<h3 id="域对象"><a href="#域对象" class="headerlink" title="域对象"></a>域对象</h3><p>上传的图片将作为User对象的属性,如下所示:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 域对象，实现序列化接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="comment">// 对应上传的file，类型为MultipartFile，上传文件会自动绑定到image属性当中</span></span><br><span class="line">    <span class="keyword">private</span> MultipartFile image;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试链接-1"><a href="#测试链接-1" class="headerlink" title="测试链接"></a>测试链接</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"registerForm"</span>&gt;</span>用户头像上传功能<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="请求处理方法"><a href="#请求处理方法" class="headerlink" title="请求处理方法"></a>请求处理方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/registerForm"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">registerForm</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 跳转到文件上传页面</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"registerForm"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="registerForm-jsp"><a href="#registerForm-jsp" class="headerlink" title="registerForm.jsp"></a>registerForm.jsp</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;用户注册&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h2&gt;用户注册&lt;/h2&gt;</span><br><span class="line">    &lt;form action=<span class="string">"register"</span> enctype=<span class="string">"multipart/form-data"</span> method=<span class="string">"post"</span>&gt;</span><br><span class="line">        &lt;table&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;用户名:&lt;/td&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="text" name="username"&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;请上传头像:&lt;/td&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="file" name="image"&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="submit" value="注册"&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">        &lt;/table&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="设置用户名和头像"><a href="#设置用户名和头像" class="headerlink" title="设置用户名和头像"></a>设置用户名和头像</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/13.png" alt="这里有一张图片"></p>
+<h3 id="注册请求处理方法"><a href="#注册请求处理方法" class="headerlink" title="注册请求处理方法"></a>注册请求处理方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span>(value = <span class="string">"/register"</span>)</span><br><span class="line"><span class="comment">// @ModelAttribute User user将整个表单数据绑定到User对象中</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">register</span><span class="params">(HttpServletRequest request, @ModelAttribute</span></span></span><br><span class="line"><span class="function"><span class="params">User user, Model model)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    System.out.println(user.getUsername());</span><br><span class="line">    <span class="comment">// 如果文件不为空，写入上传路径</span></span><br><span class="line">    <span class="keyword">if</span> (!user.getImage().isEmpty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 设置要上传到服务器的目录</span></span><br><span class="line">        String path = request.getServletContext().getRealPath(<span class="string">"/images"</span>);</span><br><span class="line">        <span class="comment">// 获取上传的文件的文件名</span></span><br><span class="line">        String filename = user.getImage().getOriginalFilename();</span><br><span class="line">        <span class="comment">// 在该目录下创建同名文件</span></span><br><span class="line">        File filepath = <span class="keyword">new</span> File(path, filename);</span><br><span class="line">        <span class="comment">// 判断路径是否存在，如果不存在就创建一个</span></span><br><span class="line">        <span class="keyword">if</span> (!filepath.getParentFile().exists())</span><br><span class="line">        &#123;</span><br><span class="line">            filepath.getParentFile().mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将用户上传的图片保存到服务器目录中</span></span><br><span class="line">        user.getImage().transferTo(filepath);</span><br><span class="line">        <span class="comment">// 将用户添加到model</span></span><br><span class="line">        model.addAttribute(<span class="string">"filename"</span>,</span><br><span class="line">                user.getImage().getOriginalFilename());</span><br><span class="line">        System.out.println(<span class="string">"上传文件路径："</span> + filepath.getAbsolutePath());</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"userInfo"</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"error"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="userInfo-jsp"><a href="#userInfo-jsp" class="headerlink" title="userInfo.jsp"></a>userInfo.jsp</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;文件下载&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h3&gt;文件下载&lt;/h3&gt;</span><br><span class="line">    &lt;br&gt;</span><br><span class="line">    &lt;a</span><br><span class="line">        href=<span class="string">"javascript:window.location.href = 'download?filename=' + encodeURIComponent( '$&#123;requestScope.filename &#125;' )"</span>&gt;</span><br><span class="line">        $&#123;requestScope.filename &#125; &lt;/a&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>点击链接,download请求处理方法将会被调用,实现下载图片.<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/14.png" alt="这里有一张图片"></p>
+<h2 id="示例-SpringMVC的文件下载"><a href="#示例-SpringMVC的文件下载" class="headerlink" title="示例 SpringMVC的文件下载"></a>示例 SpringMVC的文件下载</h2><h3 id="download请求处理方法"><a href="#download请求处理方法" class="headerlink" title="download请求处理方法"></a>download请求处理方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/download"</span>)</span><br><span class="line"><span class="keyword">public</span> ResponseEntity&lt;<span class="keyword">byte</span>[]&gt; download(HttpServletRequest request,</span><br><span class="line">                                       <span class="meta">@RequestParam</span>(<span class="string">"filename"</span>)</span><br><span class="line">                                       String filename,</span><br><span class="line">                                       <span class="meta">@RequestHeader</span>(<span class="string">"User-Agent"</span>)</span><br><span class="line">                                       String userAgent) <span class="keyword">throws</span> Exception</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 下载文件路径</span></span><br><span class="line">    String path = request.getServletContext().getRealPath(<span class="string">"/images"</span>);</span><br><span class="line">    <span class="comment">// 构建File</span></span><br><span class="line">    File file = <span class="keyword">new</span> File(path + File.separator + filename);</span><br><span class="line">    <span class="comment">// ok表示Http协议中的状态 200</span></span><br><span class="line">    BodyBuilder builder = ResponseEntity.ok();</span><br><span class="line">    <span class="comment">// 内容长度</span></span><br><span class="line">    builder.contentLength(file.length());</span><br><span class="line">    <span class="comment">// application/octet-stream ： 二进制流数据（最常见的文件下载）。</span></span><br><span class="line">    builder.contentType(MediaType.APPLICATION_OCTET_STREAM);</span><br><span class="line">    <span class="comment">// 使用URLDecoder.decode对文件名进行解码</span></span><br><span class="line">    filename = URLEncoder.encode(filename, <span class="string">"UTF-8"</span>);</span><br><span class="line">    <span class="comment">// 设置实际的响应文件名，告诉浏览器文件要用于【下载】、【保存】attachment 以附件形式</span></span><br><span class="line">    <span class="comment">// 不同的浏览器，处理方式不同，要根据浏览器版本进行区别判断</span></span><br><span class="line">    <span class="keyword">if</span> (userAgent.indexOf(<span class="string">"MSIE"</span>) &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果是IE，只需要用UTF-8字符集进行URL编码即可</span></span><br><span class="line">        builder.header(<span class="string">"Content-Disposition"</span>,</span><br><span class="line">                <span class="string">"attachment; filename="</span> + filename);</span><br><span class="line">    &#125; <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 而FireFox、Chrome等浏览器，则需要说明编码的字符集</span></span><br><span class="line">        <span class="comment">// 注意filename后面有个*号，在UTF-8后面有两个单引号！</span></span><br><span class="line">        builder.header(<span class="string">"Content-Disposition"</span>,</span><br><span class="line">                <span class="string">"attachment; filename*=UTF-8''"</span> + filename);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> builder.body(FileUtils.readFileToByteArray(file));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="下载效果"><a href="#下载效果" class="headerlink" title="下载效果"></a>下载效果</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/15.png" alt="这里有一张图片"><br><code>SpringMVC</code>提供了一个<code>ResponseEntity</code>类型,使用它可以很方便地定义返回的<code>BodyBuilder</code>、<code>HttpHeaders</code>和<code>HttpStatus</code>。<br><code>download</code>处理方法接收到页面传递的文件名 <code>filename</code>后,使用 <code>Apache CommonsFileUpload</code>组件的 <code>FileUtils</code>读取项目的 <code>images</code>文件夹下的该文件,并将其构建成<code>ResponseEntity</code>对象返回客户端下载。<br>使用 <code>ResponseEntity</code>对象,可以很方便地定义返回的 <code>BodyBuilder</code>、 <code>HttpHeaders</code>和<code>HttpStatus</code>,<code>BodyBuilder</code>对象用来构建返回的<code>Body</code>;类型代表的是<code>Http</code>协议中的头信息;<br>在<code>Http</code>协议消息头中,使用<code>Content-Type</code>来表示具体请求中的媒体类型信息。有关<code>BodyBuilder</code>、 <code>MediaType</code>和<code>HttpStatus</code>类的详细信息参考<code>Spring MVC</code>的<code>API</code>文档。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/4b83a5b7/">7.1 文件上传</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/8d4ebfd8/" rel="next" title="13.2.12 多表连接查询 2. SQL99的连接查询">
+                  <i class="fa fa-chevron-left"></i> 13.2.12 多表连接查询 2. SQL99的连接查询
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/a5bcd8d/" rel="prev" title="第1章前端开发与Ajax">
+                  第1章前端开发与Ajax <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-1-文件上传"><span class="nav-number">1.</span> <span class="nav-text">7.1 文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#示例-Spring-MVC的文件上传"><span class="nav-number">1.1.</span> <span class="nav-text">示例 Spring MVC的文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring配置文件中添加配置"><span class="nav-number">1.1.1.</span> <span class="nav-text">Spring配置文件中添加配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引入CommonsFileUpload的jar包"><span class="nav-number">1.1.2.</span> <span class="nav-text">引入CommonsFileUpload的jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MultipartFile对象"><span class="nav-number">1.1.3.</span> <span class="nav-text">MultipartFile对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#success-jsp"><span class="nav-number">1.1.4.</span> <span class="nav-text">success.jsp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uploadForm-jsp"><span class="nav-number">1.1.5.</span> <span class="nav-text">uploadForm.jsp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试链接"><span class="nav-number">1.1.6.</span> <span class="nav-text">测试链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传文件"><span class="nav-number">1.1.7.</span> <span class="nav-text">上传文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传效果"><span class="nav-number">1.1.8.</span> <span class="nav-text">上传效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制台输出"><span class="nav-number">1.1.9.</span> <span class="nav-text">控制台输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例-使用对象接收上传文件"><span class="nav-number">1.2.</span> <span class="nav-text">示例 使用对象接收上传文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#域对象"><span class="nav-number">1.2.1.</span> <span class="nav-text">域对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试链接-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">测试链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求处理方法"><span class="nav-number">1.2.3.</span> <span class="nav-text">请求处理方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#registerForm-jsp"><span class="nav-number">1.2.4.</span> <span class="nav-text">registerForm.jsp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置用户名和头像"><span class="nav-number">1.2.5.</span> <span class="nav-text">设置用户名和头像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册请求处理方法"><span class="nav-number">1.2.6.</span> <span class="nav-text">注册请求处理方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#userInfo-jsp"><span class="nav-number">1.2.7.</span> <span class="nav-text">userInfo.jsp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例-SpringMVC的文件下载"><span class="nav-number">1.3.</span> <span class="nav-text">示例 SpringMVC的文件下载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#download请求处理方法"><span class="nav-number">1.3.1.</span> <span class="nav-text">download请求处理方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载效果"><span class="nav-number">1.3.2.</span> <span class="nav-text">下载效果</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

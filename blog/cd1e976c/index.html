@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="8.3.3 TreeSet类 1.自然排序 TreeSet中元素的规则">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.3.3 TreeSet类 1.自然排序">
+<meta property="og:url" content="https://blueblue233.github.io/blog/cd1e976c/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="8.3.3 TreeSet类 1.自然排序 TreeSet中元素的规则">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/fangkuangJavaJiangYi3/8/4.png">
+<meta property="og:updated_time" content="2019-10-14T06:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8.3.3 TreeSet类 1.自然排序">
+<meta name="twitter:description" content="8.3.3 TreeSet类 1.自然排序 TreeSet中元素的规则">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/fangkuangJavaJiangYi3/8/4.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/cd1e976c/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>8.3.3 TreeSet类 1.自然排序 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/cd1e976c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">8.3.3 TreeSet类 1.自然排序
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-07 19:45:54" itemprop="dateCreated datePublished" datetime="2019-07-07T19:45:54+08:00">2019-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:47" itemprop="dateModified" datetime="2019-10-14T14:01:47+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第8章-Java集合/" itemprop="url" rel="index"><span itemprop="name">第8章 Java集合</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第8章-Java集合/8-3-Set集合/" itemprop="url" rel="index"><span itemprop="name">8.3 Set集合</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/cd1e976c/#8-3-3-TreeSet类">8.3.3 TreeSet类</a></li>
+<li><a href="/blog/cd1e976c/#1-自然排序">1.自然排序</a><ul>
+<li><a href="/blog/cd1e976c/#TreeSet中元素的规则">TreeSet中元素的规则</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="8-3-3-TreeSet类"><a href="#8-3-3-TreeSet类" class="headerlink" title="8.3.3 TreeSet类"></a>8.3.3 TreeSet类</h1><p><code>TreeSet</code>是<code>SortedSet</code>接口的实现类,正如<code>SortedSet</code>名字所暗示的, <strong><code>TreeSet</code>可以确保集合元素处于排序状态</strong>。与<code>HashSet</code>集合相比, <code>TreeSet</code>还提供了如下几个额外的方法.</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>Comparator comparator()</code></td>
+<td align="left">如果<code>TreeSet</code>采用了定制排序,则该方法返回定制排序所使用的<code>Comparator</code>;如果<code>TreeSet</code>采用了自然排序,则返回<code>null</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>Object first()</code></td>
+<td align="left">返回集合中的第一个元素。</td>
+</tr>
+<tr>
+<td align="left"><code>Object last()</code></td>
+<td align="left">返回集合中的最后一个元素。</td>
+</tr>
+<tr>
+<td align="left"><code>Object lower(Object e)</code></td>
+<td align="left">返回集合中位于指定元素之前的元素(即<strong>集合中小于指定元素的最大元素</strong>,参考元素不需要是<code>TreeSet</code>集合里的元素)。</td>
+</tr>
+<tr>
+<td align="left"><code>Object higher(Object e)</code></td>
+<td align="left">返回集合中位于指定元素之后的元素(即<strong>集合中大于指定元素的最小元素</strong>,参考元素不需要是<code>TreeSet</code>集合里的元素)。</td>
+</tr>
+<tr>
+<td align="left"><code>SortedSet subSet(Object fromElement, Object toElement)</code></td>
+<td align="left">返回此<code>Set</code>的子集合,范围从<code>fromElement</code>(包含)到<code>toElement</code>(不包含)(范围前闭后开,类似<code>String</code>类的<code>substring</code>方法)。</td>
+</tr>
+<tr>
+<td align="left"><code>SortedSet headSet(Object toElement)</code></td>
+<td align="left">返回此<code>Set</code>的子集,由小于<code>toElement</code>的元素组成。</td>
+</tr>
+<tr>
+<td align="left"><code>SortedSet tailSet(Object fromElement)</code></td>
+<td align="left">返回此<code>Set</code>的子集,由大于或等于<code>fromElement</code>的元素组成。</td>
+</tr>
+<tr>
+<td align="left">表面上看起来这些方法很多,其实它们很简单:<strong>因为<code>TreeSet</code>中的元素是有序的</strong>,所以增加了访问第一个、前一个、后一个、最后一个元素的方法,并提供了三个从<code>TreeSet</code>中截取子<code>TreeSet</code>的方法。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">下面程序测试了<code>TreeSet</code>的通用用法。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		TreeSet nums = <span class="keyword">new</span> TreeSet();</span><br><span class="line">		<span class="comment">// 向TreeSet中添加四个Integer对象</span></span><br><span class="line">		nums.add(<span class="number">5</span>);</span><br><span class="line">		nums.add(<span class="number">2</span>);</span><br><span class="line">		nums.add(<span class="number">10</span>);</span><br><span class="line">		nums.add(-<span class="number">9</span>);</span><br><span class="line">		<span class="comment">// 输出集合元素，看到集合元素已经处于排序状态</span></span><br><span class="line">		System.out.println(nums);</span><br><span class="line">		<span class="comment">// 输出集合里的第一个元素</span></span><br><span class="line">		System.out.println(nums.first()); <span class="comment">// 输出-9</span></span><br><span class="line">		<span class="comment">// 输出集合里的最后一个元素</span></span><br><span class="line">		System.out.println(nums.last());  <span class="comment">// 输出10</span></span><br><span class="line">		<span class="comment">// 返回小于4的子集，不包含4</span></span><br><span class="line">		System.out.println(nums.headSet(<span class="number">4</span>)); <span class="comment">// 输出[-9, 2]</span></span><br><span class="line">		<span class="comment">// 返回大于5的子集，如果Set中包含5，子集中还包含5</span></span><br><span class="line">		System.out.println(nums.tailSet(<span class="number">5</span>)); <span class="comment">// 输出 [5, 10]</span></span><br><span class="line">		<span class="comment">// 返回大于等于-3，小于4的子集。</span></span><br><span class="line">		System.out.println(nums.subSet(-<span class="number">3</span> , <span class="number">4</span>)); <span class="comment">// 输出[2]</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>运行效果:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[-<span class="number">9</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">-<span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line">[-<span class="number">9</span>, <span class="number">2</span>]</span><br><span class="line">[<span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>根据上面程序的运行结果即可看出, <strong><code>TreeSet</code>并不是根据元素的插入顺序进行排序的,而是根据元素实际值的大小来进行排序的</strong>.<br>与<code>HashSet</code>集合采用<code>hash</code>算法来决定元素的存储位置不同, <code>TreeSet</code>采用<code>红黑树</code>的数据结构来存储集合元素。那么<code>TreeSet</code>进行排序的规则是怎样的呢? <code>TreeSet</code>支持两种排序方法:<code>自然排序</code>和<code>定制排序</code>。在默认情况下, <code>TreeSet</code>采用自然排序。</p>
+<h1 id="1-自然排序"><a href="#1-自然排序" class="headerlink" title="1.自然排序"></a>1.自然排序</h1><p><code>TreeSet</code>会调用集合元素的<code>compareTo(Object obj)</code>方法来比较元素之间的大小关系,然后将集合元素按<code>升序排列</code>,这种方式就是自然排序。<br><code>Java</code>提供了一个<code>Comparable</code>接口,该接口里定义了一个<code>compareTo(Object obj)</code>方法,该方法返回个整数值,实现该接口的类必须实现该方法,实现了该接口的类的对象就可以比较大小。当一个对象调用该方法与另一个对象进行比较时,例如<code>obj1.compareTo(obj2)</code>,</p>
+<ul>
+<li>如果该方法返回0,则表明这两个对象相等;</li>
+<li>如果该方法返回一个正整数,则表明<code>obj1</code>大于<code>obj2</code>;</li>
+<li>如果该方法返回一个负整数,则表明<code>obj</code>小于<code>obj2</code>。</li>
+</ul>
+<p><code>Java</code>的一些常用类已经实现了<code>Comparable</code>接口,并提供了比较大小的标准。下面是实现了<code>Comparable</code>接口的常用类。</p>
+<ul>
+<li><code>BigDecimal</code>、 <code>BigInteger</code>以及所有的<code>数值型对应的包装类</code>:按它们对应的数值大小进行比较。</li>
+<li><code>Character</code>:按字符的<code>unicode</code>值进行比较。</li>
+<li><code>Boolean</code>:<code>true</code>对应的包装类实例大于<code>false</code>对应的包装类实例</li>
+<li><code>String</code>:按字符串中字符的<code>unicode</code>值进行比较.</li>
+<li><code>Date</code>、<code>Time</code>:后面的时间、日期比前面的时间、日期大。</li>
+</ul>
+<p><strong>如果试图把一个对象添加到<code>TreeSet</code>时,则该对象的类必须实现<code>Comparable</code>接口,否则程序将会抛出异常</strong>。如下程序示范了这个错误。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Err</span></span>&#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetErrorTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		TreeSet ts = <span class="keyword">new</span> TreeSet();</span><br><span class="line">		<span class="comment">// 向TreeSet集合中添加两个Err对象</span></span><br><span class="line">		ts.add(<span class="keyword">new</span> Err());</span><br><span class="line">		ts.add(<span class="keyword">new</span> Err());  <span class="comment">//①</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Exception <span class="keyword">in</span> thread "main" java.lang.ClassCastException: Err cannot be cast to java.lang.Comparable</span><br><span class="line">	<span class="built_in">at</span> java.util.TreeMap.compare(TreeMap.java:<span class="number">1290</span>)</span><br><span class="line">	<span class="built_in">at</span> java.util.TreeMap.put(TreeMap.java:<span class="number">538</span>)</span><br><span class="line">	<span class="built_in">at</span> java.util.TreeSet.add(TreeSet.java:<span class="number">255</span>)</span><br><span class="line">	<span class="built_in">at</span> TreeSetErrorTest.main(TreeSetErrorTest.java:<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上面程序试图向<code>TreeSet</code>集合中添加两个<code>Err</code>对象,添加第一个对象时, <code>TreeSet</code>里没有任何元素,所以不会出现任何问题;</li>
+<li>当添加第二个<code>Err</code>对象时, <code>TreeSet</code>就会调用该对象的<code>compareTo(Object obj)</code>方法与集合中的其他元素进行比较.<ul>
+<li>如果其对应的类没有实现<code>Comparable</code>接口,则会引发<code>ClassCastException</code>异常。因此,上面程序将会在①号代码处引发该异常。</li>
+</ul>
+</li>
+</ul>
+<p><strong>注意</strong><br>向<code>TreeSet</code>集合中添加元素时,只有第一个元素无须实现<code>Comparable</code>接口,后面添加的所有元素都必须实现<code>Comparable</code>接口。当然这也不是一种好做法,当试图从<code>TreeSet</code>中取出元素时,依然会引发<code>ClassCastException</code>异常。<br>还有一点必须指出:大部分类在实现<code>compareTo( Object obj)</code>方法时,都需要将被比较对象<code>obj</code>强制类型转换成相同类型,因为只有相同类的两个实例才会比较大小。<br>当试图把一个对象添加到<code>TreeSet</code>集合时, <code>TreeSet</code>会调用该对象的<code>compareTo(Object obj)</code>方法与集合中的其他元素进行比较——这就要求集合中的其他元素与该元素是同一个类的实例。也就是说,<strong>向<code>TreeSet</code>中添加的应该是同一个类的对象,否则也会引发<code>ClassCastException</code>异常</strong>。如下程序示范了这个错误。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetErrorTest2</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		TreeSet ts = <span class="keyword">new</span> TreeSet();</span><br><span class="line">		<span class="comment">// 向TreeSet集合中添加两个对象</span></span><br><span class="line">		ts.add(<span class="keyword">new</span> String(<span class="string">"疯狂Java讲义"</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> Date());   <span class="comment">// ①</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Exception <span class="keyword">in</span> thread "main" java.lang.ClassCastException: java.lang.String cannot be cast to java.util.<span class="built_in">Date</span></span><br><span class="line">	<span class="built_in">at</span> java.util.<span class="built_in">Date</span>.compareTo(<span class="built_in">Date</span>.java:<span class="number">131</span>)</span><br><span class="line">	<span class="built_in">at</span> java.util.TreeMap.put(TreeMap.java:<span class="number">568</span>)</span><br><span class="line">	<span class="built_in">at</span> java.util.TreeSet.add(TreeSet.java:<span class="number">255</span>)</span><br><span class="line">	<span class="built_in">at</span> TreeSetErrorTest2.main(TreeSetErrorTest2.java:<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上面程序先向<code>TreeSet</code>集合中添加了一个字符串对象,这个操作完全正常。</li>
+<li>当添加第二个<code>Date</code>对象时, <code>TreeSet</code>就会调用该对象的<code>compareTo(Object obj)</code>方法与集合中的其他元素进行比较<ul>
+<li><code>Date</code>对象的<code>compareTo(Object obj)</code>方法无法与字符串对象比较大小,所以上面程序将在①代码处引发异常</li>
+</ul>
+</li>
+</ul>
+<p>如果向<code>TreeSet</code>中添加的对象是程序员自定义类的对象,则可以向<code>TreeSet</code>中添加多种类型的对象,前提是用户自定义类实现了<code>Comparable</code>接口,且实现<code>compareTo(Object obj)</code>方法没有进行强制类型转换。但当试图取出<code>TreeSet</code>里的集合元素时,不同类型的元素依然会发生<code>ClassCastException</code>异常。</p>
+<p><strong>总结起来一句话:如果希望<code>TreeSet</code>能正常运作, <code>TreeSet</code>只能添加同一种类型的对象。</strong><br>当把一个对象加入<code>TreeSet</code>集合中时, <code>TreeSet</code>调用该对象的<code>compareTo(Object obj)</code>方法与容器中的其他对象比较大小,然后根据<code>红黑树</code>结构找到它的存储位置。如果两个对象通过<code>compareTo(Object obj)</code>方法比较相等,新对象将无法添加到<code>TreeSet</code>集合中。</p>
+<p>对于<code>TreeSet</code>集合而言,它判断两个对象是否相等的唯一标准是:<strong>两个对象通过<code>compareTo( Object ob)</code>方法比较是否返回0</strong>:</p>
+<ul>
+<li>如果通过<code>compareTo( Object obj)</code>方法比较返回0, <code>TreeSet</code>则会认为它们相等</li>
+<li>否则就认为它们不相等。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Z</span> <span class="keyword">implements</span> <span class="title">Comparable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Z</span><span class="params">(<span class="keyword">int</span> age)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.age = age;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 重写equals()方法，总是返回true</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 重写了compareTo(Object obj)方法，总是返回1</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest2</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		TreeSet set = <span class="keyword">new</span> TreeSet();</span><br><span class="line">		Z z1 = <span class="keyword">new</span> Z(<span class="number">6</span>);</span><br><span class="line">		set.add(z1);</span><br><span class="line">		<span class="comment">// 第二次添加同一个对象，输出true，表明添加成功</span></span><br><span class="line">		System.out.println(set.add(z1));    <span class="comment">//①</span></span><br><span class="line">		<span class="comment">// 下面输出set集合，将看到有两个元素</span></span><br><span class="line">		System.out.println(set);</span><br><span class="line">		<span class="comment">// 修改set集合的第一个元素的age变量</span></span><br><span class="line">		 ((Z)(set.first())).age = <span class="number">9</span>;</span><br><span class="line">		<span class="comment">// 输出set集合的最后一个元素的age变量，将看到也变成了9</span></span><br><span class="line">		System.out.println(((Z)(set.last())).age);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序中①代码行把同一个对象再次添加到<code>TreeSet</code>集合中,因为<code>z1</code>对象的<code>compareTo(Object obj)</code>方法总是返回1,虽然它的<code>equals</code>方法总是返回<code>true</code>,但<code>TreeSet</code>会认为<code>z1</code>对象和它自己也不相等,因此<code>TreeSet</code>可以添加两个<code>z1</code>对象。图8.5显示了<code>TreeSet</code>及Z对象在内存中的存储示意图<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/fangkuangJavaJiangYi3/8/4.png" alt="这里有一张图片"><br>从图8.5可以看到<code>TreeSet</code>对象保存的两个元素的引用,实际上是同一个元素的引用(集合里放的总是<code>引用</code>)。所以当修改<code>TreeSet</code>集合里第一个元素的<code>age</code>变量后,该<code>TreeSet</code>集合里最后一个元素的<code>age</code>变量也随之改变了。</p>
+<h2 id="TreeSet中元素的规则"><a href="#TreeSet中元素的规则" class="headerlink" title="TreeSet中元素的规则"></a>TreeSet中元素的规则</h2><p><strong>如果两个对象通过<code>equals</code>方法比较返回<code>true</code>时,这两个对象通过<code>compareTo( Object obj)</code>方法比较应返回<code>0</code></strong>.</p>
+<p>如果两个对象通过<code>compareTo(Object obj)</code>方法比较返回0时,但它们通过<code>equals</code>方法比较返回<code>false</code>将很麻烦,因为两个对象通过<code>compareTo(Object obj)</code>方法比较相等, <code>TreeSet</code>不会让第二个元素添加进去,这就会与<code>Set</code>集合的规则产生冲突。</p>
+<p>如果向<code>TreeSet</code>中添加一个可变对象后,并且后面程序修改了该可变对象的实例变量,这将导致它与其他对象的大小顺序发生了改变,但<code>TreeSet</code>不会再次调整它们的顺序,甚至可能导致<code>TreeSet</code>中保存的这两个对象通过<code>compareTo(Object obj)</code>方法比较返回0。下面程序演示了这种情况。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">R</span> <span class="keyword">implements</span> <span class="title">Comparable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">R</span><span class="params">(<span class="keyword">int</span> count)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.count = count;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"R[count:"</span> + count + <span class="string">"]"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 重写equals方法，根据count来判断是否相等</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span> == obj)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(obj != <span class="keyword">null</span> &amp;&amp; obj.getClass() == R.class)</span><br><span class="line">		&#123;</span><br><span class="line">			R r = (R)obj;</span><br><span class="line">			<span class="keyword">return</span> r.count == <span class="keyword">this</span>.count;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 重写compareTo方法，根据count来比较大小</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		R r = (R)obj;</span><br><span class="line">		<span class="keyword">return</span> count &gt; r.count ? <span class="number">1</span> :</span><br><span class="line">			count &lt; r.count ? -<span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest3</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		TreeSet ts = <span class="keyword">new</span> TreeSet();</span><br><span class="line">		ts.add(<span class="keyword">new</span> R(<span class="number">5</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> R(-<span class="number">3</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> R(<span class="number">9</span>));</span><br><span class="line">		ts.add(<span class="keyword">new</span> R(-<span class="number">2</span>));</span><br><span class="line">		<span class="comment">// 打印TreeSet集合，集合元素是有序排列的</span></span><br><span class="line">		System.out.println(ts);    <span class="comment">// ①</span></span><br><span class="line">		<span class="comment">// 取出第一个元素</span></span><br><span class="line">		R first = (R)ts.first();</span><br><span class="line">		<span class="comment">// 对第一个元素的count赋值</span></span><br><span class="line">		first.count = <span class="number">20</span>;</span><br><span class="line">		<span class="comment">// 取出最后一个元素</span></span><br><span class="line">		R last = (R)ts.last();</span><br><span class="line">		<span class="comment">// 对最后一个元素的count赋值，与第二个元素的count相同</span></span><br><span class="line">		last.count = -<span class="number">2</span>;</span><br><span class="line">		<span class="comment">// 再次输出将看到TreeSet里的元素处于无序状态，且有重复元素</span></span><br><span class="line">		System.out.println(ts);   <span class="comment">// ②</span></span><br><span class="line">		<span class="comment">// 删除实例变量被改变的元素，删除失败</span></span><br><span class="line">		System.out.println(ts.remove(<span class="keyword">new</span> R(-<span class="number">2</span>)));   <span class="comment">// ③</span></span><br><span class="line">		System.out.println(ts);</span><br><span class="line">		<span class="comment">// 删除实例变量没有被改变的元素，删除成功</span></span><br><span class="line">		System.out.println(ts.remove(<span class="keyword">new</span> R(<span class="number">5</span>)));    <span class="comment">// ④</span></span><br><span class="line">		System.out.println(ts);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中的R对象对应的类正常重写了<code>equals()</code>方法和<code>compareTo()</code>方法,这两个方法都以R对象的<code>count</code>实例变量作为判断的依据。当程序执行①行代码时,看到程序输出的<code>Set</code>集合元素处于有序状态;<br>因为R类是一个可变类,因此可以改变R对象的<code>count</code>实例变量的值,程序后续代码行改变了该集合里第一个元素和最后一个元素的<code>count</code>实例变量的值。当程序执行②行代码输出时,将看到该集合处于无序状态,而且集合中包含了重复元素。运行上面程序,看到如下所示的结果.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[R[count:-<span class="number">3</span>], R[count:-<span class="number">2</span>], R[count:<span class="number">5</span>], R[count:<span class="number">9</span>]]</span><br><span class="line">[R[count:<span class="number">20</span>], R[count:-<span class="number">2</span>], R[count:<span class="number">5</span>], R[count:-<span class="number">2</span>]]</span><br><span class="line">false</span><br><span class="line">[R[count:<span class="number">20</span>], R[count:-<span class="number">2</span>], R[count:<span class="number">5</span>], R[count:-<span class="number">2</span>]]</span><br><span class="line">true</span><br><span class="line">[R[count:<span class="number">20</span>], R[count:-<span class="number">2</span>], R[count:-<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
+<p>一旦改变了<code>TreeSet</code>集合里可变元素的实例变量,当再试图删除该对象时, <code>TreeSet</code>也会删除失败(甚至集合中原有的、实例变量没被修改但与修改后元素相等的元素也无法删除),所以在上面程序的③代码处,删除<code>count</code>为<code>-2</code>的R对象时,没有任何元素被删除;程序执行④代码时,可以看到删除了<code>count</code>为5的R对象,这表明<code>TreeSet</code>可以删除没有被修改实例变量、且不与其他被修改实例变量的对象重复的对象。<br><strong>注意</strong><br>当执行了④代码后, <code>Tree Set</code>会对集合中的元素重新索引(不是重新排序),接下来就可以删除<code>TreeSet</code>中的所有元素了,包括那些被修改过实例变量的元素。与<code>HashSet</code>类似的是,如果<code>TreeSet</code>中包含了可变对象,当可变对象的实例变量被修改时, <code>TreeSet</code>在处理这些对象时将非常复杂,而且容易出错。<strong>为了让程序更加健壮,推荐不要修改放入<code>HashSet</code>和<code>TreeSet</code>集合中元素的关键实例变量</strong></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/cd1e976c/">8.3.3 TreeSet类 1.自然排序</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/e6cbfb40/" rel="next" title="8.3.2 LinkedHashSet类">
+                  <i class="fa fa-chevron-left"></i> 8.3.2 LinkedHashSet类
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/c3abbdfa/" rel="prev" title="8.3.3 TreeSet类 2.定制排序">
+                  8.3.3 TreeSet类 2.定制排序 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#8-3-3-TreeSet类"><span class="nav-number">1.</span> <span class="nav-text">8.3.3 TreeSet类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-自然排序"><span class="nav-number">2.</span> <span class="nav-text">1.自然排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TreeSet中元素的规则"><span class="nav-number">2.1.</span> <span class="nav-text">TreeSet中元素的规则</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

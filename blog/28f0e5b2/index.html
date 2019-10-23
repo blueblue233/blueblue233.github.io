@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="4.6.3 视图的授权 创建视图的用户不会得到该视图上的全部权限 用户对视图的权限从定义视图的关系中继承得到 函数和过程的权限默认和创建者的权限一样 设置函数和过程的权限与调用者的权限一样">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.6.3 视图的授权">
+<meta property="og:url" content="https://blueblue233.github.io/blog/28f0e5b2/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="4.6.3 视图的授权 创建视图的用户不会得到该视图上的全部权限 用户对视图的权限从定义视图的关系中继承得到 函数和过程的权限默认和创建者的权限一样 设置函数和过程的权限与调用者的权限一样">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-23T03:51:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.6.3 视图的授权">
+<meta name="twitter:description" content="4.6.3 视图的授权 创建视图的用户不会得到该视图上的全部权限 用户对视图的权限从定义视图的关系中继承得到 函数和过程的权限默认和创建者的权限一样 设置函数和过程的权限与调用者的权限一样">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/28f0e5b2/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>4.6.3 视图的授权 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/28f0e5b2/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">4.6.3 视图的授权
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-23 10:49:54 / 修改时间：11:51:45" itemprop="dateCreated datePublished" datetime="2019-10-23T10:49:54+08:00">2019-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-6-授权/" itemprop="url" rel="index"><span itemprop="name">4.6 授权</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/28f0e5b2/#4-6-3-视图的授权">4.6.3 视图的授权</a><ul>
+<li><a href="/blog/28f0e5b2/#创建视图的用户不会得到该视图上的全部权限">创建视图的用户不会得到该视图上的全部权限</a></li>
+<li><a href="/blog/28f0e5b2/#用户对视图的权限从定义视图的关系中继承得到">用户对视图的权限从定义视图的关系中继承得到</a></li>
+<li><a href="/blog/28f0e5b2/#函数和过程的权限默认和创建者的权限一样">函数和过程的权限默认和创建者的权限一样</a></li>
+<li><a href="/blog/28f0e5b2/#设置函数和过程的权限与调用者的权限一样">设置函数和过程的权限与调用者的权限一样</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="4-6-3-视图的授权"><a href="#4-6-3-视图的授权" class="headerlink" title="4.6.3 视图的授权"></a>4.6.3 视图的授权</h1><p>在我们的大学例子中,考虑有一位工作人员,他需要知道一个给定系(比如<code>Geology</code>系)里所有员工的工资。该工作人员无权看到其他系中员工的相关信息。因此,该工作人员对<code>instructor</code>关系的直接访问必须被禁止。但是,如果他要访问<code>Geology</code>系的信息,就必须得到在一个视图上的访问权限,我们称该视图为<code>geo_instructor</code>,它仅由属于<code>Geology</code>系的那些<code>instructor</code>元组构成。该视图可以用<code>SQL</code>定义如下:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> geo_instructor</span><br><span class="line"><span class="keyword">as</span>(</span><br><span class="line">    <span class="keyword">select</span> *</span><br><span class="line">    <span class="keyword">from</span> instructor</span><br><span class="line">    <span class="keyword">where</span> dept_name=<span class="string">'Geology'</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>假设该工作人员提出如下<code>SQL</code>查询:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> geo_instructor;</span><br></pre></td></tr></table></figure>
+<p>显然,该工作人员有权看到此查询的结果。但是,当查询处理器将此查询转换为数据库中实际关系上的査询时,它产生了一个在<code>instructor</code>上的查询。这样,系统必须在开始查询处理以前,就检查该工作人员查询的权限。</p>
+<h2 id="创建视图的用户不会得到该视图上的全部权限"><a href="#创建视图的用户不会得到该视图上的全部权限" class="headerlink" title="创建视图的用户不会得到该视图上的全部权限"></a>创建视图的用户不会得到该视图上的全部权限</h2><p><strong>创建视图的用户不需要获得该视图上的全部权限</strong>。他得到的那些权限不会为他提供超越他已有权限的额外授权。</p>
+<h2 id="用户对视图的权限从定义视图的关系中继承得到"><a href="#用户对视图的权限从定义视图的关系中继承得到" class="headerlink" title="用户对视图的权限从定义视图的关系中继承得到"></a>用户对视图的权限从定义视图的关系中继承得到</h2><p>例如,<strong>如果一个创建视图的用户在用来定义视图的关系上没有<code>update</code>权限的话,那么他不能得到视图上的<code>update</code>权限</strong>。<br>如果用户创建一个视图,而此用户在该视图上不能获得任何权限,系统会拒绝这样的视图创建请求。<br>在我们的<code>geo_instructor</code>视图例子中,视图的创建者必须在<code>instructor</code>关系上具有<code>select</code>权限。</p>
+<h2 id="函数和过程的权限默认和创建者的权限一样"><a href="#函数和过程的权限默认和创建者的权限一样" class="headerlink" title="函数和过程的权限默认和创建者的权限一样"></a>函数和过程的权限默认和创建者的权限一样</h2><p>正如我们将在5.2节看到的那样,<code>SQL</code>支持创建<code>函数</code>和<code>过程</code>,在函数和过程中可以包括<code>查询</code>与<code>更新</code>。在函数或过程上可以授予<code>execute</code>权限,以允许用户执行该函数或过程。在默认情况下,和视图类似,<strong>函数和过程具有其创建者所拥有的所有权限</strong>。在效果上,<strong>该函数或过程的运行就像其被创建者调用了那样</strong>。</p>
+<h2 id="设置函数和过程的权限与调用者的权限一样"><a href="#设置函数和过程的权限与调用者的权限一样" class="headerlink" title="设置函数和过程的权限与调用者的权限一样"></a>设置函数和过程的权限与调用者的权限一样</h2><p>尽管此行为在很多情况下是恰当的,但是它并不总是恰当的。从<code>SQL:2003</code>开始,如果函数定义有一个额外的<code>sql security invoker</code>子句,那么它就在调用该函数的用户的权限下执行,而不是在函数定义者的权限下执行。这就允许创建的函数库能够在与调用者相同的权限下运行。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/28f0e5b2/">4.6.3 视图的授权</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d81d2aeb/" rel="next" title="4.6.2 角色">
+                  <i class="fa fa-chevron-left"></i> 4.6.2 角色
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/551e0b85/" rel="prev" title="4.6.4 模式的授权">
+                  4.6.4 模式的授权 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-6-3-视图的授权"><span class="nav-number">1.</span> <span class="nav-text">4.6.3 视图的授权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建视图的用户不会得到该视图上的全部权限"><span class="nav-number">1.1.</span> <span class="nav-text">创建视图的用户不会得到该视图上的全部权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户对视图的权限从定义视图的关系中继承得到"><span class="nav-number">1.2.</span> <span class="nav-text">用户对视图的权限从定义视图的关系中继承得到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数和过程的权限默认和创建者的权限一样"><span class="nav-number">1.3.</span> <span class="nav-text">函数和过程的权限默认和创建者的权限一样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置函数和过程的权限与调用者的权限一样"><span class="nav-number">1.4.</span> <span class="nav-text">设置函数和过程的权限与调用者的权限一样</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

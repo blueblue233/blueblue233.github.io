@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="10.3.1 使用throws声明抛出异常 throws声明抛出异常的语法格式 Checked异常的缺点 推荐使用Runtime异常 不需要在方法声明中抛出Runtime异常 可以使用try-catch捕获Runtime异常">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10.3.1 使用throws声明抛出异常">
+<meta property="og:url" content="https://blueblue233.github.io/blog/d5e8f6ca/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="10.3.1 使用throws声明抛出异常 throws声明抛出异常的语法格式 Checked异常的缺点 推荐使用Runtime异常 不需要在方法声明中抛出Runtime异常 可以使用try-catch捕获Runtime异常">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="10.3.1 使用throws声明抛出异常">
+<meta name="twitter:description" content="10.3.1 使用throws声明抛出异常 throws声明抛出异常的语法格式 Checked异常的缺点 推荐使用Runtime异常 不需要在方法声明中抛出Runtime异常 可以使用try-catch捕获Runtime异常">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/d5e8f6ca/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>10.3.1 使用throws声明抛出异常 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d5e8f6ca/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">10.3.1 使用throws声明抛出异常
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-13 17:22:50" itemprop="dateCreated datePublished" datetime="2019-07-13T17:22:50+08:00">2019-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:45" itemprop="dateModified" datetime="2019-10-14T14:01:45+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第10章-异常处理/" itemprop="url" rel="index"><span itemprop="name">第10章 异常处理</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第10章-异常处理/10-3-Checked异常和Runtime异常体系/" itemprop="url" rel="index"><span itemprop="name">10.3 Checked异常和Runtime异常体系</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/d5e8f6ca/#10-3-1-使用throws声明抛出异常">10.3.1 使用throws声明抛出异常</a><ul>
+<li><a href="/blog/d5e8f6ca/#throws声明抛出异常的语法格式">throws声明抛出异常的语法格式</a></li>
+<li><a href="/blog/d5e8f6ca/#Checked异常的缺点">Checked异常的缺点</a></li>
+<li><a href="/blog/d5e8f6ca/#推荐使用Runtime异常">推荐使用Runtime异常</a></li>
+<li><a href="/blog/d5e8f6ca/#不需要在方法声明中抛出Runtime异常">不需要在方法声明中抛出Runtime异常</a></li>
+<li><a href="/blog/d5e8f6ca/#可以使用try-catch捕获Runtime异常">可以使用try-catch捕获Runtime异常</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="10-3-1-使用throws声明抛出异常"><a href="#10-3-1-使用throws声明抛出异常" class="headerlink" title="10.3.1 使用throws声明抛出异常"></a>10.3.1 使用throws声明抛出异常</h1><p>使用<code>throws</code>声明抛出异常的思路是,当前方法不知道如何处理这种类型的异常,该异常应该由上级调用者处理;<br>如果<code>main</code>方法也不知道如何处理这种类型的异常,也可以使用<code>throws</code>声明抛出异常,该异常将交给<code>JVM</code>处理。<br><strong><code>JVM</code>对异常的处理方法是,打印异常的跟踪栈信息,并中止程序运行</strong>,这就是前面程序在遇到异常后自动结束的原因。</p>
+<h2 id="throws声明抛出异常的语法格式"><a href="#throws声明抛出异常的语法格式" class="headerlink" title="throws声明抛出异常的语法格式"></a>throws声明抛出异常的语法格式</h2><p><code>throws</code>声明抛出只能在方法签名中使用, <code>throws</code>可以声明抛出多个异常类,多个异常类之间以逗号隔开。</p>
+<p><strong><code>throws</code>声明抛出的语法格式仅跟在方法签名之</strong>后,如下例子程序使用了<code>throws</code>来声明抛出<code>IOException</code>异常,<strong>一旦使用<code>throws</code>语句声明抛出该异常,程序就无须使用<code>try-catch</code>块来捕获该异常了</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThrowsTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"a.txt"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序声明不处理<code>IOException</code>异常,将该异常交给<code>JVM</code>处理,所以程序一旦遇到该异常,<code>JVM</code>就会打印该异常的跟踪栈信息,并结束程序。运行上面程序,效果如下所示:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Exception <span class="keyword">in</span> thread "main" java.io.FileNotFoundException: a.txt (系统找不到指定的文件。)</span><br><span class="line">	<span class="built_in">at</span> java.io.FileInputStream.open0(Native Method)</span><br><span class="line">	<span class="built_in">at</span> java.io.FileInputStream.open(FileInputStream.java:<span class="number">195</span>)</span><br><span class="line">	<span class="built_in">at</span> java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:<span class="number">138</span>)</span><br><span class="line">	<span class="built_in">at</span> java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:<span class="number">93</span>)</span><br><span class="line">	<span class="built_in">at</span> ThrowsTest.main(ThrowsTest.java:<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<p>如果某段代码中调用了一个带<code>throws</code>声明的方法,该方法声明抛出了<code>Checked</code>异常,则表明该方法希望它的调用者来处理该异常。也就是说,调用该方法时要么放在<code>try</code>块中显式捕获该异常,要么放在另一个带<code>throws</code>声明抛出的方法中。如下例子程序示范了这种用法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThrowsTest2</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 因为test()方法声明抛出IOException异常，</span></span><br><span class="line">		<span class="comment">// 所以调用该方法的代码要么处于try...catch块中，</span></span><br><span class="line">		<span class="comment">// 要么处于另一个带throws声明抛出的方法中。</span></span><br><span class="line">		test();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span><span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 因为FileInputStream的构造器声明抛出IOException异常，</span></span><br><span class="line">		<span class="comment">// 所以调用FileInputStream的代码要么处于try...catch块中，</span></span><br><span class="line">		<span class="comment">// 要么处于另一个带throws声明抛出的方法中。</span></span><br><span class="line">		FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"a.txt"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>throws</code>声明抛出异常时有一个限制,就是方法重写时子类方法声明抛出的异常类型应该是父类方法声明抛出的异常类型的子类或相同,子类方法声明抛出的异常不允许比父类方法声明抛出的异常多。看如下程序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OverrideThrows</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span><span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"a.txt"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">OverrideThrows</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// 子类方法声明抛出了比父类方法更大的异常</span></span><br><span class="line">	<span class="comment">// 所以下面方法出错</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span><span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中<code>Sub</code>子类中的<code>test()</code>方法声明抛出<code>Exception</code>,该<code>Exception</code>是其父类声明抛出异常<code>EXception</code>类的父类,这将导致程序无法通过编译。</p>
+<h2 id="Checked异常的缺点"><a href="#Checked异常的缺点" class="headerlink" title="Checked异常的缺点"></a>Checked异常的缺点</h2><p>使用<code>Checked</code>异常至少存在如下两大不便之处。</p>
+<ul>
+<li>对于程序中的<code>Checked</code>异常,<code>Java</code>要求必须显式捕获并处理该异常,或者显式声明抛出该异常这样就增加了编程复杂度。</li>
+<li>如果在方法中显式声明抛出<code>Checked</code>异常,将会导致<code>方法签名与异常耦合</code>,如果该方法是<code>重写父类</code>的方法,则该方法抛出的异常还会受到被重写方法所抛出异常的限制。</li>
+</ul>
+<h2 id="推荐使用Runtime异常"><a href="#推荐使用Runtime异常" class="headerlink" title="推荐使用Runtime异常"></a>推荐使用Runtime异常</h2><p>在大部分时候推荐使用<code>Runtime</code>异常,而不使用<code>Checked</code>异常。尤其当程序需要自行抛出异常时,使用<code>Runtime</code>异常将更加简洁。</p>
+<h2 id="不需要在方法声明中抛出Runtime异常"><a href="#不需要在方法声明中抛出Runtime异常" class="headerlink" title="不需要在方法声明中抛出Runtime异常"></a>不需要在方法声明中抛出Runtime异常</h2><p>当使用<code>Runtime</code>异常时,程序无须在方法中声明抛出<code>Runtime</code>异常,一旦发生了自定义错误,程序只管抛出<code>Runtime</code>异常即可。</p>
+<h2 id="可以使用try-catch捕获Runtime异常"><a href="#可以使用try-catch捕获Runtime异常" class="headerlink" title="可以使用try-catch捕获Runtime异常"></a>可以使用try-catch捕获Runtime异常</h2><p>如果程序需要在合适的地方捕获异常并对异常进行处理,则一样可以使用<code>try-catch</code>块来捕获<code>Runtime</code>异常。</p>
+<p>使用<code>Runtime</code>异常是比较省事的方式,使用这种方式既可以享受”正常代码和错误处理代码分离”,”保证程序具有较好的健壮性”的优势,又可以避免因为使用<code>Checked</code>异常带来的编程烦琐性。因此,<code>C#</code>、<code>Ruby</code>、 <code>Python</code>等语言没有所谓的<code>Checked</code>异常,所有的异常都是<code>Runtime</code>异常。</p>
+<p>但<code>Checked</code>异常也有其优势<code>Checked</code>异常能在编译时提醒程序员代码可能存在的问题,提醒程序员必须注意处理该异常,或者声明该异常由该方法调用者来处理,从而可以避免程序员因为粗心而忘记处理该异常的错误。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/d5e8f6ca/">10.3.1 使用throws声明抛出异常</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d81e130b/" rel="next" title="10.3 Checked异常和Runtime异常体系">
+                  <i class="fa fa-chevron-left"></i> 10.3 Checked异常和Runtime异常体系
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/8f705623/" rel="prev" title="10.4 使用throw抛出异常 10.4.1 抛出异常">
+                  10.4 使用throw抛出异常 10.4.1 抛出异常 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#10-3-1-使用throws声明抛出异常"><span class="nav-number">1.</span> <span class="nav-text">10.3.1 使用throws声明抛出异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#throws声明抛出异常的语法格式"><span class="nav-number">1.1.</span> <span class="nav-text">throws声明抛出异常的语法格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Checked异常的缺点"><span class="nav-number">1.2.</span> <span class="nav-text">Checked异常的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐使用Runtime异常"><span class="nav-number">1.3.</span> <span class="nav-text">推荐使用Runtime异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不需要在方法声明中抛出Runtime异常"><span class="nav-number">1.4.</span> <span class="nav-text">不需要在方法声明中抛出Runtime异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可以使用try-catch捕获Runtime异常"><span class="nav-number">1.5.</span> <span class="nav-text">可以使用try-catch捕获Runtime异常</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

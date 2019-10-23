@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.8.5 from子句中的子查询 SQL查询 找出系平均工资超过42000美元的那些系中教师的平均工资 重命名from子查询的结果关系 数据库实现对from子查询的支持 MySQL必须给from自己的子查询取别名   SQL查询 找出在所有系中工资总额最大的系 子查询访问外层查询的相关变量 lateral关键词 数据库实现支持">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.8.5 from子句中的子查询">
+<meta property="og:url" content="https://blueblue233.github.io/blog/1c1e5c0b/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.8.5 from子句中的子查询 SQL查询 找出系平均工资超过42000美元的那些系中教师的平均工资 重命名from子查询的结果关系 数据库实现对from子查询的支持 MySQL必须给from自己的子查询取别名   SQL查询 找出在所有系中工资总额最大的系 子查询访问外层查询的相关变量 lateral关键词 数据库实现支持">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-18T12:33:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.8.5 from子句中的子查询">
+<meta name="twitter:description" content="3.8.5 from子句中的子查询 SQL查询 找出系平均工资超过42000美元的那些系中教师的平均工资 重命名from子查询的结果关系 数据库实现对from子查询的支持 MySQL必须给from自己的子查询取别名   SQL查询 找出在所有系中工资总额最大的系 子查询访问外层查询的相关变量 lateral关键词 数据库实现支持">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/1c1e5c0b/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.8.5 from子句中的子查询 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1c1e5c0b/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.8.5 from子句中的子查询
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-16 13:44:50" itemprop="dateCreated datePublished" datetime="2019-10-16T13:44:50+08:00">2019-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-18 20:33:29" itemprop="dateModified" datetime="2019-10-18T20:33:29+08:00">2019-10-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/" itemprop="url" rel="index"><span itemprop="name">第3章 SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/3-8-嵌套子查询/" itemprop="url" rel="index"><span itemprop="name">3.8 嵌套子查询</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/1c1e5c0b/#3-8-5-from子句中的子查询">3.8.5 from子句中的子查询</a><ul>
+<li><a href="/blog/1c1e5c0b/#SQL查询-找出系平均工资超过42000美元的那些系中教师的平均工资">SQL查询 找出系平均工资超过42000美元的那些系中教师的平均工资</a></li>
+<li><a href="/blog/1c1e5c0b/#重命名from子查询的结果关系">重命名from子查询的结果关系</a></li>
+<li><a href="/blog/1c1e5c0b/#数据库实现对from子查询的支持">数据库实现对from子查询的支持</a><ul>
+<li><a href="/blog/1c1e5c0b/#MySQL必须给from自己的子查询取别名">MySQL必须给from自己的子查询取别名</a></li>
+</ul>
+</li>
+<li><a href="/blog/1c1e5c0b/#SQL查询-找出在所有系中工资总额最大的系">SQL查询 找出在所有系中工资总额最大的系</a></li>
+<li><a href="/blog/1c1e5c0b/#子查询访问外层查询的相关变量-lateral关键词">子查询访问外层查询的相关变量 lateral关键词</a></li>
+<li><a href="/blog/1c1e5c0b/#数据库实现支持">数据库实现支持</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-8-5-from子句中的子查询"><a href="#3-8-5-from子句中的子查询" class="headerlink" title="3.8.5 from子句中的子查询"></a>3.8.5 from子句中的子查询</h1><p><code>SQL</code>允许在<code>from</code>子句中使用子查询表达式。因为任何<code>select-from-where</code>表达式返回的结果都是<code>关系</code>,所以<code>子查询</code>可以被插入到另一个<code>select-from- where</code>中任何<strong>关系可以出现的位置</strong>。</p>
+<h2 id="SQL查询-找出系平均工资超过42000美元的那些系中教师的平均工资"><a href="#SQL查询-找出系平均工资超过42000美元的那些系中教师的平均工资" class="headerlink" title="SQL查询 找出系平均工资超过42000美元的那些系中教师的平均工资"></a>SQL查询 找出系平均工资超过42000美元的那些系中教师的平均工资</h2><p>考虑査询”<strong>找出系平均工资超过42000美元的那些系中教师的平均工资</strong>“。在3.7节我们使用了<code>having</code>子句来书写此查询。现在我们可以不用<code>having</code>子句来重写这个查询,而是通过如下这种在<code>from</code>子句中使用子查询的方式:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name,avg_salary</span><br><span class="line"><span class="keyword">from</span> ( <span class="keyword">select</span> dept_name, <span class="keyword">avg</span>(salary) <span class="keyword">as</span> avg_salary</span><br><span class="line">    <span class="keyword">from</span> instructor </span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> dept_name</span><br><span class="line">) <span class="keyword">as</span> I</span><br><span class="line"><span class="keyword">where</span> avg_salary&gt;<span class="number">42000</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select dept_name,avg_salary</span><br><span class="line">from ( select dept_name, avg(salary) as avg_salary</span><br><span class="line">    from instructor </span><br><span class="line">    group by dept_name</span><br><span class="line">) as I</span><br><span class="line">where avg_salary&gt;<span class="number">42000</span>;</span><br><span class="line">+------------+--------------+</span><br><span class="line">| dept_name  | avg_salary   |</span><br><span class="line">+------------+--------------+</span><br><span class="line">| Biology    | <span class="number">72000</span>        |</span><br><span class="line">| <span class="built_in">Comp</span>. Sci. | <span class="number">77333</span>.<span class="number">333333</span> |</span><br><span class="line">| Elec. Eng. | <span class="number">80000</span>        |</span><br><span class="line">| Finance    | <span class="number">85000</span>        |</span><br><span class="line">| History    | <span class="number">61000</span>        |</span><br><span class="line">| Physics    | <span class="number">91000</span>        |</span><br><span class="line">+------------+--------------+</span><br><span class="line"><span class="number">6</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<p>子查询:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">( <span class="keyword">select</span> dept_name, <span class="keyword">avg</span>(salary) <span class="keyword">as</span> avg_salary</span><br><span class="line">    <span class="keyword">from</span> instructor </span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> dept_name</span><br><span class="line">) <span class="keyword">as</span> I</span><br></pre></td></tr></table></figure>
+<p>产生的关系包含所有系的名字和相应的教师平均工资。子查询的结果属性可以在外层查询中使用.</p>
+<p>注意我们不需要使用<code>having</code>子句,因为<code>from</code>子句中的子查询计算出了每个系的平均工资,早先在<code>having</code>子句中使用的谓词现在出现在外层查询的<code>where</code>子句中。</p>
+<h2 id="重命名from子查询的结果关系"><a href="#重命名from子查询的结果关系" class="headerlink" title="重命名from子查询的结果关系"></a>重命名from子查询的结果关系</h2><p>我们可以用<strong><code>as</code>子句重命名子查询的结果关系</strong>,也可以<strong>使用as子句重命名子查询的属性</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name,avg_salary</span><br><span class="line"><span class="keyword">from</span>( <span class="keyword">select</span> dept_name, <span class="keyword">avg</span>(salary) <span class="keyword">as</span> avg_salary</span><br><span class="line">    <span class="keyword">from</span> instructor </span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> dept_name</span><br><span class="line">) <span class="keyword">as</span> dept_avg</span><br><span class="line"><span class="keyword">where</span> avg_salary &gt; <span class="number">42000</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="数据库实现对from子查询的支持"><a href="#数据库实现对from子查询的支持" class="headerlink" title="数据库实现对from子查询的支持"></a>数据库实现对from子查询的支持</h2><p>很多(但并非全部)<code>SQL</code>实现都支持在<code>from</code>子句中嵌套子查询。<br>请注意,<strong>某些<code>SQL</code>实现要求对每一个<code>from</code>子查询结果关系都给一个名字,即使该名字从不被引用</strong>;(<code>MySQL</code>)</p>
+<h3 id="MySQL必须给from自己的子查询取别名"><a href="#MySQL必须给from自己的子查询取别名" class="headerlink" title="MySQL必须给from自己的子查询取别名"></a>MySQL必须给from自己的子查询取别名</h3><p>经过我的测试<strong><code>MySQL</code>必须对<code>from</code>子查询的结果关系取别名</strong>,不给子查询取别名会报错:<code>Every derived table must have its own alias</code>：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select dept_name,avg_salary</span><br><span class="line">from( select dept_name, avg(salary) as avg_salary</span><br><span class="line">    from instructor </span><br><span class="line">    group by dept_name</span><br><span class="line">)</span><br><span class="line">where avg_salary &gt; <span class="number">42000</span>;</span><br><span class="line"><span class="number">1248</span> - Every derived table must have its own alias</span><br></pre></td></tr></table></figure>
+<h2 id="SQL查询-找出在所有系中工资总额最大的系"><a href="#SQL查询-找出在所有系中工资总额最大的系" class="headerlink" title="SQL查询 找出在所有系中工资总额最大的系"></a>SQL查询 找出在所有系中工资总额最大的系</h2><p>作为另一个例子,假设我们想要<strong>找出在所有系中工资总额最大的系</strong>。在此<code>having</code>子句是无能为力的,但我们可以用<code>from</code>子句中的子查询轻易地写出如下查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">max</span>(tot_salary)</span><br><span class="line"><span class="keyword">from</span>(</span><br><span class="line">    <span class="keyword">select</span> dept_name, <span class="keyword">sum</span>(salary) <span class="keyword">as</span> tot_salary</span><br><span class="line">        <span class="keyword">from</span> instructor</span><br><span class="line">        <span class="keyword">group</span> <span class="keyword">by</span> dept_name</span><br><span class="line">)<span class="keyword">as</span> dept_total;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">select max(tot_salary)</span><br><span class="line">from(</span><br><span class="line">    select dept_name, sum(salary) as tot_salary</span><br><span class="line">        from instructor</span><br><span class="line">        group by dept_name</span><br><span class="line">)as dept_total;</span><br><span class="line">+-----------------+</span><br><span class="line">| max(tot_salary) |</span><br><span class="line">+-----------------+</span><br><span class="line">| <span class="number">232000</span>.<span class="number">00</span>       |</span><br><span class="line">+-----------------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<p>我们注意到在<code>from</code>子句嵌套的子查询中不能使用来自<code>from</code>子句其他关系的<strong>相关变量</strong>。</p>
+<h2 id="子查询访问外层查询的相关变量-lateral关键词"><a href="#子查询访问外层查询的相关变量-lateral关键词" class="headerlink" title="子查询访问外层查询的相关变量 lateral关键词"></a>子查询访问外层查询的相关变量 lateral关键词</h2><p>然而<code>SQL2003</code>允许<code>from</code>子句中的子查询用关键词<code>lateral</code>作为前缀,以便访问<code>from</code>子句中在它前面的表或子查询中的属性。<br>例如,如果我们想<strong>打印每位教师的姓名,以及他们的工资和所在系的平均工资</strong>,可书写查询如下:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, salary, avg_salary</span><br><span class="line"><span class="keyword">from</span> instructor I1,<span class="keyword">lateral</span>(</span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">avg</span>(salary) <span class="keyword">as</span> avg_salary</span><br><span class="line">    <span class="keyword">from</span> instructor I2</span><br><span class="line">    <span class="keyword">where</span> I1.dept_name=I2.dept_name</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>没有<code>lateral</code>子句的话,子查询就不能访问来自外层查询的相关变量<code>I1</code>。</p>
+<h2 id="数据库实现支持"><a href="#数据库实现支持" class="headerlink" title="数据库实现支持"></a>数据库实现支持</h2><p>目前只有少数<code>SQL</code>实现支持<code>lateral</code>子句,比如<code>IBM DB2</code></p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/1c1e5c0b/">3.8.5 from子句中的子查询</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/79c746d6/" rel="next" title="3.8.4 重复元组存在性测试">
+                  <i class="fa fa-chevron-left"></i> 3.8.4 重复元组存在性测试
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/4fa458b7/" rel="prev" title="3.8.6 with子句">
+                  3.8.6 with子句 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-8-5-from子句中的子查询"><span class="nav-number">1.</span> <span class="nav-text">3.8.5 from子句中的子查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-找出系平均工资超过42000美元的那些系中教师的平均工资"><span class="nav-number">1.1.</span> <span class="nav-text">SQL查询 找出系平均工资超过42000美元的那些系中教师的平均工资</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重命名from子查询的结果关系"><span class="nav-number">1.2.</span> <span class="nav-text">重命名from子查询的结果关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库实现对from子查询的支持"><span class="nav-number">1.3.</span> <span class="nav-text">数据库实现对from子查询的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL必须给from自己的子查询取别名"><span class="nav-number">1.3.1.</span> <span class="nav-text">MySQL必须给from自己的子查询取别名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-找出在所有系中工资总额最大的系"><span class="nav-number">1.4.</span> <span class="nav-text">SQL查询 找出在所有系中工资总额最大的系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子查询访问外层查询的相关变量-lateral关键词"><span class="nav-number">1.5.</span> <span class="nav-text">子查询访问外层查询的相关变量 lateral关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库实现支持"><span class="nav-number">1.6.</span> <span class="nav-text">数据库实现支持</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

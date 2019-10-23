@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="4.1.10 select标签 领域对象 User.java Dept   select option标签 测试链接 请求处理方法 表单标签 渲染效果 显示效果   select标签 map作为数据源 测试链接 请求处理方法 表单标签库 渲染结果 显示效果     options标签 select option标签 map数据源 测试链接 请求处理方法 表单标签数据绑定 渲染效果 显示效果">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.1.10 select标签 4.1.11option标签 4.1.12options标签">
+<meta property="og:url" content="https://blueblue233.github.io/blog/1482d2ca/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="4.1.10 select标签 领域对象 User.java Dept   select option标签 测试链接 请求处理方法 表单标签 渲染效果 显示效果   select标签 map作为数据源 测试链接 请求处理方法 表单标签库 渲染结果 显示效果     options标签 select option标签 map数据源 测试链接 请求处理方法 表单标签数据绑定 渲染效果 显示效果">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/4.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/5.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/6.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/7.png">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.1.10 select标签 4.1.11option标签 4.1.12options标签">
+<meta name="twitter:description" content="4.1.10 select标签 领域对象 User.java Dept   select option标签 测试链接 请求处理方法 表单标签 渲染效果 显示效果   select标签 map作为数据源 测试链接 请求处理方法 表单标签库 渲染结果 显示效果     options标签 select option标签 map数据源 测试链接 请求处理方法 表单标签数据绑定 渲染效果 显示效果">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/4.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/1482d2ca/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>4.1.10 select标签 4.1.11option标签 4.1.12options标签 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1482d2ca/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">4.1.10 select标签 4.1.11option标签 4.1.12options标签
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-30 22:47:12" itemprop="dateCreated datePublished" datetime="2019-05-30T22:47:12+08:00">2019-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第4章/" itemprop="url" rel="index"><span itemprop="name">第4章</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/1482d2ca/#4-1-10-select标签">4.1.10 select标签</a><ul>
+<li><a href="/blog/1482d2ca/#领域对象">领域对象</a><ul>
+<li><a href="/blog/1482d2ca/#User-java">User.java</a></li>
+<li><a href="/blog/1482d2ca/#Dept">Dept</a></li>
+</ul>
+</li>
+<li><a href="/blog/1482d2ca/#select-option标签">select option标签</a><ul>
+<li><a href="/blog/1482d2ca/#测试链接">测试链接</a></li>
+<li><a href="/blog/1482d2ca/#请求处理方法">请求处理方法</a></li>
+<li><a href="/blog/1482d2ca/#表单标签">表单标签</a></li>
+<li><a href="/blog/1482d2ca/#渲染效果">渲染效果</a></li>
+<li><a href="/blog/1482d2ca/#显示效果">显示效果</a></li>
+</ul>
+</li>
+<li><a href="/blog/1482d2ca/#select标签-map作为数据源">select标签 map作为数据源</a><ul>
+<li><a href="/blog/1482d2ca/#测试链接">测试链接</a></li>
+<li><a href="/blog/1482d2ca/#请求处理方法">请求处理方法</a></li>
+<li><a href="/blog/1482d2ca/#表单标签库">表单标签库</a></li>
+<li><a href="/blog/1482d2ca/#渲染结果">渲染结果</a></li>
+<li><a href="/blog/1482d2ca/#显示效果">显示效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/1482d2ca/#options标签">options标签</a><ul>
+<li><a href="/blog/1482d2ca/#select-option标签-map数据源">select option标签 map数据源</a><ul>
+<li><a href="/blog/1482d2ca/#测试链接">测试链接</a></li>
+<li><a href="/blog/1482d2ca/#请求处理方法">请求处理方法</a></li>
+<li><a href="/blog/1482d2ca/#表单标签数据绑定">表单标签数据绑定</a></li>
+<li><a href="/blog/1482d2ca/#渲染效果">渲染效果</a></li>
+<li><a href="/blog/1482d2ca/#显示效果">显示效果</a></li>
+</ul>
+</li>
+<li><a href="/blog/1482d2ca/#select-options绑定Object列表">select options绑定Object列表</a><ul>
+<li><a href="/blog/1482d2ca/#测试链接">测试链接</a></li>
+<li><a href="/blog/1482d2ca/#请求处理方法">请求处理方法</a></li>
+<li><a href="/blog/1482d2ca/#表单标签">表单标签</a></li>
+<li><a href="/blog/1482d2ca/#渲染效果">渲染效果</a></li>
+<li><a href="/blog/1482d2ca/#显示效果">显示效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="4-1-10-select标签"><a href="#4-1-10-select标签" class="headerlink" title="4.1.10 select标签"></a>4.1.10 select标签</h1><h2 id="领域对象"><a href="#领域对象" class="headerlink" title="领域对象"></a>领域对象</h2><h3 id="User-java"><a href="#User-java" class="headerlink" title="User.java"></a>User.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 域对象，实现序列化接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="comment">// 部门编号</span></span><br><span class="line">    <span class="keyword">private</span> Integer deptId;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Dept"><a href="#Dept" class="headerlink" title="Dept"></a>Dept</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dept</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dept</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dept</span><span class="params">(Integer id, String name)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="select-option标签"><a href="#select-option标签" class="headerlink" title="select option标签"></a>select option标签</h2><h3 id="测试链接"><a href="#测试链接" class="headerlink" title="测试链接"></a>测试链接</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"selectForm"</span>&gt;</span>selectForm<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="请求处理方法"><a href="#请求处理方法" class="headerlink" title="请求处理方法"></a>请求处理方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/selectForm"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">selectForm</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    <span class="comment">// 设置deptId的值，页面的select下拉框对应的option项会被选中</span></span><br><span class="line">    user.setDeptId(<span class="number">2</span>);</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"selectForm"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="表单标签"><a href="#表单标签" class="headerlink" title="表单标签"></a>表单标签</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--绑定模型中的user属性 --&gt;</span><br><span class="line">&lt;form:form modelAttribute=<span class="string">"user"</span> method=<span class="string">"post"</span> action=<span class="string">"selectForm"</span>&gt;</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;部门:&lt;/td&gt;</span><br><span class="line">            &lt;!-- 绑定user属性表示的对象中的depathID成员变量 --&gt;</span><br><span class="line">            &lt;!-- 如果该成员变量与下面的option标签的value属性的属性值相等的话 --&gt;</span><br><span class="line">            &lt;!-- 就默认选中该选项 --&gt;</span><br><span class="line">            &lt;td&gt;&lt;form:select path=<span class="string">"deptId"</span>&gt;</span><br><span class="line">                    &lt;form:option value="1"&gt;财务部&lt;/form:option&gt;</span><br><span class="line">                    &lt;form:option value="2"&gt;开发部&lt;/form:option&gt;</span><br><span class="line">                    &lt;form:option value="3"&gt;销售部&lt;/form:option&gt;</span><br><span class="line">                &lt;/form:select&gt;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/form:form&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="渲染效果"><a href="#渲染效果" class="headerlink" title="渲染效果"></a>渲染效果</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--绑定模型中的user属性 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">action</span>=<span class="string">"selectForm"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>部门:<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 绑定user属性表示的对象中的depathID成员变量 --&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 如果该成员变量与下面的option标签的value属性的属性值相等的话 --&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 就默认选中该选项 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"deptId"</span> <span class="attr">name</span>=<span class="string">"deptId"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"1"</span>&gt;</span>财务部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">selected</span>=<span class="string">"selected"</span>&gt;</span>开发部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"3"</span>&gt;</span>销售部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到第二个选项设置了<code>selected=&quot;selected&quot;</code>属性,该选型会默认选中.具体选中哪个选项通过设置绑定的对象的对应属性的值来设定,对象的值和选项的<code>value</code>属性相等的会被默认选中.</p>
+<h3 id="显示效果"><a href="#显示效果" class="headerlink" title="显示效果"></a>显示效果</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/4.png" alt="这里有一张图片"></p>
+<h2 id="select标签-map作为数据源"><a href="#select标签-map作为数据源" class="headerlink" title="select标签 map作为数据源"></a>select标签 map作为数据源</h2><h3 id="测试链接-1"><a href="#测试链接-1" class="headerlink" title="测试链接"></a>测试链接</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"selectForm2"</span>&gt;</span>selectForm2<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="请求处理方法-1"><a href="#请求处理方法-1" class="headerlink" title="请求处理方法"></a>请求处理方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/selectForm2"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">selectForm2</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    <span class="comment">// key为2的将会被选中</span></span><br><span class="line">    user.setDeptId(<span class="number">2</span>);</span><br><span class="line">    <span class="comment">// 页面展现的可供选择的select下拉框内容deptMap</span></span><br><span class="line">    Map&lt;Integer, String&gt; deptMap = <span class="keyword">new</span> HashMap&lt;Integer, String&gt;();</span><br><span class="line">    deptMap.put(<span class="number">1</span>, <span class="string">"财务部"</span>);</span><br><span class="line">    deptMap.put(<span class="number">2</span>, <span class="string">"开发部"</span>);</span><br><span class="line">    deptMap.put(<span class="number">3</span>, <span class="string">"销售部"</span>);</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">    model.addAttribute(<span class="string">"deptMap"</span>, deptMap);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"selectForm2"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="表单标签库"><a href="#表单标签库" class="headerlink" title="表单标签库"></a>表单标签库</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;form:form modelAttribute=<span class="string">"user"</span> method=<span class="string">"post"</span> action=<span class="string">"selectForm2"</span>&gt;</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;部门:&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;form:select path=<span class="string">"deptId"</span> items=<span class="string">"$&#123;deptMap&#125;"</span> /&gt;</span><br><span class="line">            &lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/form:form&gt;</span><br></pre></td></tr></table></figure>
+<p><code>form</code>标签的<code>modelAttribute=&quot;user&quot;</code>表示绑定<code>model</code>中的<code>user</code>属性也就是<code>user</code>对象.<br><code>Spring MVC</code>的<code>select</code>标签的<code>path=&quot;deptId&quot;</code>属性表示该<code>select</code>标签绑定<code>user</code>对象的<code>deptId</code>成员变量,</p>
+<h3 id="渲染结果"><a href="#渲染结果" class="headerlink" title="渲染结果"></a>渲染结果</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">action</span>=<span class="string">"selectForm2"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>部门:<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"deptId"</span> <span class="attr">name</span>=<span class="string">"deptId"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"1"</span>&gt;</span>财务部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">selected</span>=<span class="string">"selected"</span>&gt;</span>开发部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"3"</span>&gt;</span>销售部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="显示效果-1"><a href="#显示效果-1" class="headerlink" title="显示效果"></a>显示效果</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/5.png" alt="这里有一张图片"><br>使用这种方式将使用<code>map</code>中的值作为显示文本,使用<code>key</code>作为<code>option</code>标签的<code>value</code>属性</p>
+<h1 id="options标签"><a href="#options标签" class="headerlink" title="options标签"></a>options标签</h1><h2 id="select-option标签-map数据源"><a href="#select-option标签-map数据源" class="headerlink" title="select option标签 map数据源"></a>select option标签 map数据源</h2><h3 id="测试链接-2"><a href="#测试链接-2" class="headerlink" title="测试链接"></a>测试链接</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"selectForm3"</span>&gt;</span>selectForm3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="请求处理方法-2"><a href="#请求处理方法-2" class="headerlink" title="请求处理方法"></a>请求处理方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/selectForm3"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">selectForm3</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    user.setDeptId(<span class="number">2</span>);</span><br><span class="line">    <span class="comment">// 页面展现的可供选择的select下拉框内容deptMap</span></span><br><span class="line">    Map&lt;Integer, String&gt; deptMap = <span class="keyword">new</span> HashMap&lt;Integer, String&gt;();</span><br><span class="line">    deptMap.put(<span class="number">1</span>, <span class="string">"财务部"</span>);</span><br><span class="line">    deptMap.put(<span class="number">2</span>, <span class="string">"开发部"</span>);</span><br><span class="line">    deptMap.put(<span class="number">3</span>, <span class="string">"销售部"</span>);</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">    model.addAttribute(<span class="string">"deptMap"</span>, deptMap);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"selectForm3"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="表单标签数据绑定"><a href="#表单标签数据绑定" class="headerlink" title="表单标签数据绑定"></a>表单标签数据绑定</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;form:form modelAttribute=<span class="string">"user"</span> method=<span class="string">"post"</span> action=<span class="string">"selectForm"</span>&gt;</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;部门:&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;form:select path=<span class="string">"deptId"</span>&gt;</span><br><span class="line">                    &lt;form:options items=<span class="string">"$&#123;deptMap&#125;"</span> /&gt;</span><br><span class="line">                &lt;/form:select&gt;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/form:form&gt;</span><br></pre></td></tr></table></figure>
+<p>使用<code>map</code>作为数据源的<code>options</code>标签时,使用<code>map</code>的<code>key</code>作为<code>option</code>标签的<code>value</code>属性的值,使用<code>map</code>的<code>value</code>作为显示文本。</p>
+<h3 id="渲染效果-1"><a href="#渲染效果-1" class="headerlink" title="渲染效果"></a>渲染效果</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">action</span>=<span class="string">"selectForm"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>部门:<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"deptId"</span> <span class="attr">name</span>=<span class="string">"deptId"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"1"</span>&gt;</span>财务部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">selected</span>=<span class="string">"selected"</span>&gt;</span>开发部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"3"</span>&gt;</span>销售部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="显示效果-2"><a href="#显示效果-2" class="headerlink" title="显示效果"></a>显示效果</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/6.png" alt="这里有一张图片"></p>
+<h2 id="select-options绑定Object列表"><a href="#select-options绑定Object列表" class="headerlink" title="select options绑定Object列表"></a>select options绑定Object列表</h2><p>在实际开发中,经常会出现一种情况,即<strong><code>select</code>下拉框中的数据来自于数据库</strong>的表数据,并且<strong>获取的数据被封装到<code>JavaBean</code>中</strong>。此时,就可以使用<code>select</code>标签或者<code>**options</code>标签的<code>items</code>、<code>itemLabel</code>和<code>itemValue</code>属性**来加载数据。</p>
+<h3 id="测试链接-3"><a href="#测试链接-3" class="headerlink" title="测试链接"></a>测试链接</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"selectForm4"</span>&gt;</span>selectForm4<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="请求处理方法-3"><a href="#请求处理方法-3" class="headerlink" title="请求处理方法"></a>请求处理方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/selectForm4"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">selectForm4</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    user.setDeptId(<span class="number">2</span>);</span><br><span class="line">    <span class="comment">// 页面展现的可供选择的select下拉框内容deptList，其中的元素的Dept对象</span></span><br><span class="line">    <span class="comment">// 模拟从数据库获取到部门信息封装到对象当中</span></span><br><span class="line">    List&lt;Dept&gt; deptList = <span class="keyword">new</span> ArrayList&lt;Dept&gt;();</span><br><span class="line">    deptList.add(<span class="keyword">new</span> Dept(<span class="number">1</span>, <span class="string">"财务部"</span>));</span><br><span class="line">    deptList.add(<span class="keyword">new</span> Dept(<span class="number">2</span>, <span class="string">"开发部"</span>));</span><br><span class="line">    deptList.add(<span class="keyword">new</span> Dept(<span class="number">3</span>, <span class="string">"销售部"</span>));</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">    model.addAttribute(<span class="string">"deptList"</span>, deptList);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"selectForm4"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>selectForm4</code>方法中模拟从数据库中获取部门信息,并将其封装到<code>Dept</code>对象中,且将多个部门信息装载到<code>List</code>集合中,最后添加到<code>Model</code>当中。</p>
+<h3 id="表单标签-1"><a href="#表单标签-1" class="headerlink" title="表单标签"></a>表单标签</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;form:form modelAttribute=<span class="string">"user"</span> method=<span class="string">"post"</span> action=<span class="string">"selectForm"</span>&gt;</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;部门:&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;form:select path=<span class="string">"deptId"</span>&gt;</span><br><span class="line">                    &lt;!--itemLabel表示该对象的要显示的提示文本 --&gt;</span><br><span class="line">                    &lt;!--itemValue表示使用显示该对象的id成员变量的值作为option标签的value属性 --&gt;</span><br><span class="line">                    &lt;form:options items=<span class="string">"$&#123;deptList&#125;"</span></span><br><span class="line">                        itemLabel=<span class="string">"name"</span> itemValue=<span class="string">"id"</span> /&gt;</span><br><span class="line">                &lt;/form:select&gt;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/form:form&gt;</span><br></pre></td></tr></table></figure>
+<p><code>selectForm4.jsp</code>页面的<code>options</code>标签的<code>items</code>标签加载<code>Model</code>中的<code>deptList</code>,并将集合中的<code>Dept</code>对象的<code>id</code>属性设置为<code>option</code>的<code>value</code>,<code>name</code>属性设置为<code>option</code>的<code>label</code>。</p>
+<h3 id="渲染效果-2"><a href="#渲染效果-2" class="headerlink" title="渲染效果"></a>渲染效果</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">action</span>=<span class="string">"selectForm"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>部门:<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"deptId"</span> <span class="attr">name</span>=<span class="string">"deptId"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"1"</span>&gt;</span>财务部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"2"</span> <span class="attr">selected</span>=<span class="string">"selected"</span>&gt;</span>开发部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"3"</span>&gt;</span>销售部<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="显示效果-3"><a href="#显示效果-3" class="headerlink" title="显示效果"></a>显示效果</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter4/7.png" alt="这里有一张图片"></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/1482d2ca/">4.1.10 select标签 4.1.11option标签 4.1.12options标签</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/bcd20f0d/" rel="next" title="4.1.8 radiobutton标签 4.1.9radiobuttons标签">
+                  <i class="fa fa-chevron-left"></i> 4.1.8 radiobutton标签 4.1.9radiobuttons标签
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/d5f45abb/" rel="prev" title="4.1.13 errors标签">
+                  4.1.13 errors标签 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-1-10-select标签"><span class="nav-number">1.</span> <span class="nav-text">4.1.10 select标签</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#领域对象"><span class="nav-number">1.1.</span> <span class="nav-text">领域对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#User-java"><span class="nav-number">1.1.1.</span> <span class="nav-text">User.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dept"><span class="nav-number">1.1.2.</span> <span class="nav-text">Dept</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-option标签"><span class="nav-number">1.2.</span> <span class="nav-text">select option标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试链接"><span class="nav-number">1.2.1.</span> <span class="nav-text">测试链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求处理方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">请求处理方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表单标签"><span class="nav-number">1.2.3.</span> <span class="nav-text">表单标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染效果"><span class="nav-number">1.2.4.</span> <span class="nav-text">渲染效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示效果"><span class="nav-number">1.2.5.</span> <span class="nav-text">显示效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select标签-map作为数据源"><span class="nav-number">1.3.</span> <span class="nav-text">select标签 map作为数据源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试链接-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">测试链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求处理方法-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">请求处理方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表单标签库"><span class="nav-number">1.3.3.</span> <span class="nav-text">表单标签库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染结果"><span class="nav-number">1.3.4.</span> <span class="nav-text">渲染结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示效果-1"><span class="nav-number">1.3.5.</span> <span class="nav-text">显示效果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#options标签"><span class="nav-number">2.</span> <span class="nav-text">options标签</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#select-option标签-map数据源"><span class="nav-number">2.1.</span> <span class="nav-text">select option标签 map数据源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试链接-2"><span class="nav-number">2.1.1.</span> <span class="nav-text">测试链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求处理方法-2"><span class="nav-number">2.1.2.</span> <span class="nav-text">请求处理方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表单标签数据绑定"><span class="nav-number">2.1.3.</span> <span class="nav-text">表单标签数据绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染效果-1"><span class="nav-number">2.1.4.</span> <span class="nav-text">渲染效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示效果-2"><span class="nav-number">2.1.5.</span> <span class="nav-text">显示效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-options绑定Object列表"><span class="nav-number">2.2.</span> <span class="nav-text">select options绑定Object列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试链接-3"><span class="nav-number">2.2.1.</span> <span class="nav-text">测试链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求处理方法-3"><span class="nav-number">2.2.2.</span> <span class="nav-text">请求处理方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表单标签-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">表单标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染效果-2"><span class="nav-number">2.2.4.</span> <span class="nav-text">渲染效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示效果-3"><span class="nav-number">2.2.5.</span> <span class="nav-text">显示效果</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

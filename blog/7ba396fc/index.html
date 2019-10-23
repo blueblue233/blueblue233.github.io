@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.7 jQuery的回调支持 3.7.1 回调支持的基本用法 如何创建Callbacks对象 程序示例 Callbacks对象方法 添加或删除回调函数到Callbacks对象中 执行Callbacks对象中的所有回调方法 判断方法 禁用或锁定Callbacks对象">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.7 jQuery的回调支持 3.7.1 回调支持的基本用法">
+<meta property="og:url" content="https://blueblue233.github.io/blog/7ba396fc/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.7 jQuery的回调支持 3.7.1 回调支持的基本用法 如何创建Callbacks对象 程序示例 Callbacks对象方法 添加或删除回调函数到Callbacks对象中 执行Callbacks对象中的所有回调方法 判断方法 禁用或锁定Callbacks对象">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.7 jQuery的回调支持 3.7.1 回调支持的基本用法">
+<meta name="twitter:description" content="3.7 jQuery的回调支持 3.7.1 回调支持的基本用法 如何创建Callbacks对象 程序示例 Callbacks对象方法 添加或删除回调函数到Callbacks对象中 执行Callbacks对象中的所有回调方法 判断方法 禁用或锁定Callbacks对象">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/7ba396fc/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.7 jQuery的回调支持 3.7.1 回调支持的基本用法 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/7ba396fc/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.7 jQuery的回调支持 3.7.1 回调支持的基本用法
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-24 23:57:57" itemprop="dateCreated datePublished" datetime="2019-07-24T23:57:57+08:00">2019-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/" itemprop="url" rel="index"><span itemprop="name">第3章 jQuery库详解</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/3-7-jQuery的回调支持/" itemprop="url" rel="index"><span itemprop="name">3.7 jQuery的回调支持</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/7ba396fc/#3-7-jQuery的回调支持">3.7 jQuery的回调支持</a></li>
+<li><a href="/blog/7ba396fc/#3-7-1-回调支持的基本用法">3.7.1 回调支持的基本用法</a><ul>
+<li><a href="/blog/7ba396fc/#如何创建Callbacks对象">如何创建Callbacks对象</a></li>
+<li><a href="/blog/7ba396fc/#程序示例">程序示例</a></li>
+<li><a href="/blog/7ba396fc/#Callbacks对象方法">Callbacks对象方法</a><ul>
+<li><a href="/blog/7ba396fc/#添加或删除回调函数到Callbacks对象中">添加或删除回调函数到Callbacks对象中</a></li>
+<li><a href="/blog/7ba396fc/#执行Callbacks对象中的所有回调方法">执行Callbacks对象中的所有回调方法</a></li>
+<li><a href="/blog/7ba396fc/#判断方法">判断方法</a></li>
+<li><a href="/blog/7ba396fc/#禁用或锁定Callbacks对象">禁用或锁定Callbacks对象</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-7-jQuery的回调支持"><a href="#3-7-jQuery的回调支持" class="headerlink" title="3.7 jQuery的回调支持"></a>3.7 jQuery的回调支持</h1><p>从<code>jQuery 1.7</code>开始,<code>jQuery</code>提供了回调支持,这使得开发者能以一种更简单、高效的方式管理回调函数。</p>
+<h1 id="3-7-1-回调支持的基本用法"><a href="#3-7-1-回调支持的基本用法" class="headerlink" title="3.7.1 回调支持的基本用法"></a>3.7.1 回调支持的基本用法</h1><!--replace:Callbacks=Call backs-->
+<h2 id="如何创建Callbacks对象"><a href="#如何创建Callbacks对象" class="headerlink" title="如何创建Callbacks对象"></a>如何创建Callbacks对象</h2><p><code>jQuery</code>提供了以下方法创建<code>Callbacks</code>对象。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>jQuery.Callbacks(flags)</code></td>
+<td align="left">根据创建的<code>flags</code>创建并返回<code>Callbacks</code>对象,<strong><code>Callbacks</code>对象表示一个回调函数列表</strong>。</td>
+</tr>
+</tbody></table>
+<p>得到回调函数列表之后,接下来就可以利用该回调函数列表来管理回调函数了。</p>
+<!--SSTStop-->
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"author"</span> <span class="attr">content</span>=<span class="string">"Yeeku.H.Lee(CrazyIt.org)"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span> 回调支持 <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"../jquery-3.1.1.js"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 定义两个简单的函数</span></span></span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params">value</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="built_in">document</span>.writeln(<span class="string">"fn1函数输出："</span> + value + <span class="string">"&lt;br /&gt;"</span>);</span></span><br><span class="line">		&#125;</span><br><span class="line"><span class="javascript">		<span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params">value</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="built_in">document</span>.writeln(<span class="string">"fn2函数输出："</span> + value + <span class="string">"&lt;br /&gt;"</span>);</span></span><br><span class="line"><span class="javascript">			<span class="keyword">return</span> <span class="literal">false</span>;</span></span><br><span class="line">		&#125;</span><br><span class="line"><span class="javascript">		<span class="comment">// 创建一个回调函数列表</span></span></span><br><span class="line"><span class="javascript">		<span class="keyword">var</span> callbacks = $.Callbacks();</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 向回调函数列表中添加第一个回调函数</span></span></span><br><span class="line">		callbacks.add(fn1);</span><br><span class="line"><span class="javascript">		<span class="comment">// 触发回调函数列表中的所有回调函数（只有fn1被触发）</span></span></span><br><span class="line"><span class="javascript">		callbacks.fire(<span class="string">"疯狂前端开发"</span>);</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 再次向回调函数列表中添加一个回调函数</span></span></span><br><span class="line">		callbacks.add(fn2);</span><br><span class="line"><span class="javascript">		<span class="built_in">document</span>.writeln(<span class="string">"&lt;hr/&gt;"</span>);</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 触发回调函数列表中的所有回调函数（fn1、fn2被触发）</span></span></span><br><span class="line"><span class="javascript">		callbacks.fire(<span class="string">"~~疯狂Java~~"</span>);</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 从回调函数列表中删除fn1函数</span></span></span><br><span class="line">		callbacks.remove(fn1);</span><br><span class="line"><span class="javascript">		<span class="built_in">document</span>.writeln(<span class="string">"&lt;hr/&gt;"</span>);</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 触发回调函数列表中的所有回调函数（只有fn2被触发）</span></span></span><br><span class="line"><span class="javascript">		callbacks.fire(<span class="string">"fkjava.org"</span>);</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>该程序中使用<code>$.Callbacks()</code>方法创建一个<code>Callbacks</code> 对象(回调函数列表),接下来</p>
+<ul>
+<li>程序既可使用<code>add()</code>方法向该<code>Callbacks</code>对象添加回调函数;</li>
+<li>也可使用<code>remove()</code>方法从<code>Callbacks</code>对象中删除回调函数;</li>
+<li>还可使用<code>fire()</code>方法触发<code>Callbacks</code>对象中的所有回调函数。</li>
+</ul>
+<!--SSTStart-->
+<h2 id="Callbacks对象方法"><a href="#Callbacks对象方法" class="headerlink" title="Callbacks对象方法"></a>Callbacks对象方法</h2><p>从上面的程序可以看出,<code>Callbacks</code> 对象是一种简单有效的回调函数管理方式。<code>Callbacks</code>对象提供了以下几种方法来管理回调函数。</p>
+<h3 id="添加或删除回调函数到Callbacks对象中"><a href="#添加或删除回调函数到Callbacks对象中" class="headerlink" title="添加或删除回调函数到Callbacks对象中"></a>添加或删除回调函数到Callbacks对象中</h3><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>add(callbacks)</code></td>
+<td align="left">将一个或多个回调函数添加到<code>Callbacks</code>对象中。<code>callbacks</code>参数表示将要添加的回调函数或回调函数数组。</td>
+</tr>
+<tr>
+<td align="left"><code>remove(callbacks)</code></td>
+<td align="left">从<code>Callbacks</code> 对象中删除一个或多个回调函数。<code>callbacks</code> 参数表示将要被删除的回调函数或回调函数数组。</td>
+</tr>
+<tr>
+<td align="left"><code>empty()</code></td>
+<td align="left">清空<code>Callbacks</code>对象中的所有回调函数。</td>
+</tr>
+</tbody></table>
+<h3 id="执行Callbacks对象中的所有回调方法"><a href="#执行Callbacks对象中的所有回调方法" class="headerlink" title="执行Callbacks对象中的所有回调方法"></a>执行Callbacks对象中的所有回调方法</h3><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>fire(arguments)</code></td>
+<td align="left">使用指定参数<code>arguments</code>激发<code>Callbacks</code>对象中<code>所有</code>回调函数。</td>
+</tr>
+</tbody></table>
+<h3 id="判断方法"><a href="#判断方法" class="headerlink" title="判断方法"></a>判断方法</h3><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>has(callback)</code></td>
+<td align="left">判断<code>Callbacks</code>对象中是否包含<code>callback</code>回调函数。</td>
+</tr>
+<tr>
+<td align="left"><code>fired()</code></td>
+<td align="left">判断<code>Callbacks</code>对象中的回调函数是否被调用了至少一次。</td>
+</tr>
+<tr>
+<td align="left"><code>locked()</code></td>
+<td align="left">判断<code>Callbacks</code>对象是否处于锁定状态。</td>
+</tr>
+<tr>
+<td align="left">### 禁用或锁定Callbacks对象 ###</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>disable()</code></td>
+<td align="left">禁用<code>Callbacks</code>对象。</td>
+</tr>
+<tr>
+<td align="left"><code>lock()</code></td>
+<td align="left">将<code>Callbacks</code>对象锁定在当前状态。</td>
+</tr>
+<tr>
+<td align="left"><!--SSTStop--></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/7ba396fc/">3.7 jQuery的回调支持 3.7.1 回调支持的基本用法</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/c065458c/" rel="next" title="3.6.2 操作动画队列">
+                  <i class="fa fa-chevron-left"></i> 3.6.2 操作动画队列
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/d8e55de4/" rel="prev" title="3.7.2 创建Callbacks对象支持的选项">
+                  3.7.2 创建Callbacks对象支持的选项 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-7-jQuery的回调支持"><span class="nav-number">1.</span> <span class="nav-text">3.7 jQuery的回调支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-7-1-回调支持的基本用法"><span class="nav-number">2.</span> <span class="nav-text">3.7.1 回调支持的基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何创建Callbacks对象"><span class="nav-number">2.1.</span> <span class="nav-text">如何创建Callbacks对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">2.2.</span> <span class="nav-text">程序示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Callbacks对象方法"><span class="nav-number">2.3.</span> <span class="nav-text">Callbacks对象方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加或删除回调函数到Callbacks对象中"><span class="nav-number">2.3.1.</span> <span class="nav-text">添加或删除回调函数到Callbacks对象中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行Callbacks对象中的所有回调方法"><span class="nav-number">2.3.2.</span> <span class="nav-text">执行Callbacks对象中的所有回调方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断方法"><span class="nav-number">2.3.3.</span> <span class="nav-text">判断方法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="5.7 函数 5.7.1 contains函数 实例 完整代码   5.7.2 containsIgnoreCase函数 5.7.3 endsWith函数 5.7.4 escapeXml函数 5.7.5 indexOf函数 5.7.6 join函数 5.7.7 length函数 5.7.8 replace函数 5.7.9 split函数 5.7.10 startsWith函数 5.7.12 su">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.7 函数">
+<meta property="og:url" content="https://blueblue233.github.io/blog/a7b90af6/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="5.7 函数 5.7.1 contains函数 实例 完整代码   5.7.2 containsIgnoreCase函数 5.7.3 endsWith函数 5.7.4 escapeXml函数 5.7.5 indexOf函数 5.7.6 join函数 5.7.7 length函数 5.7.8 replace函数 5.7.9 split函数 5.7.10 startsWith函数 5.7.12 su">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5.7 函数">
+<meta name="twitter:description" content="5.7 函数 5.7.1 contains函数 实例 完整代码   5.7.2 containsIgnoreCase函数 5.7.3 endsWith函数 5.7.4 escapeXml函数 5.7.5 indexOf函数 5.7.6 join函数 5.7.7 length函数 5.7.8 replace函数 5.7.9 split函数 5.7.10 startsWith函数 5.7.12 su">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/a7b90af6/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>5.7 函数 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/a7b90af6/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">5.7 函数
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-04-06 15:47:30" itemprop="dateCreated datePublished" datetime="2019-04-06T15:47:30+08:00">2019-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:21" itemprop="dateModified" datetime="2019-10-14T14:00:21+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/" itemprop="url" rel="index"><span itemprop="name">Serlet JSP和Spring MVC初学指南</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/" itemprop="url" rel="index"><span itemprop="name">第一部分 Servlets和JSP</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/第5章-JSTL/" itemprop="url" rel="index"><span itemprop="name">第5章 JSTL</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/a7b90af6/#5-7-函数">5.7 函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-1-contains函数">5.7.1 contains函数</a><ul>
+<li><a href="/blog/a7b90af6/#实例">实例</a></li>
+<li><a href="/blog/a7b90af6/#完整代码">完整代码</a></li>
+</ul>
+</li>
+<li><a href="/blog/a7b90af6/#5-7-2-containsIgnoreCase函数">5.7.2 containsIgnoreCase函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-3-endsWith函数">5.7.3 endsWith函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-4-escapeXml函数">5.7.4 escapeXml函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-5-indexOf函数">5.7.5 indexOf函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-6-join函数">5.7.6 join函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-7-length函数">5.7.7 length函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-8-replace函数">5.7.8 replace函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-9-split函数">5.7.9 split函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-10-startsWith函数">5.7.10 startsWith函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-12-substringAfter函数">5.7.12 substringAfter函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-13-substringBefore函数">5.7.13 substringBefore函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-14-toLowerCase函数">5.7.14 toLowerCase函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-15-toUpperCase函数">5.7.15 toUpperCase函数</a></li>
+<li><a href="/blog/a7b90af6/#5-7-16-trim函数">5.7.16 trim函数</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h2 id="5-7-函数"><a href="#5-7-函数" class="headerlink" title="5.7 函数"></a>5.7 函数</h2><p>除了定制行为外，<code>JSTL 1.1</code>和<code>JSTL 1.2</code>还定义了一套<strong>可以在<code>EL</code>表达式中使用的标准函数</strong>。这些函数都集中放在<code>function</code>标签库中。为了使用这些函数，必须在<code>JSP</code>的最前面使用以下<code>taglib</code>指令：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ taglib uri=<span class="string">"http://java.sun.com/jsp/jstl/functions"</span></span><br><span class="line">        prefix=<span class="string">"fn"</span> %&gt;</span><br></pre></td></tr></table></figure>
+<p>调用函数时，要以下列格式使用一个<code>EL</code>：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:functionName&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的<code>functionName</code>是函数名。<br><strong>大部分函数都用于字符串操作</strong>。例如，<code>length</code>函数用于字符串和集合，并返回集合或者数组中的项目数，或者返回一个字符串的字符数。</p>
+<h2 id="5-7-1-contains函数"><a href="#5-7-1-contains函数" class="headerlink" title="5.7.1 contains函数"></a>5.7.1 contains函数</h2><p><strong><code>contains</code>函数用于测试一个字符串中是否包含指定的子字符串</strong>。如果字符串中包含该子字符串，则返回值为<code>true</code>，否则，返回<code>false</code>。其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">contains(string, substring).</span><br></pre></td></tr></table></figure>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>例如，下面这两个<code>EL</code>表达式都将返回<code>true</code>：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:set <span class="keyword">var</span>=<span class="string">"myString"</span> value=<span class="string">"Hello World"</span> /&gt;</span><br><span class="line">&lt;!-- 判断字符串有界变量`myString`中是否包含`Hello` --&gt;</span><br><span class="line">$&#123;fn:contains(myString, <span class="string">"Hello"</span>)&#125;</span><br><span class="line">&lt;br&gt; $&#123;fn:contains(<span class="string">"Stella Cadente"</span>, <span class="string">"Cadente"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">true</span><br></pre></td></tr></table></figure>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></span><br><span class="line">	pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;%<span class="meta">@taglib</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/functions"</span> prefix=<span class="string">"fn"</span>%&gt;</span><br><span class="line">&lt;%<span class="meta">@taglib</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> prefix=<span class="string">"c"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;function Test&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">	&lt;c:set <span class="keyword">var</span>=<span class="string">"myString"</span> value=<span class="string">"Hello World"</span> /&gt;</span><br><span class="line">	&lt;!-- 判断字符串有界变量`myString`中是否包含`Hello` --&gt;</span><br><span class="line">	$&#123;fn:contains(myString, <span class="string">"Hello"</span>)&#125;</span><br><span class="line">	&lt;br&gt; $&#123;fn:contains(<span class="string">"Stella Cadente"</span>, <span class="string">"Cadente"</span>)&#125;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-2-containsIgnoreCase函数"><a href="#5-7-2-containsIgnoreCase函数" class="headerlink" title="5.7.2 containsIgnoreCase函数"></a>5.7.2 containsIgnoreCase函数</h2><p><code>containsIgnoreCase</code>函数与<code>contains</code>函数相似，但测试是区分大小写的，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">containsIgnoreCase(string, substring)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回<code>true</code>：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:containsIgnoreCase(<span class="string">"Stella Cadente"</span>, <span class="string">"CADENTE"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-3-endsWith函数"><a href="#5-7-3-endsWith函数" class="headerlink" title="5.7.3 endsWith函数"></a>5.7.3 endsWith函数</h2><p><strong><code>endsWith</code>函数用于测试一个字符串是否以指定的后缀结尾</strong>，其返回值是一个<code>Boolean</code>，语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">endsWith(string, suffix)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回<code>true</code>。</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:endsWith(<span class="string">"Hello World"</span>, <span class="string">"World"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-4-escapeXml函数"><a href="#5-7-4-escapeXml函数" class="headerlink" title="5.7.4 escapeXml函数"></a>5.7.4 escapeXml函数</h2><p><code>escapeXml</code>函数用于给<code>String</code>编码。这种转换与<code>out</code>标签将其<code>escapeXml</code>属性设为<code>true</code>一样。<code>escapeXml</code>的语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">escapeXml(string)</span><br></pre></td></tr></table></figure>
+<p>例如，下面的<code>EL</code>表达式：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:escapeXml(<span class="string">"Use&lt;br/&gt;to change lines"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<p>将被渲染成：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Use &amp;lt;br/&amp;gt; to change lines</span><br></pre></td></tr></table></figure>
+<p>这样浏览器就不会把<code>&lt;br/&gt;</code>当成换行符,而是显示<code>&lt;br/&gt;</code>这个字符串本身。</p>
+<h2 id="5-7-5-indexOf函数"><a href="#5-7-5-indexOf函数" class="headerlink" title="5.7.5 indexOf函数"></a>5.7.5 indexOf函数</h2><p><strong><code>indexOf</code>函数返回指定子字符串在某个字符串中第一次出现时的索引</strong>。<strong>如果没有找到指定的子字符串，则返回<code>−1</code></strong>。其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">indexOf(string, substring)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回7：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:indexOf(<span class="string">"Stella Cadente"</span>, <span class="string">"Cadente"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-6-join函数"><a href="#5-7-6-join函数" class="headerlink" title="5.7.6 join函数"></a>5.7.6 join函数</h2><p><strong><code>join</code>函数将一个<code>String数组</code>中的所有元素都合并成一个字符串</strong>，<strong>并用指定的分隔符分开</strong>，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">join(array, separator)</span><br></pre></td></tr></table></figure>
+<p>如果这个数组为<code>null</code>，就会返回一个空字符串。</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:join(myArray,<span class="string">","</span>)&#125;</span><br></pre></td></tr></table></figure>
+<p>将返回“<code>my</code>, <code>world</code>”。</p>
+<h2 id="5-7-7-length函数"><a href="#5-7-7-length函数" class="headerlink" title="5.7.7 length函数"></a>5.7.7 length函数</h2><p><code>length</code>函数用于返回集合中的项目数，或者字符串中的字符数，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">length&#123;input&#125;</span><br></pre></td></tr></table></figure>
+<p>下列的<code>EL</code>表达式将返回14：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:length(<span class="string">"Stella Cadente"</span>, <span class="string">"Cadente"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-8-replace函数"><a href="#5-7-8-replace函数" class="headerlink" title="5.7.8 replace函数"></a>5.7.8 replace函数</h2><p><code>replace</code>函数将字符串中出现的所有<code>beforeString</code>用<code>afterString</code>替换，并返回结果，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace(string, beforeSubstring, afterSubstring)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回“<code>StElla CadEntE</code>”：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:replace(<span class="string">"Stella Cadente"</span>, <span class="string">"e"</span>, <span class="string">"E"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-9-split函数"><a href="#5-7-9-split函数" class="headerlink" title="5.7.9 split函数"></a>5.7.9 split函数</h2><p><strong><code>split</code>函数用于将一个字符串分离成一个子字符串数组。它的作用与<code>join</code>相反</strong>。例如，下列代码是分离字符串“<code>my,world</code>”，并将结果保存在有界变量<code>split</code>中。随后，利用<code>forEach</code>标签将<code>split</code>格式化成一个<code>HTML</code>表：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:set <span class="keyword">var</span>=<span class="string">"split"</span> value=<span class="string">'$&#123;fn:split("my,world",",")&#125;'</span>/&gt;</span><br><span class="line">&lt;table&gt;</span><br><span class="line">&lt;c:forEach <span class="keyword">var</span>=<span class="string">"substring"</span> items=<span class="string">"$&#123;split&#125;"</span>&gt;</span><br><span class="line">    &lt;tr&gt;&lt;td&gt;$&#123;substring&#125;&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">&lt;/c:forEach&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<p>结果为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;table&gt;</span><br><span class="line">    &lt;tr&gt;&lt;td&gt;my&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">    &lt;tr&gt;&lt;td&gt;world&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-10-startsWith函数"><a href="#5-7-10-startsWith函数" class="headerlink" title="5.7.10 startsWith函数"></a>5.7.10 startsWith函数</h2><p><code>substring</code>函数用于返回一个从指定的起始索引（含）到指定的终止索引的子字符串，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substring(string, beginIndex, endIndex)</span><br></pre></td></tr></table></figure>
+<p>下列的<code>EL</code>表达式将返回“<code>Stel</code>”：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:substring(<span class="string">"Stella Cadente"</span>, <span class="number">0</span>, <span class="number">4</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-12-substringAfter函数"><a href="#5-7-12-substringAfter函数" class="headerlink" title="5.7.12 substringAfter函数"></a>5.7.12 substringAfter函数</h2><p><strong><code>substringAfter</code>函数用于返回<code>指定子字符串第一次出现后</code>的字符串部分</strong>，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substringAfter(string, substring)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回“<code>lla Cadente</code>”：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:substringAfter(<span class="string">"Stella Cadente"</span>, <span class="string">"e"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-13-substringBefore函数"><a href="#5-7-13-substringBefore函数" class="headerlink" title="5.7.13 substringBefore函数"></a>5.7.13 substringBefore函数</h2><p><code>substringBefore</code>函数用于返回指定子字符串第一次出现前的字符串部分，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substringBefore(string, substring)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回“<code>St</code>”：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:substringBefore(<span class="string">"Stella Cadente"</span>, <span class="string">"e"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-14-toLowerCase函数"><a href="#5-7-14-toLowerCase函数" class="headerlink" title="5.7.14 toLowerCase函数"></a>5.7.14 toLowerCase函数</h2><p><code>toLowerCase</code>函数将一个字符串转换成它的小写版本，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toLowerCase(string)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回“<code>stella cadente</code>”：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:toLowerCase(<span class="string">"Stella Cadente"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-15-toUpperCase函数"><a href="#5-7-15-toUpperCase函数" class="headerlink" title="5.7.15 toUpperCase函数"></a>5.7.15 toUpperCase函数</h2><p><code>toUpperCase</code>函数将一个字符串转换成它的大写版本，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toUpperCase(string)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回“<code>STELLA CADENTE</code>”：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:toUpperCase(<span class="string">"Stella Cadente"</span>)&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-7-16-trim函数"><a href="#5-7-16-trim函数" class="headerlink" title="5.7.16 trim函数"></a>5.7.16 trim函数</h2><p><code>trim</code>函数用于删除一个字符串开头和结尾的空白，其语法如下：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trim(string)</span><br></pre></td></tr></table></figure>
+<p>例如，下列的<code>EL</code>表达式将返回“<code>Stella Cadente</code>”：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;fn:trim(<span class="string">"            Stella Cadente      "</span>)&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/a7b90af6/">5.7 函数</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/bf424c66/" rel="next" title="5.6.6 parseDate标签">
+                  <i class="fa fa-chevron-left"></i> 5.6.6 parseDate标签
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/9f185e8f/" rel="prev" title="5.8 小结">
+                  5.8 小结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-函数"><span class="nav-number">1.</span> <span class="nav-text">5.7 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-1-contains函数"><span class="nav-number">2.</span> <span class="nav-text">5.7.1 contains函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">2.1.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整代码"><span class="nav-number">2.2.</span> <span class="nav-text">完整代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-2-containsIgnoreCase函数"><span class="nav-number">3.</span> <span class="nav-text">5.7.2 containsIgnoreCase函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-3-endsWith函数"><span class="nav-number">4.</span> <span class="nav-text">5.7.3 endsWith函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-4-escapeXml函数"><span class="nav-number">5.</span> <span class="nav-text">5.7.4 escapeXml函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-5-indexOf函数"><span class="nav-number">6.</span> <span class="nav-text">5.7.5 indexOf函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-6-join函数"><span class="nav-number">7.</span> <span class="nav-text">5.7.6 join函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-7-length函数"><span class="nav-number">8.</span> <span class="nav-text">5.7.7 length函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-8-replace函数"><span class="nav-number">9.</span> <span class="nav-text">5.7.8 replace函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-9-split函数"><span class="nav-number">10.</span> <span class="nav-text">5.7.9 split函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-10-startsWith函数"><span class="nav-number">11.</span> <span class="nav-text">5.7.10 startsWith函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-12-substringAfter函数"><span class="nav-number">12.</span> <span class="nav-text">5.7.12 substringAfter函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-13-substringBefore函数"><span class="nav-number">13.</span> <span class="nav-text">5.7.13 substringBefore函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-14-toLowerCase函数"><span class="nav-number">14.</span> <span class="nav-text">5.7.14 toLowerCase函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-15-toUpperCase函数"><span class="nav-number">15.</span> <span class="nav-text">5.7.15 toUpperCase函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-16-trim函数"><span class="nav-number">16.</span> <span class="nav-text">5.7.16 trim函数</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

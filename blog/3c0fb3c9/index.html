@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件">
+<meta property="og:url" content="https://blueblue233.github.io/blog/3c0fb3c9/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件">
+<meta name="twitter:description" content="10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/3c0fb3c9/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/3c0fb3c9/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-10 22:33:32" itemprop="dateCreated datePublished" datetime="2019-08-10T22:33:32+08:00">2019-08-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第10章-jQuery-Bootstrap整合开发-电子拍卖系统/" itemprop="url" rel="index"><span itemprop="name">第10章 jQuery+Bootstrap整合开发 电子拍卖系统</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第10章-jQuery-Bootstrap整合开发-电子拍卖系统/10-4-业务逻辑层实现/" itemprop="url" rel="index"><span itemprop="name">10.4 业务逻辑层实现</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/3c0fb3c9/#10-4-业务逻辑层实现">10.4 业务逻辑层实现</a></li>
+<li><a href="/blog/3c0fb3c9/#10-4-1-设计业务逻辑组件">10.4.1 设计业务逻辑组件</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="10-4-业务逻辑层实现"><a href="#10-4-业务逻辑层实现" class="headerlink" title="10.4 业务逻辑层实现"></a>10.4 业务逻辑层实现</h1><p>本系统的规模不大,只涉及5个<code>DAO</code>组件,分别用于对5个持久化对象进行增、删、改、查操作。本系统使用一个业务逻辑对象即可封装5个<code>DAO</code>组件。</p>
+<h1 id="10-4-1-设计业务逻辑组件"><a href="#10-4-1-设计业务逻辑组件" class="headerlink" title="10.4.1 设计业务逻辑组件"></a>10.4.1 设计业务逻辑组件</h1><p>业务逻辑组件同样采用<code>面向接口编程</code>的原则,让系统中的控制器不是依赖于业务逻辑组件的实现类,而是依赖于业务逻辑组件的接口类,从而降低了系统重构的代价。<br>该业务逻辑组件接口的类图如图10.9所示。</p>
+<p><code>AuctionService</code> 接口里定义了大量业务方法,这些业务方法的实现依赖于<code>DAO</code> 组件。为了达到高层次的解耦,这里推荐<strong>使用接口分离的规则,将业务逻辑组件分成接口和相应的实现类两个部分</strong>。<br><code>AuctionServiceImpl</code> 实现类实现了<code>AuctionService</code> 接口,并实现了该接口中的所有方法。此外,<code>AuctionServiceImpl</code>实现类中比接口中多了如下5个依赖注入的方法。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>setUserDao(AuctionUserDao dao)</code></td>
+<td align="left">为业务逻辑组件依赖注入<code>AuctionUserDao</code>的方法。</td>
+</tr>
+<tr>
+<td align="left"><code>setBidDao(BidDao dao)</code></td>
+<td align="left">为业务逻辑组件依赖注入<code>BidDao</code>的方法。</td>
+</tr>
+<tr>
+<td align="left"><code>setItemDao(ItemDao dao)</code></td>
+<td align="left">为业务逻辑组件依赖注入<code>ItemDao</code>的方法。</td>
+</tr>
+<tr>
+<td align="left"><code>setKindDao(KindDao dao)</code></td>
+<td align="left">为业务逻辑组件依赖注入<code>KindDao</code>的方法。</td>
+</tr>
+<tr>
+<td align="left"><code>setStateDao(StateDao dao)</code></td>
+<td align="left">为业务逻辑组件依赖注入<code>StateDao</code>的方法。</td>
+</tr>
+<tr>
+<td align="left">该接口的作用同样是定义一种规范,规定该业务逻辑组件应该实现的方法。下面是该接口的代码:</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.auction.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.crazyit.auction.business.BidBean;</span><br><span class="line"><span class="keyword">import</span> org.crazyit.auction.business.ItemBean;</span><br><span class="line"><span class="keyword">import</span> org.crazyit.auction.business.KindBean;</span><br><span class="line"><span class="keyword">import</span> org.crazyit.auction.domain.Bid;</span><br><span class="line"><span class="keyword">import</span> org.crazyit.auction.domain.Item;</span><br><span class="line"><span class="keyword">import</span> org.crazyit.auction.domain.Kind;</span><br><span class="line"><span class="keyword">import</span> org.crazyit.auction.exception.AuctionException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuctionService</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据赢取者查询物品</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> winerId 赢取者的ID</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 赢取者获得的全部物品</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">List&lt;ItemBean&gt; <span class="title">getItemByWiner</span><span class="params">(Integer winerId)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 查询流拍的全部物品</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 全部流拍物品</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">List&lt;ItemBean&gt; <span class="title">getFailItems</span><span class="params">()</span><span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据用户名，密码验证登录是否成功</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> username 登录的用户名</span></span><br><span class="line"><span class="comment"> 	 * <span class="doctag">@param</span> pass 登录的密码</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 登录成功返回用户ID，否则返回-1</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">validLogin</span><span class="params">(String username , String pass)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 查询用户的全部出价</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> userId 竞价用户的ID</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 用户的全部出价</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">List&lt;BidBean&gt; <span class="title">getBidByUser</span><span class="params">(Integer userId)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据用户查找目前仍在拍卖中的全部物品</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> userId 所属者的ID</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 属于当前用户的、处于拍卖中的全部物品。</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">List&lt;ItemBean&gt; <span class="title">getItemsByOwner</span><span class="params">(Integer userId)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 查询全部种类</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 系统中全部全部种类</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">List&lt;KindBean&gt; <span class="title">getAllKind</span><span class="params">()</span> <span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 添加物品</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> item 新增的物品</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> avail 有效天数</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> kindId 物品种类ID</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> userId 添加者的ID</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 新增物品的主键</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">addItem</span><span class="params">(Item item, <span class="keyword">int</span> avail , <span class="keyword">int</span> kindId , Integer userId)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 添加种类</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> kind 新增的种类</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 新增种类的主键</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">addKind</span><span class="params">(Kind kind)</span> <span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据产品分类，获取处于拍卖中的全部物品</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> kindId 种类id;</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 该类的全部产品</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">List&lt;ItemBean&gt; <span class="title">getItemsByKind</span><span class="params">(<span class="keyword">int</span> kindId)</span> <span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据种类id获取种类名</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> kindId 种类id;</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 该种类的名称</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">String <span class="title">getKind</span><span class="params">(<span class="keyword">int</span> kindId)</span> <span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据物品id，获取物品</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> itemId 物品id;</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 指定id对应的物品</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">ItemBean <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> itemId)</span> <span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 增加新的竞价，并对竞价用户发邮件通知</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> itemId 物品id;</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> bid 竞价</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> userId 竞价用户的ID</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 返回新增竞价记录的ID</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">addBid</span><span class="params">(<span class="keyword">int</span> itemId , Bid bid ,Integer userId)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据时间来修改物品的赢取者</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">updateWiner</span><span class="params">()</span><span class="keyword">throws</span> AuctionException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>在该接口里定义了大量的业务逻辑方法,实际上,这些业务逻辑方法通常对应一次客户请求。这些业务逻辑方法当然不会被直接暴露出来,这些业务逻辑方法只是供前端<code>MVC</code> 控制器调用,而<code>MVC</code> 控制器并不直接与业务逻辑组件的实现类耦合,而仅仅只是依赖于系统的业务逻辑组件接口。当需要重构系统业务逻辑组件时,只要该组件的接口不变,则系统的功能不变,系统的控制器层也无须改变,从而把系统的业务逻辑层的改变阻止在该层以内,避免了向上扩散。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/3c0fb3c9/">10.4 业务逻辑层实现 10.4.1 设计业务逻辑组件</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/518d23e1/" rel="next" title="10.3.3 部署DAO组件">
+                  <i class="fa fa-chevron-left"></i> 10.3.3 部署DAO组件
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/5948c7f1/" rel="prev" title="10.4.3 业务逻辑组件的异常处理">
+                  10.4.3 业务逻辑组件的异常处理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#10-4-业务逻辑层实现"><span class="nav-number">1.</span> <span class="nav-text">10.4 业务逻辑层实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-4-1-设计业务逻辑组件"><span class="nav-number">2.</span> <span class="nav-text">10.4.1 设计业务逻辑组件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="朗读文章 前言-3-本书内容简介 第一部分：Servlet和JSP 第二部分：Spring MVC 附录 下载示例应用">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前言-3-本书内容简介">
+<meta property="og:url" content="https://blueblue233.github.io/blog/5ab0c62c/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="朗读文章 前言-3-本书内容简介 第一部分：Servlet和JSP 第二部分：Spring MVC 附录 下载示例应用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前言-3-本书内容简介">
+<meta name="twitter:description" content="朗读文章 前言-3-本书内容简介 第一部分：Servlet和JSP 第二部分：Spring MVC 附录 下载示例应用">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/5ab0c62c/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>前言-3-本书内容简介 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/5ab0c62c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">前言-3-本书内容简介
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-04-25 15:24:16" itemprop="dateCreated datePublished" datetime="2019-04-25T15:24:16+08:00">2019-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:20" itemprop="dateModified" datetime="2019-10-14T14:00:20+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/" itemprop="url" rel="index"><span itemprop="name">Serlet JSP和Spring MVC初学指南</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/5ab0c62c/#朗读文章">朗读文章</a></li>
+<li><a href="/blog/5ab0c62c/#前言-3-本书内容简介">前言-3-本书内容简介</a><ul>
+<li><a href="/blog/5ab0c62c/#第一部分：Servlet和JSP">第一部分：Servlet和JSP</a></li>
+<li><a href="/blog/5ab0c62c/#第二部分：Spring-MVC">第二部分：Spring MVC</a></li>
+<li><a href="/blog/5ab0c62c/#附录">附录</a></li>
+<li><a href="/blog/5ab0c62c/#下载示例应用">下载示例应用</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h2 id="朗读文章"><a href="#朗读文章" class="headerlink" title="朗读文章"></a>朗读文章</h2><table><tr style="background-color: #fff;"><td id="p_s_t">朗读:</td><td><span id="p_s" onclick="ps();"><i class="fa fa-play" aria-hidden="true"></i></span></td></tr><tr><td>重新朗读:</td><td><span id="rp" onclick="rp();"><i class="fa fa-fast-backward" aria-hidden="true"></i></span></td></tr></table><audio src="http://audio.xmcdn.com/group59/M07/C8/8F/wKgLeFzCanqSZ7TJAC_ZtH7jgZo173.m4a" controls="controls" preload id="m" hidden></audio>
+<script>
+function rp() { var a = document.getElementById('m'); a.currentTime = 0; a.play(); }function ps() {var a = document.getElementById('m');var p_s = document.getElementById('p_s');var p_s_t = document.getElementById('p_s_t');if (a !== null) {if (a.paused) {p_s.innerHTML = '<i class="fa fa-pause" aria-hidden="true"></i>';p_s_t.innerText="暂停:";a.play();} else {p_s.innerHTML = '<i class="fa fa-play" aria-hidden="true"></i>';p_s_t.innerText="朗读:";a.pause();}}}
+</script>
+<h2 id="前言-3-本书内容简介"><a href="#前言-3-本书内容简介" class="headerlink" title="前言-3-本书内容简介"></a>前言-3-本书内容简介</h2><h3 id="第一部分：Servlet和JSP"><a href="#第一部分：Servlet和JSP" class="headerlink" title="第一部分：Servlet和JSP"></a>第一部分：Servlet和JSP</h3><ul>
+<li>第1章: “<code>Servlets</code>“,介绍<code>Servlet API</code>,本章重点关注两个<code>java</code>包：<code>javax.servlet</code>和<code>javax.servlet.http</code>。</li>
+<li>第2章: “会话管理”,讨论了会话管理——在<code>Web</code>应用开发中非常重要的主题(因为<code>HTTP</code>是无状态的),本章比较了4种不同的状态保持技术：<code>URL</code>重写、隐藏域、<code>Cookies</code>和<code>HTTPSession</code>对象。</li>
+<li>第3章: “<code>JavaServerPages</code>(<code>JSP</code>)”,<code>JSP</code>是<code>Servlet</code>技术的补充完善,是<code>Servlet</code>技术的重要组成部分,本章包括了<code>JSP</code>语法、指令、脚本元素和动作。</li>
+<li>第4章: “表达式语言”,本章介绍了<code>JSP2.0</code>中最重要的特性“表达式语言”。该特性的目标是帮助开发人员编写无脚本的<code>JSP</code>页面,让<code>JSP</code>页面更加简洁而且有效。本章将帮助你学会通过<code>EL</code>来访问<code>JavaBean</code>和上下文对象。</li>
+<li>第5章: “<code>JSTL</code>“,本章介绍了<code>JSP</code>技术中最重要的类库：标准标签库——一组帮助处理常见问题的标签。具体内容包括访问<code>Map</code>或集合对象、条件判断、<code>XML</code>处理,以及数据库访问和数据处理。</li>
+<li>第6章: “自定义标签”,大多数时候,<code>JSTL</code>用于访问上下文对象并处理各种任务,但对于特定的任务,我们需要编写自定义标签,本章将介绍如何编写标签。</li>
+<li>第7章: “标签文件”,本章介绍在<code>JSP2.0</code>中引入的新特性——标签文件,标签文件可以简化自定义标签的编写。第8章: “监听器”,本章介绍了<code>Servlet</code>中的事件驱动编程,展示了<code>Servlet API</code>中的事件类以及监控器接口,以及如何应用。</li>
+<li>第8章: “监听器”,本章介绍了<code>Servlet</code>中的事件驱动编程,展示了<code>Servlet API</code>中的事件类以及监控器接口,以及如何应用。</li>
+<li>第9章: “<code>Filters</code>“,本章介绍了<code>FilterAPI</code>,包括<code>Filter</code>、<code>FilterConfig</code>和<code>FilterChain</code>接口,并展示了如何编写一个<code>Filter</code>实现。</li>
+<li>第10章: “修饰<code>Requests</code>和<code>Responses</code>“,本章介绍如何用修饰器模式来包装<code>Servlet</code>请求和响应对象,并改变<code>Servlet</code>请求和响应的行为。</li>
+<li>第11章: “异步处理”,本章主要讨论<code>Servlet3.0</code>引入的新特性——异步处理。该特性非常适合于当<code>Servlet</code>应用负载较高且有一个或多个耗时操作。该特性允许由一个新线程来运行耗时操作,使得当前的<code>Web</code>请求处理线程可以处理新的<code>Web</code>请求。</li>
+<li>第12章: “安全”,介绍了如何通过声明式以及编程式来保护<code>JavaWeb</code>应用,本章覆盖四个主题：认证、授权、加密和数据完整性。</li>
+<li>第13章: “部署”,介绍了<code>Servlet/JSP</code>应用的部署流程,以及部署描述符。</li>
+<li>第14章: “动态加载以及<code>Servlet</code>容器加载器”介绍了<code>Servlet3.0</code>中的两个新特性,动态注册支持在无须重启<code>Web</code>应用的情况下注册新的<code>Web</code>对象,以及框架开发人员最关心的容器初始化。</li>
+</ul>
+<h3 id="第二部分：Spring-MVC"><a href="#第二部分：Spring-MVC" class="headerlink" title="第二部分：Spring MVC"></a>第二部分：Spring MVC</h3><ul>
+<li>第15章: “<code>Spring</code>框架”,介绍了最流行的开源框架。</li>
+<li>第16章: “模型2和<code>MVC</code>模式”,讨论了<code>SpringMVC</code>所实现的设计模式。</li>
+<li>第17章: “<code>SpringMVC</code>介绍”,<code>SpringMVC</code>概述。本章编写了第一个<code>SpringMVC</code>应用。</li>
+<li>第18章: “基于注解的控制器”,讨论了<code>MVC</code>模式中最重要的一个对象—控制器。本章,我们将学会如何编写基于注解的控制器,这是<code>SpringMVC2.5</code>版本引入的方法。</li>
+<li>第19章: “数据绑定和表单标签库”,讨论<code>SpringMVC</code>最强大的一个特性,并利用它来展示表单数据。</li>
+<li>第20章: “转换器和格式化”,讨论了数据绑定的辅助对象类型。</li>
+<li>第21章: “验证器”,本章将展示如何通过验证器来验证用户输入数据。</li>
+<li>第22章: “国际化”,本章将展示如何用<code>SpringMVC</code>来构建多语言网站。</li>
+<li>第23章: “上传文件”,介绍两种不同的方式来处理文件上传。</li>
+<li>第24章: “下载文件”,介绍如何用编程方式向客户端传输一个资源。</li>
+</ul>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><ul>
+<li>附录A: “<code>Tomcat</code>“,介绍如何安装和配置<code>Tomcat</code>。</li>
+<li>附录B: “<code>WebAnnotations</code>“,列出所有可用配置<code>Web</code>对象,如<code>Servlet</code>、<code>Listener</code>或<code>Filter</code>的注解。这些来自<code>Servlet3.0</code>规范的注解可以帮助减少部署描述配置。</li>
+<li>附录C: “<code>SSL</code>证书”,介绍了如何用<code>KeyTool</code>工具生成公钥/私钥对,并生成数字证书。</li>
+</ul>
+<h3 id="下载示例应用"><a href="#下载示例应用" class="headerlink" title="下载示例应用"></a>下载示例应用</h3><p>本书所有的示例应用压缩包可以通过如下地址下 载：<a href="http://books.brainysoftware.com/download" target="_blank" rel="noopener"> http://books.brainysoftware.com/download</a></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/5ab0c62c/">前言-3-本书内容简介</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/8b8be5cf/" rel="next" title="前言-2-HTTP">
+                  <i class="fa fa-chevron-left"></i> 前言-2-HTTP
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/b1d98eb1/" rel="prev" title="16.2 模型2介绍">
+                  16.2 模型2介绍 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#朗读文章"><span class="nav-number">1.</span> <span class="nav-text">朗读文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前言-3-本书内容简介"><span class="nav-number">2.</span> <span class="nav-text">前言-3-本书内容简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一部分：Servlet和JSP"><span class="nav-number">2.1.</span> <span class="nav-text">第一部分：Servlet和JSP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二部分：Spring-MVC"><span class="nav-number">2.2.</span> <span class="nav-text">第二部分：Spring MVC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录"><span class="nav-number">2.3.</span> <span class="nav-text">附录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载示例应用"><span class="nav-number">2.4.</span> <span class="nav-text">下载示例应用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

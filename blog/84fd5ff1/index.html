@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="4.4.2 not null约束 not null约束写法 主码不用声明not null   4.4.3 unique约束 unique声明的属性形成候选码 unique中的属性可以为null   4.4.4 check子句 实例 在建表时指定check子句 验证 不满足check子句的插入会被拒绝 满足check子句的插入才会通过   目前check子句谓词不能是子查询">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.4.2 not null约束 4.4.3 unique约束 4.4.4 check子句">
+<meta property="og:url" content="https://blueblue233.github.io/blog/84fd5ff1/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="4.4.2 not null约束 not null约束写法 主码不用声明not null   4.4.3 unique约束 unique声明的属性形成候选码 unique中的属性可以为null   4.4.4 check子句 实例 在建表时指定check子句 验证 不满足check子句的插入会被拒绝 满足check子句的插入才会通过   目前check子句谓词不能是子查询">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-22T16:37:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.4.2 not null约束 4.4.3 unique约束 4.4.4 check子句">
+<meta name="twitter:description" content="4.4.2 not null约束 not null约束写法 主码不用声明not null   4.4.3 unique约束 unique声明的属性形成候选码 unique中的属性可以为null   4.4.4 check子句 实例 在建表时指定check子句 验证 不满足check子句的插入会被拒绝 满足check子句的插入才会通过   目前check子句谓词不能是子查询">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/84fd5ff1/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>4.4.2 not null约束 4.4.3 unique约束 4.4.4 check子句 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/84fd5ff1/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">4.4.2 not null约束 4.4.3 unique约束 4.4.4 check子句
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-21 11:07:55" itemprop="dateCreated datePublished" datetime="2019-10-21T11:07:55+08:00">2019-10-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-4-完整性约束/" itemprop="url" rel="index"><span itemprop="name">4.4 完整性约束</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/84fd5ff1/#4-4-2-not-null约束">4.4.2 not null约束</a><ul>
+<li><a href="/blog/84fd5ff1/#not-null约束写法">not null约束写法</a></li>
+<li><a href="/blog/84fd5ff1/#主码不用声明not-null">主码不用声明not null</a></li>
+</ul>
+</li>
+<li><a href="/blog/84fd5ff1/#4-4-3-unique约束">4.4.3 unique约束</a><ul>
+<li><a href="/blog/84fd5ff1/#unique声明的属性形成候选码">unique声明的属性形成候选码</a></li>
+<li><a href="/blog/84fd5ff1/#unique中的属性可以为null">unique中的属性可以为null</a></li>
+</ul>
+</li>
+<li><a href="/blog/84fd5ff1/#4-4-4-check子句">4.4.4 check子句</a><ul>
+<li><a href="/blog/84fd5ff1/#实例-在建表时指定check子句">实例 在建表时指定check子句</a></li>
+<li><a href="/blog/84fd5ff1/#验证">验证</a><ul>
+<li><a href="/blog/84fd5ff1/#不满足check子句的插入会被拒绝">不满足check子句的插入会被拒绝</a></li>
+<li><a href="/blog/84fd5ff1/#满足check子句的插入才会通过">满足check子句的插入才会通过</a></li>
+</ul>
+</li>
+<li><a href="/blog/84fd5ff1/#目前check子句谓词不能是子查询">目前check子句谓词不能是子查询</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="4-4-2-not-null约束"><a href="#4-4-2-not-null约束" class="headerlink" title="4.4.2 not null约束"></a>4.4.2 not null约束</h1><p>正如我们在第3章中讨论过的,<strong>空值是所有域的成员</strong>,因此在默认情况下是<code>SQL</code>中每个属性的合法值。然而对于一些属性来说,空值可能是不合适的。<br>考虑<code>student</code>关系中的一个元组,其中<code>name</code>是<code>null</code>。这样的元组给出了一个未知学生的学生信息;因此它不含有有用的信息。<br>类似地,我们不会希望系的预算为<code>null</code>。</p>
+<h2 id="not-null约束写法"><a href="#not-null约束写法" class="headerlink" title="not null约束写法"></a>not null约束写法</h2><p>在这些情况下,我们希望禁止空值,我们可以通过如下声明来通过限定属性<code>name</code>和<code>budget</code>的域来排除空值:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name varchar(20) not null</span><br><span class="line">budget numeric(12,2) not null</span><br></pre></td></tr></table></figure>
+<h2 id="主码不用声明not-null"><a href="#主码不用声明not-null" class="headerlink" title="主码不用声明not null"></a>主码不用声明not null</h2><p><code>not null</code>声明禁止在该属性上插入空值。任何可能导致向一个声明为<code>not null</code>的属性插入空值的数据库修改都会产生错误诊断信息。<br>许多情况下我们希望避免空值。尤其是<strong><code>SQL</code>禁止在关系模式的<code>主码</code>中出现<code>空值</code></strong>。因此,在我们的大学例子中,在<code>department</code>关系上如果声明属性<code>dept_name</code>为<code>department</code>的主码,那它就不能为空。因此<strong>主码(<code>dept_name</code>)不必显式地声明为<code>not null</code></strong></p>
+<h1 id="4-4-3-unique约束"><a href="#4-4-3-unique约束" class="headerlink" title="4.4.3 unique约束"></a>4.4.3 unique约束</h1><p><code>SQL</code>还支持下面这种完整性约束:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unique(A1,A2,...,An)</span><br></pre></td></tr></table></figure>
+<h2 id="unique声明的属性形成候选码"><a href="#unique声明的属性形成候选码" class="headerlink" title="unique声明的属性形成候选码"></a>unique声明的属性形成候选码</h2><p><code>unique</code>声明指出属性<code>A1,A2,...,An</code>形成了一个<strong>候选码</strong>;<br>即<strong>在关系中没有两个元组能在所有列出的属性<code>A1,A2,...,An</code>上取值相同</strong>。</p>
+<h2 id="unique中的属性可以为null"><a href="#unique中的属性可以为null" class="headerlink" title="unique中的属性可以为null"></a>unique中的属性可以为null</h2><p>然而<code>候选码属性</code>可以为<code>null</code>,除非它们已被显式地声明为<code>not null</code>。<br>回忆一下,<strong>空值不等于其他的任何值</strong>。(这里对空值的处理与<code>3.8.4</code>节中定义的<code>unique</code>结构一样。)</p>
+<h1 id="4-4-4-check子句"><a href="#4-4-4-check子句" class="headerlink" title="4.4.4 check子句"></a>4.4.4 check子句</h1><p>当应用于关系声明时, <code>check(P)</code>子句指定一个谓词<code>P,</code>关系中的每个元组都必须满足谓词<code>P</code>。<br><strong>通常用<code>check</code>子句用来<code>保证属性值满足指定的条件</code></strong>。<br>实际上创建了一个强大的类型系统。例如,在创建关系<code>department</code>的<code>create table</code>命令中的<code>check(budget&gt;0)</code>子句将保证<code>budget</code>上的取值是正数。</p>
+<h2 id="实例-在建表时指定check子句"><a href="#实例-在建表时指定check子句" class="headerlink" title="实例 在建表时指定check子句"></a>实例 在建表时指定check子句</h2><p>作为另一个例子,考虑如下语句:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">section</span> (</span><br><span class="line">    course_id <span class="built_in">varchar</span>(<span class="number">8</span>), </span><br><span class="line">    sec_id <span class="built_in">varchar</span>(<span class="number">8</span>),</span><br><span class="line">    semester <span class="built_in">varchar</span>(<span class="number">6</span>),</span><br><span class="line">    <span class="keyword">year</span> <span class="built_in">numeric</span>(<span class="number">4</span>,<span class="number">0</span>),</span><br><span class="line">    building <span class="built_in">varchar</span>(<span class="number">15</span>),</span><br><span class="line">    room_number <span class="built_in">varchar</span>(<span class="number">7</span>),</span><br><span class="line">    time_slot_id <span class="built_in">varchar</span>(<span class="number">4</span>),</span><br><span class="line">    primary <span class="keyword">key</span> (course_id, sec_id, semester, <span class="keyword">year</span>),</span><br><span class="line">    <span class="keyword">check</span> (semester <span class="keyword">in</span> (<span class="string">'Fall'</span>, <span class="string">'Winter'</span>, <span class="string">'Spring'</span>, <span class="string">'Summer'</span>))</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>这里我们用<code>check</code>子句模拟了一个枚举类型,通过指定<code>semester</code>必须是’<code>Fall</code>‘、 <code>Winter</code>、 <code>Spring</code>或’ <code>Summer</code>‘中的一个来实现。这样, <code>check</code>子句允许以有力的方式对属性域加以限制。</p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>以下在<code>MySQL 8.0</code>中验证通过</p>
+<h3 id="不满足check子句的插入会被拒绝"><a href="#不满足check子句的插入会被拒绝" class="headerlink" title="不满足check子句的插入会被拒绝"></a>不满足check子句的插入会被拒绝</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">section</span></span><br><span class="line">    <span class="keyword">values</span>(<span class="string">'1111'</span>,<span class="string">'2222'</span>,<span class="string">'3333'</span>,<span class="number">2019</span>,<span class="string">'大楼'</span>,<span class="string">'4444'</span>,<span class="string">'5555'</span>);</span><br></pre></td></tr></table></figure>
+<p>这个插入语句试图向<code>semester</code>属性赋值<code>3333</code>,这不满足<code>check</code>子句的要求,系统会拒绝插入操作.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into section values('<span class="number">1111</span>','<span class="number">2222</span>','<span class="number">3333</span>',<span class="number">2019</span>,'大楼','<span class="number">4444</span>','<span class="number">5555</span>');</span><br><span class="line"><span class="number">3819</span> - Check constraint 'section_chk_1' is violated.</span><br></pre></td></tr></table></figure>
+<h3 id="满足check子句的插入才会通过"><a href="#满足check子句的插入才会通过" class="headerlink" title="满足check子句的插入才会通过"></a>满足check子句的插入才会通过</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">section</span></span><br><span class="line">    <span class="keyword">values</span>(<span class="string">'1111'</span>,<span class="string">'2222'</span>,<span class="string">'Fall'</span>,<span class="number">2019</span>,<span class="string">'大楼'</span>,<span class="string">'4444'</span>,<span class="string">'5555'</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into section values('<span class="number">1111</span>','<span class="number">2222</span>','Fall',<span class="number">2019</span>,'大楼','<span class="number">4444</span>','<span class="number">5555</span>');</span><br><span class="line">Query OK, <span class="number">1</span> row affected (<span class="number">0</span>.<span class="number">01</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from section;</span><br><span class="line">+-----------+--------+----------+------+----------+-------------+--------------+</span><br><span class="line">| course_id | sec_id | semester | year | building | room_number | time_slot_id |</span><br><span class="line">+-----------+--------+----------+------+----------+-------------+--------------+</span><br><span class="line">| <span class="number">1111</span>      | <span class="number">2222</span>   | Fall     | <span class="number">2019</span> | 大楼     | <span class="number">4444</span>        | <span class="number">5555</span>         |</span><br><span class="line">+-----------+--------+----------+------+----------+-------------+--------------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> <span class="built_in">set</span> (<span class="number">0</span>.<span class="number">04</span> sec)</span><br></pre></td></tr></table></figure>
+<h2 id="目前check子句谓词不能是子查询"><a href="#目前check子句谓词不能是子查询" class="headerlink" title="目前check子句谓词不能是子查询"></a>目前check子句谓词不能是子查询</h2><p>根据<code>SQL</code>标准, <code>check</code>子句中的谓词可以是包括子查询在内的任意谓词。然而,当前还没有一个广泛使用的数据库产品允许<code>check</code>子句包含子查询的谓词。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/84fd5ff1/">4.4.2 not null约束 4.4.3 unique约束 4.4.4 check子句</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/4286b88a/" rel="next" title="4.4 完整性约束 4.4.1 单个关系上的约束">
+                  <i class="fa fa-chevron-left"></i> 4.4 完整性约束 4.4.1 单个关系上的约束
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/80c6a36e/" rel="prev" title="4.4.5 参照完整性">
+                  4.4.5 参照完整性 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-4-2-not-null约束"><span class="nav-number">1.</span> <span class="nav-text">4.4.2 not null约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#not-null约束写法"><span class="nav-number">1.1.</span> <span class="nav-text">not null约束写法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主码不用声明not-null"><span class="nav-number">1.2.</span> <span class="nav-text">主码不用声明not null</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-4-3-unique约束"><span class="nav-number">2.</span> <span class="nav-text">4.4.3 unique约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#unique声明的属性形成候选码"><span class="nav-number">2.1.</span> <span class="nav-text">unique声明的属性形成候选码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unique中的属性可以为null"><span class="nav-number">2.2.</span> <span class="nav-text">unique中的属性可以为null</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-4-4-check子句"><span class="nav-number">3.</span> <span class="nav-text">4.4.4 check子句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实例-在建表时指定check子句"><span class="nav-number">3.1.</span> <span class="nav-text">实例 在建表时指定check子句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">3.2.</span> <span class="nav-text">验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不满足check子句的插入会被拒绝"><span class="nav-number">3.2.1.</span> <span class="nav-text">不满足check子句的插入会被拒绝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#满足check子句的插入才会通过"><span class="nav-number">3.2.2.</span> <span class="nav-text">满足check子句的插入才会通过</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目前check子句谓词不能是子查询"><span class="nav-number">3.3.</span> <span class="nav-text">目前check子句谓词不能是子查询</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

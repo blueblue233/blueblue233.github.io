@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="11.9.1 数据传递的类和接口 11.9.2 传递文本 将文本放入剪贴板 创建一个Clipboard实例 将需要放入剪贴板中的字符串封装成StringSelection对象 调用setContents方法   从剪贴板中取出数据 实例">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="11.9.1 数据传递的类和接口">
+<meta property="og:url" content="https://blueblue233.github.io/blog/9d027ba/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="11.9.1 数据传递的类和接口 11.9.2 传递文本 将文本放入剪贴板 创建一个Clipboard实例 将需要放入剪贴板中的字符串封装成StringSelection对象 调用setContents方法   从剪贴板中取出数据 实例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="11.9.1 数据传递的类和接口">
+<meta name="twitter:description" content="11.9.1 数据传递的类和接口 11.9.2 传递文本 将文本放入剪贴板 创建一个Clipboard实例 将需要放入剪贴板中的字符串封装成StringSelection对象 调用setContents方法   从剪贴板中取出数据 实例">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/9d027ba/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>11.9.1 数据传递的类和接口 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/9d027ba/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">11.9.1 数据传递的类和接口
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-04-26 01:06:47" itemprop="dateCreated datePublished" datetime="2019-04-26T01:06:47+08:00">2019-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第11章-AWT编程/" itemprop="url" rel="index"><span itemprop="name">第11章 AWT编程</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/9d027ba/#11-9-1-数据传递的类和接口">11.9.1 数据传递的类和接口</a></li>
+<li><a href="/blog/9d027ba/#11-9-2-传递文本">11.9.2 传递文本</a><ul>
+<li><a href="/blog/9d027ba/#将文本放入剪贴板">将文本放入剪贴板</a><ul>
+<li><a href="/blog/9d027ba/#创建一个Clipboard实例">创建一个Clipboard实例</a></li>
+<li><a href="/blog/9d027ba/#将需要放入剪贴板中的字符串封装成StringSelection对象">将需要放入剪贴板中的字符串封装成StringSelection对象</a></li>
+<li><a href="/blog/9d027ba/#调用setContents方法">调用setContents方法</a></li>
+</ul>
+</li>
+<li><a href="/blog/9d027ba/#从剪贴板中取出数据">从剪贴板中取出数据</a></li>
+<li><a href="/blog/9d027ba/#实例">实例</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="11-9-1-数据传递的类和接口"><a href="#11-9-1-数据传递的类和接口" class="headerlink" title="11.9.1 数据传递的类和接口"></a>11.9.1 数据传递的类和接口</h1><p><code>AWT</code>中剪贴板相关操作的接口和类被放在<code>java.awt.datatransfer</code>包下，下面是该包下重要的接口和类的相关说明。</p>
+<ul>
+<li><code>Clipboard</code>：代表一个剪贴板实例，这个剪贴板既可以是系统剪贴板，也可以是本地剪贴板。</li>
+<li><code>ClipboardOwner</code>：剪贴板内容的所有者接口，当剪贴板内容的所有权被修改时，系统将会触发该所有者的<code>lostOwnership</code>事件处理器。</li>
+<li><code>Transferable</code>：该接口的实例代表放进剪贴板中的传输对象。</li>
+<li><code>DataFlavor</code>：用于表述剪贴板中的数据格式。</li>
+<li><code>StringSelection</code>：<code>Transferable</code>的实现类，用于传输文本字符串。</li>
+<li><code>FlavorListener</code>：数据格式监听器接口。</li>
+<li><code>FlavorEvent</code>：该类的实例封装了数据格式改变的事件。</li>
+</ul>
+<h1 id="11-9-2-传递文本"><a href="#11-9-2-传递文本" class="headerlink" title="11.9.2 传递文本"></a>11.9.2 传递文本</h1><p>传递文本是最简单的情形，因为<code>AWT</code>已经提供了一个<code>StringSelection</code>用于传输文本字符串。</p>
+<h2 id="将文本放入剪贴板"><a href="#将文本放入剪贴板" class="headerlink" title="将文本放入剪贴板"></a>将文本放入剪贴板</h2><p>将一段文本内容（字符串对象）放进剪贴板中的步骤如下。</p>
+<h3 id="创建一个Clipboard实例"><a href="#创建一个Clipboard实例" class="headerlink" title="创建一个Clipboard实例"></a>创建一个Clipboard实例</h3><p>既可以创建系统剪贴板，也可以创建本地剪贴板。<br><strong>创建系统剪贴板</strong>通过如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Clipboard clipboard= Toolkit.getDefaultToolkit().getSystemClipboard();</span><br></pre></td></tr></table></figure>
+<p><strong>创建本地剪贴板</strong>通过如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Clipboard clipboard =<span class="keyword">new</span> Clipboard(<span class="string">"cb"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="将需要放入剪贴板中的字符串封装成StringSelection对象"><a href="#将需要放入剪贴板中的字符串封装成StringSelection对象" class="headerlink" title="将需要放入剪贴板中的字符串封装成StringSelection对象"></a>将需要放入剪贴板中的字符串封装成StringSelection对象</h3><p>如下代码所示:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StringSelection st =<span class="keyword">new</span> StringSelection(targetStr);</span><br></pre></td></tr></table></figure>
+<h3 id="调用setContents方法"><a href="#调用setContents方法" class="headerlink" title="调用setContents方法"></a>调用setContents方法</h3><p><strong>调用剪贴板对象的setContents()方法将StringSelection放进剪贴板中</strong>，该方法需要两个参数，</p>
+<ul>
+<li>第一个参数是<code>Transferable</code>对象，代表放进剪贴板中的对象；</li>
+<li>第二个参数是<code>ClipboardOwner</code>对象，代表剪贴板数据的所有者，通常无须关心剪贴板数据的所有者，所以把第二个参数设为<code>null</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clipboard.setContents(st,<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="从剪贴板中取出数据"><a href="#从剪贴板中取出数据" class="headerlink" title="从剪贴板中取出数据"></a>从剪贴板中取出数据</h2><p>从剪贴板中取出数据则比较简单，<strong>调用<code>Clipboard</code>对象的<code>getData</code>(<code>DataFlavorflavor</code>)方法即可取出剪贴板中指定格式的内容</strong>，如果指定<code>flavor</code>的数据不存在，该方法将引发<code>UnsupportedFlavorException</code>异常。为了避免出现异常，可以先调用<code>Clipboard</code>对象的<code>isDataFlavorAvailable(DataFlavorflavor)</code>来判断指定<code>flavor</code>的数据是否存在。如下代码所示:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (clipboard. isDataFlavorAvailable(DataFlavor.stringFlavor))</span><br><span class="line">&#123;</span><br><span class="line">    String content =(String)clipboard.getData(DataFlavor.stringFlavor));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>下面程序是一个利用系统剪贴板进行复制、粘贴的简单程序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.awt.*;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.*;</span><br><span class="line"><span class="keyword">import</span> javax.swing.*;</span><br><span class="line"><span class="keyword">import</span> java.awt.datatransfer.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleClipboard</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Frame f = <span class="keyword">new</span> Frame(<span class="string">"简单的剪贴板程序"</span>);</span><br><span class="line">	<span class="comment">// 获取系统剪贴板</span></span><br><span class="line">	<span class="keyword">private</span> Clipboard clipboard = Toolkit</span><br><span class="line">		.getDefaultToolkit().getSystemClipboard();</span><br><span class="line">	<span class="comment">// 下面是创建本地剪贴板的代码</span></span><br><span class="line">	<span class="comment">// Clipboard clipboard = new Clipboard("cb");   // ①</span></span><br><span class="line">	<span class="comment">// 用于复制文本的文本框</span></span><br><span class="line">	<span class="keyword">private</span> TextArea jtaCopyTo = <span class="keyword">new</span> TextArea(<span class="number">5</span>,<span class="number">20</span>);</span><br><span class="line">	<span class="comment">// 用于粘贴文本的文本框</span></span><br><span class="line">	<span class="keyword">private</span> TextArea jtaPaste = <span class="keyword">new</span> TextArea(<span class="number">5</span>,<span class="number">20</span>);</span><br><span class="line">	<span class="keyword">private</span> Button btCopy = <span class="keyword">new</span> Button(<span class="string">"复制"</span>); <span class="comment">// 复制按钮</span></span><br><span class="line">	<span class="keyword">private</span> Button btPaste = <span class="keyword">new</span> Button(<span class="string">"粘贴"</span>); <span class="comment">// 粘贴按钮</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Panel p = <span class="keyword">new</span> Panel();</span><br><span class="line">		p.add(btCopy);</span><br><span class="line">		p.add(btPaste);</span><br><span class="line">		btCopy.addActionListener(event -&gt;</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 将一个多行文本域里的字符串封装成StringSelection对象</span></span><br><span class="line">			StringSelection contents = <span class="keyword">new</span></span><br><span class="line">				StringSelection(jtaCopyTo.getText());</span><br><span class="line">			<span class="comment">// 将StringSelection对象放入剪贴板</span></span><br><span class="line">			clipboard.setContents(contents, <span class="keyword">null</span>);</span><br><span class="line">		&#125;);</span><br><span class="line">		btPaste.addActionListener(event -&gt;</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 如果剪贴板中包含stringFlavor内容</span></span><br><span class="line">			<span class="keyword">if</span> (clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">try</span></span><br><span class="line">				&#123;</span><br><span class="line">					<span class="comment">// 取出剪贴板中stringFlavor内容</span></span><br><span class="line">					String content = (String)clipboard</span><br><span class="line">						.getData(DataFlavor.stringFlavor);</span><br><span class="line">					jtaPaste.append(content);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">catch</span> (Exception e)</span><br><span class="line">				&#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		<span class="comment">// 创建一个水平排列的Box容器</span></span><br><span class="line">		Box box = <span class="keyword">new</span> Box(BoxLayout.X_AXIS);</span><br><span class="line">		<span class="comment">// 将两个多行文本域放在Box容器中</span></span><br><span class="line">		box.add(jtaCopyTo);</span><br><span class="line">		box.add(jtaPaste);</span><br><span class="line">		<span class="comment">// 将按钮所在Panel、Box容器添加到Frame窗口中</span></span><br><span class="line">		f.add(p,BorderLayout.SOUTH);</span><br><span class="line">		f.add(box,BorderLayout.CENTER);</span><br><span class="line">		f.pack();</span><br><span class="line">		f.setVisible(<span class="keyword">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">new</span> SimpleClipboard().init();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中“复制”按钮的事件监听器负责将第一个文本域的内容复制到系统剪贴板中，“粘贴”按钮的事件监听器则负责取出系统剪贴板中的<code>stringFlavor</code>内容，并将其添加到第二个文本域内。运行上面程序，将看到如图11.32所示的结果。<br>因为程序使用的是系统剪贴板，因此可以通过<code>Windows</code>的剪贴簿查看器来查看程序放入剪贴板中的内容。在<code>Windows</code>的“开始”菜单中运行“<code>clipbrd</code>”程序，将可以看到如图11.33所示的窗口。<br><strong>提示：</strong><br><strong><code>Windows7</code>系统已经删除了默认的剪贴板查看器</strong>，因此读者可以到<code>WindowsXP</code>的<code>C:\windows\system32\</code>目录下将<code>clipbrd.exe</code>文件复制过来。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/9d027ba/">11.9.1 数据传递的类和接口</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/b0e758db/" rel="next" title="11.9 剪贴板">
+                  <i class="fa fa-chevron-left"></i> 11.9 剪贴板
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/9cd8fe67/" rel="prev" title="1.8 GenericServlet抽象类">
+                  1.8 GenericServlet抽象类 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#11-9-1-数据传递的类和接口"><span class="nav-number">1.</span> <span class="nav-text">11.9.1 数据传递的类和接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-9-2-传递文本"><span class="nav-number">2.</span> <span class="nav-text">11.9.2 传递文本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#将文本放入剪贴板"><span class="nav-number">2.1.</span> <span class="nav-text">将文本放入剪贴板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个Clipboard实例"><span class="nav-number">2.1.1.</span> <span class="nav-text">创建一个Clipboard实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将需要放入剪贴板中的字符串封装成StringSelection对象"><span class="nav-number">2.1.2.</span> <span class="nav-text">将需要放入剪贴板中的字符串封装成StringSelection对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用setContents方法"><span class="nav-number">2.1.3.</span> <span class="nav-text">调用setContents方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从剪贴板中取出数据"><span class="nav-number">2.2.</span> <span class="nav-text">从剪贴板中取出数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">2.3.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.4.2 字符串运算 字符串放在单引号中 字符串中有单引号时怎么办 SQL标准中字符串大小写敏感 MySQL匹配字符串时默认不区分大小写 SQL字符串函数 like操作符对字符串进行模式匹配 SQL查询: 找出所在建筑名称中包含子串‘Watson’的所有系名 转义字符 定义转义字符   搜寻不配配 not like SQL:1999提供的similar to进行匹配">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.4.2 字符串运算">
+<meta property="og:url" content="https://blueblue233.github.io/blog/b946e546/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.4.2 字符串运算 字符串放在单引号中 字符串中有单引号时怎么办 SQL标准中字符串大小写敏感 MySQL匹配字符串时默认不区分大小写 SQL字符串函数 like操作符对字符串进行模式匹配 SQL查询: 找出所在建筑名称中包含子串‘Watson’的所有系名 转义字符 定义转义字符   搜寻不配配 not like SQL:1999提供的similar to进行匹配">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-18T03:33:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.4.2 字符串运算">
+<meta name="twitter:description" content="3.4.2 字符串运算 字符串放在单引号中 字符串中有单引号时怎么办 SQL标准中字符串大小写敏感 MySQL匹配字符串时默认不区分大小写 SQL字符串函数 like操作符对字符串进行模式匹配 SQL查询: 找出所在建筑名称中包含子串‘Watson’的所有系名 转义字符 定义转义字符   搜寻不配配 not like SQL:1999提供的similar to进行匹配">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/b946e546/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.4.2 字符串运算 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/b946e546/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.4.2 字符串运算
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-13 21:56:24" itemprop="dateCreated datePublished" datetime="2019-10-13T21:56:24+08:00">2019-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-18 11:33:32" itemprop="dateModified" datetime="2019-10-18T11:33:32+08:00">2019-10-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/" itemprop="url" rel="index"><span itemprop="name">第3章 SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/3-4-SQL查询附加的基本运算/" itemprop="url" rel="index"><span itemprop="name">3.4 SQL查询附加的基本运算</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/b946e546/#3-4-2-字符串运算">3.4.2 字符串运算</a><ul>
+<li><a href="/blog/b946e546/#字符串放在单引号中">字符串放在单引号中</a></li>
+<li><a href="/blog/b946e546/#字符串中有单引号时怎么办">字符串中有单引号时怎么办</a></li>
+<li><a href="/blog/b946e546/#SQL标准中字符串大小写敏感"><strong>SQL</strong>标准中字符串大小写敏感</a></li>
+<li><a href="/blog/b946e546/#MySQL匹配字符串时默认不区分大小写"><strong>MySQL</strong>匹配字符串时默认不区分大小写</a></li>
+<li><a href="/blog/b946e546/#SQL字符串函数"><strong>SQL</strong>字符串函数</a></li>
+<li><a href="/blog/b946e546/#like操作符对字符串进行模式匹配">like操作符对字符串进行模式匹配</a></li>
+<li><a href="/blog/b946e546/#SQL查询-找出所在建筑名称中包含子串'Watson'的所有系名">SQL查询: 找出所在建筑名称中包含子串<strong>‘Watson’</strong>的所有系名</a></li>
+<li><a href="/blog/b946e546/#转义字符">转义字符</a><ul>
+<li><a href="/blog/b946e546/#定义转义字符">定义转义字符</a></li>
+</ul>
+</li>
+<li><a href="/blog/b946e546/#搜寻不配配-not-like">搜寻不配配 not like</a></li>
+<li><a href="/blog/b946e546/#SQL-1999提供的similar-to进行匹配">SQL:1999提供的similar to进行匹配</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-4-2-字符串运算"><a href="#3-4-2-字符串运算" class="headerlink" title="3.4.2 字符串运算"></a>3.4.2 字符串运算</h1><h2 id="字符串放在单引号中"><a href="#字符串放在单引号中" class="headerlink" title="字符串放在单引号中"></a>字符串放在单引号中</h2><p><code>SQL</code>使用一对单引号来标示字符串,例如<code>&#39;Computer&#39;</code>。</p>
+<h2 id="字符串中有单引号时怎么办"><a href="#字符串中有单引号时怎么办" class="headerlink" title="字符串中有单引号时怎么办"></a>字符串中有单引号时怎么办</h2><p>如果单引号是字符串的组成部分,就需要放到双引号中,然后单引号要写变成两个单引号,如字符串<code>&quot;it&#39;s right&quot;</code>可表示为<code>&quot;it&#39;&#39;s right&quot;</code>。</p>
+<h2 id="SQL标准中字符串大小写敏感"><a href="#SQL标准中字符串大小写敏感" class="headerlink" title="SQL标准中字符串大小写敏感"></a><code>SQL</code>标准中字符串大小写敏感</h2><p>在<code>SQL</code>标准中,字符串上的相等运算是大小写敏感的</p>
+<h2 id="MySQL匹配字符串时默认不区分大小写"><a href="#MySQL匹配字符串时默认不区分大小写" class="headerlink" title="MySQL匹配字符串时默认不区分大小写"></a><code>MySQL</code>匹配字符串时默认不区分大小写</h2><p>然而一些数据库系统,如<code>MySQL</code>和<code>SQL Server</code>,在匹配字符串时并不区分大小写,然而这种默认方式是可以在数据库级或特定属性级被修改的。</p>
+<h2 id="SQL字符串函数"><a href="#SQL字符串函数" class="headerlink" title="SQL字符串函数"></a><code>SQL</code>字符串函数</h2><p><code>SQL</code>还允许在字符串上有多种函数,例如</p>
+<ul>
+<li>串联(使用”<code>‖</code>“)、</li>
+<li>提取子串、</li>
+<li>计算字符串长度、</li>
+<li>大小写转换(用<code>upper(s)</code>将字符串<code>s</code>转换为大写,或用<code>lower(s)</code>将字符串<code>s</code>转换为小写)、</li>
+<li>去掉字符串后面的空格(使用<code>trim(s)</code>),</li>
+</ul>
+<p>不同数据库系统所提供的字符串函数集是不同的,请参阅你的数据库系统手册来获得它所支持的实际字符串函数的详细信息.</p>
+<h2 id="like操作符对字符串进行模式匹配"><a href="#like操作符对字符串进行模式匹配" class="headerlink" title="like操作符对字符串进行模式匹配"></a>like操作符对字符串进行模式匹配</h2><p>在字符串上可以使用<code>like</code>操作符来实现模式匹配。我们使用两个特殊的字符来描述模式</p>
+<ol>
+<li>百分号(<code>%</code>):匹配任意子串。也就是<strong>0个或者0个以上的字符</strong>.</li>
+<li>下划线(<code>_</code>):匹配任意<strong>一个</strong>字符。</li>
+</ol>
+<p><code>模式</code>是大小写敏感的,也就是说,大写字符与小写字符不匹配,反之亦然。为了说明模式匹配,考虑下列例子:</p>
+<ul>
+<li><code>&#39;Intro%&#39;</code>匹配任何以<code>&quot;lnro&quot;</code>打头的字符串</li>
+<li><code>%Comp%</code>匹配任何包含<code>&quot;Comp&quot;</code>子串的字符串,例如<code>&#39;Intro. to Computer Science&#39;</code>和<code>&#39;Computational Biology&#39;</code></li>
+<li><code>&#39;___&#39;</code>匹配只含三个字符的字符串。</li>
+<li><code>&#39;___%&#39;</code>匹配至少含三个字符的字符串。</li>
+</ul>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select <span class="built_in">title</span> from course where <span class="built_in">title</span> like 'Intro%';</span><br><span class="line">+----------------------------+</span><br><span class="line">| <span class="built_in">title</span>                      |</span><br><span class="line">+----------------------------+</span><br><span class="line">| Intro. to Biology          |</span><br><span class="line">| Intro. to Computer Science |</span><br><span class="line">| Intro. to Digital Systems  |</span><br><span class="line">+----------------------------+</span><br><span class="line"><span class="number">3</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select <span class="built_in">title</span> from course where <span class="built_in">title</span> like "<span class="variable">%Comp%</span>";</span><br><span class="line">+----------------------------+</span><br><span class="line">| <span class="built_in">title</span>                      |</span><br><span class="line">+----------------------------+</span><br><span class="line">| Computational Biology      |</span><br><span class="line">| Intro. to Computer Science |</span><br><span class="line">+----------------------------+</span><br><span class="line"><span class="number">2</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="SQL查询-找出所在建筑名称中包含子串-39-Watson-39-的所有系名"><a href="#SQL查询-找出所在建筑名称中包含子串-39-Watson-39-的所有系名" class="headerlink" title="SQL查询: 找出所在建筑名称中包含子串&#39;Watson&#39;的所有系名"></a>SQL查询: 找出所在建筑名称中包含子串<code>&#39;Watson&#39;</code>的所有系名</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name</span><br><span class="line"><span class="keyword">from</span> department</span><br><span class="line"><span class="keyword">where</span> building <span class="keyword">like</span> <span class="string">'%Watson%'</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select dept_name</span><br><span class="line">from department</span><br><span class="line">where building like '<span class="variable">%Watson%</span>';</span><br><span class="line">+-----------+</span><br><span class="line">| dept_name |</span><br><span class="line">+-----------+</span><br><span class="line">| Biology   |</span><br><span class="line">| Physics   |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">2</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h2><p>为使模式中能够包含特殊模式的字符(即<code>%</code>和<code>_</code>),<code>SQL</code>允许定义转义字符。转义字符直接放在特殊字符的前面,表示该特殊字符被当成普通字符。</p>
+<h3 id="定义转义字符"><a href="#定义转义字符" class="headerlink" title="定义转义字符"></a>定义转义字符</h3><p>我们在<code>like</code>比较运算中使用<code>escape</code>关键词来定义转义字符。为了说明这一用法,考虑以下模式,它使用反斜线(<code>\</code>)作为转义字符:</p>
+<ul>
+<li><code>like &#39;ab\%cd%&#39; escape &#39;\&#39;</code>:匹配所有以”<code>ab%cd</code>“开头的字符串。</li>
+<li><code>like &#39;ab\\cd%&#39; escape &#39;\&#39;</code>:匹配所有以”<code>ab\cd</code>“开头的字符串。</li>
+</ul>
+<h2 id="搜寻不配配-not-like"><a href="#搜寻不配配-not-like" class="headerlink" title="搜寻不配配 not like"></a>搜寻不配配 not like</h2><p><code>SQL</code>允许使用<code>not like</code>比较运算符搜寻不匹配项。一些数据库还提供<code>like</code>运算的变体,不区分大小写.</p>
+<h2 id="SQL-1999提供的similar-to进行匹配"><a href="#SQL-1999提供的similar-to进行匹配" class="headerlink" title="SQL:1999提供的similar to进行匹配"></a>SQL:1999提供的similar to进行匹配</h2><p>在<code>SQL:1999</code>中还提供<code>similar to</code>操作,它具备比<code>like</code>运算更强大的模式匹配能力。它的模式定义语法类似于<code>Unix</code>中的正则表达式。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/b946e546/">3.4.2 字符串运算</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/b1cfb0d6/" rel="next" title="3.4 附加的基本运算 3.4.1 更名运算">
+                  <i class="fa fa-chevron-left"></i> 3.4 附加的基本运算 3.4.1 更名运算
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/a9bdf70d/" rel="prev" title="3.4.3 select子句中的属性说明">
+                  3.4.3 select子句中的属性说明 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-4-2-字符串运算"><span class="nav-number">1.</span> <span class="nav-text">3.4.2 字符串运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串放在单引号中"><span class="nav-number">1.1.</span> <span class="nav-text">字符串放在单引号中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串中有单引号时怎么办"><span class="nav-number">1.2.</span> <span class="nav-text">字符串中有单引号时怎么办</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL标准中字符串大小写敏感"><span class="nav-number">1.3.</span> <span class="nav-text">SQL标准中字符串大小写敏感</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL匹配字符串时默认不区分大小写"><span class="nav-number">1.4.</span> <span class="nav-text">MySQL匹配字符串时默认不区分大小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL字符串函数"><span class="nav-number">1.5.</span> <span class="nav-text">SQL字符串函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#like操作符对字符串进行模式匹配"><span class="nav-number">1.6.</span> <span class="nav-text">like操作符对字符串进行模式匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-找出所在建筑名称中包含子串-39-Watson-39-的所有系名"><span class="nav-number">1.7.</span> <span class="nav-text">SQL查询: 找出所在建筑名称中包含子串&#39;Watson&#39;的所有系名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转义字符"><span class="nav-number">1.8.</span> <span class="nav-text">转义字符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义转义字符"><span class="nav-number">1.8.1.</span> <span class="nav-text">定义转义字符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜寻不配配-not-like"><span class="nav-number">1.9.</span> <span class="nav-text">搜寻不配配 not like</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-1999提供的similar-to进行匹配"><span class="nav-number">1.10.</span> <span class="nav-text">SQL:1999提供的similar to进行匹配</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

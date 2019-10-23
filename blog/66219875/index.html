@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么 变量命名规则 Java程序中的变量划分 成员变量分类 成员变量的作用域 如何访问成员变量 成员变量的默认初始化 局部变量分类 局部变量中只有形参会默认初始化 合法的同名变量规则 局部变量可以和成员变量同名 同名局部变量覆盖成员变量 通过this或类名来调用被覆盖的成员变量">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么">
+<meta property="og:url" content="https://blueblue233.github.io/blog/66219875/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么 变量命名规则 Java程序中的变量划分 成员变量分类 成员变量的作用域 如何访问成员变量 成员变量的默认初始化 局部变量分类 局部变量中只有形参会默认初始化 合法的同名变量规则 局部变量可以和成员变量同名 同名局部变量覆盖成员变量 通过this或类名来调用被覆盖的成员变量">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/FangKuangJavaJiangYi4/ch5/1.png">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么">
+<meta name="twitter:description" content="5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么 变量命名规则 Java程序中的变量划分 成员变量分类 成员变量的作用域 如何访问成员变量 成员变量的默认初始化 局部变量分类 局部变量中只有形参会默认初始化 合法的同名变量规则 局部变量可以和成员变量同名 同名局部变量覆盖成员变量 通过this或类名来调用被覆盖的成员变量">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/FangKuangJavaJiangYi4/ch5/1.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/66219875/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/66219875/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-22 00:12:13" itemprop="dateCreated datePublished" datetime="2019-09-22T00:12:13+08:00">2019-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/" itemprop="url" rel="index"><span itemprop="name">第5章 面向对象(上)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/5-3-成员变量和局部变量/" itemprop="url" rel="index"><span itemprop="name">5.3 成员变量和局部变量</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/66219875/#5-3-成员变量和局部变量-5-3-1-成员变量和局部变量是什么">5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么</a><ul>
+<li><a href="/blog/66219875/#变量命名规则">变量命名规则</a></li>
+<li><a href="/blog/66219875/#Java程序中的变量划分">Java程序中的变量划分</a></li>
+<li><a href="/blog/66219875/#成员变量分类">成员变量分类</a></li>
+<li><a href="/blog/66219875/#成员变量的作用域">成员变量的作用域</a></li>
+<li><a href="/blog/66219875/#如何访问成员变量">如何访问成员变量</a></li>
+<li><a href="/blog/66219875/#成员变量的默认初始化">成员变量的默认初始化</a></li>
+<li><a href="/blog/66219875/#局部变量分类">局部变量分类</a></li>
+<li><a href="/blog/66219875/#局部变量中只有形参会默认初始化">局部变量中只有形参会默认初始化</a></li>
+<li><a href="/blog/66219875/#合法的同名变量规则">合法的同名变量规则</a></li>
+<li><a href="/blog/66219875/#局部变量可以和成员变量同名">局部变量可以和成员变量同名</a><ul>
+<li><a href="/blog/66219875/#同名局部变量覆盖成员变量">同名局部变量覆盖成员变量</a></li>
+<li><a href="/blog/66219875/#通过this或类名来调用被覆盖的成员变量">通过this或类名来调用被覆盖的成员变量</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="5-3-成员变量和局部变量-5-3-1-成员变量和局部变量是什么"><a href="#5-3-成员变量和局部变量-5-3-1-成员变量和局部变量是什么" class="headerlink" title="5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么"></a>5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么</h1><p>在<code>Java</code>语言中变量分成:<code>成员变量</code>和<code>局部变量</code>两大类。<br><strong><code>成员变量</code>指的是<code>在类里定义的变量</code></strong>;<br><strong><code>局部变量</code>指的是<code>在方法里定义的变量</code></strong>。</p>
+<h2 id="变量命名规则"><a href="#变量命名规则" class="headerlink" title="变量命名规则"></a>变量命名规则</h2><ul>
+<li>从语法角度来看,只要是一个合法的标识符即可;</li>
+<li>但从程序可读性角度来看,应该是多个有意义的单词连缀而成,其中第一个单词首字母小写,后面每个单词首字母大写。</li>
+</ul>
+<h2 id="Java程序中的变量划分"><a href="#Java程序中的变量划分" class="headerlink" title="Java程序中的变量划分"></a>Java程序中的变量划分</h2><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/FangKuangJavaJiangYi4/ch5/1.png" alt="这里有一张图片"></p>
+<h2 id="成员变量分类"><a href="#成员变量分类" class="headerlink" title="成员变量分类"></a>成员变量分类</h2><p><code>成员变量</code>被分为<code>类变量</code>和<code>实例变量</code>两种,定义成员变量时<strong>没有<code>static</code>修饰的就是实例变量</strong>,<strong>有<code>static</code>修饰的就是类变量</strong>。</p>
+<h2 id="成员变量的作用域"><a href="#成员变量的作用域" class="headerlink" title="成员变量的作用域"></a>成员变量的作用域</h2><ul>
+<li>类变量从该类的准备阶段起开始存在,直到系统完全销毁这个类时,类变量的作用域与这个类的生存范围相同;</li>
+<li>实例变量则从该类的实例被创建起开始存在,直到系统完全销毁这个实例时,实例变量的作用域与对应实例的生存范围相同。</li>
+</ul>
+<h2 id="如何访问成员变量"><a href="#如何访问成员变量" class="headerlink" title="如何访问成员变量"></a>如何访问成员变量</h2><ul>
+<li>只要类存在,程序就可以通过<code>类.类变量</code>的方式访问该类的类变量。</li>
+<li>只要实例存在,程序就可以通过<code>实例.实例变量</code>的方式访问该实例的实例变量。</li>
+<li>类变量也可以让该类的实例通过<code>实例.类变量</code>来访问。这与通过该类来修改类变量的结果完全相同。</li>
+</ul>
+<h2 id="成员变量的默认初始化"><a href="#成员变量的默认初始化" class="headerlink" title="成员变量的默认初始化"></a>成员变量的默认初始化</h2><p>成员变量无须显式初始化,只要为一个类定义了类变量或实例变量,系统就会在这个类的准备阶段或创建该类的实例时进行默认初始化,成员变量默认初始化时的赋值规则与数组动态初始化时数组元素的赋值规则完全相同。</p>
+<h2 id="局部变量分类"><a href="#局部变量分类" class="headerlink" title="局部变量分类"></a>局部变量分类</h2><p>局部变量根据定义形式的不同,又可以被分为如下三种。</p>
+<ol>
+<li><code>形参</code>:在定义方法签名时定义的变量,形参的作用域<strong>在整个方法内有效</strong>。</li>
+<li><code>方法局部变量</code>:在方法体内定义的局部变量,它的作用域是从定义该变量的地方生效,到该方法结束时失效。</li>
+<li><code>代码块局部变量</code>:在代码块中定义的局部变量,这个局部变量的作用域从定义该变量的地方生效,到该代码块结束时失效。</li>
+</ol>
+<h2 id="局部变量中只有形参会默认初始化"><a href="#局部变量中只有形参会默认初始化" class="headerlink" title="局部变量中只有形参会默认初始化"></a>局部变量中只有形参会默认初始化</h2><p>与成员变量不同的是,<strong>局部变量除形参之外,都必须显式初始化</strong>。也就是说<strong>,必须先给方法局部变量和代码块局部变量指定初始值,否则不可以访问它们</strong>。<br>形参的作用域是整个方法体内有效,而且形参也无须显式初始化,<strong>形参的初始化在调用该方法时由系统完成,形参的值由方法的调用者负责指定</strong></p>
+<p>当通过类或对象调用某个方法时,系统会在该方法<code>栈区</code>内为所有的形参分配内存空间,并将实参的值赋给对应的形参,这就完成了形参的初始化。</p>
+<h2 id="合法的同名变量规则"><a href="#合法的同名变量规则" class="headerlink" title="合法的同名变量规则"></a>合法的同名变量规则</h2><p>在同一个类里,成员变量的作用范围是整个类内有效,一个类里不能定义两个同名的成员变量,即使一个是类变量,一个是实例变量也不行;<br>一个方法里不能定义两个同名的<code>方法局部变量</code>,<code>方法局部变量</code>与<code>形参</code>也不能同名;<br>同一个方法中<code>不同代码块内的代码块局部变量可以同名</code>:如果先定义代码块局部变量,后定义方法局部变量,前面定义的代码块局部变量与后面定义的方法局部变量也可以同名。</p>
+<h2 id="局部变量可以和成员变量同名"><a href="#局部变量可以和成员变量同名" class="headerlink" title="局部变量可以和成员变量同名"></a>局部变量可以和成员变量同名</h2><h3 id="同名局部变量覆盖成员变量"><a href="#同名局部变量覆盖成员变量" class="headerlink" title="同名局部变量覆盖成员变量"></a>同名局部变量覆盖成员变量</h3><p><code>Java</code>允许局部变量和成员变量同名,如果方法里的局部变量和成员变量同名,局部变量会覆盖成员变量。</p>
+<h3 id="通过this或类名来调用被覆盖的成员变量"><a href="#通过this或类名来调用被覆盖的成员变量" class="headerlink" title="通过this或类名来调用被覆盖的成员变量"></a>通过this或类名来调用被覆盖的成员变量</h3><p>如果需要在这个方法里引用被覆盖的成员变量,则可使用<code>this</code>(对于实例变量)或类名(对于类变量)作为调用者来限定访问成员变量</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/66219875/">5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/363e3c09/" rel="next" title="5.2.5 方法重载">
+                  <i class="fa fa-chevron-left"></i> 5.2.5 方法重载
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/6800df02/" rel="prev" title="10.1 辉煌工程 制造悍马">
+                  10.1 辉煌工程 制造悍马 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-3-成员变量和局部变量-5-3-1-成员变量和局部变量是什么"><span class="nav-number">1.</span> <span class="nav-text">5.3 成员变量和局部变量 5.3.1 成员变量和局部变量是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量命名规则"><span class="nav-number">1.1.</span> <span class="nav-text">变量命名规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java程序中的变量划分"><span class="nav-number">1.2.</span> <span class="nav-text">Java程序中的变量划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成员变量分类"><span class="nav-number">1.3.</span> <span class="nav-text">成员变量分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成员变量的作用域"><span class="nav-number">1.4.</span> <span class="nav-text">成员变量的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何访问成员变量"><span class="nav-number">1.5.</span> <span class="nav-text">如何访问成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成员变量的默认初始化"><span class="nav-number">1.6.</span> <span class="nav-text">成员变量的默认初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量分类"><span class="nav-number">1.7.</span> <span class="nav-text">局部变量分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量中只有形参会默认初始化"><span class="nav-number">1.8.</span> <span class="nav-text">局部变量中只有形参会默认初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合法的同名变量规则"><span class="nav-number">1.9.</span> <span class="nav-text">合法的同名变量规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量可以和成员变量同名"><span class="nav-number">1.10.</span> <span class="nav-text">局部变量可以和成员变量同名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#同名局部变量覆盖成员变量"><span class="nav-number">1.10.1.</span> <span class="nav-text">同名局部变量覆盖成员变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过this或类名来调用被覆盖的成员变量"><span class="nav-number">1.10.2.</span> <span class="nav-text">通过this或类名来调用被覆盖的成员变量</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

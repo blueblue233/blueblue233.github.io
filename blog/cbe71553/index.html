@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.6.2 Java9增加的VarHandle 程序示例">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.6.2 Java9增加的VarHandle">
+<meta property="og:url" content="https://blueblue233.github.io/blog/cbe71553/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.6.2 Java9增加的VarHandle 程序示例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.6.2 Java9增加的VarHandle">
+<meta name="twitter:description" content="7.6.2 Java9增加的VarHandle 程序示例">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/cbe71553/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.6.2 Java9增加的VarHandle | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/cbe71553/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.6.2 Java9增加的VarHandle
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-05 21:05:01" itemprop="dateCreated datePublished" datetime="2019-10-05T21:05:01+08:00">2019-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:47" itemprop="dateModified" datetime="2019-10-14T14:01:47+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/" itemprop="url" rel="index"><span itemprop="name">第7章 Java基础类库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/7-6-变量处理和方法处理/" itemprop="url" rel="index"><span itemprop="name">7.6 变量处理和方法处理</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/cbe71553/#7-6-2-Java9增加的VarHandle">7.6.2 Java9增加的VarHandle</a><ul>
+<li><a href="/blog/cbe71553/#程序示例">程序示例</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="7-6-2-Java9增加的VarHandle"><a href="#7-6-2-Java9增加的VarHandle" class="headerlink" title="7.6.2 Java9增加的VarHandle"></a>7.6.2 Java9增加的VarHandle</h1><p><code>VarHandle</code>主要用于动态操作数组的元素或对象的成员变量。<code>VarHandle</code>与<code>MethodHandle</code>非常相似,它也需要通过<code>MethodHandles</code>来获取实例,接下来<strong>调用<code>VarHandle</code>的方法即可动态操作指定数组的元素或指定对象的成员变量</strong>。</p>
+<!--SSTStop-->
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><p>下面程序示范了<code>VarHandle</code>的用法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.invoke.*;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	String name;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> MAX_AGE;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VarHandleTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> Throwable</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		String[] sa = <span class="keyword">new</span> String[]&#123;<span class="string">"Java"</span>, <span class="string">"Kotlin"</span>, <span class="string">"Go"</span>&#125;;</span><br><span class="line">		<span class="comment">// 获取一个String[]数组的VarHandle对象</span></span><br><span class="line">		VarHandle avh = MethodHandles.arrayElementVarHandle(String[].class);</span><br><span class="line">		<span class="comment">// 比较并设置：如果第三个元素是Go，则该元素被设为Lua</span></span><br><span class="line">		<span class="keyword">boolean</span> r = avh.compareAndSet(sa, <span class="number">2</span>, <span class="string">"Go"</span>, <span class="string">"Lua"</span>);</span><br><span class="line">		<span class="comment">// 输出比较结果</span></span><br><span class="line">		System.out.println(r); <span class="comment">// 输出true</span></span><br><span class="line">		<span class="comment">// 看到第三个元素被替换成Lua</span></span><br><span class="line">		System.out.println(Arrays.toString(sa));</span><br><span class="line">		<span class="comment">// 获取sa数组的第二个元素</span></span><br><span class="line">		System.out.println(avh.get(sa, <span class="number">1</span>)); <span class="comment">// 输出Kotlin</span></span><br><span class="line">		<span class="comment">// 获取并设置：返回第三个元素，并将第三个元素设为Swift</span></span><br><span class="line">		System.out.println(avh.getAndSet(sa, <span class="number">2</span>, <span class="string">"Swift"</span>));</span><br><span class="line">		<span class="comment">// 看到第三个元素被替换成Swift</span></span><br><span class="line">		System.out.println(Arrays.toString(sa));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 用findVarHandle方法获取User类中名为name，</span></span><br><span class="line">		<span class="comment">// 类型为String的实例变量</span></span><br><span class="line">		VarHandle vh1 = MethodHandles.lookup().findVarHandle(User.class,</span><br><span class="line">			<span class="string">"name"</span>, String.class);</span><br><span class="line">		User user = <span class="keyword">new</span> User();</span><br><span class="line">		<span class="comment">// 通过VarHandle获取实例变量的值，需要传入对象作为调用者</span></span><br><span class="line">		System.out.println(vh1.get(user)); <span class="comment">// 输出null</span></span><br><span class="line">		<span class="comment">// 通过VarHandle设置指定实例变量的值</span></span><br><span class="line">		vh1.set(user, <span class="string">"孙悟空"</span>);</span><br><span class="line">		<span class="comment">// 输出user的name实例变量的值</span></span><br><span class="line">		System.out.println(user.name); <span class="comment">// 输出孙悟空</span></span><br><span class="line">		<span class="comment">// 用findVarHandle方法获取User类中名为MAX_AGE，</span></span><br><span class="line">		<span class="comment">// 类型为Integer的类变量</span></span><br><span class="line">		VarHandle vh2 = MethodHandles.lookup().findStaticVarHandle(User.class,</span><br><span class="line">			<span class="string">"MAX_AGE"</span>, <span class="keyword">int</span>.class);</span><br><span class="line">		<span class="comment">// 通过VarHandle获取指定类变量的值</span></span><br><span class="line">		System.out.println(vh2.get()); <span class="comment">// 输出0</span></span><br><span class="line">		<span class="comment">// 通过VarHandle设置指定类变量的值</span></span><br><span class="line">		vh2.set(<span class="number">100</span>);</span><br><span class="line">		<span class="comment">// 输出User的MAX_AGE类变量</span></span><br><span class="line">		System.out.println(User.MAX_AGE); <span class="comment">// 输出100</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<!--SSTStart-->
+<p>程序调用<code>MethodHandles</code>类的静态方法可获取操作数组的<code>VarHandle</code>对象,接下来<strong>程序可通过<code>VarHandle</code>对象来操作数组的方法,包括比较并设置数组元素、获取并设置数组元素等</strong>。<br><code>VarHandle</code>既可设置实例变量的值,也可获取实例变量的值。<br>使用<code>VarHandle</code>操作类变量与操作实例变量差别不大,区别只是类变量不需要对象,因此使用<code>VarHandle</code>操作类变量时无须传入对象作为参数。<br><code>VarHandle</code>与<code>MethodHandle</code>一样,它也是一种动态调用机制,当程序通过<code>Methodhandles.Lookup</code>来获取成员变量时,可根据<code>字符串名</code>称来获取成员变量,这个字符串名称同样可以是动态改变的,因此非常灵活。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/cbe71553/">7.6.2 Java9增加的VarHandle</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/91ba299e/" rel="next" title="7.6 变量处理和方法处理 7.6.1 Java9增强的MethodHandle">
+                  <i class="fa fa-chevron-left"></i> 7.6 变量处理和方法处理 7.6.1 Java9增强的MethodHandle
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/c938fee6/" rel="prev" title="7.7 Java9改进的国际化与格式化">
+                  7.7 Java9改进的国际化与格式化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-6-2-Java9增加的VarHandle"><span class="nav-number">1.</span> <span class="nav-text">7.6.2 Java9增加的VarHandle</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">1.1.</span> <span class="nav-text">程序示例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="6.5 抽象类 什么是抽象方法   6.5.1 抽象方法和抽象类 抽象方法规则 抽象类规则 抽象方法和空方法的区别 小结   普通类前面加上abstract就可以变成抽象类 普通类   不能abstract一起使用的修饰符 final和abstract永远不能同时使用 没有抽象变量 没有抽象成员变量 没有抽象构造器 没有静态抽象方法 没有私有抽象方法">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.5 抽象类 6.5.1 抽象方法和抽象类">
+<meta property="og:url" content="https://blueblue233.github.io/blog/db78b302/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="6.5 抽象类 什么是抽象方法   6.5.1 抽象方法和抽象类 抽象方法规则 抽象类规则 抽象方法和空方法的区别 小结   普通类前面加上abstract就可以变成抽象类 普通类   不能abstract一起使用的修饰符 final和abstract永远不能同时使用 没有抽象变量 没有抽象成员变量 没有抽象构造器 没有静态抽象方法 没有私有抽象方法">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.5 抽象类 6.5.1 抽象方法和抽象类">
+<meta name="twitter:description" content="6.5 抽象类 什么是抽象方法   6.5.1 抽象方法和抽象类 抽象方法规则 抽象类规则 抽象方法和空方法的区别 小结   普通类前面加上abstract就可以变成抽象类 普通类   不能abstract一起使用的修饰符 final和abstract永远不能同时使用 没有抽象变量 没有抽象成员变量 没有抽象构造器 没有静态抽象方法 没有私有抽象方法">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/db78b302/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>6.5 抽象类 6.5.1 抽象方法和抽象类 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/db78b302/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">6.5 抽象类 6.5.1 抽象方法和抽象类
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-25 17:22:36" itemprop="dateCreated datePublished" datetime="2019-09-25T17:22:36+08:00">2019-09-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第6章-面向对象-下/" itemprop="url" rel="index"><span itemprop="name">第6章 面向对象(下)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第6章-面向对象-下/6-5-抽象类/" itemprop="url" rel="index"><span itemprop="name">6.5 抽象类</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/db78b302/#6-5-抽象类">6.5 抽象类</a><ul>
+<li><a href="/blog/db78b302/#什么是抽象方法">什么是抽象方法</a></li>
+</ul>
+</li>
+<li><a href="/blog/db78b302/#6-5-1-抽象方法和抽象类">6.5.1 抽象方法和抽象类</a><ul>
+<li><a href="/blog/db78b302/#抽象方法规则">抽象方法规则</a></li>
+<li><a href="/blog/db78b302/#抽象类规则">抽象类规则</a></li>
+<li><a href="/blog/db78b302/#抽象方法和空方法的区别">抽象方法和空方法的区别</a><ul>
+<li><a href="/blog/db78b302/#小结">小结</a></li>
+</ul>
+</li>
+<li><a href="/blog/db78b302/#普通类前面加上abstract就可以变成抽象类">普通类前面加上abstract就可以变成抽象类</a><ul>
+<li><a href="/blog/db78b302/#普通类">普通类</a></li>
+</ul>
+</li>
+<li><a href="/blog/db78b302/#不能abstract一起使用的修饰符">不能abstract一起使用的修饰符</a><ul>
+<li><a href="/blog/db78b302/#final和abstract永远不能同时使用">final和abstract永远不能同时使用</a></li>
+<li><a href="/blog/db78b302/#没有抽象变量-没有抽象成员变量">没有抽象变量 没有抽象成员变量</a></li>
+<li><a href="/blog/db78b302/#没有抽象构造器">没有抽象构造器</a></li>
+<li><a href="/blog/db78b302/#没有静态抽象方法">没有静态抽象方法</a></li>
+<li><a href="/blog/db78b302/#没有私有抽象方法">没有私有抽象方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="6-5-抽象类"><a href="#6-5-抽象类" class="headerlink" title="6.5 抽象类"></a>6.5 抽象类</h1><h2 id="什么是抽象方法"><a href="#什么是抽象方法" class="headerlink" title="什么是抽象方法"></a>什么是抽象方法</h2><p><strong>抽象方法是只有方法签名,没有方法实现的方法</strong>。</p>
+<h1 id="6-5-1-抽象方法和抽象类"><a href="#6-5-1-抽象方法和抽象类" class="headerlink" title="6.5.1 抽象方法和抽象类"></a>6.5.1 抽象方法和抽象类</h1><p>抽象方法和抽象类必须使用<code>abstract</code>修饰符来定义,<strong>有抽象方法的类只能被定义成抽象类</strong>,<strong>抽象类里可以没有抽象方法</strong>。</p>
+<h2 id="抽象方法规则"><a href="#抽象方法规则" class="headerlink" title="抽象方法规则"></a>抽象方法规则</h2><ul>
+<li>抽象方法也使用<code>abstract</code>修饰符来修饰,</li>
+<li><strong>抽象方法不能有方法体</strong></li>
+</ul>
+<p>定义抽象方法只需在普通方法上增加<code>abstract</code>修饰符,并把普通方法的方法体全部去掉,并在方法后增加分号即可。</p>
+<h2 id="抽象类规则"><a href="#抽象类规则" class="headerlink" title="抽象类规则"></a>抽象类规则</h2><ul>
+<li>抽象类必须使用<code>abstract</code>修饰符来修饰。</li>
+<li><strong>抽象类不能被实例化</strong>,无法使用<code>new</code>关键字来调用抽象类的构造器创建抽象类的实例。即使抽象类里不包含抽象方法,这个抽象类也不能创建实例。</li>
+<li>抽象类可以包含<code>成员变量</code>、<code>方法</code>、<code>构造器</code>、<code>初始化块</code>、<code>内部类</code>5种成分。<ul>
+<li>抽象类中的方法可以是普通方法也可以是抽象方法</li>
+<li>抽象类中的内部类包括<code>接口</code>和<code>枚举</code></li>
+<li><strong>抽象类的构造器不能用于创建实例</strong>,主要<strong>是用于给其子类调用</strong>。</li>
+</ul>
+</li>
+<li><strong>含有抽象方法的类只能被定义成抽象类</strong>,这包括以下三种情况<ol>
+<li>该类直接定义了一个抽象方法;</li>
+<li>该类继承了一个抽象父类,但没有完全实现父类包含的抽象方法;</li>
+<li>该类实现了一个接口,但没有完全实现接口包含的抽象方法。</li>
+</ol>
+</li>
+</ul>
+<h2 id="抽象方法和空方法的区别"><a href="#抽象方法和空方法的区别" class="headerlink" title="抽象方法和空方法的区别"></a>抽象方法和空方法的区别</h2><p>抽象方法和空方法体的方法不是同一个概念。例如, </p>
+<ul>
+<li><code>public abstract void test();</code>是一个抽象方法,它根本没有方法体,即<strong>方法定义后面没有一对花括号</strong>;</li>
+<li><code>public void test(){}</code>方法是一个普通方法,它已经定义了方法体(花括号),只是方法体为空,即它的方法体什么也不做,因此这个方法不可使用<code>abstract</code>来修饰。</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>空方法有花括号,花括号为空,</li>
+<li>抽象方法没有花括号</li>
+</ul>
+<h2 id="普通类前面加上abstract就可以变成抽象类"><a href="#普通类前面加上abstract就可以变成抽象类" class="headerlink" title="普通类前面加上abstract就可以变成抽象类"></a>普通类前面加上abstract就可以变成抽象类</h2><h3 id="普通类"><a href="#普通类" class="headerlink" title="普通类"></a>普通类</h3><p>指的是没有包含抽象方法的类.<br>定义抽象类只需在普通类上增加<code>abstract</code>修饰符即可。甚至一个(没有包含抽象方法的)普通类增加<code>abstract</code>修饰符后也将变成抽象类</p>
+<h2 id="不能abstract一起使用的修饰符"><a href="#不能abstract一起使用的修饰符" class="headerlink" title="不能abstract一起使用的修饰符"></a>不能abstract一起使用的修饰符</h2><h3 id="final和abstract永远不能同时使用"><a href="#final和abstract永远不能同时使用" class="headerlink" title="final和abstract永远不能同时使用"></a>final和abstract永远不能同时使用</h3><ul>
+<li>当使用<code>abstract</code>修饰类时,表明这个类只能被继承;</li>
+<li>当使用<code>abstract</code>修饰方法时,表明这个方法必须由子类提供实现(即重写)。</li>
+<li><code>final</code>修饰的类不能被继承, </li>
+<li><code>final</code>修饰的方法不能被重写。</li>
+</ul>
+<p>因此<strong><code>final</code>和<code>abstract</code>永远不能同时使用</strong>。</p>
+<h3 id="没有抽象变量-没有抽象成员变量"><a href="#没有抽象变量-没有抽象成员变量" class="headerlink" title="没有抽象变量 没有抽象成员变量"></a>没有抽象变量 没有抽象成员变量</h3><p><code>abstract</code>不能用于修饰成员变量,<br><code>abstract</code>不能用于修饰局部变量,<br>即没有抽象变量、没有抽象成员变量等说法; </p>
+<h3 id="没有抽象构造器"><a href="#没有抽象构造器" class="headerlink" title="没有抽象构造器"></a>没有抽象构造器</h3><p><code>abstract</code>也不能用于修饰构造器,没有抽象构造器,抽象类里定义的构造器只能是普通构造器。</p>
+<h3 id="没有静态抽象方法"><a href="#没有静态抽象方法" class="headerlink" title="没有静态抽象方法"></a>没有静态抽象方法</h3><p>当使用<code>static</code>修饰一个方法时,表明这个方法属于该类本身,即通过类就可调用该方法。<br>如果该方法被定义成抽象方法,<strong>由于抽象方法没有方法体,所以通过该类来调用该方法时会出现错误</strong>。因此<code>static</code>和<code>abstract</code>不能同时修饰某个方法,即没<strong>有所谓的<code>类</code>抽象方法</strong>。</p>
+<p><code>static</code>和<code>abstract</code>并不是绝对互斥的, <code>static</code>和<code>abstract</code>虽然不能同时修饰某个方法,但<strong><code>static</code>和<code>abstract</code>可以同时修饰<code>内部类</code></strong></p>
+<h3 id="没有私有抽象方法"><a href="#没有私有抽象方法" class="headerlink" title="没有私有抽象方法"></a>没有私有抽象方法</h3><p><code>abstract</code>关键字修饰的方法必须被其子类重写才有意义,否则这个方法将永远不会有方法体,因此<code>abstract</code>方法不能定义为<code>private</code>访问权限,即<strong><code>private</code>和<code>abstract</code>不能同时修饰方法</strong></p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/db78b302/">6.5 抽象类 6.5.1 抽象方法和抽象类</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/940d8ab9/" rel="next" title="6.4.8 缓存实例的不可变类">
+                  <i class="fa fa-chevron-left"></i> 6.4.8 缓存实例的不可变类
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/2d43e980/" rel="prev" title="6.5.2 抽象类的作用">
+                  6.5.2 抽象类的作用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-5-抽象类"><span class="nav-number">1.</span> <span class="nav-text">6.5 抽象类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是抽象方法"><span class="nav-number">1.1.</span> <span class="nav-text">什么是抽象方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-5-1-抽象方法和抽象类"><span class="nav-number">2.</span> <span class="nav-text">6.5.1 抽象方法和抽象类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象方法规则"><span class="nav-number">2.1.</span> <span class="nav-text">抽象方法规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象类规则"><span class="nav-number">2.2.</span> <span class="nav-text">抽象类规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象方法和空方法的区别"><span class="nav-number">2.3.</span> <span class="nav-text">抽象方法和空方法的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">2.3.1.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#普通类前面加上abstract就可以变成抽象类"><span class="nav-number">2.4.</span> <span class="nav-text">普通类前面加上abstract就可以变成抽象类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通类"><span class="nav-number">2.4.1.</span> <span class="nav-text">普通类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不能abstract一起使用的修饰符"><span class="nav-number">2.5.</span> <span class="nav-text">不能abstract一起使用的修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#final和abstract永远不能同时使用"><span class="nav-number">2.5.1.</span> <span class="nav-text">final和abstract永远不能同时使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没有抽象变量-没有抽象成员变量"><span class="nav-number">2.5.2.</span> <span class="nav-text">没有抽象变量 没有抽象成员变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没有抽象构造器"><span class="nav-number">2.5.3.</span> <span class="nav-text">没有抽象构造器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没有静态抽象方法"><span class="nav-number">2.5.4.</span> <span class="nav-text">没有静态抽象方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没有私有抽象方法"><span class="nav-number">2.5.5.</span> <span class="nav-text">没有私有抽象方法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

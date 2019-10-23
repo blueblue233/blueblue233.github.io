@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="16.4 控制线程 16.4.1 join线程 join方法的功能 谁等待谁 程序示例 join方法的重载形式 本文重点">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.4 控制线程 16.4.1 join线程">
+<meta property="og:url" content="https://blueblue233.github.io/blog/6fdf5d88/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="16.4 控制线程 16.4.1 join线程 join方法的功能 谁等待谁 程序示例 join方法的重载形式 本文重点">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="16.4 控制线程 16.4.1 join线程">
+<meta name="twitter:description" content="16.4 控制线程 16.4.1 join线程 join方法的功能 谁等待谁 程序示例 join方法的重载形式 本文重点">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/6fdf5d88/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>16.4 控制线程 16.4.1 join线程 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6fdf5d88/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">16.4 控制线程 16.4.1 join线程
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-16 10:28:44" itemprop="dateCreated datePublished" datetime="2019-07-16T10:28:44+08:00">2019-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/" itemprop="url" rel="index"><span itemprop="name">第16章 多线程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/16-4-控制线程/" itemprop="url" rel="index"><span itemprop="name">16.4 控制线程</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/6fdf5d88/#16-4-控制线程">16.4 控制线程</a></li>
+<li><a href="/blog/6fdf5d88/#16-4-1-join线程">16.4.1 join线程</a><ul>
+<li><a href="/blog/6fdf5d88/#join方法的功能">join方法的功能</a></li>
+<li><a href="/blog/6fdf5d88/#谁等待谁">谁等待谁</a></li>
+<li><a href="/blog/6fdf5d88/#程序示例">程序示例</a></li>
+<li><a href="/blog/6fdf5d88/#join方法的重载形式">join方法的重载形式</a></li>
+<li><a href="/blog/6fdf5d88/#本文重点">本文重点</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="16-4-控制线程"><a href="#16-4-控制线程" class="headerlink" title="16.4 控制线程"></a>16.4 控制线程</h1><p><code>Java</code>的线程支持提供了一些便捷的工具方法,通过这些便捷的工具方法可以很好地控制线程的执行.</p>
+<h1 id="16-4-1-join线程"><a href="#16-4-1-join线程" class="headerlink" title="16.4.1 join线程"></a>16.4.1 join线程</h1><h2 id="join方法的功能"><a href="#join方法的功能" class="headerlink" title="join方法的功能"></a>join方法的功能</h2><p><strong><code>join</code>方法可以让一个线程等待另一个线程完成</strong>。</p>
+<h2 id="谁等待谁"><a href="#谁等待谁" class="headerlink" title="谁等待谁"></a>谁等待谁</h2><p>当在某个程序执行流中调用其他线程的<code>join()</code>方法时,<code>调用线程将被阻塞</code>,直到被<code>jion()</code>方法加入的<code>join</code>线程执行完为止。<br>为了便于理解,可以把<code>join()</code>理解为<code>等待</code>,A线程中调用了B线程的<code>join()</code>方法,可以理解为A等待B执行完毕,所以,A线程被阻塞,B线程先执行.<br><code>join</code>方法通常由使用线程的程序调用,以将大问题划分成许多小问题,每个小问题分配一个线程当所有的小问题都得到处理后,再调用主线程来进一步操作。</p>
+<!--SSTStop-->
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JoinThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// 提供一个有参数的构造器，用于设置该线程的名字</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">JoinThread</span><span class="params">(String name)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(name);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 重写run()方法，定义线程执行体</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span> ; i++ )</span><br><span class="line">		&#123;</span><br><span class="line">			System.out.println(getName() + <span class="string">"  "</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 启动子线程</span></span><br><span class="line">		<span class="keyword">new</span> JoinThread(<span class="string">"新线程"</span>).start();</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span> ; i++ )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (i == <span class="number">20</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				JoinThread jt = <span class="keyword">new</span> JoinThread(<span class="string">"被Join的线程"</span>);</span><br><span class="line">				jt.start();</span><br><span class="line">				<span class="comment">// main线程调用了jt线程的join()方法，</span></span><br><span class="line">                <span class="comment">// main线程必须等jt执行结束才会向下执行</span></span><br><span class="line">				jt.join();</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(Thread.currentThread().getName()</span><br><span class="line">				+ <span class="string">"  "</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">---------- 运行java ----------</span><br><span class="line">main  <span class="number">0</span></span><br><span class="line">...</span><br><span class="line">main  <span class="number">5</span></span><br><span class="line">新线程  <span class="number">0</span></span><br><span class="line">新线程  <span class="number">1</span></span><br><span class="line">main  <span class="number">6</span></span><br><span class="line">新线程  <span class="number">2</span></span><br><span class="line">main  <span class="number">7</span></span><br><span class="line">新线程  <span class="number">3</span></span><br><span class="line">...</span><br><span class="line">新线程  <span class="number">10</span></span><br><span class="line">main  <span class="number">8</span></span><br><span class="line">新线程  <span class="number">11</span></span><br><span class="line">...</span><br><span class="line">新线程  <span class="number">15</span></span><br><span class="line">main  <span class="number">9</span></span><br><span class="line">新线程  <span class="number">16</span></span><br><span class="line">main  <span class="number">10</span></span><br><span class="line">新线程  <span class="number">17</span></span><br><span class="line">main  <span class="number">11</span></span><br><span class="line">新线程  <span class="number">18</span></span><br><span class="line">新线程  <span class="number">19</span></span><br><span class="line">main  <span class="number">12</span></span><br><span class="line">新线程  <span class="number">20</span></span><br><span class="line">main  <span class="number">13</span></span><br><span class="line">新线程  <span class="number">21</span></span><br><span class="line">main  <span class="number">14</span></span><br><span class="line">新线程  <span class="number">22</span></span><br><span class="line">main  <span class="number">15</span></span><br><span class="line">main  <span class="number">16</span></span><br><span class="line">新线程  <span class="number">23</span></span><br><span class="line">新线程  <span class="number">24</span></span><br><span class="line">新线程  <span class="number">25</span></span><br><span class="line">main  <span class="number">17</span></span><br><span class="line">main  <span class="number">18</span></span><br><span class="line">main  <span class="number">19</span></span><br><span class="line">新线程  <span class="number">26</span></span><br><span class="line">...</span><br><span class="line">新线程  <span class="number">42</span></span><br><span class="line">被Join的线程  <span class="number">0</span></span><br><span class="line">...</span><br><span class="line">被Join的线程  <span class="number">3</span></span><br><span class="line">新线程  <span class="number">43</span></span><br><span class="line">被Join的线程  <span class="number">4</span></span><br><span class="line">新线程  <span class="number">44</span></span><br><span class="line">被Join的线程  <span class="number">5</span></span><br><span class="line">新线程  <span class="number">45</span></span><br><span class="line">被Join的线程  <span class="number">6</span></span><br><span class="line">新线程  <span class="number">46</span></span><br><span class="line">被Join的线程  <span class="number">7</span></span><br><span class="line">新线程  <span class="number">47</span></span><br><span class="line">被Join的线程  <span class="number">8</span></span><br><span class="line">新线程  <span class="number">48</span></span><br><span class="line">被Join的线程  <span class="number">9</span></span><br><span class="line">新线程  <span class="number">49</span></span><br><span class="line">被Join的线程  <span class="number">10</span></span><br><span class="line">新线程  <span class="number">50</span></span><br><span class="line">被Join的线程  <span class="number">11</span></span><br><span class="line">新线程  <span class="number">51</span></span><br><span class="line">新线程  <span class="number">52</span></span><br><span class="line">被Join的线程  <span class="number">12</span></span><br><span class="line">...</span><br><span class="line">被Join的线程  <span class="number">26</span></span><br><span class="line">新线程  <span class="number">53</span></span><br><span class="line">被Join的线程  <span class="number">27</span></span><br><span class="line">新线程  <span class="number">54</span></span><br><span class="line">...</span><br><span class="line">新线程  <span class="number">61</span></span><br><span class="line">被Join的线程  <span class="number">28</span></span><br><span class="line">...</span><br><span class="line">被Join的线程  <span class="number">56</span></span><br><span class="line">新线程  <span class="number">62</span></span><br><span class="line">被Join的线程  <span class="number">57</span></span><br><span class="line">新线程  <span class="number">63</span></span><br><span class="line">被Join的线程  <span class="number">58</span></span><br><span class="line">...</span><br><span class="line">被Join的线程  <span class="number">92</span></span><br><span class="line">新线程  <span class="number">64</span></span><br><span class="line">...</span><br><span class="line">新线程  <span class="number">70</span></span><br><span class="line">被Join的线程  <span class="number">93</span></span><br><span class="line">...</span><br><span class="line">被Join的线程  <span class="number">99</span></span><br><span class="line">新线程  <span class="number">71</span></span><br><span class="line">新线程  <span class="number">72</span></span><br><span class="line">新线程  <span class="number">73</span></span><br><span class="line">main  <span class="number">20</span></span><br><span class="line">新线程  <span class="number">74</span></span><br><span class="line">main  <span class="number">21</span></span><br><span class="line">新线程  <span class="number">75</span></span><br><span class="line">main  <span class="number">22</span></span><br><span class="line">新线程  <span class="number">76</span></span><br><span class="line">main  <span class="number">23</span></span><br><span class="line">新线程  <span class="number">77</span></span><br><span class="line">main  <span class="number">24</span></span><br><span class="line">...</span><br><span class="line">main  <span class="number">37</span></span><br><span class="line">新线程  <span class="number">78</span></span><br><span class="line">main  <span class="number">38</span></span><br><span class="line">...</span><br><span class="line">main  <span class="number">41</span></span><br><span class="line">新线程  <span class="number">79</span></span><br><span class="line">main  <span class="number">42</span></span><br><span class="line">...</span><br><span class="line">main  <span class="number">54</span></span><br><span class="line">新线程  <span class="number">80</span></span><br><span class="line">main  <span class="number">55</span></span><br><span class="line">新线程  <span class="number">81</span></span><br><span class="line">main  <span class="number">56</span></span><br><span class="line">...</span><br><span class="line">main  <span class="number">63</span></span><br><span class="line">新线程  <span class="number">82</span></span><br><span class="line">...</span><br><span class="line">新线程  <span class="number">87</span></span><br><span class="line">main  <span class="number">64</span></span><br><span class="line">main  <span class="number">65</span></span><br><span class="line">新线程  <span class="number">88</span></span><br><span class="line">main  <span class="number">66</span></span><br><span class="line">新线程  <span class="number">89</span></span><br><span class="line">新线程  <span class="number">90</span></span><br><span class="line">main  <span class="number">67</span></span><br><span class="line">...</span><br><span class="line">main  <span class="number">73</span></span><br><span class="line">新线程  <span class="number">91</span></span><br><span class="line">新线程  <span class="number">92</span></span><br><span class="line">新线程  <span class="number">93</span></span><br><span class="line">main  <span class="number">74</span></span><br><span class="line">新线程  <span class="number">94</span></span><br><span class="line">main  <span class="number">75</span></span><br><span class="line">新线程  <span class="number">95</span></span><br><span class="line">main  <span class="number">76</span></span><br><span class="line">新线程  <span class="number">96</span></span><br><span class="line">main  <span class="number">77</span></span><br><span class="line">...</span><br><span class="line">main  <span class="number">99</span></span><br><span class="line">新线程  <span class="number">97</span></span><br><span class="line">新线程  <span class="number">98</span></span><br><span class="line">新线程  <span class="number">99</span></span><br></pre></td></tr></table></figure>
+<p>上面程序中一共有3个线程,主方法开始时就启动了名为”新线程”的子线程,”新线程”将会和<code>main</code>线程并发执行。当主线程的循环变量i等于20时,启动了名为”被Join的线程”的线程,”被Join的线程”不会和<code>main</code>线程并发执行,<strong><code>main</code>线程必须等该线程执行结束后才可以向下执行</strong>。在名为”被<code>Join</code>的线程”的线程执行时,实际上只有<code>新线程</code>和”<code>被Join的线程</code>“这2个子线程并发执行,而主线程处于等待状态。<br>主线程执行到<code>i==20</code>时,程序启动并<code>join</code>了名为”被Join的线程”的线程,所以主线程将一直处于阻塞状态,直到名为”被Join的线程”的线程执行完成.</p>
+<!--SSTStart-->
+<h2 id="join方法的重载形式"><a href="#join方法的重载形式" class="headerlink" title="join方法的重载形式"></a>join方法的重载形式</h2><p><code>join()</code>方法有如下三种重载形式</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>join()</code></td>
+<td align="left">等待被<code>join</code>的线程执行完成。</td>
+</tr>
+<tr>
+<td align="left"><code>join(long millis)</code></td>
+<td align="left">等待被<code>join</code>的线程的时间最长为<code>millis</code>毫秒。如果在<code>millis</code>毫秒内被<code>join</code>的线程还没有执行结束,则不再等待。</td>
+</tr>
+<tr>
+<td align="left"><code>join(long millis, int nanos)</code></td>
+<td align="left">等待被<code>join</code>的线程的时间最长为<code>millis</code>毫秒加<code>nanos</code>毫微秒。很少使用这种形式,原因有两个:程序对时间的精度无须精确到毫微秒;计算机硬件、操作系统本身也无法精确到毫微秒。</td>
+</tr>
+<tr>
+<td align="left">## 本文重点 ##</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- 在当前线程中调用<code>B.join()</code>方法可理解为当前线程要<code>等待B线程运行结束</code>,</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- 在A线程中,调用了B线程的<code>join()</code>方法,则A线程要<code>等待B线程运行结束</code>,</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><!--SSTStop--></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/6fdf5d88/">16.4 控制线程 16.4.1 join线程</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/336e1e5c/" rel="next" title="16.3.3 线程死亡">
+                  <i class="fa fa-chevron-left"></i> 16.3.3 线程死亡
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/1c771dc8/" rel="prev" title="16.4.2 后台线程">
+                  16.4.2 后台线程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#16-4-控制线程"><span class="nav-number">1.</span> <span class="nav-text">16.4 控制线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#16-4-1-join线程"><span class="nav-number">2.</span> <span class="nav-text">16.4.1 join线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#join方法的功能"><span class="nav-number">2.1.</span> <span class="nav-text">join方法的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谁等待谁"><span class="nav-number">2.2.</span> <span class="nav-text">谁等待谁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">2.3.</span> <span class="nav-text">程序示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#join方法的重载形式"><span class="nav-number">2.4.</span> <span class="nav-text">join方法的重载形式</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

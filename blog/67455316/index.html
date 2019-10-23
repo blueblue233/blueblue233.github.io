@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.2 系统相关 7.2.1 System类 加载文件和动态链接库 访问环境变量和系统属性 实例   垃圾回收相关方法 获取当前时间的方法 标准输入输出相关的属性和方法 identityHashCode方法 不同对象的identityHashCode值一定不同 实例">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.2 系统相关 7.2.1 System类">
+<meta property="og:url" content="https://blueblue233.github.io/blog/67455316/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.2 系统相关 7.2.1 System类 加载文件和动态链接库 访问环境变量和系统属性 实例   垃圾回收相关方法 获取当前时间的方法 标准输入输出相关的属性和方法 identityHashCode方法 不同对象的identityHashCode值一定不同 实例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.2 系统相关 7.2.1 System类">
+<meta name="twitter:description" content="7.2 系统相关 7.2.1 System类 加载文件和动态链接库 访问环境变量和系统属性 实例   垃圾回收相关方法 获取当前时间的方法 标准输入输出相关的属性和方法 identityHashCode方法 不同对象的identityHashCode值一定不同 实例">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/67455316/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.2 系统相关 7.2.1 System类 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/67455316/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.2 系统相关 7.2.1 System类
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-29 22:46:20" itemprop="dateCreated datePublished" datetime="2019-09-29T22:46:20+08:00">2019-09-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:47" itemprop="dateModified" datetime="2019-10-14T14:01:47+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/" itemprop="url" rel="index"><span itemprop="name">第7章 Java基础类库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/7-2-系统相关/" itemprop="url" rel="index"><span itemprop="name">7.2 系统相关</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/67455316/#7-2-系统相关">7.2 系统相关</a></li>
+<li><a href="/blog/67455316/#7-2-1-System类">7.2.1 System类</a><ul>
+<li><a href="/blog/67455316/#加载文件和动态链接库">加载文件和动态链接库</a></li>
+<li><a href="/blog/67455316/#访问环境变量和系统属性">访问环境变量和系统属性</a><ul>
+<li><a href="/blog/67455316/#实例">实例</a></li>
+</ul>
+</li>
+<li><a href="/blog/67455316/#垃圾回收相关方法">垃圾回收相关方法</a></li>
+<li><a href="/blog/67455316/#获取当前时间的方法">获取当前时间的方法</a></li>
+<li><a href="/blog/67455316/#标准输入输出相关的属性和方法">标准输入输出相关的属性和方法</a></li>
+<li><a href="/blog/67455316/#identityHashCode方法">identityHashCode方法</a><ul>
+<li><a href="/blog/67455316/#不同对象的identityHashCode值一定不同">不同对象的identityHashCode值一定不同</a></li>
+<li><a href="/blog/67455316/#实例">实例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="7-2-系统相关"><a href="#7-2-系统相关" class="headerlink" title="7.2 系统相关"></a>7.2 系统相关</h1><p><code>Java</code>程序在不同操作系统上运行时,可能需要取得平台相关的属性,或者调用平台命令来完成特定功能。<code>Java</code>提供了<code>System</code>类和<code>Runtime</code>类来与程序的运行平台进行交互。</p>
+<h1 id="7-2-1-System类"><a href="#7-2-1-System类" class="headerlink" title="7.2.1 System类"></a>7.2.1 System类</h1><p><code>System</code>类代表当前<code>Java</code>程序的运行平台,程序不能创建<code>System</code>类的对象, <code>System</code>类提供了一些<code>类变量</code>和<code>类方法</code>,允许直接通过<code>System</code>类来调用这些类变量和类方法。<br><code>System</code>类提供了代表<code>标准输入</code>、<code>标准输出</code>和<code>错误输出</code>的<code>类变量</code>,并提供了一些<code>静态方法</code>用于访问<code>环境变量</code>、<code>系统属性</code>的方法,还提供了<code>加载文件</code>和<code>动态链接库</code>的方法。</p>
+<h2 id="加载文件和动态链接库"><a href="#加载文件和动态链接库" class="headerlink" title="加载文件和动态链接库"></a>加载文件和动态链接库</h2><p>加载文件和动态链接库主要对<code>native</code>方法有用,对于一些特殊的功能(如访问操作系统底层硬件设备等)<code>Java</code>程序无法实现,必须借助<code>C语言</code>来完成,此时需要使用<code>C语言</code>为<code>Java</code>方法提供实现。</p>
+<!--replace:javah=java H&jni=J N I&getenv=get E N V-->
+<p>其实现步骤如下:</p>
+<ol>
+<li><code>Java</code>程序中声明<code>native</code>修饰的方法,类似于<code>abstract</code>方法,<strong>只有方法签名,没有实现</strong>。编译该<code>Java</code>程序,生成一个<code>class</code>文件。</li>
+<li>用<code>javah</code>编译第1步生成的<code>class</code>文件,将产生一个<code>.h</code>文件</li>
+<li>写一个<code>cpp</code>文件实现<code>native</code>方法,这一步需要包含第2步产生的<code>.h</code>文件(这个<code>.h</code>文件中又包含了<code>JDK</code>带的<code>jni.h</code>文件)</li>
+<li>在<code>Java</code>中用<code>System</code>类的<code>loadLibrary()</code>方法或<code>Runtime</code>类的<code>loadLibrary()</code>方法加载第4步产生的动态链接库文件,<code>Java</code>程序中就可以调用这个<code>native</code>方法了。</li>
+</ol>
+<h2 id="访问环境变量和系统属性"><a href="#访问环境变量和系统属性" class="headerlink" title="访问环境变量和系统属性"></a>访问环境变量和系统属性</h2><p>下面程序通过<code>System</code>类来访问操作的<code>环境变量</code>和<code>系统属性</code>。</p>
+<ol>
+<li>通过调用<code>System</code>类的<code>getenv()</code>方法可以访问程序所在平台的<code>环境变量</code></li>
+<li>通过<code>getProperties()</code>、 <code>getProperty()</code>方法可以访问程序所在平台的<code>系统属性</code>.<!--SSTStop-->
+</li>
+</ol>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SystemTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 获取系统所有的环境变量</span></span><br><span class="line">		Map&lt;String, String&gt; env = System.getenv();</span><br><span class="line">		<span class="comment">// 遍历输出所有的环境遍历</span></span><br><span class="line">		<span class="keyword">for</span> (String name : env.keySet()) &#123;</span><br><span class="line">			System.out.println(name + <span class="string">" ---&gt; "</span> + env.get(name));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 获取指定的环境变量</span></span><br><span class="line">		System.out.println(<span class="string">"-----------------------------------------------"</span>);</span><br><span class="line">		String[] envKeys = &#123; <span class="string">"JAVA_HOME"</span>, <span class="string">"CLASSPATH"</span> &#125;;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; envKeys.length; i++) &#123;</span><br><span class="line">			System.out.println(envKeys[i] + <span class="string">" ---&gt; "</span> + System.getenv(envKeys[i]));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"-----------------------------------------------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 获取所有的系统属性</span></span><br><span class="line">		Properties props = System.getProperties();</span><br><span class="line">		<span class="comment">// 将所有系统属性保存到props.txt文件中</span></span><br><span class="line">		props.store(<span class="keyword">new</span> FileOutputStream(<span class="string">"props.txt"</span>), <span class="string">"System Properties"</span>);</span><br><span class="line">		<span class="comment">// 输出特定的系统属性</span></span><br><span class="line">		System.out.println(System.getProperty(<span class="string">"os.name"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制台部分输出:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">M2_HOME ---&gt; D:\dev\apache-maven-<span class="number">3</span>.<span class="number">5</span>.<span class="number">4</span></span><br><span class="line">ProgramFiles ---&gt; C:\Program Files</span><br><span class="line">......</span><br><span class="line">OS ---&gt; Windows_NT</span><br><span class="line">......</span><br><span class="line">TEMP ---&gt; C:\Users\lan\AppData\Local\Temp</span><br><span class="line">......</span><br><span class="line">-----------------------------------------------</span><br><span class="line">JAVA_HOME ---&gt; E:\Java8\Java\jdk1.<span class="number">8</span>.<span class="number">0</span>_131</span><br><span class="line">CLASSPATH ---&gt; .;E:\Java8\Java\jdk1.<span class="number">8</span>.<span class="number">0</span>_131\lib\dt.jar;E:\Java8\Java\jdk1.<span class="number">8</span>.<span class="number">0</span>_131\lib\toos.jar;E:\dev2\AspectJ1.<span class="number">9</span>.<span class="number">4</span>\lib\aspectjrt.jar;E:\dev2\junit\junit-<span class="number">4</span>.<span class="number">12</span>.jar;</span><br><span class="line">-----------------------------------------------</span><br><span class="line">Windows <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>生成的<code>props.txt</code>文件部分内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#System Properties</span><br><span class="line">#Mon Sep 30 13:34:28 CST 2019</span><br><span class="line">java.runtime.name=Java(TM) SE Runtime Environment</span><br><span class="line">sun.boot.library.path=E\:\\Java8\\Java\\jdk1.8.0_131\\jre\\bin</span><br><span class="line">java.vm.version=25.131-b11</span><br><span class="line">java.vm.vendor=Oracle Corporation</span><br><span class="line">java.vendor.url=http\://java.oracle.com/</span><br><span class="line">.......</span><br><span class="line">sun.desktop=windows</span><br><span class="line">sun.cpu.isalist=amd64</span><br></pre></td></tr></table></figure>
+<!--SSTStart-->
+<h2 id="垃圾回收相关方法"><a href="#垃圾回收相关方法" class="headerlink" title="垃圾回收相关方法"></a>垃圾回收相关方法</h2><p><code>System</code>类</p>
+<ul>
+<li>提供<code>gc()</code>方法用来通知系统进行垃圾回收,</li>
+<li>提供<code>runFinalization()</code>方法用来<code>通知系统调用finalize()方法来进行资源清理</code>。</li>
+</ul>
+<h2 id="获取当前时间的方法"><a href="#获取当前时间的方法" class="headerlink" title="获取当前时间的方法"></a>获取当前时间的方法</h2><p><code>currentTimeMillis()</code>和<code>nanoTime()</code>,它们都返回一个<code>long</code>型<code>整数</code>。实际上它们都返回当前时间与<code>UTC1970年1月1日 0点整</code>的时间差,前者以毫秒作为单位,后者以纳秒作为单位。</p>
+<p>必须指出的是,这两个方法返回的时间粒度取决于底层操作系统,可能所在的操作系统根本不支持以毫秒、纳秒作为计时单位。<br>例如,许多操作系统以几十毫秒为单位测量时间,这种情况下<code>currentTimeMillis()</code>方法不可能返回精确的毫秒数:<br>而<code>nanoTime()</code>方法很少用,因为<strong>大部分操作系统都不支持使用<code>纳秒</code>作为计时单位</strong>。</p>
+<h2 id="标准输入输出相关的属性和方法"><a href="#标准输入输出相关的属性和方法" class="headerlink" title="标准输入输出相关的属性和方法"></a>标准输入输出相关的属性和方法</h2><p>除此之外, <code>System</code>类的<code>in</code>、<code>out</code>和<code>err</code>分别代表系统的<code>标准输入</code>、<code>标准输出</code>和<code>错误输出流</code>,其中,标准输入通常是键盘,标准输出通常是显示器</p>
+<p>提供了<code>setIn()</code>、 <code>setOut()</code>和<code>setErr()</code>方法来改变系统的标准输入、标准输出和标准错误输出流。</p>
+<h2 id="identityHashCode方法"><a href="#identityHashCode方法" class="headerlink" title="identityHashCode方法"></a>identityHashCode方法</h2><p><code>System</code>类还提供了一个<code>identityHashCode(Object x)</code>方法,该方法返回指定对象的精确<code>hashCode</code>值,也就是根据该<code>对象的地址</code>计算得到的<code>hashCode</code>值。</p>
+<h3 id="不同对象的identityHashCode值一定不同"><a href="#不同对象的identityHashCode值一定不同" class="headerlink" title="不同对象的identityHashCode值一定不同"></a>不同对象的identityHashCode值一定不同</h3><p>当某个类的<code>hashCode()</code>方法被重写后,该类实例的<code>hashCode()</code>方法就不能唯一地标识该对象;但通过<code>identityHashCode()</code>方法返回的<code>hashCode</code>值,依然是根据该<code>对象的地址</code>计算得到的<code>hashCode</code>值。不同的对象在内存中的地址不可能相同,所以,<strong>如果两个对象的<code>identityHashCode</code>值相同,则两个对象绝对是同一个对象</strong>。</p>
+<!--SSTStop-->
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IdentityHashCodeTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 下面程序中s1和s2是两个不同对象</span></span><br><span class="line">		String s1 = <span class="keyword">new</span> String(<span class="string">"Hello"</span>);</span><br><span class="line">		String s2 = <span class="keyword">new</span> String(<span class="string">"Hello"</span>);</span><br><span class="line">		<span class="comment">// String重写了hashCode()方法——改为根据字符序列计算hashCode值，</span></span><br><span class="line">		<span class="comment">// 因为s1和s2的字符序列相同，所以它们的hashCode方法返回值相同</span></span><br><span class="line">		System.out.println(s1.hashCode() + <span class="string">"----"</span> + s2.hashCode());</span><br><span class="line"></span><br><span class="line">		<span class="comment">// s1和s2是不同的字符串对象，所以它们的identityHashCode值不同</span></span><br><span class="line">		System.out.println(System.identityHashCode(s1) + <span class="string">"----"</span> + System.identityHashCode(s2));</span><br><span class="line">		<span class="comment">// 相同的字符串直接量放在常量池中,是同一个对象</span></span><br><span class="line">		String s3 = <span class="string">"Java"</span>;</span><br><span class="line">		String s4 = <span class="string">"Java"</span>;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// s3和s4是相同的字符串对象，所以它们的identityHashCode值相同</span></span><br><span class="line">		System.out.println(System.identityHashCode(s3) + <span class="string">"----"</span> + System.identityHashCode(s4));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">69609650----69609650</span><br><span class="line">366712642----1829164700</span><br><span class="line">2018699554----2018699554</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/67455316/">7.2 系统相关 7.2.1 System类</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/ab4e77f1/" rel="next" title="7.1.2 使用Scanner获取键盘输入">
+                  <i class="fa fa-chevron-left"></i> 7.1.2 使用Scanner获取键盘输入
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/416eb659/" rel="prev" title="7.2.2 Runtime类与Java9的ProcessHandle">
+                  7.2.2 Runtime类与Java9的ProcessHandle <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-2-系统相关"><span class="nav-number">1.</span> <span class="nav-text">7.2 系统相关</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-2-1-System类"><span class="nav-number">2.</span> <span class="nav-text">7.2.1 System类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加载文件和动态链接库"><span class="nav-number">2.1.</span> <span class="nav-text">加载文件和动态链接库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问环境变量和系统属性"><span class="nav-number">2.2.</span> <span class="nav-text">访问环境变量和系统属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">2.2.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收相关方法"><span class="nav-number">2.3.</span> <span class="nav-text">垃圾回收相关方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取当前时间的方法"><span class="nav-number">2.4.</span> <span class="nav-text">获取当前时间的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准输入输出相关的属性和方法"><span class="nav-number">2.5.</span> <span class="nav-text">标准输入输出相关的属性和方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#identityHashCode方法"><span class="nav-number">2.6.</span> <span class="nav-text">identityHashCode方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不同对象的identityHashCode值一定不同"><span class="nav-number">2.6.1.</span> <span class="nav-text">不同对象的identityHashCode值一定不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-1"><span class="nav-number">2.6.2.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

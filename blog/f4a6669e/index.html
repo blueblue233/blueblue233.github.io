@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.6 空值 有null的算术表达式结果为null and or not元素符与unknown运算的结果 谓词is null和is not null SQL查询 找出instructor关系中salary为空值的所有教师   is unknown谓词 MySQL不支持is unknown   select distinct中两个null被认为是相等的">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.6 空值">
+<meta property="og:url" content="https://blueblue233.github.io/blog/f4a6669e/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.6 空值 有null的算术表达式结果为null and or not元素符与unknown运算的结果 谓词is null和is not null SQL查询 找出instructor关系中salary为空值的所有教师   is unknown谓词 MySQL不支持is unknown   select distinct中两个null被认为是相等的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-16T01:53:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.6 空值">
+<meta name="twitter:description" content="3.6 空值 有null的算术表达式结果为null and or not元素符与unknown运算的结果 谓词is null和is not null SQL查询 找出instructor关系中salary为空值的所有教师   is unknown谓词 MySQL不支持is unknown   select distinct中两个null被认为是相等的">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/f4a6669e/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.6 空值 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/f4a6669e/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.6 空值
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-14 12:30:21" itemprop="dateCreated datePublished" datetime="2019-10-14T12:30:21+08:00">2019-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-16 09:53:39" itemprop="dateModified" datetime="2019-10-16T09:53:39+08:00">2019-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/" itemprop="url" rel="index"><span itemprop="name">第3章 SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/3-6-空值/" itemprop="url" rel="index"><span itemprop="name">3.6 空值</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/f4a6669e/#3-6-空值">3.6 空值</a><ul>
+<li><a href="/blog/f4a6669e/#有null的算术表达式结果为null">有null的算术表达式结果为null</a></li>
+<li><a href="/blog/f4a6669e/#and-or-not元素符与unknown运算的结果">and or not元素符与unknown运算的结果</a></li>
+<li><a href="/blog/f4a6669e/#谓词is-null和is-not-null">谓词is null和is not null</a><ul>
+<li><a href="/blog/f4a6669e/#SQL查询-找出instructor关系中salary为空值的所有教师">SQL查询 找出<strong>instructor</strong>关系中<strong>salary</strong>为空值的所有教师</a></li>
+</ul>
+</li>
+<li><a href="/blog/f4a6669e/#is-unknown谓词">is unknown谓词</a><ul>
+<li><a href="/blog/f4a6669e/#MySQL不支持is-unknown">MySQL不支持is unknown</a></li>
+</ul>
+</li>
+<li><a href="/blog/f4a6669e/#select-distinct中两个null被认为是相等的">select distinct中两个null被认为是相等的</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-6-空值"><a href="#3-6-空值" class="headerlink" title="3.6 空值"></a>3.6 空值</h1><p>空值给关系运算带来了特殊的问题,包括<code>算术运算</code>、<code>比较运算</code>和<code>集合运算</code>。</p>
+<h2 id="有null的算术表达式结果为null"><a href="#有null的算术表达式结果为null" class="headerlink" title="有null的算术表达式结果为null"></a>有null的算术表达式结果为null</h2><p>如果算术表达式的任一输人为空,则该算术表达式结果为空<br>如果査询中有一个表达式是<code>R.A+5</code>,并且对于某个特定的元组,<code>R.A</code>为空,那么对此元组来说,该表达式<code>R.A+5</code>的结果也为空。</p>
+<p>涉及空值的<code>比较</code>问题更多。因而<code>SQL</code>将涉及<code>空值</code>的任何比较运算的结果视为<code>unknown</code>(既不是谓词<code>is not</code>,也不是<code>is not null</code>,我们在本节的后面介绍这两个谓词)。这创建了除<code>true</code>和<code>false</code>之外的第三个逻辑值。</p>
+<h2 id="and-or-not元素符与unknown运算的结果"><a href="#and-or-not元素符与unknown运算的结果" class="headerlink" title="and or not元素符与unknown运算的结果"></a>and or not元素符与unknown运算的结果</h2><p>由于在<code>where</code>子句的谓词中可以对比较结果使用诸如<code>and</code>、<code>or</code>和<code>not</code>的布尔运算,所以这些布尔运算的定义也被扩展到可以处理<code>unknown</code>值</p>
+<ul>
+<li><code>and</code>运算符:<code>true and unknown</code>的结果是<code>unknown</code>, <code>false and unknown</code>结果是<code>false</code>, <code>unknoun and unknow</code>的结果是<code>unknown</code>.</li>
+<li><code>or</code>运算符:<code>true or unknown</code>的结果是<code>unknown</code>,<code>false or unknown</code>结果是<code>unknown</code>, <code>unknown or unknown</code>结果是<code>unknown</code>。</li>
+<li><code>not</code>运算符: <code>not unknown</code>的结果是<code>unknown</code>.</li>
+</ul>
+<p>所以,如果<code>R.A</code>为空,那么”<code>1&lt;R.A</code>“和”<code>not(1 &lt; R.A)</code>“结果都是<code>unknown</code>。</p>
+<p>如果<code>where</code>子句谓词对一个元组计算出<code>false</code>或<code>unknown</code>,那么该元组<strong>不能被加入到结果集</strong>中。</p>
+<h2 id="谓词is-null和is-not-null"><a href="#谓词is-null和is-not-null" class="headerlink" title="谓词is null和is not null"></a>谓词is null和is not null</h2><p><code>SQL</code>在谓词中使用特殊的关键词<code>null</code>来表示空值。<br>使用谓词<code>is null</code>可以判断一个元素的值是否为空值,反之,使用谓词<code>is not null</code>可以判断一个元素是否不是空值。</p>
+<h3 id="SQL查询-找出instructor关系中salary为空值的所有教师"><a href="#SQL查询-找出instructor关系中salary为空值的所有教师" class="headerlink" title="SQL查询 找出instructor关系中salary为空值的所有教师"></a>SQL查询 找出<code>instructor</code>关系中<code>salary</code>为空值的所有教师</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span></span><br><span class="line"><span class="keyword">from</span> instructor</span><br><span class="line"><span class="keyword">where</span> salary <span class="keyword">is</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select name</span><br><span class="line">from instructor</span><br><span class="line">where salary is null;</span><br><span class="line">Empty <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select name</span><br><span class="line">from instructor</span><br><span class="line">where salary is <span class="keyword">not</span> null;</span><br><span class="line">+------------+</span><br><span class="line">| name       |</span><br><span class="line">+------------+</span><br><span class="line">| Srinivasan |</span><br><span class="line">| Wu         |</span><br><span class="line">| Mozart     |</span><br><span class="line">| Einstein   |</span><br><span class="line">| El Said    |</span><br><span class="line">| Gold       |</span><br><span class="line">| Katz       |</span><br><span class="line">| Califieri  |</span><br><span class="line">| Singh      |</span><br><span class="line">| Crick      |</span><br><span class="line">| Brandt     |</span><br><span class="line">| Kim        |</span><br><span class="line">+------------+</span><br><span class="line"><span class="number">12</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="is-unknown谓词"><a href="#is-unknown谓词" class="headerlink" title="is unknown谓词"></a>is unknown谓词</h2><p>某些<code>SQL</code>实现还允许我们使用子句<code>is unknown</code>和<code>is not unknown</code>来测试一个表达式的结果是否为<code>unknown</code>,而不是<code>true</code>或<code>false</code></p>
+<h3 id="MySQL不支持is-unknown"><a href="#MySQL不支持is-unknown" class="headerlink" title="MySQL不支持is unknown"></a>MySQL不支持is unknown</h3><p>经过我的测试<code>MySQL</code>好像不支持<code>is unknown</code>和<code>is not unknown</code>这两个谓词。</p>
+<h2 id="select-distinct中两个null被认为是相等的"><a href="#select-distinct中两个null被认为是相等的" class="headerlink" title="select distinct中两个null被认为是相等的"></a>select distinct中两个null被认为是相等的</h2><p>当一个查询使用<code>select distinct</code>子句时,重复元组将被去除。为了达到这个目的,当比较两个元组对应的属性值时,<strong>如果这两个值都是非空并且值相等,或者都是空,那么它们是相同的</strong>。<br>注意<code>select distinct</code>中对待空值的方式与<code>谓词</code>中对待空值的方式是不同的,在谓词中”<code>null=null</code>“会返回<code>unknown</code>,而不是<code>true</code>。<br>如果元组在所有属性上的取值相等,那么它们就被当作相同元组,即使某些值为空。集合的并、交和差运算也是如此。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/f4a6669e/">3.6 空值</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/ca9da947/" rel="next" title="3.5 集合运算">
+                  <i class="fa fa-chevron-left"></i> 3.5 集合运算
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/cd11efad/" rel="prev" title="3.7 聚集函数 3.7.1 基本聚集">
+                  3.7 聚集函数 3.7.1 基本聚集 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-6-空值"><span class="nav-number">1.</span> <span class="nav-text">3.6 空值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#有null的算术表达式结果为null"><span class="nav-number">1.1.</span> <span class="nav-text">有null的算术表达式结果为null</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#and-or-not元素符与unknown运算的结果"><span class="nav-number">1.2.</span> <span class="nav-text">and or not元素符与unknown运算的结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谓词is-null和is-not-null"><span class="nav-number">1.3.</span> <span class="nav-text">谓词is null和is not null</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL查询-找出instructor关系中salary为空值的所有教师"><span class="nav-number">1.3.1.</span> <span class="nav-text">SQL查询 找出instructor关系中salary为空值的所有教师</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#is-unknown谓词"><span class="nav-number">1.4.</span> <span class="nav-text">is unknown谓词</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL不支持is-unknown"><span class="nav-number">1.4.1.</span> <span class="nav-text">MySQL不支持is unknown</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-distinct中两个null被认为是相等的"><span class="nav-number">1.5.</span> <span class="nav-text">select distinct中两个null被认为是相等的</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

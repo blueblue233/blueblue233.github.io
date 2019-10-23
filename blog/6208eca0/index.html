@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="1.6 ServletConfig接口 接口方法 接口描述   实例 运行效果 部署描述符中设置Servlet的初始化参数   总结">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.6 ServletConfig接口">
+<meta property="og:url" content="https://blueblue233.github.io/blog/6208eca0/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="1.6 ServletConfig接口 接口方法 接口描述   实例 运行效果 部署描述符中设置Servlet的初始化参数   总结">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1.6 ServletConfig接口">
+<meta name="twitter:description" content="1.6 ServletConfig接口 接口方法 接口描述   实例 运行效果 部署描述符中设置Servlet的初始化参数   总结">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/6208eca0/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>1.6 ServletConfig接口 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6208eca0/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">1.6 ServletConfig接口
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-03-15 22:36:35" itemprop="dateCreated datePublished" datetime="2019-03-15T22:36:35+08:00">2019-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:21" itemprop="dateModified" datetime="2019-10-14T14:00:21+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/" itemprop="url" rel="index"><span itemprop="name">Serlet JSP和Spring MVC初学指南</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/" itemprop="url" rel="index"><span itemprop="name">第一部分 Servlets和JSP</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Serlet-JSP和Spring-MVC初学指南/第一部分-Servlets和JSP/第1章-Servlet/" itemprop="url" rel="index"><span itemprop="name">第1章 Servlet</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/6208eca0/#1-6-ServletConfig接口">1.6 ServletConfig接口</a><ul>
+<li><a href="/blog/6208eca0/#接口方法">接口方法</a></li>
+<li><a href="/blog/6208eca0/#接口描述">接口描述</a></li>
+</ul>
+</li>
+<li><a href="/blog/6208eca0/#实例">实例</a><ul>
+<li><a href="/blog/6208eca0/#运行效果">运行效果</a></li>
+<li><a href="/blog/6208eca0/#部署描述符中设置Servlet的初始化参数">部署描述符中设置Servlet的初始化参数</a></li>
+</ul>
+</li>
+<li><a href="/blog/6208eca0/#总结">总结</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h2 id="1-6-ServletConfig接口"><a href="#1-6-ServletConfig接口" class="headerlink" title="1.6 ServletConfig接口"></a>1.6 ServletConfig接口</h2><h3 id="接口方法"><a href="#接口方法" class="headerlink" title="接口方法"></a>接口方法</h3><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>String getInitParameter(String name)</code></td>
+<td align="left">获取具有给定名称的初始化参数的值。</td>
+</tr>
+<tr>
+<td align="left"><code>Enumeration&lt;String&gt; getInitParameterNames()</code></td>
+<td align="left">以<code>Enumeration&lt;String&gt;</code>对象的形式返回<code>servlet</code>的初始化参数的名称，如果<code>servlet</code>没有初始化参数，则返回空的<code>Enumeration</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>ServletContext getServletContext()</code></td>
+<td align="left">返回与所在项目关联的<code>ServletContext</code>的引用。</td>
+</tr>
+<tr>
+<td align="left"><code>String getServletName()</code></td>
+<td align="left">返回此<code>servlet</code>实例的名称。</td>
+</tr>
+<tr>
+<td align="left">### 接口描述 ###</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">当<code>Servlet</code>容器初始化<code>Servlet</code>时，<code>Servlet</code>容器会给 <code>Servlet</code>的<code>init</code>方法传入一个<code>ServletConfig</code>对象。<code>ServletConfig</code>封装可以通过<code>@WebServlet</code>或者通过部署描述符来传给<code>Servlet</code>的配置信息。这样传入的每一条信息就叫一个初始参数。一个初始参数有<code>key</code>和<code>value</code>两个部分。 为了从<code>Servlet</code>内部获取到初始参数的值，要在 <code>Servlet</code>容器传给<code>Servlet</code>的<code>init</code>方法的<code>ServletConfig</code>中调用 <code>getInitParameter</code>方法。<code>getInitParameter</code>的方法签名如 下：</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.<span class="function">String <span class="title">getInitParameter</span><span class="params">(java.lang.String name)</span></span></span><br></pre></td></tr></table></figure></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>此外，<code>getInitParameterNames</code>方法则是返回所有初 始参数名称的一个<code>Enumeration</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.util.Enumeration&lt;java.lang.String&gt; getInitParameterNames()</span><br></pre></td></tr></table></figure>
+<p>例如，为了获取<code>contactName</code>参数值，要使用下面的方法签名：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String contactName = </span><br><span class="line">    servletConfig.getInitParameter(<span class="string">"contactName"</span>);</span><br></pre></td></tr></table></figure>
+<p>除<code>getInitParameter</code>和<code>getInitParameterNames</code>外，<code>ServletConfig</code>还提供了另一个很有用的方法： <code>getServletContext</code>。利用这个方法可以从<code>Servlet</code>内部获取<code>ServletContext</code>。关于这个对象的深入探讨，请查阅本 章1.7节。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>下面举一个<code>ServletConfig</code>的范例，在<code>app01a</code>项目中的<code>src</code>目录中的<code>app01a</code>包中添加 一个名为<code>ServletConfigDemoServlet</code>的<code>Servlet</code>。这个新的 <code>Servlet</code>如下所示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> app01a;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.Servlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletConfig;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebInitParam;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="meta">@WebServlet</span>(</span><br><span class="line">    name = <span class="string">"ServletConfigDemoServlet"</span>,</span><br><span class="line">    urlPatterns =</span><br><span class="line">    &#123;<span class="string">"/servletConfigDemo"</span>&#125;,</span><br><span class="line">    <span class="comment">// 设置Servlet的初始化参数</span></span><br><span class="line">    initParams =</span><br><span class="line">    &#123;</span><br><span class="line">            <span class="meta">@WebInitParam</span>(</span><br><span class="line">                name = <span class="string">"admin"</span>,</span><br><span class="line">                value = <span class="string">"Harry Taciak"</span></span><br><span class="line">            ),</span><br><span class="line">            <span class="meta">@WebInitParam</span>(</span><br><span class="line">                name = <span class="string">"email"</span>,</span><br><span class="line">                value = <span class="string">"admin@example.com"</span></span><br><span class="line">            )&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletConfigDemoServlet</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span></span></span><br><span class="line"><span class="class">        <span class="title">Servlet</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> ServletConfig servletConfig;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> servletConfig;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ServletException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.servletConfig = servletConfig;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">        ServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ServletException,IOException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 获取ServletConfig实例</span></span><br><span class="line">        ServletConfig servletConfig = getServletConfig();</span><br><span class="line">        <span class="comment">// 获取Servlet的初始化参数</span></span><br><span class="line">        String admin = servletConfig.getInitParameter(<span class="string">"admin"</span>);</span><br><span class="line">        String email = servletConfig.getInitParameter(<span class="string">"email"</span>);</span><br><span class="line">        <span class="comment">// 获取Servlet的名称</span></span><br><span class="line">        String servletName = servletConfig.getServletName();</span><br><span class="line">        response.setContentType(<span class="string">"text/html"</span>);</span><br><span class="line">        PrintWriter writer = response.getWriter();</span><br><span class="line">        writer.print(<span class="string">"&lt;html&gt;"</span></span><br><span class="line">            + <span class="string">"&lt;head&gt;"</span></span><br><span class="line">            + <span class="string">"&lt;/head&gt;"</span></span><br><span class="line">            + <span class="string">"&lt;body&gt;"</span></span><br><span class="line">            + <span class="string">"Admin: "</span> + admin + <span class="string">"&lt;br/&gt;"</span></span><br><span class="line">            + <span class="string">"Email: "</span> + email + <span class="string">"&lt;br/&gt;"</span></span><br><span class="line">            + <span class="string">"ServletName: "</span> + servletName + <span class="string">"&lt;br/&gt;"</span></span><br><span class="line">            + <span class="string">"&lt;/body&gt;"</span></span><br><span class="line">            + <span class="string">"&lt;/html&gt;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getServletInfo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"ServletConfig demo"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 实现接口方式必须实现该接口中的所有方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>@WebServlet</code>的<code>initParams</code>属性 中，给<code>Servlet</code>传入了两个初始参数（<code>admin</code>和<code>email</code>）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet</span>(</span><br><span class="line">    name = <span class="string">"ServletConfigDemoServlet"</span>, </span><br><span class="line">    urlPatterns =&#123;<span class="string">"/servletConfigDemo"</span>&#125;,</span><br><span class="line">    initParams =&#123;</span><br><span class="line">            <span class="meta">@WebInitParam</span>(</span><br><span class="line">                name = <span class="string">"admin"</span>,</span><br><span class="line">                value = <span class="string">"Harry Taciak"</span></span><br><span class="line">            ),</span><br><span class="line">            <span class="meta">@WebInitParam</span>(</span><br><span class="line">                name = <span class="string">"email"</span>,</span><br><span class="line">                value = <span class="string">"admin@example.com"</span></span><br><span class="line">    )&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="运行效果"><a href="#运行效果" class="headerlink" title="运行效果"></a>运行效果</h3><p>注意这里的<code>urlPatterns</code>是对于项目路径而言,<code>/servletConfigDemo</code>在<code>Hello</code>项目中的路径.加上项目路径,可以调用<code>ServletConfigDemoServlet</code>,如下所示:<br><a href="http://localhost:8080/app01a/servletConfigDemo" target="_blank" rel="noopener">http://localhost:8080/app01a/servletConfigDemo</a><br>浏览器将会显示以下文本:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Admin: Harry Taciak</span><br><span class="line">Email: admin@example.com</span><br><span class="line">ServletName: ServletConfigDemoServlet</span><br></pre></td></tr></table></figure>
+<h3 id="部署描述符中设置Servlet的初始化参数"><a href="#部署描述符中设置Servlet的初始化参数" class="headerlink" title="部署描述符中设置Servlet的初始化参数"></a>部署描述符中设置Servlet的初始化参数</h3><p>另一种方法是,在部署描述符中传入初始参数。<strong>使用部署描述符设置<code>Servlet</code>的初始参数</strong>,比使用<code>@WebServlet</code>更容易,因为部署描述符是一个文本文件,<strong>不需要重新编译<code>Servlet</code>类</strong>,就可以对它进行编辑。部署描述符将在本章后续”使用部署描述符”小节以及第13章中详细讲解。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><code>ServletConfig</code>操作的是<code>Servlet</code>的初始化参数。</li>
+</ul>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/6208eca0/">1.6 ServletConfig接口</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/4201ffe4/" rel="next" title="1.5 ServletResponse接口">
+                  <i class="fa fa-chevron-left"></i> 1.5 ServletResponse接口
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/c3e608d3/" rel="prev" title="1.7 ServletContext接口">
+                  1.7 ServletContext接口 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-ServletConfig接口"><span class="nav-number">1.</span> <span class="nav-text">1.6 ServletConfig接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#接口方法"><span class="nav-number">1.1.</span> <span class="nav-text">接口方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行效果"><span class="nav-number">2.1.</span> <span class="nav-text">运行效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署描述符中设置Servlet的初始化参数"><span class="nav-number">2.2.</span> <span class="nav-text">部署描述符中设置Servlet的初始化参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

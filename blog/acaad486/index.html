@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="2.1.2 XMLHttpRequest对象的属性 readyState属性 响应相关属性 responseType属性 response属性 响应状态 服务器响应状态码   发送相关属性 其他属性 响应处理流程">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.1.2 XMLHttpRequest对象的属性">
+<meta property="og:url" content="https://blueblue233.github.io/blog/acaad486/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="2.1.2 XMLHttpRequest对象的属性 readyState属性 响应相关属性 responseType属性 response属性 响应状态 服务器响应状态码   发送相关属性 其他属性 响应处理流程">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2.1.2 XMLHttpRequest对象的属性">
+<meta name="twitter:description" content="2.1.2 XMLHttpRequest对象的属性 readyState属性 响应相关属性 responseType属性 response属性 响应状态 服务器响应状态码   发送相关属性 其他属性 响应处理流程">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/acaad486/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>2.1.2 XMLHttpRequest对象的属性 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/acaad486/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">2.1.2 XMLHttpRequest对象的属性
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-29 19:39:42" itemprop="dateCreated datePublished" datetime="2019-05-29T19:39:42+08:00">2019-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第2章-HTML5增强的XMLHttpRequest对象/" itemprop="url" rel="index"><span itemprop="name">第2章 HTML5增强的XMLHttpRequest对象</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/acaad486/#2-1-2-XMLHttpRequest对象的属性">2.1.2 XMLHttpRequest对象的属性</a><ul>
+<li><a href="/blog/acaad486/#readyState属性">readyState属性</a></li>
+<li><a href="/blog/acaad486/#响应相关属性">响应相关属性</a><ul>
+<li><a href="/blog/acaad486/#responseType属性">responseType属性</a></li>
+<li><a href="/blog/acaad486/#response属性">response属性</a></li>
+<li><a href="/blog/acaad486/#响应状态">响应状态</a></li>
+<li><a href="/blog/acaad486/#服务器响应状态码">服务器响应状态码</a></li>
+</ul>
+</li>
+<li><a href="/blog/acaad486/#发送相关属性">发送相关属性</a></li>
+<li><a href="/blog/acaad486/#其他属性">其他属性</a></li>
+<li><a href="/blog/acaad486/#响应处理流程">响应处理流程</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="2-1-2-XMLHttpRequest对象的属性"><a href="#2-1-2-XMLHttpRequest对象的属性" class="headerlink" title="2.1.2 XMLHttpRequest对象的属性"></a>2.1.2 XMLHttpRequest对象的属性</h1><p><code>XMLHttpRequest</code>对象常用的属性如下:</p>
+<h2 id="readyState属性"><a href="#readyState属性" class="headerlink" title="readyState属性"></a>readyState属性</h2><p><code>readyState</code>:该属性用于获取<code>XMLHttpRequest</code>对象的处理状态.</p>
+<table>
+<thead>
+<tr>
+<th align="left"><code>readyState</code>属性值</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left"><code>XMLHttpRequest</code>对象还未开始发送请求</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left"><code>XMLHttpRequest</code>对象开始发送请求</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><code>XMLHttpRequest</code>对象的请求发送完成</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><code>XMLHttpRequest</code>对象开始读取服务器的响应</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><code>XMLHttpRequest</code>对象读取服务响应结束</td>
+</tr>
+<tr>
+<td align="left">## 响应相关属性 ##</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">### responseType属性 ###</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>responseType</code>:该属性用于<strong>设置服务器返回的响应类型</strong>。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">### response属性 ###</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>response</code>:该属性用于<strong>获取服务器响应</strong>。不同<code>responseType</code>对应的<code>response</code>如表2.2所示。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><center><strong>表2.2 responseType与response</strong></center></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">reponseType属性</th>
+<th align="left">response属性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>&quot;&quot;</code></td>
+<td align="left"><code>response</code>属性返回<code>DOMString</code>,默认</td>
+</tr>
+<tr>
+<td align="left"><code>&quot;arraybuffer&quot;</code></td>
+<td align="left"><code>response</code>属性返回<code>ArrayBuffer</code>二进制数据</td>
+</tr>
+<tr>
+<td align="left"><code>&quot;blob&quot;</code></td>
+<td align="left"><code>response</code>属性返回<code>Blob</code>对象</td>
+</tr>
+<tr>
+<td align="left"><code>&quot;document&quot;</code></td>
+<td align="left"><code>response</code>属性返回<code>Document</code>对象,与<code>responseXML</code>返回值相同</td>
+</tr>
+<tr>
+<td align="left"><code>&quot;json&quot;</code></td>
+<td align="left"><code>response</code>属性返回<code>JavaScript</code>对象,该对象通过解析服务器响应的<code>JSON</code>字符串得到</td>
+</tr>
+<tr>
+<td align="left"><code>&quot;text&quot;</code></td>
+<td align="left"><code>response</code>属性返回<code>DOMString</code>,默认</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>responseText</code>:该属性用于获取服务器的响应文本。</li>
+<li><code>responseXML</code>:该属性用于获取服务器响应的<code>XML</code>文档对象。</li>
+<li><code>responseURL</code>:该属性返回服务器响应来自的<code>URL</code>。</li>
+</ul>
+<h3 id="响应状态"><a href="#响应状态" class="headerlink" title="响应状态"></a>响应状态</h3><ul>
+<li><code>status</code>:该属性是服务器返回的状态码,<strong>只有服务器的响应已经完成时,才会有该状态码</strong>。</li>
+<li><code>statusText</code>:该属性是服务器返回的状态文本信息,只有当服务器的响应已经完成时,才会有该状态文本信息。</li>
+</ul>
+<h3 id="服务器响应状态码"><a href="#服务器响应状态码" class="headerlink" title="服务器响应状态码"></a>服务器响应状态码</h3><p>通过检测<code>XMLHttpRequest</code>对象的<code>status</code>属性，即可判断服务器的响应是否正常。当服务器的响应正常时，<code>JavaScript</code>才应该读取服务器响应信息，并将响应信息动态加载到目标页面。服务器常用的状码及其对应的含义如下。</p>
+<ul>
+<li><code>200</code>:<strong>服务器响应正常</strong>。</li>
+<li><code>304</code>:该资源在上次请求之后没有任何修改。这通常用于浏览器的缓存机制,使用<code>GET</code>请求时尤其需要注意。</li>
+<li><code>400</code>:无法找到请求的资源。</li>
+<li><code>401</code>:访问资源的权限不够。</li>
+<li><code>403</code>:<strong>没有权限访问资源</strong>。</li>
+<li><code>404</code>:<strong>需要访问的资源不存在</strong>。</li>
+<li><code>405</code>:需要访问的资源被禁止访问。</li>
+<li><code>407</code>:访问资源需要代理身份验证。</li>
+<li><code>414</code>:请求的<code>URL</code>太长。</li>
+<li><code>500</code>:<strong>服务器内部错误</strong>。</li>
+</ul>
+<h2 id="发送相关属性"><a href="#发送相关属性" class="headerlink" title="发送相关属性"></a>发送相关属性</h2><ul>
+<li><code>timeout</code>:设置<code>XMLHttpRequest</code>对象发送请求的超时时长,以<code>ms</code>为单位。</li>
+<li><code>ontimeout</code>:绑定事件处理函数的属性。该属性用于指定<code>XMLHttpRequest</code>对象发送请求超时后触发的事件处理函数。</li>
+<li><code>upload</code>:该属性返回<code>XMLHttpRequest</code>对象的上传进度。通过为该对象的<code>progress</code>事件注册事件处理函数,可以实时监听<code>XMLHttpRequest</code>对象的上传进度。</li>
+</ul>
+<h2 id="其他属性"><a href="#其他属性" class="headerlink" title="其他属性"></a>其他属性</h2><ul>
+<li><code>withCredentials</code>:该属性设置<strong>跨站点访问的请求</strong>是否应该使用安全凭证(如<code>Cookie</code>、授权头或<code>TLS</code>客户端证书等)。设置该属性对相同站点的请求不会有任何影响。</li>
+</ul>
+<h2 id="响应处理流程"><a href="#响应处理流程" class="headerlink" title="响应处理流程"></a>响应处理流程</h2><p>如果想通过<code>JavaScript</code>获取服务器响应,只要为<code>XMLHttpRequest</code>对象的<code>load</code>事件注册事件处理函数即可。获取服务器响应之后,还应判断服务器响应是否正确,要判断服务器响应是否正确,可判断<code>XMLHttpRequest</code>对象的<code>status</code>属性。<strong>当<code>status</code>值为200时,服务器响应正确,否则响应不正常</strong>。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/acaad486/">2.1.2 XMLHttpRequest对象的属性</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d494e383/" rel="next" title="2.1 XMLHttpRequest对象的方法和属性">
+                  <i class="fa fa-chevron-left"></i> 2.1 XMLHttpRequest对象的方法和属性
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/2c8062ea/" rel="prev" title="2.1.3 XMLHttpRequest对象的事件">
+                  2.1.3 XMLHttpRequest对象的事件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-1-2-XMLHttpRequest对象的属性"><span class="nav-number">1.</span> <span class="nav-text">2.1.2 XMLHttpRequest对象的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#readyState属性"><span class="nav-number">1.1.</span> <span class="nav-text">readyState属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#响应状态"><span class="nav-number">1.1.1.</span> <span class="nav-text">响应状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器响应状态码"><span class="nav-number">1.1.2.</span> <span class="nav-text">服务器响应状态码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送相关属性"><span class="nav-number">1.2.</span> <span class="nav-text">发送相关属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他属性"><span class="nav-number">1.3.</span> <span class="nav-text">其他属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应处理流程"><span class="nav-number">1.4.</span> <span class="nav-text">响应处理流程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

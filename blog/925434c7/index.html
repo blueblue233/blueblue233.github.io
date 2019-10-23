@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="1.2.2 MyBatis3及替代技术">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.2.2 MyBatis3及替代技术">
+<meta property="og:url" content="https://blueblue233.github.io/blog/925434c7/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="1.2.2 MyBatis3及替代技术">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1.2.2 MyBatis3及替代技术">
+<meta name="twitter:description" content="1.2.2 MyBatis3及替代技术">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/925434c7/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>1.2.2 MyBatis3及替代技术 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/925434c7/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">1.2.2 MyBatis3及替代技术
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-16 11:43:40" itemprop="dateCreated datePublished" datetime="2019-08-16T11:43:40+08:00">2019-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第1章-Java-EE应用/" itemprop="url" rel="index"><span itemprop="name">第1章 Java EE应用</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第1章-Java-EE应用/1-2-轻量级Java-EE应用相关技术/" itemprop="url" rel="index"><span itemprop="name">1.2 轻量级Java EE应用相关技术</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/925434c7/#1-2-2-MyBatis3及替代技术">1.2.2 MyBatis3及替代技术</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="1-2-2-MyBatis3及替代技术"><a href="#1-2-2-MyBatis3及替代技术" class="headerlink" title="1.2.2 MyBatis3及替代技术"></a>1.2.2 MyBatis3及替代技术</h1><p>传统的<code>Java</code>应用都是采用<code>JDBC</code>来访问数据库的,但传统的<code>JDBC</code>采用的是一种基于<code>SQL</code>的操作方式,这种操作方式与<code>Java</code>语言的面向对象特性不太一致,所以<code>Java EE</code>应用需要一种技术,通过这种技术能<strong>让<code>Java</code>以面向对象的方式操作关系数据库</strong>。<br>这种特殊的技术就是<code>ORM(Object Relation Mapping)</code>,最早的<code>ORM</code>是<code>EntityEJB( Enterprise JavaBean),EJB</code>就是经典<code>Java EE</code>应用的核心,从<code>EJB1.0</code>到<code>EJB2.x</code>,许多人会觉得<code>EJB</code>非常烦琐,所以导致<code>EJB</code>备受诟病。<br>在这种背景下, <code>Hibernate</code>框架应运而生。 <code>Hibernate</code>框架是一种开源的、轻量级的<code>ORM</code>框架,它允许将普通的、传统的<code>Java</code>对象(<code>POJO</code>)映射成持久化类,允许<strong>应用程序以面向对象的方式来操作<code>POJO</code>,而<code>Hibernate</code>框架则负责将这种操作转换成底层的<code>SQL</code>操作</strong>。<br>大多数情况下(特别是对新项目、新系统的开发而言), <code>Hibernate</code>这样的机制无往不利,大有一统天下的势头。但是,<strong>在一些特定的环境下, <code>Hibernate</code>这种一站式的解决方案却未必适合</strong>。如:</p>
+<ul>
+<li>系统的部分或全部数据来自现有数据库,<strong>出于安全考虑,只对开发团队提供几条<code>Select SQL</code>(或存储过程)以获取所需数据,具体的表结构不予公开</strong>。</li>
+<li>开发规范中要求,所有牵涉到业务逻辑部分的数据库操作,必须在数据库层由<code>存储过程</code>实现(就金融行业而言,工商银行、中国银行、交通银行等商业银行都曾在开发规范中严格指定)</li>
+<li>系统数据处理量巨大,性能要求极为苛刻,这往往意味着我们必须通过经过<strong>高度优化的<code>SQL</code>语句</strong>(或存储过程)才能达到系统性能设计指标。</li>
+</ul>
+<p>面对这样的需求, <code>Hibernate</code>不再适合,甚至无法使用。此时,<strong>直接使用<code>JDBC</code>进行数据库操作实际上也是不错的选择</strong>,只是拖沓的数据库访问代码、乏味的字段读取操作令人厌烦,而”半自动化”的<code>My Batis</code>,却正好解决了这个问题。<br>这里的”半自动化”,是相对<code>Hibernate</code>等提供了全面的数据库封装机制的”全自动化”<code>ORM</code>实现而言的,”全自动”<code>ORM</code>实现了<code>POJO</code>和数据库表之间的映射,以及<code>SQL</code>的自动生成和执行。<br>而<code>MyBatis</code>的着力点,则在于<code>POJO</code>与<code>SQL</code>之间的映射关系。也就是说,使用<code>MyBatis</code>提供的<code>ORM</code>机制,对<code>业务逻辑</code>实现人员而言,面对的是纯粹的<code>Java</code>对象,这与通过<code>Hibernate</code>实现<code>ORM</code>基本一致,而<strong>对于具体的数据操作,<code>Hibernate</code>会自动生成<code>SQL</code>语句,但<code>MyBatis</code>则并不会自动生成<code>SQL</code>语句</strong>。具体的<code>SQL</code>需要程序员编写,然后通过映射配置文件,将<code>SQL</code>所需的参数以及返回的结果字段映射到指定的<code>POJO</code>。<br>相对<code>Hibernate</code>等”全自动”<code>ORM</code>机制而言, <code>MyBatis</code>以<code>SQL</code>开发的工作量和数据库移植性上的让步,为系统设计提供了更大的自由空间。作为对”全自动”<code>ORM</code>实现的种有益补充, <code>MyBatis</code>的存在具有特别的意义。<br><code>MyBatis</code>是<code>Apache</code>组织提供的一个轻量级持久层框架,是一个支持<strong>普通<code>SQL</code>查询</strong>、<strong>存储过程</strong>和<strong>高级映射</strong>的优秀持久层框架。 <code>MyBatis</code>消除了几乎所有的<code>JDBC</code>代码和参数的手工设置过程以及对结果集的检索封装。 <code>MyBatis</code>可以使用简单的<code>XML</code>或<code>注解</code>来进行配置和原始映射,将接口和<code>Java</code>的<code>POJO</code>映射成数据库中的记录。<br><code>MyBatis</code>作为持久层框架,其主要思想是将程序中的大量<code>SQL</code>语句剥离出来,配置在配置文件中,实现<code>SQL</code>的灵活配置。这样做的好处是将<code>SQL</code>与程序代码分离,可以在不修改程序代码的情况下,直接在配置文件中修改<code>SQL</code>。<br>除此之外, <code>Oracle</code>的<code>TopLink</code>、 <code>Apache</code>的<code>OJB</code>都可作为替代方案。但由于种种原因,它们并未得到广泛的市场支持,所以这两个框架的资料、文档相对比较少,选择它们需要一定的勇气和技术功底。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/925434c7/">1.2.2 MyBatis3及替代技术</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/18adc9db/" rel="next" title="1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术">
+                  <i class="fa fa-chevron-left"></i> 1.2 轻量级Java EE应用相关技术 1.2.1 JSP,Servlet和JavaBean及替代技术
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/be171c95/" rel="prev" title="1.2.3 Spring5及替代技术">
+                  1.2.3 Spring5及替代技术 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-2-2-MyBatis3及替代技术"><span class="nav-number">1.</span> <span class="nav-text">1.2.2 MyBatis3及替代技术</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

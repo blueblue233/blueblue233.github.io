@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="2.2 发送请求 2.2.3 发送POST请求 发送步骤 实例 完整代码 项目结构">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.2 发送请求 2.2.3 发送POST请求">
+<meta property="og:url" content="https://blueblue233.github.io/blog/3048e743/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="2.2 发送请求 2.2.3 发送POST请求 发送步骤 实例 完整代码 项目结构">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2.2 发送请求 2.2.3 发送POST请求">
+<meta name="twitter:description" content="2.2 发送请求 2.2.3 发送POST请求 发送步骤 实例 完整代码 项目结构">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/3048e743/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>2.2 发送请求 2.2.3 发送POST请求 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/3048e743/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">2.2 发送请求 2.2.3 发送POST请求
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-29 22:08:45" itemprop="dateCreated datePublished" datetime="2019-05-29T22:08:45+08:00">2019-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第2章-HTML5增强的XMLHttpRequest对象/" itemprop="url" rel="index"><span itemprop="name">第2章 HTML5增强的XMLHttpRequest对象</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/3048e743/#2-2-发送请求-2-2-3-发送POST请求">2.2 发送请求 2.2.3 发送POST请求</a><ul>
+<li><a href="/blog/3048e743/#发送步骤">发送步骤</a></li>
+<li><a href="/blog/3048e743/#实例">实例</a></li>
+<li><a href="/blog/3048e743/#完整代码">完整代码</a><ul>
+<li><a href="/blog/3048e743/#项目结构">项目结构</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="2-2-发送请求-2-2-3-发送POST请求"><a href="#2-2-发送请求-2-2-3-发送POST请求" class="headerlink" title="2.2 发送请求 2.2.3 发送POST请求"></a>2.2 发送请求 2.2.3 发送POST请求</h1><h2 id="发送步骤"><a href="#发送步骤" class="headerlink" title="发送步骤"></a>发送步骤</h2><p>发送<code>POST</code>请求通常需要执行如下三个步骤:</p>
+<ul>
+<li>1.使用<code>open</code>方法打开连接时,指定使用<code>POST</code>方式发送请求。</li>
+<li>2.<strong>设置正确的请求头</strong>,对于<code>POST</code>请求通常应设置<code>Content-Type</code>请求头。</li>
+<li>3.<strong>发送请求</strong>,把请求参数转换为查询字符串(就是<code>key=value&amp;key=value...</code>这种形式),<strong>将该字符串作为<code>send</code>()方法的参数</strong>。</li>
+</ul>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.创建XMLHttpRequest对象</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="comment">// 事件处理函数，当下拉列表选择改变时，触发该事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 2.设置请求响应的URL</span></span><br><span class="line">    <span class="keyword">var</span> uri = <span class="string">"second.jsp"</span>;</span><br><span class="line">    <span class="comment">// 2.打开与服务器响应地址的连接</span></span><br><span class="line">    xhr.open(<span class="string">"POST"</span>, uri, <span class="literal">true</span>);</span><br><span class="line">    <span class="comment">// 3.设置处理响应的回调函数</span></span><br><span class="line">    xhr.onload = processResponse;</span><br><span class="line">    <span class="comment">// 4.设置POST请求的请求头</span></span><br><span class="line">    xhr.setRequestHeader(<span class="string">"Content-Type"</span>,</span><br><span class="line">            <span class="string">"application/x-www-form-urlencoded"</span>);</span><br><span class="line">    <span class="comment">// 5.发送请求,请求参数设为为查询字符串(也就是这种形式:key=value&amp;...)</span></span><br><span class="line">    xhr.send(<span class="string">"id="</span> + id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>事实上,即使采用<code>POST</code>方式发送请求,一样可以将请求参数附加在请求的<code>URL</code>之后。将<code>change</code>函数改为如下形式也可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 事件处理函数，当下拉列表选择改变时，触发该事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 2.post请求也可以把请求参数放到URL的查询字符串中</span></span><br><span class="line">    <span class="keyword">var</span> uri = <span class="string">"second.jsp?id="</span>+id;</span><br><span class="line">    <span class="comment">// 2.打开与服务器响应地址的连接</span></span><br><span class="line">    xhr.open(<span class="string">"POST"</span>, uri, <span class="literal">true</span>);</span><br><span class="line">    <span class="comment">// 3.设置处理响应的回调函数</span></span><br><span class="line">    xhr.onload = processResponse;</span><br><span class="line">    <span class="comment">// 4.设置POST请求的请求头</span></span><br><span class="line">    xhr.setRequestHeader(<span class="string">"Content-Type"</span>,</span><br><span class="line">            <span class="string">"application/x-www-form-urlencoded"</span>);</span><br><span class="line">    <span class="comment">// 5.发送请求,请求参数设为为查询字符串(也就是这种形式:key=value&amp;...)</span></span><br><span class="line">    xhr.send();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E:\<span class="title">workspace_web2</span>\<span class="title">post</span></span></span><br><span class="line"><span class="function">└─<span class="title">WebContent</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">first.html</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">META</span>-<span class="title">INF</span></span></span><br><span class="line"><span class="function">  │ └─<span class="title">MANIFEST.MF</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">second.jsp</span></span></span><br><span class="line"><span class="function">  └─<span class="title">WEB</span>-<span class="title">INF</span></span></span><br><span class="line"><span class="function">    └─<span class="title">lib</span></span></span><br></pre></td></tr></table></figure>
+<p>这是一个<code>java web</code>项目把这下两个文件放在<code>Java web</code>项目的根目录下即可运行.<br><strong>first.html</strong>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta name=<span class="string">"author"</span> content=<span class="string">"Yeeku.H.Lee(CrazyIt.org)"</span> /&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span><br><span class="line">&lt;title&gt;发送GET请求&lt;/title&gt;</span><br><span class="line">&lt;style type=<span class="string">"text/css"</span>&gt;</span><br><span class="line">select &#123;</span><br><span class="line">    width: <span class="number">160</span>px;</span><br><span class="line">    font-size: <span class="number">11</span>pt;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;!-- 一级菜单 --&gt;</span><br><span class="line">    &lt;select name=<span class="string">"first"</span> id=<span class="string">"first"</span> size=<span class="string">"4"</span></span><br><span class="line">        onchange=<span class="string">"change(this.value);"</span>&gt;</span><br><span class="line">        &lt;option value="1" selected="selected"&gt;中国&lt;/option&gt;</span><br><span class="line">        &lt;option value="2"&gt;美国&lt;/option&gt;</span><br><span class="line">        &lt;option value="3"&gt;日本&lt;/option&gt;</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line">    &lt;!-- 二级菜单 --&gt;</span><br><span class="line">    &lt;select name=<span class="string">"second"</span> id=<span class="string">"second"</span> size=<span class="string">"4"</span>&gt;</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line">    &lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">                    <span class="comment">// 1.创建XMLHttpRequest对象</span></span><br><span class="line">                    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="comment">//                     // 事件处理函数，当下拉列表选择改变时，触发该事件</span></span><br><span class="line"><span class="comment">//                     function change(id) &#123;</span></span><br><span class="line"><span class="comment">//                         // 2.设置请求响应的URL</span></span><br><span class="line"><span class="comment">//                         var uri = "second.jsp";</span></span><br><span class="line"><span class="comment">//                         // 2.打开与服务器响应地址的连接</span></span><br><span class="line"><span class="comment">//                         xhr.open("POST", uri, true);</span></span><br><span class="line"><span class="comment">//                         // 3.设置处理响应的回调函数</span></span><br><span class="line"><span class="comment">//                         xhr.onload = processResponse;</span></span><br><span class="line"><span class="comment">//                         // 4.设置POST请求的请求头</span></span><br><span class="line"><span class="comment">//                         xhr.setRequestHeader("Content-Type",</span></span><br><span class="line"><span class="comment">//                                 "application/x-www-form-urlencoded");</span></span><br><span class="line"><span class="comment">//                         // 5.发送请求,请求参数设为为查询字符串(也就是这种形式:key=value&amp;...)</span></span><br><span class="line"><span class="comment">//                         xhr.send("id=" + id);</span></span><br><span class="line"><span class="comment">//                     &#125;</span></span><br><span class="line">                    <span class="comment">// 事件处理函数，当下拉列表选择改变时，触发该事件</span></span><br><span class="line">                    <span class="function">function <span class="title">change</span><span class="params">(id)</span> </span>&#123;</span><br><span class="line">                        <span class="comment">// 2.post请求也可以把请求参数放到URL的查询字符串中</span></span><br><span class="line">                        <span class="keyword">var</span> uri = <span class="string">"second.jsp?id="</span>+id;</span><br><span class="line">                        <span class="comment">// 2.打开与服务器响应地址的连接</span></span><br><span class="line">                        xhr.open(<span class="string">"POST"</span>, uri, <span class="keyword">true</span>);</span><br><span class="line">                        <span class="comment">// 3.设置处理响应的回调函数</span></span><br><span class="line">                        xhr.onload = processResponse;</span><br><span class="line">                        <span class="comment">// 4.设置POST请求的请求头</span></span><br><span class="line">                        xhr.setRequestHeader(<span class="string">"Content-Type"</span>,</span><br><span class="line">                                <span class="string">"application/x-www-form-urlencoded"</span>);</span><br><span class="line">                        <span class="comment">// 5.发送请求,请求参数设为为查询字符串(也就是这种形式:key=value&amp;...)</span></span><br><span class="line">                        xhr.send();</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 定义处理响应的回调函数</span></span><br><span class="line">                    <span class="function">function <span class="title">processResponse</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        <span class="comment">//如果响应成功</span></span><br><span class="line">                        <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;</span><br><span class="line">                            <span class="comment">// 将服务器响应以$符号分隔成字符串数组</span></span><br><span class="line">                            <span class="keyword">var</span> cityList = xhr.responseText.split(<span class="string">"$"</span>);</span><br><span class="line">                            <span class="comment">// 获取用于显示菜单的下拉列表</span></span><br><span class="line">                            <span class="keyword">var</span> displaySelect = document</span><br><span class="line">                                    .getElementById(<span class="string">"second"</span>);</span><br><span class="line">                            <span class="comment">// 将目标下拉列表清空</span></span><br><span class="line">                            displaySelect.innerHTML = <span class="string">""</span>;</span><br><span class="line">                            <span class="comment">// 以字符串数组的每个元素创建option，</span></span><br><span class="line">                            <span class="comment">// 并将这些选项添加到下拉列表中</span></span><br><span class="line">                            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; cityList.length; i++) &#123;</span><br><span class="line">                                <span class="comment">// 创建一个&lt;option.../&gt;元素</span></span><br><span class="line">                                <span class="keyword">var</span> op = document.createElement(<span class="string">"option"</span>);</span><br><span class="line">                                op.innerHTML = cityList[i];</span><br><span class="line">                                <span class="comment">// 将新的选项添加到列表框的最后</span></span><br><span class="line">                                displaySelect.appendChild(op);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="comment">// 页面响应不正常</span></span><br><span class="line">                            window.alert(<span class="string">"您所请求的页面有异常。"</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//页面加载完成时调用</span></span><br><span class="line">                    document.body.onload = change(<span class="number">1</span>);</span><br><span class="line">                &lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>second.jsp</strong>:</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">"text/html; charset=utf-8"</span> language=<span class="string">"java"</span> %&gt;</span><br><span class="line">&lt;%</span><br><span class="line">String idStr = (String)request.getParameter(<span class="string">"id"</span>);</span><br><span class="line"><span class="keyword">int</span> id = idStr == <span class="keyword">null</span> ? <span class="number">1</span> : Integer.parseInt(idStr);</span><br><span class="line">System.out.println(id);</span><br><span class="line"><span class="keyword">switch</span>(id)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">%&gt;</span><br><span class="line">上海$广州$北京</span><br><span class="line">&lt;%</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">%&gt;</span><br><span class="line">华盛顿$纽约$加州</span><br><span class="line">&lt;%</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">%&gt;</span><br><span class="line">东京$大板$福冈</span><br><span class="line">&lt;%</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/3048e743/">2.2 发送请求 2.2.3 发送POST请求</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d523be76/" rel="next" title="2.2 发送请求 2.2.2发送GET请求">
+                  <i class="fa fa-chevron-left"></i> 2.2 发送请求 2.2.2发送GET请求
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/8fa92967/" rel="prev" title="2.2 发送请求 2.2.4 发送XML请求">
+                  2.2 发送请求 2.2.4 发送XML请求 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-2-发送请求-2-2-3-发送POST请求"><span class="nav-number">1.</span> <span class="nav-text">2.2 发送请求 2.2.3 发送POST请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#发送步骤"><span class="nav-number">1.1.</span> <span class="nav-text">发送步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">1.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">1.3.</span> <span class="nav-text">完整代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目结构"><span class="nav-number">1.3.1.</span> <span class="nav-text">项目结构</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

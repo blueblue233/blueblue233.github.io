@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画 简单动画 显示和隐藏方法 以动画方式增加或减少高度 不断增加或减少透明度 上述方法支持的参数 程序示例   复杂动画 animate方法的第2种形式 程序示例   动画效果全局属性">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画">
+<meta property="og:url" content="https://blueblue233.github.io/blog/994a13a/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画 简单动画 显示和隐藏方法 以动画方式增加或减少高度 不断增加或减少透明度 上述方法支持的参数 程序示例   复杂动画 animate方法的第2种形式 程序示例   动画效果全局属性">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画">
+<meta name="twitter:description" content="3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画 简单动画 显示和隐藏方法 以动画方式增加或减少高度 不断增加或减少透明度 上述方法支持的参数 程序示例   复杂动画 animate方法的第2种形式 程序示例   动画效果全局属性">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/994a13a/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/994a13a/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-24 12:09:18" itemprop="dateCreated datePublished" datetime="2019-07-24T12:09:18+08:00">2019-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/" itemprop="url" rel="index"><span itemprop="name">第3章 jQuery库详解</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/3-6-动画效果相关的方法/" itemprop="url" rel="index"><span itemprop="name">3.6 动画效果相关的方法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/994a13a/#3-6-动画效果相关的方法">3.6 动画效果相关的方法</a></li>
+<li><a href="/blog/994a13a/#3-6-1-简单动画和复杂动画">3.6.1 简单动画和复杂动画</a><ul>
+<li><a href="/blog/994a13a/#简单动画">简单动画</a><ul>
+<li><a href="/blog/994a13a/#显示和隐藏方法">显示和隐藏方法</a></li>
+<li><a href="/blog/994a13a/#以动画方式增加或减少高度">以动画方式增加或减少高度</a></li>
+<li><a href="/blog/994a13a/#不断增加或减少透明度">不断增加或减少透明度</a></li>
+<li><a href="/blog/994a13a/#上述方法支持的参数">上述方法支持的参数</a></li>
+<li><a href="/blog/994a13a/#程序示例">程序示例</a></li>
+</ul>
+</li>
+<li><a href="/blog/994a13a/#复杂动画">复杂动画</a><ul>
+<li><a href="/blog/994a13a/#animate方法的第2种形式">animate方法的第2种形式</a></li>
+<li><a href="/blog/994a13a/#程序示例">程序示例</a></li>
+</ul>
+</li>
+<li><a href="/blog/994a13a/#动画效果全局属性">动画效果全局属性</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-6-动画效果相关的方法"><a href="#3-6-动画效果相关的方法" class="headerlink" title="3.6 动画效果相关的方法"></a>3.6 动画效果相关的方法</h1><p><code>jQuery</code> 还提供了一些动画效果相关的方法,通过使用这些方法,可以开发出更加友好的<code>UI</code>界面,例如可以实现各种”渐变”动画。</p>
+<h1 id="3-6-1-简单动画和复杂动画"><a href="#3-6-1-简单动画和复杂动画" class="headerlink" title="3.6.1 简单动画和复杂动画"></a>3.6.1 简单动画和复杂动画</h1><h2 id="简单动画"><a href="#简单动画" class="headerlink" title="简单动画"></a>简单动画</h2><p><code>jQuery</code>提供的简单动画效果相关的方法如下。</p>
+<h3 id="显示和隐藏方法"><a href="#显示和隐藏方法" class="headerlink" title="显示和隐藏方法"></a>显示和隐藏方法</h3><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>show([duration] [,easing] [,callback])</code></td>
+<td align="left">将<code>jQuery</code>对象里包含的隐藏的<code>DOM</code>元素<strong>以动画方式<code>显示</code>出来</strong>。</td>
+</tr>
+<tr>
+<td align="left"><code>hide([duration] [,easing] [,callback])</code></td>
+<td align="left">将<code>jQuery</code>对象里包含的显示的<code>DOM</code>元素<strong>以动画方式<code>隐藏</code>起来</strong>。</td>
+</tr>
+<tr>
+<td align="left"><code>toggle([duration] [,easing] [,callback])</code></td>
+<td align="left">该方法是<code>show</code>、<code>hide</code>两个方法的综合版本。</td>
+</tr>
+<tr>
+<td align="left"><code>toggle(showOrHide)</code></td>
+<td align="left">向该方法传入的参数控制<strong>显示或隐藏</strong><code>jQuery</code>对象包含的<code>DOM</code>元素。</td>
+</tr>
+<tr>
+<td align="left"><!--replace:callback=call back--></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">### 以动画方式增加或减少高度 ###</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>slideDown([duration] [,easing] [,callback])</code></td>
+<td align="left">该方法将会<strong>不断增加</strong>当前<code>jQuery</code>对象所匹配<code>DOM</code><strong>元素的高度</strong>,直至这些<code>DOM</code>元素完全显示出来。</td>
+</tr>
+<tr>
+<td align="left"><code>slideUp([duration] [,easing] [,callback])</code></td>
+<td align="left">该方法将会<strong>不断减小</strong>当前<code>jQuery</code>对象所匹配<code>DOM</code><strong>元素的高度</strong>,直至这些<code>DOM</code>元素完全隐藏起来。</td>
+</tr>
+<tr>
+<td align="left"><code>slideToggle([duration] [,easing] [,callback])</code></td>
+<td align="left">该方法是<code>slideDown</code>、<code>slideUp</code>两个方法的综合版本。如果当前<code>jQuery</code> 匹配的元素处于隐藏状态,就使用”卷帘”动画将其显示出来;如果它们处于显示状态,就使用”卷帘”动画将其隐藏起来。</td>
+</tr>
+</tbody></table>
+<h3 id="不断增加或减少透明度"><a href="#不断增加或减少透明度" class="headerlink" title="不断增加或减少透明度"></a>不断增加或减少透明度</h3><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>fadeIn([duration] [,easing] [,callback])</code></td>
+<td align="left">将<code>jQuery</code>对象匹配的<code>DOM</code>元素以”渐显”的方式显示出来(也就是不断调整透明度)。</td>
+</tr>
+<tr>
+<td align="left"><code>fadeOut([duration] [,easing] [,callback])</code></td>
+<td align="left">将<code>jQuery</code>对象匹配的<code>DOM</code>元素以”渐隐”的方式隐藏起来(也就是不断调整透明度)。</td>
+</tr>
+<tr>
+<td align="left"><code>fadeTo(duration,opacity [,easing] [,callback])</code></td>
+<td align="left">将<code>jQuery</code>对象匹配的<code>DOM</code>元素的透明度调整到<code>opacity</code>值(<code>opacity</code>是一个0到1的浮点数)。</td>
+</tr>
+<tr>
+<td align="left"><code>fadeToggle([duration] [,easing] [,callback])</code></td>
+<td align="left">该方法是<code>fadeIn([duration] [,easing] [,callback])</code>、<code>fadeOut([duration] [,easing] [,callback])</code>两个方法的综合版本。如果当前<code>jQuery</code> 匹配的元素处于隐藏状态,就使用”渐入”动画将其显示出来;如果它们处于显示状态,就使用”渐出”动画将它们隐藏起来。</td>
+</tr>
+</tbody></table>
+<h3 id="上述方法支持的参数"><a href="#上述方法支持的参数" class="headerlink" title="上述方法支持的参数"></a>上述方法支持的参数</h3><p>上面这些方法都可以使用如下三个参数。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>duration</code></td>
+<td align="left">指定该动画的持续时间,可以是”<code>slow&quot;</code>、”<code>normal&quot;</code>或”<code>fast&quot;</code>三个字符串其中之一,也可以是表示动画持续时长的毫秒数,如1000。</td>
+</tr>
+<tr>
+<td align="left"><code>easing</code></td>
+<td align="left">指定该动画所使用擦除效果的名称(需要插件支持),<code>jQuery</code>默认只支持”<code>linear&quot;</code>和 “<code>swing&quot;</code>两个值。</td>
+</tr>
+<tr>
+<td align="left"><code>callback</code></td>
+<td align="left">指定在动画完成时激发的函数。</td>
+</tr>
+<tr>
+<td align="left"><!--SSTStop--></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">### 程序示例 ###</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">上面这些方法都可以完成一些简单常用的动画效果。下面的程序示范了这些方法的用法。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"author"</span> <span class="attr">content</span>=<span class="string">"Yeeku.H.Lee(CrazyIt.org)"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span> 动画效果相关的方法 <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span></span><br><span class="line">		div &#123;</span><br><span class="line"><span class="css">			<span class="selector-tag">background-color</span>: <span class="selector-id">#cccccc</span>;</span></span><br><span class="line">			border: 2px solid black;</span><br><span class="line">			width: 200px;</span><br><span class="line">			height: 120px;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"../jquery-3.1.1.js"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"toggle"</span> <span class="attr">onclick</span>=<span class="string">"$('#test1').toggle(1000);"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test1"</span>&gt;</span>使用toggle控制的元素<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"slide down"</span> <span class="attr">onclick</span>=<span class="string">"$('#test2').slideDown(1000);"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"slide up"</span> <span class="attr">onclick</span>=<span class="string">"$('#test2').slideUp(1000);"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test2"</span>&gt;</span>使用Slide动画控制的元素<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"fade in"</span> <span class="attr">onclick</span>=<span class="string">"$('#test3').fadeIn(1000);"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"fade out"</span> <span class="attr">onclick</span>=<span class="string">"$('#test3').fadeOut(1000);"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test3"</span>&gt;</span>使用Fade动画控制的元素<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>在浏览器中运行上述页面,即可看到<code>toggle</code>、<code>slideUp</code>、<code>slideDown</code>、<code>fadeIn</code>和<code>fadeOut</code>等几种动画效果。使用上面的函数,开发者可以非常方便地实现与用户交互的动画。</p>
+<!--SSTStart-->
+<h2 id="复杂动画"><a href="#复杂动画" class="headerlink" title="复杂动画"></a>复杂动画</h2><p>除了上面几个实现简单动画的方法之外,还有以下几个更复杂的方法,通过它们可以进行更复杂的控制。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>animate(params[,duration[,easing]][,callback])</code></td>
+<td align="left">该函数用于创建自定义动画。其中<strong><code>params</code>是</strong>一个形如<code>{prop1:endValue1,prop:endValue2...}</code>的<code>JavaScript</code>对象,用于指定当前<code>jQuery</code>对象包含的<code>DOM</code>对象<strong>在动画结束后的状态</strong>;<code>duration</code>用于指定动画持续时间;<code>easing</code>用于指定动画所使用擦除效果的名称(需要插件支持);<code>jQuery</code> 默认只支持”<code>linear&quot;</code> 和”<code>swing&quot;</code>两个值。<code>callback</code>指定动画结束后激发的回调函数。</td>
+</tr>
+<tr>
+<td align="left">### animate方法的第2种形式 ###</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">方法</td>
+<td align="left">描述</td>
+</tr>
+<tr>
+<td align="left">:—</td>
+<td align="left">:—</td>
+</tr>
+<tr>
+<td align="left"><code>animate(params,options)</code></td>
+<td align="left">该函数是前一个函数的另一种形式。其中<code>params</code>与前一个函数的该参数完全相同;<code>options</code>是一个用于指定复杂选项的<code>JavaScript</code>对象。</td>
+</tr>
+<tr>
+<td align="left">#### animate方法第2种形式的options参数说明 ####</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- <code>duration</code>:指定该动画的持续时间,可以是”<code>slow&quot;</code>、”<code>normal&quot;</code>或”<code>fast&quot;</code>三个字符串其中之一,也可以是表示动画持续时长的毫秒数,如1000。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- <code>easing</code>:指定该动画所使用擦除效果的名称(需要插件支持),<code>jQuery</code> 默认只支持”<code>linear&quot;</code> 和 “<code>swing&quot;</code>两个值。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- <code>linear</code>的效果是:整个<strong>动画以一个不变的速度行进</strong>；</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- <code>swing</code>的效果是:行进速度在动画<strong>开始和结束时比在动画中间时稍慢</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- <code>complete</code>:指定在动画完成时激发的函数。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- <code>step</code>:动画效果每改变一次将导致所指定的函数执行一次。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">- <code>queue</code>:指定是否将该动画函数放入该对象的动画函数队列之后。</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<!--SSTStop-->
+<h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3><p>下面的程序示范了如何使用<code>animate()</code>方法创建自定义动画。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"author"</span> <span class="attr">content</span>=<span class="string">"Yeeku.H.Lee(CrazyIt.org)"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span> 复杂动画效果 <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span></span><br><span class="line">		div &#123;</span><br><span class="line"><span class="css">			<span class="selector-tag">background-color</span>: <span class="selector-id">#cccccc</span>;</span></span><br><span class="line">			border: 2px solid black;</span><br><span class="line">			width: 200px;</span><br><span class="line">			height: 120px;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"../jquery-3.1.1.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"bn1"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"执行动画"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test1"</span>&gt;</span>自定义动画控制的元素<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 为id为bn1的按钮绑定事件处理函数</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#bn1"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			<span class="comment">// 为id为test1的元素指定自定义动画</span></span></span><br><span class="line"><span class="javascript">			$(<span class="string">"#test1"</span>).animate(</span></span><br><span class="line"><span class="javascript">				<span class="comment">// 下面JavaScript对象指定动画结束时目标元素的状态</span></span></span><br><span class="line">				&#123;</span><br><span class="line"><span class="javascript">					<span class="comment">// 字体大小</span></span></span><br><span class="line"><span class="javascript">					fontSize: <span class="string">"24pt"</span>,</span></span><br><span class="line"><span class="javascript">					<span class="comment">// 宽度</span></span></span><br><span class="line"><span class="javascript">					width: <span class="string">"400px"</span>,</span></span><br><span class="line"><span class="javascript">					<span class="comment">// 不透明度</span></span></span><br><span class="line">					opacity: 0.5</span><br><span class="line">				&#125;,</span><br><span class="line"><span class="javascript">				<span class="comment">// 下面对象指定动画详细选项</span></span></span><br><span class="line">				&#123;</span><br><span class="line"><span class="javascript">					<span class="comment">// 延迟2秒</span></span></span><br><span class="line">					duration: 2000,</span><br><span class="line"><span class="javascript">					<span class="comment">// 动画行进的开始和结尾比中间慢</span></span></span><br><span class="line"><span class="javascript">					easing: <span class="string">"swing"</span>,</span></span><br><span class="line"><span class="javascript">					<span class="comment">// 动画介绍是调用函数</span></span></span><br><span class="line"><span class="javascript">					complete: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">						alert(<span class="string">'动画执行完成！'</span>);</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			)</span><br><span class="line">		&#125;</span><br><span class="line">		);</span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>该程序中的粗体字代码使用<code>animate</code>函数创建了一个自定义动画。<br>使用<code>animate</code>函数创建自定义动画时有两点需要注意:</p>
+<!--SSTStart-->
+<ul>
+<li><code>options</code>中每个属性名都应该采用”<strong>驼峰</strong>“写法,即<code>fontsize</code>应该写成<code>fontSize</code>。</li>
+<li><code>options</code>中每个属性都应该<strong>是可以渐变的样式属性</strong>,如”<code>height&quot;</code>、”<code>top&quot;</code>或”<code>opacity&quot;</code>等,如果指定一个<code>fontWeight</code>属性,那就不行了。</li>
+</ul>
+<h2 id="动画效果全局属性"><a href="#动画效果全局属性" class="headerlink" title="动画效果全局属性"></a>动画效果全局属性</h2><p><code>jQuery</code>为动画效果提供了如下两个全局属性。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>jQuery.fx.interval</code></td>
+<td align="left">该属性设置<code>jQuery</code>的两次动画之间的时间间隔(单位是毫秒(<code>ms</code>))。比如设置为50,则表明<code>jQuery</code>动画每秒变化20次。</td>
+</tr>
+<tr>
+<td align="left"><code>jQuery.fx.off</code></td>
+<td align="left">如果将该属性设为<code>true</code>,则表明停止所有的<code>jQuery</code>动画效果。在资源比较紧张的设备中使用<code>jQuery</code>时,可以考虑关闭所有<code>jQuery</code>动画来提升性能。</td>
+</tr>
+<tr>
+<td align="left"><!--SSTStop--></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/994a13a/">3.6 动画效果相关的方法 3.6.1 简单动画和复杂动画</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/730a2afc/" rel="next" title="3.5.3 事件对象">
+                  <i class="fa fa-chevron-left"></i> 3.5.3 事件对象
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/c065458c/" rel="prev" title="3.6.2 操作动画队列">
+                  3.6.2 操作动画队列 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-6-动画效果相关的方法"><span class="nav-number">1.</span> <span class="nav-text">3.6 动画效果相关的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-6-1-简单动画和复杂动画"><span class="nav-number">2.</span> <span class="nav-text">3.6.1 简单动画和复杂动画</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单动画"><span class="nav-number">2.1.</span> <span class="nav-text">简单动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#显示和隐藏方法"><span class="nav-number">2.1.1.</span> <span class="nav-text">显示和隐藏方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不断增加或减少透明度"><span class="nav-number">2.1.2.</span> <span class="nav-text">不断增加或减少透明度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上述方法支持的参数"><span class="nav-number">2.1.3.</span> <span class="nav-text">上述方法支持的参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂动画"><span class="nav-number">2.2.</span> <span class="nav-text">复杂动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序示例"><span class="nav-number">2.2.1.</span> <span class="nav-text">程序示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画效果全局属性"><span class="nav-number">2.3.</span> <span class="nav-text">动画效果全局属性</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

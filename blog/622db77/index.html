@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="8.4.5 基于注解的 零配置 方式 6. Around增强处理 Around增强与Before增强和AfterReturning增强的不同 什么时候适合使用Around增强 使用Value属性指定被织入的切入点 第一个形参必须是ProceedingJoinPoint类型 需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法 执行目标方法时传入参数 程序示例">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.4.5 基于注解的 零配置 方式 6. Around增强处理">
+<meta property="og:url" content="https://blueblue233.github.io/blog/622db77/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="8.4.5 基于注解的 零配置 方式 6. Around增强处理 Around增强与Before增强和AfterReturning增强的不同 什么时候适合使用Around增强 使用Value属性指定被织入的切入点 第一个形参必须是ProceedingJoinPoint类型 需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法 执行目标方法时传入参数 程序示例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8.4.5 基于注解的 零配置 方式 6. Around增强处理">
+<meta name="twitter:description" content="8.4.5 基于注解的 零配置 方式 6. Around增强处理 Around增强与Before增强和AfterReturning增强的不同 什么时候适合使用Around增强 使用Value属性指定被织入的切入点 第一个形参必须是ProceedingJoinPoint类型 需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法 执行目标方法时传入参数 程序示例">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/622db77/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>8.4.5 基于注解的 零配置 方式 6. Around增强处理 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/622db77/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">8.4.5 基于注解的 零配置 方式 6. Around增强处理
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-04 22:00:28" itemprop="dateCreated datePublished" datetime="2019-09-04T22:00:28+08:00">2019-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-4-Spring的AOP/" itemprop="url" rel="index"><span itemprop="name">8.4 Spring的AOP</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-4-Spring的AOP/8-4-5-基于注解的-零配置-方式/" itemprop="url" rel="index"><span itemprop="name">8.4.5 基于注解的 零配置 方式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/622db77/#8-4-5-基于注解的-零配置-方式-6-Around增强处理">8.4.5 基于注解的 零配置 方式 6. Around增强处理</a><ul>
+<li><a href="/blog/622db77/#Around增强与Before增强和AfterReturning增强的不同">Around增强与Before增强和AfterReturning增强的不同</a></li>
+<li><a href="/blog/622db77/#什么时候适合使用Around增强">什么时候适合使用Around增强</a></li>
+<li><a href="/blog/622db77/#使用Value属性指定被织入的切入点">使用Value属性指定被织入的切入点</a></li>
+<li><a href="/blog/622db77/#第一个形参必须是ProceedingJoinPoint类型">第一个形参必须是ProceedingJoinPoint类型</a></li>
+<li><a href="/blog/622db77/#需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法">需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法</a></li>
+<li><a href="/blog/622db77/#执行目标方法时传入参数">执行目标方法时传入参数</a></li>
+<li><a href="/blog/622db77/#程序示例">程序示例</a></li>
+<li><a href="/blog/622db77/#proceed方法调用目标方法时参数不匹配会出现异常">proceed方法调用目标方法时参数不匹配会出现异常</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="8-4-5-基于注解的-零配置-方式-6-Around增强处理"><a href="#8-4-5-基于注解的-零配置-方式-6-Around增强处理" class="headerlink" title="8.4.5 基于注解的 零配置 方式 6. Around增强处理"></a>8.4.5 基于注解的 零配置 方式 6. Around增强处理</h1><p><code>@Around</code>注解用于修饰<code>Around</code>增强处理, <code>Around</code>增强处理是功能比较强大的增强处理,它<strong>近似等于<code>Before</code>增强处理和<code>AfterReturning</code>增强处理的总和</strong>, <strong><code>Around</code>处理既可在执行目标方法之前织入增强动作,也可在执行目标方法之后织入增强动作</strong>。</p>
+<h2 id="Around增强与Before增强和AfterReturning增强的不同"><a href="#Around增强与Before增强和AfterReturning增强的不同" class="headerlink" title="Around增强与Before增强和AfterReturning增强的不同"></a>Around增强与Before增强和AfterReturning增强的不同</h2><p>与<code>Before</code>增强处理、 <code>AfterReturning</code>增强处理不同的是, <code>Around</code>增强处理可以决定目标方法在什么时候执行,如何执行,甚至可以完全阻止目标方法的执行。<br><code>Around</code>增强处理可以改变执行目标方法的参数值,也可以改变执行目标方法之后的返回值。</p>
+<h2 id="什么时候适合使用Around增强"><a href="#什么时候适合使用Around增强" class="headerlink" title="什么时候适合使用Around增强"></a>什么时候适合使用Around增强</h2><p><code>Around</code>增强处理的功能虽然强大,但<strong>通常需要在线程安全的环境下使用</strong>。因此,如果使用普通的<code>Before</code>增强处理、<code>Afterreturning</code>增强处理就能解决的问题,则没有必要使用<code>Around</code>增强处理了。<br><strong>如果需要目标方法执行之前和之后共享某种状态数据,则应该考虑使用<code>Around</code>增强处理;尤其是需要改变目标方法的返回值时,则只能使用<code>Around</code>增强处理了</strong>。</p>
+<h2 id="使用Value属性指定被织入的切入点"><a href="#使用Value属性指定被织入的切入点" class="headerlink" title="使用Value属性指定被织入的切入点"></a>使用Value属性指定被织入的切入点</h2><p><code>Around</code>增强处理方法应该使用<code>@Around</code>来标注,使用<code>@Around</code>注解时需要指定一个<code>value</code>属性,该属性指定该增强处理被织入的切入点。</p>
+<h2 id="第一个形参必须是ProceedingJoinPoint类型"><a href="#第一个形参必须是ProceedingJoinPoint类型" class="headerlink" title="第一个形参必须是ProceedingJoinPoint类型"></a>第一个形参必须是ProceedingJoinPoint类型</h2><p>当定义一个<code>Around</code>增强处理方法时,<strong>该方法至少包含一个形参</strong>,<strong>并且第一个形参必须是<code>ProceedingJoinPoint</code>类型</strong></p>
+<h2 id="需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法"><a href="#需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法" class="headerlink" title="需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法"></a>需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法</h2><p>在增强处理方法体内,<strong>调用<code>ProceedingJoinPoint</code>参数的<code>proceed</code>方法才会执行目标方法</strong>,这就是<code>Around</code>增强处理可以完全控制目标方法的执行时机、执行方式的关键;<br>如果程序没有调用<code>ProceedingJoinPoint</code>参数的<code>proceed</code>方法,则目标方法不会被执行。</p>
+<h2 id="执行目标方法时传入参数"><a href="#执行目标方法时传入参数" class="headerlink" title="执行目标方法时传入参数"></a>执行目标方法时传入参数</h2><p>调用<code>ProceedingJoinPoint</code>参数的<code>proceed</code>方法时,还可以传入一个<code>Object数组</code>作为参数,该数组中的值将被传入目标方法<code>作为执行方法的实参</code>。</p>
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E:\<span class="title">workspace_QingLiangJiJavaEEQiYeYingYongShiZhang5</span>\<span class="title">Around</span></span></span><br><span class="line"><span class="function">└─<span class="title">src</span>\</span></span><br><span class="line"><span class="function">  ├─<span class="title">beans.xml</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">lee</span>\</span></span><br><span class="line"><span class="function">  │ └─<span class="title">BeanTest.java</span></span></span><br><span class="line"><span class="function">  └─<span class="title">org</span>\</span></span><br><span class="line"><span class="function">    └─<span class="title">crazyit</span>\</span></span><br><span class="line"><span class="function">      └─<span class="title">app</span>\</span></span><br><span class="line"><span class="function">        ├─<span class="title">aspect</span>\</span></span><br><span class="line"><span class="function">        │ └─<span class="title">TxAspect.java</span></span></span><br><span class="line"><span class="function">        └─<span class="title">service</span>\</span></span><br><span class="line"><span class="function">          ├─<span class="title">Hello.java</span></span></span><br><span class="line"><span class="function">          ├─<span class="title">impl</span>\</span></span><br><span class="line"><span class="function">          │ ├─<span class="title">HelloImpl.java</span></span></span><br><span class="line"><span class="function">          │ └─<span class="title">WorldImpl.java</span></span></span><br><span class="line"><span class="function">          └─<span class="title">World.java</span></span></span><br></pre></td></tr></table></figure>
+<p>下面的程序定义了一个<code>Around</code>增强处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.aspect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个切面</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TxAspect</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">// 匹配org.crazyit.app.service.impl包下所有类的、</span></span><br><span class="line">    <span class="comment">// 所有方法的执行作为切入点</span></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"execution(* org.crazyit.app.service.impl.*.*(..))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">processTx</span><span class="params">(ProceedingJoinPoint jp)</span> <span class="keyword">throws</span> java.lang.Throwable</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"执行目标方法之前，模拟开始事务..."</span>);</span><br><span class="line">        <span class="comment">// 获取目标方法原始的调用参数</span></span><br><span class="line">        Object[] args = jp.getArgs();</span><br><span class="line">        <span class="keyword">if</span> (args != <span class="keyword">null</span> &amp;&amp; args.length &gt; <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 修改目标方法的第一个参数</span></span><br><span class="line">            args[<span class="number">0</span>] = <span class="string">"【增加的前缀】"</span> + args[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 以改变后的参数去执行目标方法，并保存目标方法执行后的返回值</span></span><br><span class="line">        Object rvt = jp.proceed(args);</span><br><span class="line">        System.out.println(<span class="string">"执行目标方法之后，模拟结束事务..."</span>);</span><br><span class="line">        <span class="comment">// 如果目标方法的返回值rvt的类型是Integer，将rvt改为它的平方</span></span><br><span class="line">        <span class="keyword">if</span> (rvt != <span class="keyword">null</span> &amp;&amp; rvt <span class="keyword">instanceof</span> Integer)</span><br><span class="line">            rvt = (Integer) rvt * (Integer) rvt;</span><br><span class="line">        <span class="keyword">return</span> rvt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的程序定义了一个<code>TxAspect</code>切面,该切面里包含一个<code>Around</code>增强处理的<code>processTx()</code>方法,该方法中的代码:<code>Object rvt = jp.proceed(args);</code>用于回调目标方法,回调目标方法时传入了一个<code>args</code>数组,但这个<code>args</code>数组是执行目标方法的原始参数被修改后的结果,这样就实现了对调用参数的修改;<code>rvt = (Integer) rvt * (Integer) rvt;</code>这行代码则用于改变目标方法的返回值。<br>本示例程序中依然使用前面的<code>Hellolmpl.java</code>、 <code>World.java</code>类,只是主程序增加了输出<code>addUser()</code>方法返回值的功能。执行主程序,将看到如下效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">执行目标方法之前，模拟开始事务...</span><br><span class="line">执行Hello组件的addUser添加用户：【增加的前缀】孙悟空</span><br><span class="line">执行目标方法之后，模拟结束事务...</span><br><span class="line">addUser()的返回值为：400</span><br><span class="line">执行目标方法之前，模拟开始事务...</span><br><span class="line">执行Hello组件的deleteUser删除用户：1</span><br><span class="line">执行目标方法之后，模拟结束事务...</span><br><span class="line">执行目标方法之前，模拟开始事务...</span><br><span class="line">执行World组件的bar()方法</span><br><span class="line">执行目标方法之后，模拟结束事务...</span><br></pre></td></tr></table></figure>
+<p>从运行结果可以看出,使用<code>Around</code>增强处理可以取得对目标方法最大的控制权,</p>
+<ul>
+<li>既可完全控制目标方法的执行,</li>
+<li>也可改变执行目标方法的参数,</li>
+<li>还可改变目标方法的返回值。</li>
+</ul>
+<h2 id="proceed方法调用目标方法时参数不匹配会出现异常"><a href="#proceed方法调用目标方法时参数不匹配会出现异常" class="headerlink" title="proceed方法调用目标方法时参数不匹配会出现异常"></a>proceed方法调用目标方法时参数不匹配会出现异常</h2><p>当调用<code>ProceedingJoinPoint</code>的<code>proceed</code>方法时,传入的<code>Object数组</code>参数值将作为目标方法的参数,如果传入的<code>Object数组</code>的长度与目标方法所需要参数的个数不相等,或者<code>Object数组</code>元素与目标方法所需参数的类型不匹配,程序就会出现异常。</p>
+<p>为了能获取目标方法的参数的个数和类型,需要增强处理方法能访问执行目标方法的参数。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/622db77/">8.4.5 基于注解的 零配置 方式 6. Around增强处理</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/1ff1bbbc/" rel="next" title="8.4.5 基于注解的 零配置 方式 5. After增强处理">
+                  <i class="fa fa-chevron-left"></i> 8.4.5 基于注解的 零配置 方式 5. After增强处理
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/c12eedd7/" rel="prev" title="8.4.5 基于注解的 零配置 方式 7. 访问目标方法的参数">
+                  8.4.5 基于注解的 零配置 方式 7. 访问目标方法的参数 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#8-4-5-基于注解的-零配置-方式-6-Around增强处理"><span class="nav-number">1.</span> <span class="nav-text">8.4.5 基于注解的 零配置 方式 6. Around增强处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Around增强与Before增强和AfterReturning增强的不同"><span class="nav-number">1.1.</span> <span class="nav-text">Around增强与Before增强和AfterReturning增强的不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候适合使用Around增强"><span class="nav-number">1.2.</span> <span class="nav-text">什么时候适合使用Around增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Value属性指定被织入的切入点"><span class="nav-number">1.3.</span> <span class="nav-text">使用Value属性指定被织入的切入点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第一个形参必须是ProceedingJoinPoint类型"><span class="nav-number">1.4.</span> <span class="nav-text">第一个形参必须是ProceedingJoinPoint类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法"><span class="nav-number">1.5.</span> <span class="nav-text">需要显示调用ProceedingJoinPoint参数的proceed方法来执行目标方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行目标方法时传入参数"><span class="nav-number">1.6.</span> <span class="nav-text">执行目标方法时传入参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">1.7.</span> <span class="nav-text">程序示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proceed方法调用目标方法时参数不匹配会出现异常"><span class="nav-number">1.8.</span> <span class="nav-text">proceed方法调用目标方法时参数不匹配会出现异常</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

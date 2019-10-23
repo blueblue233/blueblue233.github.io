@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.3.2 仿DOM导航查找的相关方法 获取距离最近元素 最近的可定位的元素 获取DOM内的内容 获取后代元素 获取全部后代元素 获取父元素 获取祖先元素 获取前面的兄弟元素 获取后面的兄弟元素 获取所有的兄弟元素 程序示例">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.3.2 仿DOM导航查找的相关方法">
+<meta property="og:url" content="https://blueblue233.github.io/blog/8634b6d1/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.3.2 仿DOM导航查找的相关方法 获取距离最近元素 最近的可定位的元素 获取DOM内的内容 获取后代元素 获取全部后代元素 获取父元素 获取祖先元素 获取前面的兄弟元素 获取后面的兄弟元素 获取所有的兄弟元素 程序示例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.3.2 仿DOM导航查找的相关方法">
+<meta name="twitter:description" content="3.3.2 仿DOM导航查找的相关方法 获取距离最近元素 最近的可定位的元素 获取DOM内的内容 获取后代元素 获取全部后代元素 获取父元素 获取祖先元素 获取前面的兄弟元素 获取后面的兄弟元素 获取所有的兄弟元素 程序示例">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/8634b6d1/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.3.2 仿DOM导航查找的相关方法 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/8634b6d1/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.3.2 仿DOM导航查找的相关方法
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-22 17:44:21" itemprop="dateCreated datePublished" datetime="2019-07-22T17:44:21+08:00">2019-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:36" itemprop="dateModified" datetime="2019-10-14T14:01:36+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/" itemprop="url" rel="index"><span itemprop="name">疯狂前端开发讲义JQuery AngularJS Bootstrap前端开发实战</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/" itemprop="url" rel="index"><span itemprop="name">第3章 jQuery库详解</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂前端开发讲义JQuery-AngularJS-Bootstrap前端开发实战/第3章-jQuery库详解/3-3-jQuery操作类数组的工具方法/" itemprop="url" rel="index"><span itemprop="name">3.3 jQuery操作类数组的工具方法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/8634b6d1/#3-3-2-仿DOM导航查找的相关方法">3.3.2 仿DOM导航查找的相关方法</a><ul>
+<li><a href="/blog/8634b6d1/#获取距离最近元素">获取距离最近元素</a></li>
+<li><a href="/blog/8634b6d1/#最近的可定位的元素">最近的可定位的元素</a></li>
+<li><a href="/blog/8634b6d1/#获取DOM内的内容">获取DOM内的内容</a></li>
+<li><a href="/blog/8634b6d1/#获取后代元素">获取后代元素</a></li>
+<li><a href="/blog/8634b6d1/#获取全部后代元素">获取全部后代元素</a></li>
+<li><a href="/blog/8634b6d1/#获取父元素">获取父元素</a></li>
+<li><a href="/blog/8634b6d1/#获取祖先元素">获取祖先元素</a></li>
+<li><a href="/blog/8634b6d1/#获取前面的兄弟元素">获取前面的兄弟元素</a></li>
+<li><a href="/blog/8634b6d1/#获取后面的兄弟元素">获取后面的兄弟元素</a></li>
+<li><a href="/blog/8634b6d1/#获取所有的兄弟元素">获取所有的兄弟元素</a></li>
+<li><a href="/blog/8634b6d1/#程序示例">程序示例</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-3-2-仿DOM导航查找的相关方法"><a href="#3-3-2-仿DOM导航查找的相关方法" class="headerlink" title="3.3.2 仿DOM导航查找的相关方法"></a>3.3.2 仿DOM导航查找的相关方法</h1><p>在<code>DOM</code>模型中,可以利用节点之间的父子关系进行导航,通过这种导航关系可以找到当前节点的兄弟节点、父节点和子节点等。<code>DOM</code>模型的导航关系虽然简单明了,但用起来依然比较烦琐,<code>jQuery</code>进一步简化了这种导航关系。在<code>jQuery</code>中可以利用如下方法找到当前<code>jQuery</code>对象(可能包含一个或多个<code>DOM</code>对象)的兄弟节点、父节点、子节点对应的<code>jQuery</code>对象。</p>
+<h2 id="获取距离最近元素"><a href="#获取距离最近元素" class="headerlink" title="获取距离最近元素"></a>获取距离最近元素</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>closest(selector或者jQuery或者element)</code></td>
+<td align="left">查找<strong>距离当前<code>jQuery</code>对象最近且符合传入参数的元素</strong>。该方法的参数既可以是任何合法的选择器,也可以是原生的<code>DOM</code> 元素,还可以是另一个<code>jQuery</code>对象。该方法返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left">## 最近的可定位的元素 ##</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">方法</td>
+<td align="left">描述</td>
+</tr>
+<tr>
+<td align="left">:—</td>
+<td align="left">:—</td>
+</tr>
+<tr>
+<td align="left"><code>offsetParent()</code></td>
+<td align="left">查找当前<code>jQuery</code>对象的最近且能定位(如<code>CSS</code>样式中<code>position</code>属性值为<code>relative</code> 或<code>absolute</code> 的元素)的<code>祖先元素</code>。返回由符合条件的<code>DOM</code> 元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+</tbody></table>
+<h2 id="获取DOM内的内容"><a href="#获取DOM内的内容" class="headerlink" title="获取DOM内的内容"></a>获取DOM内的内容</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>contents()</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象内的全部内容,包括<code>DOM</code>元素和文本。如果<code>jQuery</code>包装的<code>DOM</code>元素是<code>&lt;iframe&gt;</code>,则获取该<code>iframe</code>所装载的文档的内容。</td>
+</tr>
+<tr>
+<td align="left">## 获取后代元素 ##</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>find(selector或者element或者jQuery)</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象内能<strong>匹配传入参数的所有<code>后代元素</code></strong>。该方法的参数既可是任何合法的选择器,也可是原生的<code>DOM</code>元素,还可是另一个<code>jQuery</code>对象。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+</tbody></table>
+<h2 id="获取全部后代元素"><a href="#获取全部后代元素" class="headerlink" title="获取全部后代元素"></a>获取全部后代元素</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>children([selector])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象内的<strong>全部后代元素</strong>。如果指定了<code>selector</code> 选择器,则只查找匹配<code>selector</code> 选择器的后代元素。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+</tbody></table>
+<h2 id="获取父元素"><a href="#获取父元素" class="headerlink" title="获取父元素"></a>获取父元素</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>parent([selector])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象的<strong>父元素</strong>。如果指定了<code>selector</code>选择器,则该父元素还必须匹配<code>selector</code>选择器。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left">## 获取祖先元素 ##</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>parents([selector])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象的<strong>所有祖先元素</strong>。如果指定了<code>selector</code>选择器,则只找出匹配<code>selector</code>的祖先元素。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left"><code>parentsUntil([selector或者element] [,filter])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象(实际是该对象包含的<code>DOM</code>对象)中<strong>匹配<code>selector</code>的元素或<code>element</code>元素的所有祖先元素</strong>。如果指定了<code>filter</code>选择器,则只<strong>找出匹配<code>filter</code>的祖先元素</strong>。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+</tbody></table>
+<h2 id="获取前面的兄弟元素"><a href="#获取前面的兄弟元素" class="headerlink" title="获取前面的兄弟元素"></a>获取前面的兄弟元素</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>prev([selector])</code></td>
+<td align="left">查找紧邻当前<code>jQuery</code>对象对象包含的<code>DOM</code>对象<strong>之前的元素</strong>。如果指定了<code>selector</code> 选择器,则该元素必须匹配<code>selector</code> 选择器。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left"><code>prevAll([selector])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象<strong>之前的所有兄弟元素</strong>。如果指定了<code>selector</code>选择器,则只找出匹配<code>selector</code>选择器的兄弟元素。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left"><code>prevUntil([selector或者element] [,filter])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象<strong>之前匹配<code>selector</code>的元素或<code>element</code>元素之后的所有<code>兄弟元素</code></strong>。如果指定了<code>filter</code>选择器,则只找出匹配<code>filter</code>选择器的兄弟元素。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left">## 获取后面的兄弟元素 ##</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>next([selector])</code></td>
+<td align="left">查找紧跟当前<code>jQuery</code>对象包含的<code>DOM</code>对象<strong><code>之后</code>的元素</strong>。如果指定了<code>selector</code>选择器,则该元素必须匹配<code>selector</code>选择器。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left"><code>nextAll([selector])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象<strong><code>之后</code>的所有<code>兄弟元素</code></strong>。如果指定了<code>selector</code> 选择器,则只找出匹配<code>selector</code> 选择器的兄弟元素。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+<tr>
+<td align="left"><code>nextUntil([selector或者element] [,filter])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code>对象<strong><code>之后</code>匹配<code>selector</code>的元素或<code>element</code>元素<code>之前</code>的所有<code>兄弟元素</code></strong>。如果指定了<code>filter</code>选择器,则只找出匹配<code>filter</code>选择器的兄弟元素。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+</tbody></table>
+<h2 id="获取所有的兄弟元素"><a href="#获取所有的兄弟元素" class="headerlink" title="获取所有的兄弟元素"></a>获取所有的兄弟元素</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>siblings([selector])</code></td>
+<td align="left">查找当前<code>jQuery</code>对象包含的<code>DOM</code> 对象<strong>前后的所有兄弟元素</strong>。如果指定了<code>selector</code>选择器,则只找出匹配<code>selector</code>选择器的兄弟元素。返回由符合条件的<code>DOM</code>元素包装成的<code>jQuery</code>对象。</td>
+</tr>
+</tbody></table>
+<p>提示:<code>siblings([selector])</code>方法返回的结果相当于<code>prevAll([selector])</code>和<code>nextAll([selector])</code>方法返回结果的总和。</p>
+<!--SSTStop-->
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><p>下面的程序示范了上面这些<code>DOM</code>导航相关方法的用法。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"author"</span> <span class="attr">content</span>=<span class="string">"Yeeku.H.Lee(CrazyIt.org)"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span> 操作类数组的工具方法 <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"java"</span>&gt;</span>疯狂Java讲义<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"javaee"</span>&gt;</span>轻量级Java EE企业应用实战<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"ajax"</span>&gt;</span>疯狂前端开发讲义<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"xml"</span>&gt;</span>疯狂XML讲义<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"ejb"</span>&gt;</span>经典Java EE企业应用实战<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"android"</span>&gt;</span>疯狂Android讲义<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"../jquery-3.1.1.js"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">		<span class="comment">// 获取body&gt;div之内所有内容（包括节点和文本），实际返回div下的6个子div。</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"body&gt;div"</span>).contents().css(<span class="string">"background-color"</span>, <span class="string">"#ddd"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="comment">// 获取id为ajax节点的下一个兄弟节点</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#ajax"</span>).next().css(<span class="string">"border"</span>, <span class="string">"2px dotted black"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="comment">// 获取id为ajax节点后面的、id为android的节点之前的所有兄弟节点</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#ajax"</span>).nextUntil(<span class="string">"#android"</span>).css(<span class="string">"font-size"</span>, <span class="string">"20pt"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="comment">// 获取id为ajax节点的上一个兄弟节点</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#ajax"</span>).prev().css(<span class="string">"border"</span>, <span class="string">"2px solid black"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="comment">// 获取id为ajax节点的之前的、id为java的节点之后的所有兄弟节点</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#ajax"</span>).prevUntil(<span class="string">"#java"</span>).height(<span class="number">50</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">		<span class="comment">// 获取获取id为ajax节点的、id为java的兄弟节点</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"#ajax"</span>).siblings(<span class="string">"#java"</span>)</span></span><br><span class="line"><span class="xml">			.append("<span class="tag">&lt;<span class="name">b</span>&gt;</span> 是ID为ajax的节点的兄弟节点（且其id为java）<span class="tag">&lt;/<span class="name">b</span>&gt;</span>");</span></span><br><span class="line">			</span><br><span class="line"><span class="javascript">		<span class="comment">// 取出所有div元素的父元素，将会输出body元素、和一个div元素</span></span></span><br><span class="line"><span class="javascript">		$(<span class="string">"div"</span>).parent().each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">			alert($(<span class="keyword">this</span>).html());</span></span><br><span class="line">		&#125;);</span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>从上面的程序可以看出:</p>
+<!--SSTStart-->
+<p>使用<code>jQuery</code> 的仿<code>DOM</code>导航方法可以更简单、更便捷地访问当前节点的兄弟节点、父节点和子节点,而且这些方法的返回值依然是<code>jQuery</code> 对象,因此可以直接调用<code>jQuery</code>对象提供的工具方法。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/8634b6d1/">3.3.2 仿DOM导航查找的相关方法</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/6d7e56de/" rel="next" title="3.3.1 过滤相关方法">
+                  <i class="fa fa-chevron-left"></i> 3.3.1 过滤相关方法
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/75b3d45b/" rel="prev" title="3.3.3 串联方法">
+                  3.3.3 串联方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-3-2-仿DOM导航查找的相关方法"><span class="nav-number">1.</span> <span class="nav-text">3.3.2 仿DOM导航查找的相关方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取距离最近元素"><span class="nav-number">1.1.</span> <span class="nav-text">获取距离最近元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取DOM内的内容"><span class="nav-number">1.2.</span> <span class="nav-text">获取DOM内的内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取全部后代元素"><span class="nav-number">1.3.</span> <span class="nav-text">获取全部后代元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取父元素"><span class="nav-number">1.4.</span> <span class="nav-text">获取父元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取前面的兄弟元素"><span class="nav-number">1.5.</span> <span class="nav-text">获取前面的兄弟元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取所有的兄弟元素"><span class="nav-number">1.6.</span> <span class="nav-text">获取所有的兄弟元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">1.7.</span> <span class="nav-text">程序示例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

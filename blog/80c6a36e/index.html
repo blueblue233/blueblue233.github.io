@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="4.4.5 参照完整性 参照完整性是什么 什么是外码 参照完整性约束 参照完整性约束和外码约束的区别 个人总结   references子句 references子句指定的被参照关系的属性列表必须是候选码   参照的属性不是候选码 的情况 外码定义 示例 违反参照完整性约束时的做法 做法1 拒绝 做法2 修改参照关系中的元组来恢复完整性 级联更新或删除会传递 级联更新或级联删除也无法解决 则撤销">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.4.5 参照完整性">
+<meta property="og:url" content="https://blueblue233.github.io/blog/80c6a36e/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="4.4.5 参照完整性 参照完整性是什么 什么是外码 参照完整性约束 参照完整性约束和外码约束的区别 个人总结   references子句 references子句指定的被参照关系的属性列表必须是候选码   参照的属性不是候选码 的情况 外码定义 示例 违反参照完整性约束时的做法 做法1 拒绝 做法2 修改参照关系中的元组来恢复完整性 级联更新或删除会传递 级联更新或级联删除也无法解决 则撤销">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-22T16:37:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.4.5 参照完整性">
+<meta name="twitter:description" content="4.4.5 参照完整性 参照完整性是什么 什么是外码 参照完整性约束 参照完整性约束和外码约束的区别 个人总结   references子句 references子句指定的被参照关系的属性列表必须是候选码   参照的属性不是候选码 的情况 外码定义 示例 违反参照完整性约束时的做法 做法1 拒绝 做法2 修改参照关系中的元组来恢复完整性 级联更新或删除会传递 级联更新或级联删除也无法解决 则撤销">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/80c6a36e/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>4.4.5 参照完整性 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/80c6a36e/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">4.4.5 参照完整性
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-21 12:27:47" itemprop="dateCreated datePublished" datetime="2019-10-21T12:27:47+08:00">2019-10-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-4-完整性约束/" itemprop="url" rel="index"><span itemprop="name">4.4 完整性约束</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/80c6a36e/#4-4-5-参照完整性">4.4.5 参照完整性</a><ul>
+<li><a href="/blog/80c6a36e/#参照完整性是什么">参照完整性是什么</a></li>
+<li><a href="/blog/80c6a36e/#什么是外码">什么是外码</a></li>
+<li><a href="/blog/80c6a36e/#参照完整性约束">参照完整性约束</a></li>
+<li><a href="/blog/80c6a36e/#参照完整性约束和外码约束的区别">参照完整性约束和外码约束的区别</a><ul>
+<li><a href="/blog/80c6a36e/#个人总结">个人总结</a></li>
+</ul>
+</li>
+<li><a href="/blog/80c6a36e/#references子句">references子句</a><ul>
+<li><a href="/blog/80c6a36e/#references子句指定的被参照关系的属性列表必须是候选码">references子句指定的被参照关系的属性列表必须是候选码</a></li>
+</ul>
+</li>
+<li><a href="/blog/80c6a36e/#参照的属性不是候选码-的情况">参照的属性不是候选码 的情况</a></li>
+<li><a href="/blog/80c6a36e/#外码定义-示例">外码定义 示例</a></li>
+<li><a href="/blog/80c6a36e/#违反参照完整性约束时的做法">违反参照完整性约束时的做法</a><ul>
+<li><a href="/blog/80c6a36e/#做法1-拒绝">做法1 拒绝</a></li>
+<li><a href="/blog/80c6a36e/#做法2-修改参照关系中的元组来恢复完整性">做法2 修改参照关系中的元组来恢复完整性</a></li>
+<li><a href="/blog/80c6a36e/#级联更新或删除会传递">级联更新或删除会传递</a></li>
+<li><a href="/blog/80c6a36e/#级联更新或级联删除也无法解决-则撤销所有级联操作">级联更新或级联删除也无法解决 则撤销所有级联操作</a></li>
+</ul>
+</li>
+<li><a href="/blog/80c6a36e/#外码可以为null">外码可以为null</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="4-4-5-参照完整性"><a href="#4-4-5-参照完整性" class="headerlink" title="4.4.5 参照完整性"></a>4.4.5 参照完整性</h1><h2 id="参照完整性是什么"><a href="#参照完整性是什么" class="headerlink" title="参照完整性是什么"></a>参照完整性是什么</h2><p>我们常常希望<strong>保证在一个关系中给定属性集上的取值也在另一关系的特定属性集的取值中出现</strong>。这种情况称为<strong>参照完整性</strong>(<code>referential integrity</code>)。<br>正如我们此前在<code>3.2.2</code>节所见,外码可以用作为<code>SQL</code>中<code>create table</code>语句一部分的<code>foreign key</code>子句来声明。<br>我们用大学数据库<code>SQL DLL</code>定义的一部分来说明外码声明:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course(</span><br><span class="line">    course_id <span class="built_in">varchar</span>(<span class="number">8</span>), </span><br><span class="line">    title <span class="built_in">varchar</span>(<span class="number">50</span>), </span><br><span class="line">    dept_name <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">    credits <span class="built_in">numeric</span>(<span class="number">2</span>,<span class="number">0</span>) <span class="keyword">check</span> (credits &gt; <span class="number">0</span>),</span><br><span class="line">    primary <span class="keyword">key</span> (course_id),</span><br><span class="line">    <span class="keyword">foreign</span> <span class="keyword">key</span> (dept_name)</span><br><span class="line">        <span class="keyword">references</span> department(dept_name)</span><br><span class="line">        <span class="keyword">on</span> <span class="keyword">delete</span> <span class="keyword">set</span> <span class="literal">null</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><code>course</code>表的定义中有一个声明”<code>foreign key(dept_name) references department</code>“。这个外码声明表示,在每个课程元组中指定的系名必须在<code>department</code>关系中存在。没有这个约束,就可能会为一门课程指定一个不存在的系名。</p>
+<h2 id="什么是外码"><a href="#什么是外码" class="headerlink" title="什么是外码"></a>什么是外码</h2><p>更一般地,令关系<code>r1</code>和<code>r2</code>的属性集分别为<code>R1</code>和<code>R2</code>,主码分别为<code>K1</code>和<code>K2</code>。如果要求对<code>r2</code>中任意元组<code>t2</code>,均存在<code>r1</code>中元组<code>t1</code>使得<code>t1.K1=t2.α</code>,我们称<code>R2</code>的子集<code>α</code>为参照关系<code>r1</code>中<code>K1</code>的外码(<code>foreigkey</code>)。</p>
+<h2 id="参照完整性约束"><a href="#参照完整性约束" class="headerlink" title="参照完整性约束"></a>参照完整性约束</h2><p>这种要求称为<strong>参照完整性约束</strong>(<code>referential-intergrity constraint)</code>或<strong>子集依赖</strong>( <code>subset dependency</code>)。</p>
+<p><strong>子集依赖</strong>这种称法是由于上述参照完整性可以表示为这样一种要求:<code>r2</code>中<code>α</code>上的取值集合必须是<code>r1</code>中<code>K1</code>上的取值集合的<code>子集</code>。<br>请注意,为使参照完整性约束有意义,<code>α</code>和<code>K1</code>必须是相容的属性集;也就是说,<br>要么<code>α</code>等于<code>K1</code>,<br>要么它们必须包含相同数目的属性,并且对应属性的类型必须相容(这里我们假设<code>α</code>和<code>K,</code>是有序的)。</p>
+<h2 id="参照完整性约束和外码约束的区别"><a href="#参照完整性约束和外码约束的区别" class="headerlink" title="参照完整性约束和外码约束的区别"></a>参照完整性约束和外码约束的区别</h2><ul>
+<li>默认情况下,<code>SQL</code>中<strong><code>外码参照的是</code>被参照表中的<code>主码属性</code></strong>。</li>
+<li>不同于外码约束,<strong>参照完整性约束</strong>通常<strong>不要求<code>K1</code>是<code>r1</code>的主码</strong>;其结果是,<code>r1</code>中可能有不止个元组在属性<code>K1</code>上取值相同。</li>
+</ul>
+<h3 id="个人总结"><a href="#个人总结" class="headerlink" title="个人总结"></a>个人总结</h3><ul>
+<li>参照完整性约束要求有就行了,这可能会有重复.</li>
+<li>外码约束不仅要有,还要唯一</li>
+</ul>
+<h2 id="references子句"><a href="#references子句" class="headerlink" title="references子句"></a>references子句</h2><p><code>SQL</code>还支持一个<strong>可以<code>显式指定被参照关系的属性列表</code>的<code>references</code>子句</strong>。</p>
+<h3 id="references子句指定的被参照关系的属性列表必须是候选码"><a href="#references子句指定的被参照关系的属性列表必须是候选码" class="headerlink" title="references子句指定的被参照关系的属性列表必须是候选码"></a>references子句指定的被参照关系的属性列表必须是候选码</h3><p>然而,这个指定的属性列表必须声明为被参照关系的<strong>候选码</strong>,要么使用<code>primary key</code>约束,要么使用<code>unique</code>约束。</p>
+<h2 id="参照的属性不是候选码-的情况"><a href="#参照的属性不是候选码-的情况" class="headerlink" title="参照的属性不是候选码 的情况"></a>参照的属性不是候选码 的情况</h2><p>在更为普遍的参照完整性约束形式中,被<strong>参照的属性不必是候选码</strong>,这样的形式还<strong>不能在<code>SQL</code>中直接声明</strong>。<code>SQL</code>标准提供了另外的结构用于实现这样的约束,<code>4.4.7</code>节将描述这样的结构。</p>
+<h2 id="外码定义-示例"><a href="#外码定义-示例" class="headerlink" title="外码定义 示例"></a>外码定义 示例</h2><p>我们可以使用如下的简写形式作为属性定义的一部分,并声明该属性为外码:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">depr_name varchar(20)</span><br><span class="line">    references department</span><br></pre></td></tr></table></figure>
+<h2 id="违反参照完整性约束时的做法"><a href="#违反参照完整性约束时的做法" class="headerlink" title="违反参照完整性约束时的做法"></a>违反参照完整性约束时的做法</h2><h3 id="做法1-拒绝"><a href="#做法1-拒绝" class="headerlink" title="做法1 拒绝"></a>做法1 拒绝</h3><p>当违反参照完整性约束时,通常的处理是拒绝执行导致完整性破坏的操作(即进行更新操作的事务被回滚)。</p>
+<h3 id="做法2-修改参照关系中的元组来恢复完整性"><a href="#做法2-修改参照关系中的元组来恢复完整性" class="headerlink" title="做法2 修改参照关系中的元组来恢复完整性"></a>做法2 修改参照关系中的元组来恢复完整性</h3><p>但是,在<code>foreign key</code>子句中可以指明:如果被参照关系上的删除或更新动作违反了约束,那么系统必须<strong>采取一些步骤通过修改参照关系中的元组来恢复完整性约束</strong>,而不是拒绝这样的动作。考虑在关系<code>course</code>上的如下完整性约束定义:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> course(</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">foreign</span> <span class="keyword">key</span> (dept_name)</span><br><span class="line">        <span class="keyword">references</span> department(dept_name)</span><br><span class="line">        <span class="keyword">on</span> <span class="keyword">delete</span> <span class="keyword">cascade</span></span><br><span class="line">        <span class="keyword">on</span> <span class="keyword">update</span> <span class="keyword">cascade</span>,</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h4 id="级联删除"><a href="#级联删除" class="headerlink" title="级联删除"></a>级联删除</h4><p>由于有了与外码声明相关联的<code>on delete cascade</code>子句,<br>如果删除<code>department</code>中的元组导致了此参照完整性约束被违反,则删除并不被系统拒绝,<br>而是对<code>course</code>关系作”级联”删除,即删除course关系中参照<code>被删除系名</code>的元组。</p>
+<h4 id="级联更新"><a href="#级联更新" class="headerlink" title="级联更新"></a>级联更新</h4><p>类似地,如果更新被参照字段时违反了约束,则更新操作并不被系统拒绝,<br>而是将<code>course</code>中参照的元组的<code>dept_name</code>字段也改为新值。</p>
+<h4 id="设置为空或默认值"><a href="#设置为空或默认值" class="headerlink" title="设置为空或默认值"></a>设置为空或默认值</h4><p><code>SQL</code>还允许<code>foreign key</code>子句指明除<code>cascade</code>以外的其他动作,例如:</p>
+<ul>
+<li>用<code>set null</code>代替上面的<code>cascade</code>,这样如果约束被违反:可将参照域(<code>dept_name</code>)置为<code>null</code>,</li>
+<li>用<code>set default</code>代替上面的<code>cascade</code>,这样如果约束被违反:可将参照域(<code>dept_name</code>)置为<strong>域的默认值</strong>。</li>
+</ul>
+<h3 id="级联更新或删除会传递"><a href="#级联更新或删除会传递" class="headerlink" title="级联更新或删除会传递"></a>级联更新或删除会传递</h3><p>如果存在涉及多个关系的外码依赖链,则在链一端所做的删除或更新可能传至整个链。</p>
+<h3 id="级联更新或级联删除也无法解决-则撤销所有级联操作"><a href="#级联更新或级联删除也无法解决-则撤销所有级联操作" class="headerlink" title="级联更新或级联删除也无法解决 则撤销所有级联操作"></a>级联更新或级联删除也无法解决 则撤销所有级联操作</h3><p>如果个级联更新或删除导致的对约束的违反不能通过进一步的级联操作解决,则系统中止该事务。于是,该事务所做的所有改变及级联动作将被撤销。</p>
+<h2 id="外码可以为null"><a href="#外码可以为null" class="headerlink" title="外码可以为null"></a>外码可以为null</h2><ul>
+<li>空值使得<code>SQL</code>中参照约束的语义复杂化了。外码中的属性允许为<code>null,</code>只要它们没有被声明为<code>not null</code>。</li>
+<li>如果给定元组中<code>外码</code>的所有列上均取<code>非空值</code>,则对该元组采用外码约束的通常定义。</li>
+<li>如果某外码列为<code>null</code>,则该元组自动被认为满足约束</li>
+<li>这样的规定有时不一定是正确的选择,因此<code>SQL</code>也提供一些结构使你可以改变对空值的处理，我们在此不讨论这样的结构。</li>
+</ul>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/80c6a36e/">4.4.5 参照完整性</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/84fd5ff1/" rel="next" title="4.4.2 not null约束 4.4.3 unique约束 4.4.4 check子句">
+                  <i class="fa fa-chevron-left"></i> 4.4.2 not null约束 4.4.3 unique约束 4.4.4 check子句
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/224c5d49/" rel="prev" title="4.4.6 事务中对完整性约束的违反">
+                  4.4.6 事务中对完整性约束的违反 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-4-5-参照完整性"><span class="nav-number">1.</span> <span class="nav-text">4.4.5 参照完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参照完整性是什么"><span class="nav-number">1.1.</span> <span class="nav-text">参照完整性是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是外码"><span class="nav-number">1.2.</span> <span class="nav-text">什么是外码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参照完整性约束"><span class="nav-number">1.3.</span> <span class="nav-text">参照完整性约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参照完整性约束和外码约束的区别"><span class="nav-number">1.4.</span> <span class="nav-text">参照完整性约束和外码约束的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人总结"><span class="nav-number">1.4.1.</span> <span class="nav-text">个人总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#references子句"><span class="nav-number">1.5.</span> <span class="nav-text">references子句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#references子句指定的被参照关系的属性列表必须是候选码"><span class="nav-number">1.5.1.</span> <span class="nav-text">references子句指定的被参照关系的属性列表必须是候选码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参照的属性不是候选码-的情况"><span class="nav-number">1.6.</span> <span class="nav-text">参照的属性不是候选码 的情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外码定义-示例"><span class="nav-number">1.7.</span> <span class="nav-text">外码定义 示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#违反参照完整性约束时的做法"><span class="nav-number">1.8.</span> <span class="nav-text">违反参照完整性约束时的做法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#做法1-拒绝"><span class="nav-number">1.8.1.</span> <span class="nav-text">做法1 拒绝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做法2-修改参照关系中的元组来恢复完整性"><span class="nav-number">1.8.2.</span> <span class="nav-text">做法2 修改参照关系中的元组来恢复完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#级联删除"><span class="nav-number">1.8.2.1.</span> <span class="nav-text">级联删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#级联更新"><span class="nav-number">1.8.2.2.</span> <span class="nav-text">级联更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置为空或默认值"><span class="nav-number">1.8.2.3.</span> <span class="nav-text">设置为空或默认值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#级联更新或删除会传递"><span class="nav-number">1.8.3.</span> <span class="nav-text">级联更新或删除会传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#级联更新或级联删除也无法解决-则撤销所有级联操作"><span class="nav-number">1.8.4.</span> <span class="nav-text">级联更新或级联删除也无法解决 则撤销所有级联操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外码可以为null"><span class="nav-number">1.9.</span> <span class="nav-text">外码可以为null</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

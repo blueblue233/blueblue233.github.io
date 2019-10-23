@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.3.2 设值注入 程序示例 项目结构 Person.java Axe.java Chinese.java SteelAxe.java beans.xml SteelAxe.java 设值注入 Spring IoC容器的三个基本要点">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.3.2 设值注入">
+<meta property="og:url" content="https://blueblue233.github.io/blog/37d15e90/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.3.2 设值注入 程序示例 项目结构 Person.java Axe.java Chinese.java SteelAxe.java beans.xml SteelAxe.java 设值注入 Spring IoC容器的三个基本要点">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.3.2 设值注入">
+<meta name="twitter:description" content="7.3.2 设值注入 程序示例 项目结构 Person.java Axe.java Chinese.java SteelAxe.java beans.xml SteelAxe.java 设值注入 Spring IoC容器的三个基本要点">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/37d15e90/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.3.2 设值注入 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/37d15e90/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.3.2 设值注入
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-24 20:31:27" itemprop="dateCreated datePublished" datetime="2019-08-24T20:31:27+08:00">2019-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-3-Spring的核心机制-依赖注入/" itemprop="url" rel="index"><span itemprop="name">7.3 Spring的核心机制 依赖注入</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/37d15e90/#7-3-2-设值注入">7.3.2 设值注入</a></li>
+<li><a href="/blog/37d15e90/#程序示例">程序示例</a><ul>
+<li><a href="/blog/37d15e90/#项目结构">项目结构</a></li>
+<li><a href="/blog/37d15e90/#Person-java">Person.java</a></li>
+<li><a href="/blog/37d15e90/#Axe-java">Axe.java</a></li>
+<li><a href="/blog/37d15e90/#Chinese-java">Chinese.java</a></li>
+<li><a href="/blog/37d15e90/#SteelAxe-java">SteelAxe.java</a></li>
+<li><a href="/blog/37d15e90/#beans-xml">beans.xml</a></li>
+<li><a href="/blog/37d15e90/#SteelAxe-java">SteelAxe.java</a></li>
+<li><a href="/blog/37d15e90/#设值注入">设值注入</a></li>
+<li><a href="/blog/37d15e90/#Spring-IoC容器的三个基本要点">Spring IoC容器的三个基本要点</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="7-3-2-设值注入"><a href="#7-3-2-设值注入" class="headerlink" title="7.3.2 设值注入"></a>7.3.2 设值注入</h1><p>设值注入是指<code>IoC</code>容器<strong>通过成员变量的<code>setter</code>方法来注入被依赖对象</strong>。这种注入方式简单、直观,因而在<code>Spring</code>的依赖注入里大量使用。<br>下面示例将会对前面示例进行改写,使之更加规范。 <strong><code>Spring</code>推荐面向接口编程</strong>。不管是调用者,还是被依赖对象,都应该为之定义接口,<strong>程序应该面向它们的接口,而不是面向实现类编程,这样以便程序后期的升级、维护</strong>。</p>
+<h1 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h1><h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E:\<span class="title">workspace_QingLiangJiJavaEEQiYeYingYongShiZhang5</span>\<span class="title">setter</span></span></span><br><span class="line"><span class="function">└─<span class="title">src</span>\</span></span><br><span class="line"><span class="function">  ├─<span class="title">beans.xml</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">lee</span>\</span></span><br><span class="line"><span class="function">  │ └─<span class="title">BeanTest.java</span></span></span><br><span class="line"><span class="function">  └─<span class="title">org</span>\</span></span><br><span class="line"><span class="function">    └─<span class="title">crazyit</span>\</span></span><br><span class="line"><span class="function">      └─<span class="title">app</span>\</span></span><br><span class="line"><span class="function">        └─<span class="title">service</span>\</span></span><br><span class="line"><span class="function">          ├─<span class="title">Axe.java</span></span></span><br><span class="line"><span class="function">          ├─<span class="title">impl</span>\</span></span><br><span class="line"><span class="function">          │ ├─<span class="title">Chinese.java</span></span></span><br><span class="line"><span class="function">          │ ├─<span class="title">SteelAxe.java</span></span></span><br><span class="line"><span class="function">          │ └─<span class="title">StoneAxe.java</span></span></span><br><span class="line"><span class="function">          └─<span class="title">Person.java</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="Person-java"><a href="#Person-java" class="headerlink" title="Person.java"></a>Person.java</h2><p>下面先定义一个<code>Person</code>接口,该接口定义了一个<code>Person</code>对象应遵守的规范。下面是<code>Person</code>接口的代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// 定义一个使用斧子的方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">useAxe</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Axe-java"><a href="#Axe-java" class="headerlink" title="Axe.java"></a>Axe.java</h2><p>下面是<code>Axe</code>接口的代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Axe</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// Axe接口里有个砍的方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">chop</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Spring</code>推荐面向接口编程,这样可以更好地让规范和实现分离,从而提供更好的解耦。对于一个<code>Java EE</code>应用,不管是<code>DAO</code>组件,还是业务逻辑组件,都应该先定义一个接口,该接口定义了该组件应该实现的功能,但功能的实现则由其实现类提供。</p>
+<h2 id="Chinese-java"><a href="#Chinese-java" class="headerlink" title="Chinese.java"></a>Chinese.java</h2><p>下面是<code>Person</code>实现类的代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.crazyit.app.service.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Chinese</span> <span class="keyword">implements</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Axe axe;</span><br><span class="line">	<span class="comment">// 设值注入所需的setter方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAxe</span><span class="params">(Axe axe)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.axe = axe;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 实现Person接口的useAxe方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">useAxe</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 调用axe的chop()方法，</span></span><br><span class="line">		<span class="comment">// 表明Person对象依赖于axe对象</span></span><br><span class="line">		System.out.println(axe.chop());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中的粗体字代码实现了<code>Person</code>接口的<code>useAxe()</code>方法,实现该方法时调用了<code>axe</code>的<code>chop()</code>方法,这就是典型的依赖关系。<br>回忆一下曾经编写的<code>Java</code>应用,除了最简单的<code>Hello world</code>之外,哪个应用不是A调用B、B调用C、C调用D…这种方式?那<code>Spring</code>的作用呢? <code>Spring</code>容器的最大作用就是以松耦合的方式来管理这种调用关系。在上面的<code>Chinese</code>类中, <code>Chinese</code>类并不知道它要调用的<code>axe</code>实例在哪里,也不知道<code>axe</code>实例是如何实现的,它只是需要调用<code>Axe</code>对象的方法,这个<code>Axe</code>实例将由<code>Spring</code>容器负责注入。</p>
+<h2 id="SteelAxe-java"><a href="#SteelAxe-java" class="headerlink" title="SteelAxe.java"></a>SteelAxe.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.crazyit.app.service.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SteelAxe</span> <span class="keyword">implements</span> <span class="title">Axe</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">chop</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"钢斧砍柴真快"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到现在为止,程序依然不知道<code>Chinese</code>类和哪个<code>Axe</code>实例耦合, <code>Spring</code>当然也不知道! <code>Spring</code>需要使用<code>XML</code>配置文件来指定实例之间的依赖关系.<br><code>Spring</code>采用了<code>XML</code>配置文件,从<code>Spring2.0</code>开始, <code>Spring</code>推荐采用<code>XML Schema</code>来定义配置文件的语义约束。当采用<code>XML Schema</code>来定义配置文件的语义约束时,还可利用<code>Spring</code>配置文件的扩展性进一步简化<code>Spring</code>配置。<br><code>Spring</code>为基于<code>XML Schema</code>的<code>XML</code>配置文件提供了一些新的标签,这些新标签使配置更简单,使用更方便。关于如何使用<code>Spring</code>所提供的新标签,后面会有更进一步的介绍。<br>不仅如此,采用基于<code>XML Schema</code>的<code>XML</code>配置文件时, <code>Spring</code>甚至允许程序员开发自定义的配置文件标签,让其他开发人员在<code>Spring</code>配置文件中使用这些标签,但这些通常应由第三方供应商来完成。对普通软件开发人员以及普通系统架构师而言,则通常无须开发自定义的<code>Spring</code>配置文件标签。所以本书也不打算介绍相关方面的内容。<br>提示:本书并不是一本完整的<code>Spring</code>学习手册,所以本书只会介绍<code>Spring</code>的核心机制,包括<code>loC</code>、<code>SpEL</code>、<code>AOP</code>和资源访问等, <code>Spring</code>和<code>Hibernate</code>整合, <code>Spring</code>的<code>DAO</code>支持和事务管理,以及<code>Spring</code>和<code>Struts2</code>整合等内容,这些是<code>Java ee</code>开发所需要的核心知识。而<code>Spring</code>框架的其他方面,本书不会涉及.<br>下面是本应用所用的配置文件代码。</p>
+<h2 id="beans-xml"><a href="#beans-xml" class="headerlink" title="beans.xml"></a>beans.xml</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="GBK"?&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Spring配置文件的根元素，使用spring-beans.xsd语义约束 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">	http://www.springframework.org/schema/beans/spring-beans.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置chinese实例，其实现类是Chinese类 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"chinese"</span> <span class="attr">class</span>=<span class="string">"org.crazyit.app.service.impl.Chinese"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 驱动调用chinese的setAxe()方法，将容器中stoneAxe作为传入参数 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"axe"</span> <span class="attr">ref</span>=<span class="string">"stoneAxe"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置stoneAxe实例，其实现类是StoneAxe --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"stoneAxe"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.crazyit.app.service.impl.StoneAxe"</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置steelAxe实例，其实现类是SteelAxe --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"steelAxe"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.crazyit.app.service.impl.SteelAxe"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在配置文件中, <code>Spring</code>配置<code>Bean</code>实例通常会指定两个属性。</p>
+<ol>
+<li><code>id</code>:指定该<code>Bean</code>的唯一标识, <strong><code>Spring</code>根据<code>id</code>属性值来管理<code>Bean</code></strong>,程序通过<code>id</code>属性值来访问该<code>Bean</code>实例。</li>
+<li><code>class</code>:指定该<code>Bean</code>的实现类,此处不可再用接口,<strong>必须使用实现类</strong>, <code>Spring</code>容器会使用<code>XML</code>解析器读取该属性值,并利用反射来创建该实现类的实例。</li>
+</ol>
+<p>可以看到<code>Spring</code>管理<code>Bean</code>的灵巧性。<code>Bean</code>与<code>Bean</code>之间的依赖关系放在配置文件里组织,而不是写在代码里。通过配置文件的指定, <code>Spring</code>能精确地为每个<code>Bean</code>的成员变量注入值。</p>
+<p><code>Spring</code>会自动检测每个<code>&lt;bean&gt;</code>定义里的<code>&lt;property&gt;</code>元素定义, <code>Spring</code>会在调用默认的构造器创建<code>Bean</code>实例之后,立即调用对应的<code>setter</code>法为<code>Bean</code>的成员变量注入值。<br>下面是主程序的代码,该主程序只是简单地获取了<code>Person</code>实例,并调用该实例的<code>useAxeo</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> lee;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.crazyit.app.service.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 创建Spring容器</span></span><br><span class="line">		<span class="meta">@SuppressWarnings</span>(<span class="string">"resource"</span>)</span><br><span class="line">		ApplicationContext ctx = <span class="keyword">new</span> ClassPathXmlApplicationContext(</span><br><span class="line">				<span class="string">"beans.xml"</span>);</span><br><span class="line">		<span class="comment">// 从Spring容器中获取chinese实例</span></span><br><span class="line">		Person p = ctx.getBean(<span class="string">"chinese"</span>, Person.class);</span><br><span class="line">		<span class="comment">// 调用useAxe()方法</span></span><br><span class="line">		p.useAxe();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中的实现了创建<code>Spring</code>容器,并通过<code>Spring</code>容器来获取<code>Bean</code>实例。从上面程序中可以看出, <code>Spring</code>容器就是一个巨大的工厂,它可以”生产”出所有类型的<code>Bean</code>实例。程序获取<code>Bean</code>实例的方法是<code>getBean()</code>。<br>一旦通过<code>Spring</code>容器获得了<code>Bean</code>实例之后,如何调用<code>Bean</code>实例的方法就没什么特别之处了。执行上面程序,会看到如下执行结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">石斧砍柴好慢</span><br></pre></td></tr></table></figure>
+<p>主程序调用<code>Person</code>的<code>useAxe()</code>方法时,该方法的方法体内需要使用<code>Axe</code>实例,但程序没有任何地方将特定的<code>Person</code>实例和<code>Axe</code>实例耦合在一起。或者说,程序没有为<code>Person</code>实例传入<code>Axe</code>实例,<code>Axe</code>实例由<code>Spring</code>在运行期间注入。<br>下面是<code>Axe</code>的另一个实现类:<code>SteelAxe</code></p>
+<h2 id="SteelAxe-java-1"><a href="#SteelAxe-java-1" class="headerlink" title="SteelAxe.java"></a>SteelAxe.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.crazyit.app.service.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SteelAxe</span> <span class="keyword">implements</span> <span class="title">Axe</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">chop</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"钢斧砍柴真快"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将修改后的<code>SteelAxe</code>部署在<code>Spring</code>容器中,只需在<code>Spring</code>配置文件中增加如下一行:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 配置steelAxe实例，其实现类是SteelAxe --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"steelAxe"</span> <span class="attr">class</span>=<span class="string">"org.crazyit.app.service.impl.SteelAxe"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>该行重新定义了一个<code>Axe</code>实例,它的id是<code>steelAxe</code>,实现类是<code>SteelAxe</code>。然后修改<code>chineseBean</code>的配置,将原来传入<code>stoneAxe</code>的地方改为传入<code>steelAxe</code>。也就是将</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"axe"</span> <span class="attr">ref</span>=<span class="string">"stoneAxe"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>改成:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"axe"</span> <span class="attr">ref</span>=<span class="string">"steelAxe"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>此时再次执行程序,将得到如下结果:<br>从上面这种切换可以看出,因为<code>chinese</code>实例与具体的<code>Axe</code>实现类没有任何关系, <code>chinese</code>实例仅仅与<code>Axe</code>接口耦合,这就保证了<code>chinese</code>实例与<code>Axe</code>实例之间的<strong>松耦合</strong>—这也是<code>Spring</code>强调面向接口编程的原因。</p>
+<h2 id="设值注入"><a href="#设值注入" class="headerlink" title="设值注入"></a>设值注入</h2><p><code>Bean</code>与<code>Bean</code>之间的依赖关系由<code>Spring</code>管理,** <code>Spring</code>采用<code>setter</code>方法为目标<code>Bean</code>注入所依赖的<code>Bean</code>这种方式被称为设值注入<strong>。<br>从上面示例程序中应该可以看出,</strong>依赖注入以配置文件管理<code>Bean</code>实例之间的耦合,让<code>Bean</code>实例之间的耦合从代码层次分离出来**。依赖注入是一种优秀的解耦方式。</p>
+<h2 id="Spring-IoC容器的三个基本要点"><a href="#Spring-IoC容器的三个基本要点" class="headerlink" title="Spring IoC容器的三个基本要点"></a>Spring IoC容器的三个基本要点</h2><p>经过上面的介绍,不难发现使用<code>Spring loC</code>容器的三个基本要点:</p>
+<ol>
+<li>应用程序的各组件<strong>面向接口编程</strong>。面向接口编程可以将组件之间的耦合关系提升到接口层次从而有利于项目后期的扩展。</li>
+<li>应用程序的<strong>各组件不再由程序主动创建,而是由<code>Spring</code>容器来负责产生并初始化</strong>。</li>
+<li><code>Spring</code>采用<code>配置文件</code>或<code>注解</code>来管理<code>Bean</code>的实现类、依赖关系, <strong><code>Spring</code>容器则根据配置文件或注解,利用反射来创建实例,并为之注入依赖关系</strong><!--SSTStop-->
+</li>
+</ol>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/37d15e90/">7.3.2 设值注入</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/e4285bd5/" rel="next" title="7.3.1 理解依赖注入">
+                  <i class="fa fa-chevron-left"></i> 7.3.1 理解依赖注入
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/521e30bb/" rel="prev" title="7.3.3 构造注入">
+                  7.3.3 构造注入 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-3-2-设值注入"><span class="nav-number">1.</span> <span class="nav-text">7.3.2 设值注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#程序示例"><span class="nav-number">2.</span> <span class="nav-text">程序示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目结构"><span class="nav-number">2.1.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Person-java"><span class="nav-number">2.2.</span> <span class="nav-text">Person.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Axe-java"><span class="nav-number">2.3.</span> <span class="nav-text">Axe.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chinese-java"><span class="nav-number">2.4.</span> <span class="nav-text">Chinese.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SteelAxe-java"><span class="nav-number">2.5.</span> <span class="nav-text">SteelAxe.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#beans-xml"><span class="nav-number">2.6.</span> <span class="nav-text">beans.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SteelAxe-java-1"><span class="nav-number">2.7.</span> <span class="nav-text">SteelAxe.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设值注入"><span class="nav-number">2.8.</span> <span class="nav-text">设值注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-IoC容器的三个基本要点"><span class="nav-number">2.9.</span> <span class="nav-text">Spring IoC容器的三个基本要点</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

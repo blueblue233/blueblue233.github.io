@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.3.5 Java7的ThreadLocalRandom与Randon Random类实例 Random类如何获取大于等于N小于等于M之间的随机数 Random对象的种子相同则生成的随机数也相同 种子相同随机数相同   ThreadLocalRandom ThreadLocalRandom的nextInt​">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.3.5 Java7的ThreadLocalRandom与Random">
+<meta property="og:url" content="https://blueblue233.github.io/blog/f910bebe/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.3.5 Java7的ThreadLocalRandom与Randon Random类实例 Random类如何获取大于等于N小于等于M之间的随机数 Random对象的种子相同则生成的随机数也相同 种子相同随机数相同   ThreadLocalRandom ThreadLocalRandom的nextInt​">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.3.5 Java7的ThreadLocalRandom与Random">
+<meta name="twitter:description" content="7.3.5 Java7的ThreadLocalRandom与Randon Random类实例 Random类如何获取大于等于N小于等于M之间的随机数 Random对象的种子相同则生成的随机数也相同 种子相同随机数相同   ThreadLocalRandom ThreadLocalRandom的nextInt​">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/f910bebe/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.3.5 Java7的ThreadLocalRandom与Random | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/f910bebe/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.3.5 Java7的ThreadLocalRandom与Random
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-04 18:03:08" itemprop="dateCreated datePublished" datetime="2019-10-04T18:03:08+08:00">2019-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:47" itemprop="dateModified" datetime="2019-10-14T14:01:47+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/" itemprop="url" rel="index"><span itemprop="name">第7章 Java基础类库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第7章-Java基础类库/7-3-常用类/" itemprop="url" rel="index"><span itemprop="name">7.3 常用类</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/f910bebe/#7-3-5-Java7的ThreadLocalRandom与Randon">7.3.5 Java7的ThreadLocalRandom与Randon</a><ul>
+<li><a href="/blog/f910bebe/#Random类实例">Random类实例</a></li>
+<li><a href="/blog/f910bebe/#Random类如何获取大于等于N小于等于M之间的随机数">Random类如何获取大于等于N小于等于M之间的随机数</a></li>
+<li><a href="/blog/f910bebe/#Random对象的种子相同则生成的随机数也相同">Random对象的种子相同则生成的随机数也相同</a><ul>
+<li><a href="/blog/f910bebe/#种子相同随机数相同">种子相同随机数相同</a></li>
+</ul>
+</li>
+<li><a href="/blog/f910bebe/#ThreadLocalRandom">ThreadLocalRandom</a><ul>
+<li><a href="/blog/f910bebe/#ThreadLocalRandom的nextInt​">ThreadLocalRandom的nextInt​</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="7-3-5-Java7的ThreadLocalRandom与Randon"><a href="#7-3-5-Java7的ThreadLocalRandom与Randon" class="headerlink" title="7.3.5 Java7的ThreadLocalRandom与Randon"></a>7.3.5 Java7的ThreadLocalRandom与Randon</h1><p><code>Random</code>类专门用于生成一个伪随机数,它有两个构造器:</p>
+<ol>
+<li>一个构造器使用默认的种子(以当前时间作为种子),</li>
+<li>另一个构造器需要程序员显式传入一个<code>long</code>型整数的种子</li>
+</ol>
+<p><code>ThreadLocalRandom</code>类是<code>Java7</code>新增的一个类,它是<code>Random</code>的增强版。在并发访问的环境下,使用<code>ThreadLocalRandom</code>来代替<code>Random</code>可以减少多线程资源竞争,最终保证系统具有更好的线程安全性。<br><code>ThreadLocalRandom</code>类的用法与<code>Random</code>类的用法基本相似,它提供了一个<code>静态</code>的<code>current()</code>方法来获取<code>ThreadLocalRandom</code>对象,获取该对象之后即可调用各种<code>nextXxx()</code>方法来获取伪随机数了。</p>
+<p><code>ThreadLocalRandom</code>与<code>Random</code>都比<code>Math</code>的<code>random</code>方法提供了更多的方式来生成各种伪随机数:</p>
+<ul>
+<li>可以生成浮点类型的伪随机数,</li>
+<li>也可以生成整数类型的伪随机数,</li>
+<li>还可以指定生成随机数的范围。</li>
+</ul>
+<!--SSTStop-->
+<h2 id="Random类实例"><a href="#Random类实例" class="headerlink" title="Random类实例"></a>Random类实例</h2><p>关于<code>Random</code>类的用法如下程序所示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RandomTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 使用当前时间作为种子</span></span><br><span class="line">		Random rand = <span class="keyword">new</span> Random();</span><br><span class="line">		<span class="comment">// 生成随机的boolean值</span></span><br><span class="line">		System.out.println(<span class="string">"rand.nextBoolean()："</span> + rand.nextBoolean());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">16</span>];</span><br><span class="line">		rand.nextBytes(buffer);</span><br><span class="line">		System.out.println(<span class="string">"rand.nextBytes(buffer):"</span>+Arrays.toString(buffer));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 生成0.0~1.0之间的伪随机double数</span></span><br><span class="line">		System.out.println(<span class="string">"rand.nextDouble()："</span> + rand.nextDouble());</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 生成0.0~1.0之间的伪随机float数</span></span><br><span class="line">		System.out.println(<span class="string">"rand.nextFloat()："</span> + rand.nextFloat());</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 生成平均值是 0.0，标准差是 1.0的 伪高斯数</span></span><br><span class="line">		System.out.println(<span class="string">"rand.nextGaussian()："</span> + rand.nextGaussian());</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 生成一个处于int整数取值范围的 伪随机整数</span></span><br><span class="line">		System.out.println(<span class="string">"rand.nextInt()："</span> + rand.nextInt());</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 生成0~26之间的伪随机整数</span></span><br><span class="line">		System.out.println(<span class="string">"rand.nextInt(26)："</span> + rand.nextInt(<span class="number">26</span>));</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 生成一个处于long整数取值范围的伪随机整数</span></span><br><span class="line">		System.out.println(<span class="string">"rand.nextLong()："</span> + rand.nextLong());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果1:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rand.nextBoolean()：true</span><br><span class="line">rand.nextBytes(buffer):[-6, 11, 108, 120, 126, -13, 84, -56, 45, 114, -62, -98, 113, 85, 89, 113]</span><br><span class="line">rand.nextDouble()：0.8120795682241748</span><br><span class="line">rand.nextFloat()：0.5804569</span><br><span class="line">rand.nextGaussian()：-1.0469886892688502</span><br><span class="line">rand.nextInt()：589045688</span><br><span class="line">rand.nextInt(26)：2</span><br><span class="line">rand.nextLong()：-474418649996311808</span><br></pre></td></tr></table></figure>
+<p>运行效果2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rand.nextBoolean()：true</span><br><span class="line">rand.nextBytes(buffer):[31, -120, -74, -13, 32, -55, 3, 0, 39, -47, -122, -61, 113, -113, -45, 102]</span><br><span class="line">rand.nextDouble()：0.6114733221402615</span><br><span class="line">rand.nextFloat()：0.4678058</span><br><span class="line">rand.nextGaussian()：-1.1066057114192767</span><br><span class="line">rand.nextInt()：1796032384</span><br><span class="line">rand.nextInt(26)：13</span><br><span class="line">rand.nextLong()：5259734743396927359</span><br></pre></td></tr></table></figure>
+<!--SSTStart-->
+<h2 id="Random类如何获取大于等于N小于等于M之间的随机数"><a href="#Random类如何获取大于等于N小于等于M之间的随机数" class="headerlink" title="Random类如何获取大于等于N小于等于M之间的随机数"></a>Random类如何获取大于等于N小于等于M之间的随机数</h2><p><code>Random</code>类<code>nextInt</code>方法只能传入一个参数,只能获取大于等于0小于N之间的随机整数.如果要获取大于等于N,小于M的随机整数需要通过数学计算来完成.</p>
+<!--SSTStop-->
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RandomIntN2MTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">int</span> times = <span class="number">20</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; times; i++) &#123;</span><br><span class="line">            <span class="comment">// 生成[0,2)之间的随机整数,也就是[0,1]之间的随机整数</span></span><br><span class="line">            System.out.print(random.nextInt(<span class="number">2</span>) + <span class="string">","</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">        <span class="keyword">int</span> min = <span class="number">2</span>, max = <span class="number">4</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; times; i++) &#123;</span><br><span class="line">            <span class="comment">// 生成[min,max)之间的随机正整数</span></span><br><span class="line">            System.out.print((random.nextInt(max - min) + min) + <span class="string">","</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; times; i++) &#123;</span><br><span class="line">            <span class="comment">// 生成[min,max]之间的随机正整数</span></span><br><span class="line">            System.out.print((random.nextInt(max - min + <span class="number">1</span>) + min) + <span class="string">","</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0,1,0,0,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,</span><br><span class="line">3,3,3,3,3,3,2,3,3,2,3,2,3,3,3,2,3,3,3,3,</span><br><span class="line">3,4,4,2,3,2,2,2,3,3,4,2,2,2,3,4,2,4,4,2,</span><br></pre></td></tr></table></figure>
+<!--SSTStart-->
+<h2 id="Random对象的种子相同则生成的随机数也相同"><a href="#Random对象的种子相同则生成的随机数也相同" class="headerlink" title="Random对象的种子相同则生成的随机数也相同"></a>Random对象的种子相同则生成的随机数也相同</h2><p><code>Random</code>使用一个48位的种子,如果这个类的两个实例是用同一个种子创建的,对它们以同样的顺序调用方法,则它们会产生相同的数字序列。</p>
+<!--SSTStop-->
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SeedTest</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Random r1 = <span class="keyword">new</span> Random(<span class="number">50</span>);</span><br><span class="line">		System.out.println(<span class="string">"第一个种子为50的Random对象"</span>);</span><br><span class="line">		System.out.println(<span class="string">"r1.nextBoolean():\t"</span> + r1.nextBoolean());</span><br><span class="line">		System.out.println(<span class="string">"r1.nextInt():\t\t"</span> + r1.nextInt());</span><br><span class="line">		System.out.println(<span class="string">"r1.nextDouble():\t"</span> + r1.nextDouble());</span><br><span class="line">		System.out.println(<span class="string">"r1.nextGaussian():\t"</span> + r1.nextGaussian());</span><br><span class="line">		System.out.println(<span class="string">"%%%%%%%%%%%%%%%%%%%%%%%%%%%%"</span>);</span><br><span class="line"></span><br><span class="line">		Random r2 = <span class="keyword">new</span> Random(<span class="number">50</span>);</span><br><span class="line">		System.out.println(<span class="string">"第二个种子为50的Random对象"</span>);</span><br><span class="line">		System.out.println(<span class="string">"r2.nextBoolean():\t"</span> + r2.nextBoolean());</span><br><span class="line">		System.out.println(<span class="string">"r2.nextInt():\t\t"</span> + r2.nextInt());</span><br><span class="line">		System.out.println(<span class="string">"r2.nextDouble():\t"</span> + r2.nextDouble());</span><br><span class="line">		System.out.println(<span class="string">"r2.nextGaussian():\t"</span> + r2.nextGaussian());</span><br><span class="line">		System.out.println(<span class="string">"%%%%%%%%%%%%%%%%%%%%%%%%%%%%"</span>);</span><br><span class="line">		</span><br><span class="line">		Random r3 = <span class="keyword">new</span> Random(<span class="number">100</span>);</span><br><span class="line">		System.out.println(<span class="string">"种子为100的Random对象"</span>);</span><br><span class="line">		System.out.println(<span class="string">"r3.nextBoolean():\t"</span> + r3.nextBoolean());</span><br><span class="line">		System.out.println(<span class="string">"r3.nextInt():\t\t"</span> + r3.nextInt());</span><br><span class="line">		System.out.println(<span class="string">"r3.nextDouble():\t"</span> + r3.nextDouble());</span><br><span class="line">		System.out.println(<span class="string">"r3.nextGaussian():\t"</span> + r3.nextGaussian());</span><br><span class="line">		System.out.println(<span class="string">"%%%%%%%%%%%%%%%%%%%%%%%%%%%%"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行上面程序,看到如下结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">第一个种子为50的Random对象</span><br><span class="line">r1.nextBoolean():       true</span><br><span class="line">r1.nextInt():           -1727040520       </span><br><span class="line">r1.nextDouble():        0.6141579720626675</span><br><span class="line">r1.nextGaussian():      2.377650302287946 </span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">第二个种子为50的Random对象</span><br><span class="line">r2.nextBoolean():       true</span><br><span class="line">r2.nextInt():           -1727040520</span><br><span class="line">r2.nextDouble():        0.6141579720626675</span><br><span class="line">r2.nextGaussian():      2.377650302287946</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">种子为100的Random对象</span><br><span class="line">r3.nextBoolean():       true</span><br><span class="line">r3.nextInt():           -1139614796</span><br><span class="line">r3.nextDouble():        0.19497605734770518</span><br><span class="line">r3.nextGaussian():      0.6762208162903859</span><br><span class="line">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br></pre></td></tr></table></figure>
+<!--SSTStart-->
+<h3 id="种子相同随机数相同"><a href="#种子相同随机数相同" class="headerlink" title="种子相同随机数相同"></a>种子相同随机数相同</h3><p><strong>只要两个<code>Randon</code>对象的种子相同,而且方法的调用顺序也相同,它们就会产生相同的数字序列</strong>。<br>也就是说, <code>Random</code>产生的数字并不是真正随机的,而是一种伪随机。<br><strong>为了避免两个<code>Random</code>对象产生相同的数字序列,通常推荐使用当前时间作为<code>Random</code>对象的种子</strong>。</p>
+<!--SSTStop-->
+<p>如下代码所示:<br><code>Random rand=new Random(System.currentTimeMillis());</code><br>或者直接<code>Random rand=new Random()</code>,因为系统会默认使用当前时间作为种子.</p>
+<!--SSTStart-->
+<h2 id="ThreadLocalRandom"><a href="#ThreadLocalRandom" class="headerlink" title="ThreadLocalRandom"></a>ThreadLocalRandom</h2><p>在多线程环境下使用<code>ThreadLocalRandom</code>的方式与使用<code>Random</code>基本类似</p>
+<!--SSTStop-->
+<p>如下程序片段示范了<code>ThreadLocalRandom</code>的用法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocalRandom rand=ThreadLocalRandom.current();</span><br><span class="line">// 获取[4,20)之间的随机整数</span><br><span class="line">int vall=rand.nextInt(4,20);</span><br></pre></td></tr></table></figure>
+<!--SSTStart-->
+<h3 id="ThreadLocalRandom的nextInt​"><a href="#ThreadLocalRandom的nextInt​" class="headerlink" title="ThreadLocalRandom的nextInt​"></a>ThreadLocalRandom的nextInt​</h3><p><code>ThreadLocalRandom</code>的<code>nextInt</code>方法比<code>Random</code>提供的<code>nextInt</code>要强,<br><code>ThreadLocalRandom</code>来提供了<code>nextInt(int min, int max)</code>方法来获取大于等于<code>min</code>,小于<code>max</code>的方法.通过<code>ThreadLocalRandom</code>的这个方法我们可以很方便的获取大于等于N小于等于M之间的随机正整数.</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/f910bebe/">7.3.5 Java7的ThreadLocalRandom与Random</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/f7bd2a98/" rel="next" title="7.3.4 Math类">
+                  <i class="fa fa-chevron-left"></i> 7.3.4 Math类
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/2355d02a/" rel="prev" title="7.3.6 BigDecimal类">
+                  7.3.6 BigDecimal类 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-3-5-Java7的ThreadLocalRandom与Randon"><span class="nav-number">1.</span> <span class="nav-text">7.3.5 Java7的ThreadLocalRandom与Randon</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Random类实例"><span class="nav-number">1.1.</span> <span class="nav-text">Random类实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Random类如何获取大于等于N小于等于M之间的随机数"><span class="nav-number">1.2.</span> <span class="nav-text">Random类如何获取大于等于N小于等于M之间的随机数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Random对象的种子相同则生成的随机数也相同"><span class="nav-number">1.3.</span> <span class="nav-text">Random对象的种子相同则生成的随机数也相同</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#种子相同随机数相同"><span class="nav-number">1.3.1.</span> <span class="nav-text">种子相同随机数相同</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadLocalRandom"><span class="nav-number">1.4.</span> <span class="nav-text">ThreadLocalRandom</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadLocalRandom的nextInt​"><span class="nav-number">1.4.1.</span> <span class="nav-text">ThreadLocalRandom的nextInt​</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

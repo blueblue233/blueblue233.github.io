@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.3 拦截器 7.3.1 HandlerInterceptor接口 preHandle方法 postHandle方法 afterCompletion方法   示例 拦截器实现用户权限验证 FormController 登录界面 UserController BookController main.jsp 拦截器 测试">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.3 拦截器">
+<meta property="og:url" content="https://blueblue233.github.io/blog/ad57fe08/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.3 拦截器 7.3.1 HandlerInterceptor接口 preHandle方法 postHandle方法 afterCompletion方法   示例 拦截器实现用户权限验证 FormController 登录界面 UserController BookController main.jsp 拦截器 测试">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/7.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/8.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/9.png">
+<meta property="og:updated_time" content="2019-10-14T06:55:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.3 拦截器">
+<meta name="twitter:description" content="7.3 拦截器 7.3.1 HandlerInterceptor接口 preHandle方法 postHandle方法 afterCompletion方法   示例 拦截器实现用户权限验证 FormController 登录界面 UserController BookController main.jsp 拦截器 测试">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/7.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/ad57fe08/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.3 拦截器 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ad57fe08/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.3 拦截器
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-31 16:17:04" itemprop="dateCreated datePublished" datetime="2019-05-31T16:17:04+08:00">2019-05-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:41" itemprop="dateModified" datetime="2019-10-14T14:55:41+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第7章-Spring-MVC的文件上传下载和拦截器机制/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring MVC的文件上传下载和拦截器机制</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/ad57fe08/#7-3-拦截器">7.3 拦截器</a><ul>
+<li><a href="/blog/ad57fe08/#7-3-1-HandlerInterceptor接口">7.3.1 HandlerInterceptor接口</a></li>
+<li><a href="/blog/ad57fe08/#preHandle方法">preHandle方法</a></li>
+<li><a href="/blog/ad57fe08/#postHandle方法">postHandle方法</a></li>
+<li><a href="/blog/ad57fe08/#afterCompletion方法">afterCompletion方法</a></li>
+</ul>
+</li>
+<li><a href="/blog/ad57fe08/#示例-拦截器实现用户权限验证">示例 拦截器实现用户权限验证</a><ul>
+<li><a href="/blog/ad57fe08/#FormController">FormController</a></li>
+<li><a href="/blog/ad57fe08/#登录界面">登录界面</a></li>
+<li><a href="/blog/ad57fe08/#UserController">UserController</a></li>
+<li><a href="/blog/ad57fe08/#BookController">BookController</a></li>
+<li><a href="/blog/ad57fe08/#main-jsp">main.jsp</a></li>
+<li><a href="/blog/ad57fe08/#拦截器">拦截器</a></li>
+<li><a href="/blog/ad57fe08/#测试">测试</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="7-3-拦截器"><a href="#7-3-拦截器" class="headerlink" title="7.3 拦截器"></a>7.3 拦截器</h1><p><code>Interceptor</code>拦截器是<code>SpringMVC</code>中相当重要的功能,它的<strong>主要作用是拦截用户的请求并进行相应的处理</strong>。比如<strong>通过拦截器来进行用户权限验证,或者用来判断用户是否已经登录</strong>等。<br><code>Spring MVC</code>拦截器是可插拔式的设计。<strong>如果需要使用某个拦截器,只需要在配置文件中应用该拦截器即可</strong>;如果不需要使用该拦截器,只需要在配置文件中取消应用该拦截器。不管是否应用某个拦截器,对<code>Spring MVC</code>框架不会有任何影响。</p>
+<h2 id="7-3-1-HandlerInterceptor接口"><a href="#7-3-1-HandlerInterceptor接口" class="headerlink" title="7.3.1 HandlerInterceptor接口"></a>7.3.1 HandlerInterceptor接口</h2><p><strong><code>Spring MVC</code>中的<code>Interceptor</code>拦截器拦截请求是通过实现<code>HandlerInterceptor</code>接口来完成的</strong>。在<code>Spring MVC</code>中定义一个<code>Interceptor</code>拦截器非常简单,通常在要定义的<code>Interceptor</code>拦截器类中实现<code>Spring</code>的<code>HandlerInterceptor</code>接口,或者继承抽象类<code>HandlerInterceptorAdapter</code>。<br><code>HandlerInterceptor</code>接口中定义了三个方法,<code>SpringMVC</code>就是通过这三个方法来对用户的请求进行拦截处理的。</p>
+<h2 id="preHandle方法"><a href="#preHandle方法" class="headerlink" title="preHandle方法"></a>preHandle方法</h2><p><code>boolean preHandle(HttpServletRequest request,HttpServletResponse  response,Object handle)</code>。顾名思义,<strong>该方法将在请求处理之前被调用</strong>。<br><code>SpringMVC</code>中的<code>Interceptor</code>实行的是<strong>链式调用</strong>,即在一个应用中或者说在一个请求中可以同时存在多个<code>Interceptor</code>。每个<code>Interceptor</code>的调用会依据它的声明顺序依次执行,而且最先执行的是<code>Interceptor</code>中的<code>preHandle</code>方法,所以可以在这个方法中进行一些前置的初始化操作或者是对当前请求的一个预处理,也可以在这个方法中进行一些判断来决定请求是否要继续进行下去。该方法的返回值是<code>boolean</code>类型的,</p>
+<ul>
+<li>当返回值为<code>false</code>时,表示请求结束,后续的<code>Interceptor</code>和<code>Controller</code>都不会再执行;</li>
+<li>当返回值为<code>true</code>时就会继续调用下一个<code>Interceptor</code>的<code>preHandle</code>方法;</li>
+</ul>
+<p>如果已经是最后一个<code>Interceptor</code>,就会调用当前请求的<code>Controller</code>方法。</p>
+<h2 id="postHandle方法"><a href="#postHandle方法" class="headerlink" title="postHandle方法"></a>postHandle方法</h2><p><code>void postHandle (HttpServletRequest request,HttpServletResponse response,Object handler,ModelAndView mv)</code>。该方法和之后的<code>afterCompletion</code>方法都只能在当前所属的<code>Interceptor</code>的<code>preHandle</code>方法的返回值为<code>true</code>时才能被调用。</p>
+<p><code>postHandle</code>方法,顾名思义,就是<strong>在当前请求被处理之后,也就是在<code>Controller</code>的请求处理方法被调用之后执行</strong>,但是它会<strong>在<code>DispatcherServlet</code>进行视图返回渲染之前被调用</strong>,所以我们可以在这个方法中对<code>Controller</code>处理之后的<code>ModelAndView</code>对象进行操作。<code>postHandle</code>方法被调用的方向跟<code>preHandle</code>是相反的,也就是说先声明的<code>Interceptor</code>的<code>postHandle</code>方法反而会后执行,这和<code>Struts2</code>里面的<code>Interceptor</code>的执行过程类似。</p>
+<h2 id="afterCompletion方法"><a href="#afterCompletion方法" class="headerlink" title="afterCompletion方法"></a>afterCompletion方法</h2><p><code>void afterCompletion(HttpServletRequest request,HttpServletResponsere sponse,Object handler,Exception exception)</code><br>该方法也是在当前所属的<code>Interceptor</code>的<code>preHandle</code>方法的返回值为<code>true</code>时才会执行。</p>
+<p>顾名思义,<strong>该方法将在整个请求结束之后,也就是在<code>DispatcherServlet</code>渲染了对应的视图之后执行</strong>。这个方法的<strong>主要作用是进行资源清理</strong>。</p>
+<h1 id="示例-拦截器实现用户权限验证"><a href="#示例-拦截器实现用户权限验证" class="headerlink" title="示例 拦截器实现用户权限验证"></a>示例 拦截器实现用户权限验证</h1><p>本小节通过拦截器完成一个用户权限验证的功能。即<strong>用户必须登录之后才可以访问网站首页</strong>,如果没有登录就直接访问网站首页,则拦截器会拦截请求,并将请求重新转发到登录页面,同时提示用户需要先登录再访问网站。</p>
+<h2 id="FormController"><a href="#FormController" class="headerlink" title="FormController"></a>FormController</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 动态页面跳转控制器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FormController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/loginForm"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">loginForm</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"请求处理方法  loginForm"</span>);</span><br><span class="line">        <span class="comment">// 跳转到登录页面</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"loginForm"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="登录界面"><a href="#登录界面" class="headerlink" title="登录界面"></a>登录界面</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=<span class="string">"login"</span> method=<span class="string">"post"</span>&gt;</span><br><span class="line">    &lt;!-- 提示信息 --&gt;</span><br><span class="line">    &lt;font color="red"&gt;$&#123;requestScope.message &#125;&lt;/font&gt;</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;&lt;label&gt;登录名: &lt;/label&gt;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;input type=<span class="string">"text"</span> id=<span class="string">"loginname"</span></span><br><span class="line">                name="loginname"&gt;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;&lt;label&gt;密码: &lt;/label&gt;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;input type=<span class="string">"password"</span> id=<span class="string">"password"</span></span><br><span class="line">                name="password"&gt;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;&lt;input type="submit" value="登录"&gt;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="UserController"><a href="#UserController" class="headerlink" title="UserController"></a>UserController</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理/login请求</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(value = <span class="string">"/login"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">login</span><span class="params">(String loginname, String password,</span></span></span><br><span class="line"><span class="function"><span class="params">                              ModelAndView mv, HttpSession session)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"请求处理方法 login"</span>);</span><br><span class="line">        <span class="comment">// 模拟数据库根据登录名和密码查找用户，判断用户登录</span></span><br><span class="line">        <span class="keyword">if</span> (loginname != <span class="keyword">null</span> &amp;&amp; loginname.equals(<span class="string">"xiaoming"</span>)</span><br><span class="line">                &amp;&amp; password != <span class="keyword">null</span> &amp;&amp; password.equals(<span class="string">"xiaoming"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 模拟创建用户</span></span><br><span class="line">            User user = <span class="keyword">new</span> User();</span><br><span class="line">            user.setLoginname(loginname);</span><br><span class="line">            user.setPassword(password);</span><br><span class="line">            user.setUsername(<span class="string">"管理员"</span>);</span><br><span class="line">            <span class="comment">// 登录成功，将user对象设置到HttpSession作用范围域</span></span><br><span class="line">            session.setAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">            <span class="comment">// 转发到main请求</span></span><br><span class="line">            mv.setViewName(<span class="string">"redirect:main"</span>);</span><br><span class="line">            System.out.println(<span class="string">"    |-----&gt;登陆验证通过,转发到main请求"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 登录失败，设置失败提示信息，并跳转到登录页面</span></span><br><span class="line">            mv.addObject(<span class="string">"message"</span>, <span class="string">"登录名或密码错误，请重新输入!"</span>);</span><br><span class="line">            mv.setViewName(<span class="string">"loginForm"</span>);</span><br><span class="line">            System.out.println(<span class="string">"    |-----&gt;登陆验证失败,转发到loginForm请求"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mv;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>UserController</code>类的<code>login</code>方法用来处理登录请求,本示例没有使用数据库存储数据,只是简单地模拟了用户登录,只要用户输入的登录名是”<code>xiaoming</code>“,密码是”xiaoming”,则验证通过。</p>
+<ul>
+<li>如果验证通过,创建一个<code>User</code>对象保存到<code>HttpSession</code>当中,同时将请求使用客户端跳转到<code>main</code>请求;</li>
+<li>如果验证失败,则设置失败提示信息到<code>ModelAndView</code>对象,同时将请求使用客户端跳转到<code>loginForm</code>请求,即跳回登录页面。</li>
+</ul>
+<h2 id="BookController"><a href="#BookController" class="headerlink" title="BookController"></a>BookController</h2><p><code>BookController</code>类的<code>main</code>方法用来处理网站首页的请求,该方法获得所有图书信息,并将它们设置到<code>Model</code>当中,然后传递到<code>main</code>页面。本示例没有使用数据库存储数据,只是简单地创建了一个集合模拟从数据库获取图书信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理图书请求控制器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookController</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理/main请求</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/main"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">main</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"请求处理方法  main"</span>);</span><br><span class="line">        <span class="comment">// 模拟数据库获得所有图书集合</span></span><br><span class="line">        List&lt;Book&gt; book_list = <span class="keyword">new</span> ArrayList&lt;Book&gt;();</span><br><span class="line">        book_list.add(<span class="keyword">new</span> Book(<span class="string">"java.jpg"</span>, <span class="string">"疯狂Java讲义（附光盘）"</span>, <span class="string">"李刚 编著"</span>, <span class="number">74.2</span>));</span><br><span class="line">        book_list.add(<span class="keyword">new</span> Book(<span class="string">"ee.jpg"</span>, <span class="string">"轻量级Java EE企业应用实战"</span>, <span class="string">"李刚 编著"</span>, <span class="number">59.2</span>));</span><br><span class="line">        book_list.add(</span><br><span class="line">                <span class="keyword">new</span> Book(<span class="string">"android.jpg"</span>, <span class="string">"疯狂Android讲义（附光盘）"</span>, <span class="string">"李刚 编著"</span>, <span class="number">60.6</span>));</span><br><span class="line">        book_list.add(<span class="keyword">new</span> Book(<span class="string">"ajax.jpg"</span>, <span class="string">"疯狂Ajax讲义（附光盘）"</span>, <span class="string">"李刚 编著"</span>, <span class="number">66.6</span>));</span><br><span class="line">        <span class="comment">// 将图书集合添加到model当中</span></span><br><span class="line">        model.addAttribute(<span class="string">"book_list"</span>, book_list);</span><br><span class="line">        <span class="comment">// 跳转到main页面</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"main"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="main-jsp"><a href="#main-jsp" class="headerlink" title="main.jsp"></a>main.jsp</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;table border=<span class="string">"1"</span>&gt;</span><br><span class="line">    &lt;tr&gt;</span><br><span class="line">        &lt;th&gt;封面&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;书名&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;作者&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;价格&lt;/th&gt;</span><br><span class="line">    &lt;/tr&gt;</span><br><span class="line">    &lt;c:forEach items=<span class="string">"$&#123;requestScope.book_list &#125;"</span> <span class="keyword">var</span>=<span class="string">"book"</span>&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;&lt;img src="images/$&#123;book.image &#125;" height="60"&gt;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;$&#123;book.name &#125;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;$&#123;book.author &#125;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;$&#123;book.price &#125;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/c:forEach&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 拦截器必须实现HandlerInterceptor接口</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthorizationInterceptor</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">// 不拦截"/loginForm"和"/login"请求</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String[] IGNORE_URI = &#123;<span class="string">"/loginForm"</span>, <span class="string">"/login"</span>&#125;;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该方法将在整个请求完成之后执行， 主要作用是用于清理资源的，</span></span><br><span class="line"><span class="comment">     * 该方法也只能在当前Interceptor的preHandle方法的返回值为true时才会执行。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">                                HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">                                Exception exception)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"拦截器的 afterCompletion方法\n-----------------------------"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该方法将在Controller的方法调用之后执行， 方法中可以对ModelAndView进行操作 ，</span></span><br><span class="line"><span class="comment">     * 该方法也只能在当前Interceptor的preHandle方法的返回值为true时才会执行。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">                           HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">                           ModelAndView mv)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"拦截器的 postHandle方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * preHandle方法是进行处理器拦截用的，该方法将在Controller处理之前进行调用，</span></span><br><span class="line"><span class="comment">     * 该方法的返回值为true拦截器才会继续往下执行，该方法的返回值为false的时候整个请求就结束了。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">                             HttpServletResponse response, Object handler)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"拦截器的 preHandle方法"</span>);</span><br><span class="line">        <span class="comment">// flag变量用于判断用户是否登录，默认为false</span></span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">        <span class="comment">// 获取请求的路径进行判断</span></span><br><span class="line">        String servletPath = request.getServletPath();</span><br><span class="line">        <span class="comment">// 判断请求是否需要拦截</span></span><br><span class="line">        <span class="keyword">for</span> (String s : IGNORE_URI)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (servletPath.contains(s))</span><br><span class="line">            &#123;</span><br><span class="line">                flag = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 拦截请求</span></span><br><span class="line">        <span class="keyword">if</span> (!flag)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 1.获取session中的用户</span></span><br><span class="line">            User user = (User) request.getSession().getAttribute(<span class="string">"user"</span>);</span><br><span class="line">            <span class="comment">// 2.判断用户是否已经登录</span></span><br><span class="line">            <span class="keyword">if</span> (user == <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 如果用户没有登录，则设置提示信息，跳转到登录页面</span></span><br><span class="line">                System.out.println(<span class="string">"    |----验证不通过,重新登录"</span>);</span><br><span class="line">                request.setAttribute(<span class="string">"message"</span>, <span class="string">"请先登录再访问网站"</span>);</span><br><span class="line">                <span class="comment">// 转发到登录页面</span></span><br><span class="line">                request.getRequestDispatcher(<span class="string">"loginForm"</span>).forward(request,</span><br><span class="line">                        response);</span><br><span class="line">            &#125; <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 如果用户已经登录，则验证通过，放行</span></span><br><span class="line">                System.out.println(<span class="string">"    |----验证通过,放行/main请求"</span>);</span><br><span class="line">                flag = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"main"</span>&gt;</span>直接请求/main<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果没有登录,直接访问<code>main</code>请求,拦截器会拦截请求,验证用户是否登录,此时用户若没有登录,则跳转到登录页面,如下图所示:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/7.png" alt="这里有一张图片"><br>从控制台的输出可以看到各个方法的执行顺序,如下所示.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">拦截器的 preHandle方法</span><br><span class="line">    |----验证不通过,重新登录</span><br><span class="line">拦截器的 preHandle方法</span><br><span class="line">请求处理方法  loginForm</span><br><span class="line">拦截器的 postHandle方法</span><br><span class="line">拦截器的 afterCompletion方法</span><br><span class="line">-----------------------------</span><br></pre></td></tr></table></figure>
+<p>此时填写正确的用户名xiaoming和密码xiaoming,点击登录<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/8.png" alt="这里有一张图片"><br>此时才可以正确得到main请求的资源,如下图所示:<br><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/9.png" alt="这里有一张图片"><br>控制台新增内容如下:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">拦截器的 preHandle方法</span><br><span class="line">请求处理方法 login</span><br><span class="line">    |-----&gt;登陆验证通过,转发到main请求</span><br><span class="line">拦截器的 postHandle方法</span><br><span class="line">拦截器的 afterCompletion方法</span><br><span class="line">-----------------------------</span><br><span class="line">拦截器的 preHandle方法</span><br><span class="line">    |----验证通过,放行/main请求</span><br><span class="line">请求处理方法  main</span><br><span class="line">拦截器的 postHandle方法</span><br><span class="line">拦截器的 afterCompletion方法</span><br><span class="line">-----------------------------</span><br></pre></td></tr></table></figure>
+<p>可以看到执行顺序是,表单提交到<code>login</code>请求,<code>login</code>方法验证成功后,转发到<code>main</code>请求,当请求<code>main</code>时,拦截器的<code>preHandle</code>方法先验证是否登录过,现在的情况是已经登录了,<code>preHandle</code>方法放行<code>main</code>请求,<code>main</code>方法得到执行.</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/ad57fe08/">7.3 拦截器</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/c48866c4/" rel="next" title="6.2.2 Spring支持的转换器 示例 使用InitBinder注解添加自定义编辑器转换数据">
+                  <i class="fa fa-chevron-left"></i> 6.2.2 Spring支持的转换器 示例 使用InitBinder注解添加自定义编辑器转换数据
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/8e330816/" rel="prev" title="6.2.2 Spring支持的转换器 示例 使用WebBindingInitializer注册全局自定义编辑器转换数据">
+                  6.2.2 Spring支持的转换器 示例 使用WebBindingInitializer注册全局自定义编辑器转换数据 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-3-拦截器"><span class="nav-number">1.</span> <span class="nav-text">7.3 拦截器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-1-HandlerInterceptor接口"><span class="nav-number">1.1.</span> <span class="nav-text">7.3.1 HandlerInterceptor接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#preHandle方法"><span class="nav-number">1.2.</span> <span class="nav-text">preHandle方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#postHandle方法"><span class="nav-number">1.3.</span> <span class="nav-text">postHandle方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#afterCompletion方法"><span class="nav-number">1.4.</span> <span class="nav-text">afterCompletion方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-拦截器实现用户权限验证"><span class="nav-number">2.</span> <span class="nav-text">示例 拦截器实现用户权限验证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FormController"><span class="nav-number">2.1.</span> <span class="nav-text">FormController</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#登录界面"><span class="nav-number">2.2.</span> <span class="nav-text">登录界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UserController"><span class="nav-number">2.3.</span> <span class="nav-text">UserController</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BookController"><span class="nav-number">2.4.</span> <span class="nav-text">BookController</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#main-jsp"><span class="nav-number">2.5.</span> <span class="nav-text">main.jsp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拦截器"><span class="nav-number">2.6.</span> <span class="nav-text">拦截器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">2.7.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

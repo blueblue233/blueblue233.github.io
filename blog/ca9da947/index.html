@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.5 集合运算 SQL查询 在2009年秋季学期开设的所有课程的集合 SQL查询 在2010年春季学期开设的所有课程的集合   3.5.1 并运算 union 有些SQL实现不支持union运算 为便于阅读可将两条合并的查询放在括号中 union运算会自动去除重复 union all运算会保留重复   3.5.2 交运算 intersect SQL查询 找出在2009年秋季和2010年春季同时">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.5 集合运算">
+<meta property="og:url" content="https://blueblue233.github.io/blog/ca9da947/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.5 集合运算 SQL查询 在2009年秋季学期开设的所有课程的集合 SQL查询 在2010年春季学期开设的所有课程的集合   3.5.1 并运算 union 有些SQL实现不支持union运算 为便于阅读可将两条合并的查询放在括号中 union运算会自动去除重复 union all运算会保留重复   3.5.2 交运算 intersect SQL查询 找出在2009年秋季和2010年春季同时">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-16T01:53:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.5 集合运算">
+<meta name="twitter:description" content="3.5 集合运算 SQL查询 在2009年秋季学期开设的所有课程的集合 SQL查询 在2010年春季学期开设的所有课程的集合   3.5.1 并运算 union 有些SQL实现不支持union运算 为便于阅读可将两条合并的查询放在括号中 union运算会自动去除重复 union all运算会保留重复   3.5.2 交运算 intersect SQL查询 找出在2009年秋季和2010年春季同时">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/ca9da947/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.5 集合运算 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ca9da947/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.5 集合运算
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-14 10:58:20" itemprop="dateCreated datePublished" datetime="2019-10-14T10:58:20+08:00">2019-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-16 09:53:39" itemprop="dateModified" datetime="2019-10-16T09:53:39+08:00">2019-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/" itemprop="url" rel="index"><span itemprop="name">第3章 SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/3-5-集合运算/" itemprop="url" rel="index"><span itemprop="name">3.5 集合运算</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/ca9da947/#3-5-集合运算">3.5 集合运算</a><ul>
+<li><a href="/blog/ca9da947/#SQL查询-在2009年秋季学期开设的所有课程的集合"><strong>SQL</strong>查询 在2009年秋季学期开设的所有课程的集合</a></li>
+<li><a href="/blog/ca9da947/#SQL查询-在2010年春季学期开设的所有课程的集合">SQL查询 在2010年春季学期开设的所有课程的集合</a></li>
+</ul>
+</li>
+<li><a href="/blog/ca9da947/#3-5-1-并运算-union">3.5.1 并运算 union</a><ul>
+<li><a href="/blog/ca9da947/#有些SQL实现不支持union运算">有些<strong>SQL</strong>实现不支持<strong>union</strong>运算</a></li>
+<li><a href="/blog/ca9da947/#为便于阅读可将两条合并的查询放在括号中">为便于阅读可将两条合并的查询放在括号中</a></li>
+<li><a href="/blog/ca9da947/#union运算会自动去除重复">union运算会自动去除重复</a></li>
+<li><a href="/blog/ca9da947/#union-all运算会保留重复">union all运算会保留重复</a></li>
+</ul>
+</li>
+<li><a href="/blog/ca9da947/#3-5-2-交运算-intersect">3.5.2 交运算 intersect</a><ul>
+<li><a href="/blog/ca9da947/#SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合"><strong>SQL</strong>查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合</a></li>
+<li><a href="/blog/ca9da947/#保留重复intersect-all">保留重复intersect all</a></li>
+<li><a href="/blog/ca9da947/#MySQL不支持intersect运算"><strong>MySQL</strong>不支持intersect运算</a><ul>
+<li><a href="/blog/ca9da947/#MySQL中通过union运算实现交运算"><strong>MySQL</strong>中通过union运算实现交运算</a></li>
+<li><a href="/blog/ca9da947/#SQL查询-找出在2009年秋季所有课程的集合"><strong>SQL</strong>查询 找出在2009年秋季所有课程的集合</a></li>
+<li><a href="/blog/ca9da947/#SQL查询-找出在和2010年春季开课的所有课程的集合"><strong>SQL</strong>查询 找出在和2010年春季开课的所有课程的集合</a></li>
+<li><a href="/blog/ca9da947/#SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合"><strong>SQL</strong>查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/ca9da947/#3-5-3-差运算-except">3.5.3 差运算 except</a><ul>
+<li><a href="/blog/ca9da947/#SQL查询-找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程">SQL查询 找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程</a></li>
+<li><a href="/blog/ca9da947/#保留重复except-all">保留重复except all</a></li>
+<li><a href="/blog/ca9da947/#Oracle使用minus代替except">Oracle使用minus代替except</a></li>
+<li><a href="/blog/ca9da947/#MySQL不支持except运算符"><strong>MySQL</strong>不支持<strong>except</strong>运算符</a><ul>
+<li><a href="/blog/ca9da947/#MySQL中通过not-in实现差运算"><strong>MySQL</strong>中通过<strong>not in</strong>实现差运算</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/ca9da947/#参考链接">参考链接</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-5-集合运算"><a href="#3-5-集合运算" class="headerlink" title="3.5 集合运算"></a>3.5 集合运算</h1><p><code>SQL</code>作用在关系上的<code>union</code>、 <code>intersect</code>和<code>except</code>运算对应于数学集合论中的并(∪)、交(∩)和差(-)运算。我们现在来构造包含在两个集合上使用<code>union</code>、 <code>intersect</code>和<code>except</code>运算的查询。</p>
+<h2 id="SQL查询-在2009年秋季学期开设的所有课程的集合"><a href="#SQL查询-在2009年秋季学期开设的所有课程的集合" class="headerlink" title="SQL查询 在2009年秋季学期开设的所有课程的集合"></a><code>SQL</code>查询 在2009年秋季学期开设的所有课程的集合</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select course_id</span><br><span class="line">from section</span><br><span class="line">where semester ='Fall' and year=<span class="number">2009</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| CS-<span class="number">347</span>    |</span><br><span class="line">| PHY-<span class="number">101</span>   |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">3</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="SQL查询-在2010年春季学期开设的所有课程的集合"><a href="#SQL查询-在2010年春季学期开设的所有课程的集合" class="headerlink" title="SQL查询 在2010年春季学期开设的所有课程的集合"></a>SQL查询 在2010年春季学期开设的所有课程的集合</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select course_id</span><br><span class="line">from section</span><br><span class="line">where semester='Spring' and year=<span class="number">2010</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| FIN-<span class="number">201</span>   |</span><br><span class="line">| MU-<span class="number">199</span>    |</span><br><span class="line">| HIS-<span class="number">351</span>   |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">315</span>    |</span><br><span class="line">+-----------+</span><br></pre></td></tr></table></figure>
+<h1 id="3-5-1-并运算-union"><a href="#3-5-1-并运算-union" class="headerlink" title="3.5.1 并运算 union"></a>3.5.1 并运算 union</h1><p>为了找出在200年秋季开课,<code>或者</code>在2010年春季开课或两个学期都开课的所有课程,我们可写查询语句:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(</span><br><span class="line">    <span class="keyword">select</span> course_id</span><br><span class="line">    <span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line">    <span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span></span><br><span class="line">)<span class="keyword">union</span>(</span><br><span class="line">    <span class="keyword">select</span> course_id</span><br><span class="line">    <span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line">    <span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; (</span><br><span class="line">    select course_id</span><br><span class="line">    from section</span><br><span class="line">    where semester ='Fall' and year=<span class="number">2009</span></span><br><span class="line">)union(</span><br><span class="line">    select course_id</span><br><span class="line">    from section</span><br><span class="line">    where semester='Spring' and year=<span class="number">2010</span></span><br><span class="line">);</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| CS-<span class="number">347</span>    |</span><br><span class="line">| PHY-<span class="number">101</span>   |</span><br><span class="line">| FIN-<span class="number">201</span>   |</span><br><span class="line">| MU-<span class="number">199</span>    |</span><br><span class="line">| HIS-<span class="number">351</span>   |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">315</span>    |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">8</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="有些SQL实现不支持union运算"><a href="#有些SQL实现不支持union运算" class="headerlink" title="有些SQL实现不支持union运算"></a>有些<code>SQL</code>实现不支持<code>union</code>运算</h2><p>尽管这是<code>SQL-92</code>标准的一部分,但某些<code>SQL</code>实现中可能不支持这种语法,经过我的测试<code>MySQL</code>是支持<code>union</code>运算的。</p>
+<h2 id="为便于阅读可将两条合并的查询放在括号中"><a href="#为便于阅读可将两条合并的查询放在括号中" class="headerlink" title="为便于阅读可将两条合并的查询放在括号中"></a>为便于阅读可将两条合并的查询放在括号中</h2><p>上述SQL语句中我们在每条<code>select-from- where</code>语句上使用的<code>括号</code>是为了方便阅读,<code>括号是可省略的</code>,也就是说写成如下形式也是可以的:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span></span><br><span class="line"><span class="keyword">union</span></span><br><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select course_id</span><br><span class="line">    from section</span><br><span class="line">    where semester ='Fall' and year=<span class="number">2009</span></span><br><span class="line">union</span><br><span class="line">select course_id</span><br><span class="line">    from section</span><br><span class="line">    where semester='Spring' and year=<span class="number">2010</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| CS-<span class="number">347</span>    |</span><br><span class="line">| PHY-<span class="number">101</span>   |</span><br><span class="line">| FIN-<span class="number">201</span>   |</span><br><span class="line">| MU-<span class="number">199</span>    |</span><br><span class="line">| HIS-<span class="number">351</span>   |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">315</span>    |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">8</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="union运算会自动去除重复"><a href="#union运算会自动去除重复" class="headerlink" title="union运算会自动去除重复"></a>union运算会自动去除重复</h2><p>与<code>select</code>子句不同, <code>union</code>运算自动去除重复。</p>
+<h2 id="union-all运算会保留重复"><a href="#union-all运算会保留重复" class="headerlink" title="union all运算会保留重复"></a>union all运算会保留重复</h2><p>如果我们想保留所有重复,就必须用<code>union all</code>代替<code>unIon</code>:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select course_id</span><br><span class="line">    from section</span><br><span class="line">    where semester ='Fall' and year=<span class="number">2009</span></span><br><span class="line">union all</span><br><span class="line">select course_id</span><br><span class="line">    from section</span><br><span class="line">    where semester='Spring' and year=<span class="number">2010</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| CS-<span class="number">347</span>    |</span><br><span class="line">| PHY-<span class="number">101</span>   |</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| FIN-<span class="number">201</span>   |</span><br><span class="line">| MU-<span class="number">199</span>    |</span><br><span class="line">| HIS-<span class="number">351</span>   |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">315</span>    |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">10</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h1 id="3-5-2-交运算-intersect"><a href="#3-5-2-交运算-intersect" class="headerlink" title="3.5.2 交运算 intersect"></a>3.5.2 交运算 intersect</h1><h2 id="SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合"><a href="#SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合" class="headerlink" title="SQL查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合"></a><code>SQL</code>查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span></span><br><span class="line"><span class="keyword">intersect</span></span><br><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="保留重复intersect-all"><a href="#保留重复intersect-all" class="headerlink" title="保留重复intersect all"></a>保留重复intersect all</h2><p><code>intersect</code>运算自动去除重复。如果我们想保留所有重复,就必须用<code>intersect all</code>代替<code>intersect</code>:</p>
+<h2 id="MySQL不支持intersect运算"><a href="#MySQL不支持intersect运算" class="headerlink" title="MySQL不支持intersect运算"></a><code>MySQL</code>不支持intersect运算</h2><p>经过我的测试<code>MySQL</code>好像不支持<code>intersect</code>运算符,所以<code>MySQL</code>中得通过其他方式实现<code>交</code>运算。</p>
+<h3 id="MySQL中通过union运算实现交运算"><a href="#MySQL中通过union运算实现交运算" class="headerlink" title="MySQL中通过union运算实现交运算"></a><code>MySQL</code>中通过union运算实现交运算</h3><p>原理就是求table1与table2不去除重复条目的并集，然后按想要的属性分组，取其中重复条目</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (</span><br><span class="line">    <span class="keyword">select</span> course_id</span><br><span class="line">        <span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line">        <span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span></span><br><span class="line">    <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line">    <span class="keyword">select</span> course_id</span><br><span class="line">        <span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line">        <span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span></span><br><span class="line">) S </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> course_id <span class="keyword">having</span> <span class="keyword">count</span>(*)&gt;<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>由于这种方式还有一个条件是<code>table1</code>和<code>table2</code>中各自<code>不能有重复值</code>,不然结果不正确,所以查询的时候需要使用<code>select distinct</code>先取出重复值.</p>
+<h3 id="SQL查询-找出在2009年秋季所有课程的集合"><a href="#SQL查询-找出在2009年秋季所有课程的集合" class="headerlink" title="SQL查询 找出在2009年秋季所有课程的集合"></a><code>SQL</code>查询 找出在2009年秋季所有课程的集合</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="SQL查询-找出在和2010年春季开课的所有课程的集合"><a href="#SQL查询-找出在和2010年春季开课的所有课程的集合" class="headerlink" title="SQL查询 找出在和2010年春季开课的所有课程的集合"></a><code>SQL</code>查询 找出在和2010年春季开课的所有课程的集合</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合-1"><a href="#SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合-1" class="headerlink" title="SQL查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合"></a><code>SQL</code>查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> </span><br><span class="line">(</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> course_id</span><br><span class="line">    <span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line">    <span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">distinct</span> course_id</span><br><span class="line">    <span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line">    <span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span></span><br><span class="line">) S </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> course_id <span class="keyword">having</span> <span class="keyword">count</span>(*)&gt;<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select distinct course_id</span><br><span class="line">from section</span><br><span class="line">where semester ='Fall' and year=<span class="number">2009</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| CS-<span class="number">347</span>    |</span><br><span class="line">| PHY-<span class="number">101</span>   |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">3</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select distinct course_id</span><br><span class="line">from section</span><br><span class="line">where semester='Spring' and year=<span class="number">2010</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| CS-<span class="number">315</span>    |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| FIN-<span class="number">201</span>   |</span><br><span class="line">| HIS-<span class="number">351</span>   |</span><br><span class="line">| MU-<span class="number">199</span>    |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">6</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select * from (</span><br><span class="line">    select distinct course_id</span><br><span class="line">        from section</span><br><span class="line">        where semester ='Fall' and year=<span class="number">2009</span></span><br><span class="line">    union all</span><br><span class="line">    select distinct course_id</span><br><span class="line">        from section</span><br><span class="line">        where semester='Spring' and year=<span class="number">2010</span></span><br><span class="line">) S </span><br><span class="line">group by course_id having count(*)&gt;<span class="number">1</span>; </span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h1 id="3-5-3-差运算-except"><a href="#3-5-3-差运算-except" class="headerlink" title="3.5.3 差运算 except"></a>3.5.3 差运算 except</h1><h2 id="SQL查询-找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程"><a href="#SQL查询-找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程" class="headerlink" title="SQL查询 找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程"></a>SQL查询 找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester =<span class="string">'Fall'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2009</span></span><br><span class="line"><span class="keyword">except</span></span><br><span class="line"><span class="keyword">select</span> course_id</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">section</span></span><br><span class="line"><span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span>=<span class="number">2010</span>;</span><br></pre></td></tr></table></figure>
+<p><code>except</code>运算从其第一个输入中输出所有不出现在第二个输人中的元组</p>
+<h2 id="保留重复except-all"><a href="#保留重复except-all" class="headerlink" title="保留重复except all"></a>保留重复except all</h2><p><code>except</code>运算在执行集差操作之前自动去除输入中的重复,如果我们想保留所有重复,就必须用<code>except all</code>代替<code>except</code>:</p>
+<h2 id="Oracle使用minus代替except"><a href="#Oracle使用minus代替except" class="headerlink" title="Oracle使用minus代替except"></a>Oracle使用minus代替except</h2><p>某些<code>SQL</code>实现,特别是<code>Oracle</code>,使用关键词<code>minus</code>代替<code>except</code>。</p>
+<h2 id="MySQL不支持except运算符"><a href="#MySQL不支持except运算符" class="headerlink" title="MySQL不支持except运算符"></a><code>MySQL</code>不支持<code>except</code>运算符</h2><h3 id="MySQL中通过not-in实现差运算"><a href="#MySQL中通过not-in实现差运算" class="headerlink" title="MySQL中通过not in实现差运算"></a><code>MySQL</code>中通过<code>not in</code>实现差运算</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select course_id</span><br><span class="line">from section</span><br><span class="line">where semester ='Fall' and year=<span class="number">2009</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| CS-<span class="number">347</span>    |</span><br><span class="line">| PHY-<span class="number">101</span>   |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">3</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select course_id</span><br><span class="line">from section</span><br><span class="line">where semester='Spring' and year=<span class="number">2010</span>;</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">101</span>    |</span><br><span class="line">| FIN-<span class="number">201</span>   |</span><br><span class="line">| MU-<span class="number">199</span>    |</span><br><span class="line">| HIS-<span class="number">351</span>   |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">319</span>    |</span><br><span class="line">| CS-<span class="number">315</span>    |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">7</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select course_id</span><br><span class="line">from section</span><br><span class="line">where semester ='Fall' and year=<span class="number">2009</span> and course_id <span class="keyword">not</span> <span class="keyword">in</span>(</span><br><span class="line">    select course_id</span><br><span class="line">        from section</span><br><span class="line">        where semester='Spring' and year=<span class="number">2010</span></span><br><span class="line">);</span><br><span class="line">+-----------+</span><br><span class="line">| course_id |</span><br><span class="line">+-----------+</span><br><span class="line">| CS-<span class="number">347</span>    |</span><br><span class="line">| PHY-<span class="number">101</span>   |</span><br><span class="line">+-----------+</span><br><span class="line"><span class="number">2</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<!--SSTStop-->
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://blog.csdn.net/qq_39023116/article/details/79008085" target="_blank" rel="noopener">https://blog.csdn.net/qq_39023116/article/details/79008085</a><br><a href="https://www.w3cschool.cn/mysql/mysql-vge12oye.html" target="_blank" rel="noopener">https://www.w3cschool.cn/mysql/mysql-vge12oye.html</a></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/ca9da947/">3.5 集合运算</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/242bc9f3/" rel="next" title="3.4.5 where子句谓词">
+                  <i class="fa fa-chevron-left"></i> 3.4.5 where子句谓词
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/f4a6669e/" rel="prev" title="3.6 空值">
+                  3.6 空值 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-5-集合运算"><span class="nav-number">1.</span> <span class="nav-text">3.5 集合运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-在2009年秋季学期开设的所有课程的集合"><span class="nav-number">1.1.</span> <span class="nav-text">SQL查询 在2009年秋季学期开设的所有课程的集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-在2010年春季学期开设的所有课程的集合"><span class="nav-number">1.2.</span> <span class="nav-text">SQL查询 在2010年春季学期开设的所有课程的集合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-5-1-并运算-union"><span class="nav-number">2.</span> <span class="nav-text">3.5.1 并运算 union</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#有些SQL实现不支持union运算"><span class="nav-number">2.1.</span> <span class="nav-text">有些SQL实现不支持union运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为便于阅读可将两条合并的查询放在括号中"><span class="nav-number">2.2.</span> <span class="nav-text">为便于阅读可将两条合并的查询放在括号中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#union运算会自动去除重复"><span class="nav-number">2.3.</span> <span class="nav-text">union运算会自动去除重复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#union-all运算会保留重复"><span class="nav-number">2.4.</span> <span class="nav-text">union all运算会保留重复</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-5-2-交运算-intersect"><span class="nav-number">3.</span> <span class="nav-text">3.5.2 交运算 intersect</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合"><span class="nav-number">3.1.</span> <span class="nav-text">SQL查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保留重复intersect-all"><span class="nav-number">3.2.</span> <span class="nav-text">保留重复intersect all</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL不支持intersect运算"><span class="nav-number">3.3.</span> <span class="nav-text">MySQL不支持intersect运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL中通过union运算实现交运算"><span class="nav-number">3.3.1.</span> <span class="nav-text">MySQL中通过union运算实现交运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL查询-找出在2009年秋季所有课程的集合"><span class="nav-number">3.3.2.</span> <span class="nav-text">SQL查询 找出在2009年秋季所有课程的集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL查询-找出在和2010年春季开课的所有课程的集合"><span class="nav-number">3.3.3.</span> <span class="nav-text">SQL查询 找出在和2010年春季开课的所有课程的集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL查询-找出在2009年秋季和2010年春季同时开课的所有课程的集合-1"><span class="nav-number">3.3.4.</span> <span class="nav-text">SQL查询 找出在2009年秋季和2010年春季同时开课的所有课程的集合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-5-3-差运算-except"><span class="nav-number">4.</span> <span class="nav-text">3.5.3 差运算 except</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程"><span class="nav-number">4.1.</span> <span class="nav-text">SQL查询 找出在2009年秋季学期开课但不在2010年春季学期开课的所有课程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保留重复except-all"><span class="nav-number">4.2.</span> <span class="nav-text">保留重复except all</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Oracle使用minus代替except"><span class="nav-number">4.3.</span> <span class="nav-text">Oracle使用minus代替except</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL不支持except运算符"><span class="nav-number">4.4.</span> <span class="nav-text">MySQL不支持except运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL中通过not-in实现差运算"><span class="nav-number">4.4.1.</span> <span class="nav-text">MySQL中通过not in实现差运算</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

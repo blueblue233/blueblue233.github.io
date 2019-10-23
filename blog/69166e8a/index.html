@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="15.1 File类 15.1.1 访问文件和目录 1.访问文件名相关的方法 2.文件检测相关的方法 3.获取常规文件信息 4.文件操作相关的方法 5.目录操作相关的方法">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15.1 File类 15.1.1 访问文件和目录">
+<meta property="og:url" content="https://blueblue233.github.io/blog/69166e8a/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="15.1 File类 15.1.1 访问文件和目录 1.访问文件名相关的方法 2.文件检测相关的方法 3.获取常规文件信息 4.文件操作相关的方法 5.目录操作相关的方法">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="15.1 File类 15.1.1 访问文件和目录">
+<meta name="twitter:description" content="15.1 File类 15.1.1 访问文件和目录 1.访问文件名相关的方法 2.文件检测相关的方法 3.获取常规文件信息 4.文件操作相关的方法 5.目录操作相关的方法">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/69166e8a/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>15.1 File类 15.1.1 访问文件和目录 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/69166e8a/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">15.1 File类 15.1.1 访问文件和目录
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-05 23:47:03" itemprop="dateCreated datePublished" datetime="2019-07-05T23:47:03+08:00">2019-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第15章-输入-输出/" itemprop="url" rel="index"><span itemprop="name">第15章 输入 输出</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/69166e8a/#15-1-File类">15.1 File类</a></li>
+<li><a href="/blog/69166e8a/#15-1-1-访问文件和目录">15.1.1 访问文件和目录</a><ul>
+<li><a href="/blog/69166e8a/#1-访问文件名相关的方法">1.访问文件名相关的方法</a></li>
+<li><a href="/blog/69166e8a/#2-文件检测相关的方法">2.文件检测相关的方法</a></li>
+<li><a href="/blog/69166e8a/#3-获取常规文件信息">3.获取常规文件信息</a></li>
+<li><a href="/blog/69166e8a/#4-文件操作相关的方法">4.文件操作相关的方法</a></li>
+<li><a href="/blog/69166e8a/#5-目录操作相关的方法">5.目录操作相关的方法</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="15-1-File类"><a href="#15-1-File类" class="headerlink" title="15.1 File类"></a>15.1 File类</h1><p><code>File</code>类是<code>java.io</code>包下代表与平台无关的<code>文件和目录</code>,也就是说,如果希望在程序中操作文件和目录都可以通过<code>File</code>类来完成。值得指出的是,不管是文件还是目录都是使用<code>File</code>来操作的,<code>File</code>能新建删除、重命名文件和目录,<code>File</code>不能访问文件内容本身。如果需要访问文件内容本身,则需要使用输入/输出流。</p>
+<h1 id="15-1-1-访问文件和目录"><a href="#15-1-1-访问文件和目录" class="headerlink" title="15.1.1 访问文件和目录"></a>15.1.1 访问文件和目录</h1><p><code>File</code>类可以使用文件路径字符串来创建<code>File</code>实例,该文件路径字符串既可以是绝对路径,也可以是相对路径。在默认情况下,系统总是依据用户的工作路径来解释相对路径,这个路径由系统属性”<code>user.dir</code>“指定,通常也就是运行<code>Java</code>虚拟机时所在的路径。<br>一旦创建了<code>File</code>对象后,就可以调用<code>File</code>对象的方法来访问,<code>Fle</code>类提供了很多方法来操作文件和目录,下面列出一些比较常用的方法。</p>
+<h2 id="1-访问文件名相关的方法"><a href="#1-访问文件名相关的方法" class="headerlink" title="1.访问文件名相关的方法"></a>1.访问文件名相关的方法</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>String getName()</code></td>
+<td align="left">返回此<code>File</code>对象所表示的文件名或路径名(如果是路径,则返回最后一级子路径名).</td>
+</tr>
+<tr>
+<td align="left"><code>String getPath()</code></td>
+<td align="left">返回次<code>File</code>对象所对应的路径名.</td>
+</tr>
+<tr>
+<td align="left"><code>File getAbsoluteFile()</code></td>
+<td align="left">返回此<code>File</code>对象的绝对路径。</td>
+</tr>
+<tr>
+<td align="left"><code>String getParent()</code></td>
+<td align="left">返回此<code>File</code>对象所对应目录(最后一级子目录)的父目录名。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean renameTo(File new Name)</code></td>
+<td align="left">重命名此<code>File</code>对象所对应的文件或目录,如果重命名成功,则返回<code>true</code>;否则返回<code>false</code>.</td>
+</tr>
+</tbody></table>
+<h2 id="2-文件检测相关的方法"><a href="#2-文件检测相关的方法" class="headerlink" title="2.文件检测相关的方法"></a>2.文件检测相关的方法</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>boolean exists()</code></td>
+<td align="left">判断<code>File</code>对象所对应的文件或目录是否存在。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean canWrite()</code></td>
+<td align="left">判断<code>File</code>对象所对应的文件和目录是否可写。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean canRead()</code></td>
+<td align="left">判断<code>File</code>对象所对应的文件和目录是否可读。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean isFile()</code></td>
+<td align="left">判断<code>File</code>对象所对应的是否是文件,而不是目录。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean isDirectory()</code></td>
+<td align="left">判断<code>File</code>对象所对应的是否是目录,而不是文件。</td>
+</tr>
+<tr>
+<td align="left"><code>boolean isAbsolute()</code></td>
+<td align="left">判断<code>File</code>对象所对应的文件或目录是否是绝对路径。该方法消除了不同平台的差异,可以直接判断<code>File</code>对象是否为绝对路径。在<code>UNIX/Linux/BSD</code>等系统上,如果路径名开头是一条斜线(<code>/</code>),则表明该<code>File</code>对象对应一个绝对路径;在 <code>Windows</code>等系统上,如果路径开头是盘符,则说明它是一个绝对路径。</td>
+</tr>
+</tbody></table>
+<h2 id="3-获取常规文件信息"><a href="#3-获取常规文件信息" class="headerlink" title="3.获取常规文件信息"></a>3.获取常规文件信息</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>long lastModified()</code></td>
+<td align="left">返回文件的最后修改时间</td>
+</tr>
+<tr>
+<td align="left"><code>long length()</code></td>
+<td align="left">返回文件内容的长度。</td>
+</tr>
+<tr>
+<td align="left">## 4.文件操作相关的方法 ##</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>boolean createNewFile()</code></td>
+<td align="left">当此<code>File</code>对象所对应的文件不存在时,该方法将新建一个该<code>File</code>对象所指定的新文件,如果创建成功则返回<code>true</code>;否则返回<code>false</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>boolean delete()</code></td>
+<td align="left">删除<code>File</code>对象所对应的文件或路径。</td>
+</tr>
+<tr>
+<td align="left"><code>static File createTempFile(String prefix,String suffix)</code></td>
+<td align="left">在默认的临时文件目录中创建一个临时的空文件,使用给定前缀、系统生成的随机数和给定后缀作为文件名。这是一个静态方法,可以直接通过<code>File</code>类来调用。 <code>prefix</code>参数必须至少是3字节长。建议前缀使用一个短的、有意义的字符串,比如”<code>hjb</code>或”<code>mail&quot; suffix</code>参数可以为<code>null</code>,在这种情况下,将使用默认的后缀”<code>.tmp</code>“</td>
+</tr>
+<tr>
+<td align="left"><code>static File createTempFile(String prefix,String suffix,File directory)</code></td>
+<td align="left">在<code>directory</code>所指定的目录中创建一个临时的空文件,使用给定前缀、系统生成的随机数和给定后缀作为文件名。这是一个静态方法,可以直接通过<code>File</code>类来调用。</td>
+</tr>
+<tr>
+<td align="left"><code>void deleteOnExit()</code></td>
+<td align="left">注册一个删除钩子,指定当<code>Java</code>虚拟机退出时,删除<code>File</code>对象所对应的文件和目录。</td>
+</tr>
+<tr>
+<td align="left">## 5.目录操作相关的方法 ##</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>boolean mkdir()</code></td>
+<td align="left">试图创建一个<code>File</code>对象所对应的目录,如果创建成功,则返回<code>true</code>;否则返回<code>false</code>。调用该方法时<code>File</code>对象必须对应一个路径,而不是一个文件。</td>
+</tr>
+<tr>
+<td align="left"><code>String[] list()</code></td>
+<td align="left">列出<code>File</code>对象的所有子文件名和路径名,返回<code>String</code>数组。</td>
+</tr>
+<tr>
+<td align="left"><code>File[] listFiles()</code></td>
+<td align="left">列出<code>File</code>对象的所有子文件和路径,返回<code>File</code>数组。</td>
+</tr>
+<tr>
+<td align="left"><code>static File[] listRoots()</code></td>
+<td align="left">列出系统所有的根路径。这是一个静态方法,可以直接通过<code>File</code>类来调用。</td>
+</tr>
+</tbody></table>
+<p>上面详细列出了<code>File</code>类的常用方法,下面程序以几个简单方法来测试一下<code>File</code>类的功能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 以当前路径来创建一个File对象</span></span><br><span class="line">		File file = <span class="keyword">new</span> File(<span class="string">"."</span>);</span><br><span class="line">		<span class="comment">// 直接获取文件名，输出一点</span></span><br><span class="line">		System.out.println(file.getName());</span><br><span class="line">		<span class="comment">// 获取相对路径的父路径可能出错，下面代码输出null</span></span><br><span class="line">		System.out.println(file.getParent());</span><br><span class="line">		<span class="comment">// 获取绝对路径</span></span><br><span class="line">		System.out.println(file.getAbsoluteFile());</span><br><span class="line">		<span class="comment">// 获取上一级路径</span></span><br><span class="line">		System.out.println(file.getAbsoluteFile().getParent());</span><br><span class="line">		<span class="comment">// 在当前路径下创建一个临时文件</span></span><br><span class="line">		File tmpFile = File.createTempFile(<span class="string">"aaa"</span>, <span class="string">".txt"</span>, file);</span><br><span class="line">		<span class="comment">// 指定当JVM退出时删除该文件</span></span><br><span class="line">		tmpFile.deleteOnExit();</span><br><span class="line">		<span class="comment">// 以系统当前时间作为新文件名来创建新文件</span></span><br><span class="line">		File newFile = <span class="keyword">new</span> File(System.currentTimeMillis() + <span class="string">""</span>);</span><br><span class="line">		System.out.println(<span class="string">"newFile对象是否存在："</span> + newFile.exists());</span><br><span class="line">		<span class="comment">// 以指定newFile对象来创建一个文件</span></span><br><span class="line">		newFile.createNewFile();</span><br><span class="line">		<span class="comment">// 以newFile对象来创建一个目录，因为newFile已经存在，</span></span><br><span class="line">		<span class="comment">// 所以下面方法返回false，即无法创建该目录</span></span><br><span class="line">		newFile.mkdir();</span><br><span class="line">		<span class="comment">// 使用list()方法来列出当前路径下的所有文件和路径</span></span><br><span class="line">		String[] fileList = file.list();</span><br><span class="line">		System.out.println(<span class="string">"====当前路径下所有文件和路径如下===="</span>);</span><br><span class="line">		<span class="keyword">for</span> (String fileName : fileList)</span><br><span class="line">		&#123;</span><br><span class="line">			System.out.println(fileName);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// listRoots()静态方法列出所有的磁盘根路径。</span></span><br><span class="line">		File[] roots = File.listRoots();</span><br><span class="line">		System.out.println(<span class="string">"====系统所有根路径如下===="</span>);</span><br><span class="line">		<span class="keyword">for</span> (File root : roots)</span><br><span class="line">		&#123;</span><br><span class="line">			System.out.println(root);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行上面程序,效果如下:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">null</span><br><span class="line"><span class="function">G:\<span class="title">Desktop</span>\随书源码\疯狂<span class="title">Java</span>讲义第三版光盘\<span class="title">codes</span>\15\15.1\.</span></span><br><span class="line"><span class="function"><span class="title">G</span>:\<span class="title">Desktop</span>\随书源码\疯狂<span class="title">Java</span>讲义第三版光盘\<span class="title">codes</span>\15\15.1</span></span><br><span class="line"><span class="function"><span class="title">newFile</span>对象是否存在：<span class="title">false</span></span></span><br><span class="line"><span class="function">====当前路径下所有文件和路径如下====</span></span><br><span class="line"><span class="function">1562343471185</span></span><br><span class="line"><span class="function"><span class="title">aaa2114436954429301658.txt</span></span></span><br><span class="line"><span class="function"><span class="title">FilenameFilterTest.class</span></span></span><br><span class="line"><span class="function"><span class="title">FilenameFilterTest.java</span></span></span><br><span class="line"><span class="function"><span class="title">FileTest.class</span></span></span><br><span class="line"><span class="function"><span class="title">FileTest.java</span></span></span><br><span class="line"><span class="function">====系统所有根路径如下====</span></span><br><span class="line"><span class="function"><span class="title">C</span>:\</span></span><br><span class="line"><span class="function"><span class="title">D</span>:\</span></span><br><span class="line"><span class="function"><span class="title">E</span>:\</span></span><br><span class="line"><span class="function"><span class="title">F</span>:\</span></span><br><span class="line"><span class="function"><span class="title">G</span>:\</span></span><br><span class="line"><span class="function"><span class="title">H</span>:\</span></span><br></pre></td></tr></table></figure>
+<p>可以看到程序列出当前路径的所有文件和路径时,列出了程序创建的临时文件,但程序运行结束后,<code>aaa.txt</code>临时文件并不存在,因为程序指定虚拟机退出时自动删除该文件。</p>
+<p><strong>注意</strong><br><code>Windows</code>的路径分隔符使用反斜线(<code>\</code>),而<code>Java</code>程序中的反斜线表示转义字符,所以如果需要在<code>Windows</code>的路径下包括反斜线,则应该使用两条反斜线,如<code>F:\\abc\\test.txt</code>,或者直接使用斜线(<code>/</code>)也可以,<code>Java</code>程序支持将斜线当成平台无关的路径分隔符.</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/69166e8a/">15.1 File类 15.1.1 访问文件和目录</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/ee2e8dd7/" rel="next" title="第15章 输入输出 本章要点">
+                  <i class="fa fa-chevron-left"></i> 第15章 输入输出 本章要点
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/bb791560/" rel="prev" title="15.1.2 文件过滤器">
+                  15.1.2 文件过滤器 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-File类"><span class="nav-number">1.</span> <span class="nav-text">15.1 File类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-1-1-访问文件和目录"><span class="nav-number">2.</span> <span class="nav-text">15.1.1 访问文件和目录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-访问文件名相关的方法"><span class="nav-number">2.1.</span> <span class="nav-text">1.访问文件名相关的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-文件检测相关的方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.文件检测相关的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-获取常规文件信息"><span class="nav-number">2.3.</span> <span class="nav-text">3.获取常规文件信息</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

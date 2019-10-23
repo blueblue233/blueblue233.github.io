@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="8.4.5 基于注解的 零配置 方式 5. After增强处理 程序示例 After增强特别特别适合用于资源回收">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.4.5 基于注解的 零配置 方式 5. After增强处理">
+<meta property="og:url" content="https://blueblue233.github.io/blog/1ff1bbbc/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="8.4.5 基于注解的 零配置 方式 5. After增强处理 程序示例 After增强特别特别适合用于资源回收">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8.4.5 基于注解的 零配置 方式 5. After增强处理">
+<meta name="twitter:description" content="8.4.5 基于注解的 零配置 方式 5. After增强处理 程序示例 After增强特别特别适合用于资源回收">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/1ff1bbbc/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>8.4.5 基于注解的 零配置 方式 5. After增强处理 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1ff1bbbc/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">8.4.5 基于注解的 零配置 方式 5. After增强处理
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-04 21:59:23" itemprop="dateCreated datePublished" datetime="2019-09-04T21:59:23+08:00">2019-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-4-Spring的AOP/" itemprop="url" rel="index"><span itemprop="name">8.4 Spring的AOP</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-4-Spring的AOP/8-4-5-基于注解的-零配置-方式/" itemprop="url" rel="index"><span itemprop="name">8.4.5 基于注解的 零配置 方式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/1ff1bbbc/#8-4-5-基于注解的-零配置-方式-5-After增强处理">8.4.5 基于注解的 零配置 方式 5. After增强处理</a><ul>
+<li><a href="/blog/1ff1bbbc/#程序示例">程序示例</a></li>
+<li><a href="/blog/1ff1bbbc/#After增强特别特别适合用于资源回收">After增强特别特别适合用于资源回收</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="8-4-5-基于注解的-零配置-方式-5-After增强处理"><a href="#8-4-5-基于注解的-零配置-方式-5-After增强处理" class="headerlink" title="8.4.5 基于注解的 零配置 方式 5. After增强处理"></a>8.4.5 基于注解的 零配置 方式 5. After增强处理</h1><p><code>Spring</code>还提供了一个<code>After</code>增强处理,它与<code>AfterReturning</code>增强处理有点相似,但也有区别。</p>
+<ol>
+<li><code>AfterReturning</code>增强处理只有在目标方法成功执行结束后才会被织入</li>
+<li><code>After</code>增强处理<strong>不管目标方法如何结束,它都会被织入</strong>。<code>PS</code>:方法结束包括<code>成功执行结束</code>或<code>遇到异常中止</code>这两种情况。</li>
+</ol>
+<p>因为<strong>不论一个方法是如何结束的, <code>After</code>增强处理都会被织入</strong>,因此<code>After</code>增强处理必须准备处理<code>正常返回</code>和<code>异常返回</code>两种情况,这种增强处理通常用于释放资源。<code>After</code>增强处理有点类似于<code>finally</code>块。</p>
+<p>使用<code>@After</code>注解修饰一个方法,即可将该方法转成<code>After</code>增强处理。使用<code>@After</code>注解时需要指定个<code>value</code>属性,该属性值用于指定该增强处理被织入的切入点,既可是一个已有的切入点,也可直接指定切入点表达式。</p>
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E:\<span class="title">workspace_QingLiangJiJavaEEQiYeYingYongShiZhang5</span>\<span class="title">After</span></span></span><br><span class="line"><span class="function">└─<span class="title">src</span>\</span></span><br><span class="line"><span class="function">  ├─<span class="title">beans.xml</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">lee</span>\</span></span><br><span class="line"><span class="function">  │ └─<span class="title">BeanTest.java</span></span></span><br><span class="line"><span class="function">  └─<span class="title">org</span>\</span></span><br><span class="line"><span class="function">    └─<span class="title">crazyit</span>\</span></span><br><span class="line"><span class="function">      └─<span class="title">app</span>\</span></span><br><span class="line"><span class="function">        ├─<span class="title">aspect</span>\</span></span><br><span class="line"><span class="function">        │ └─<span class="title">ReleaseAspect.java</span></span></span><br><span class="line"><span class="function">        └─<span class="title">service</span>\</span></span><br><span class="line"><span class="function">          ├─<span class="title">Hello.java</span></span></span><br><span class="line"><span class="function">          ├─<span class="title">impl</span>\</span></span><br><span class="line"><span class="function">          │ ├─<span class="title">HelloImpl.java</span></span></span><br><span class="line"><span class="function">          │ └─<span class="title">WorldImpl.java</span></span></span><br><span class="line"><span class="function">          └─<span class="title">World.java</span></span></span><br></pre></td></tr></table></figure>
+<p>下面的程序将定义一个<code>After</code>增强处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.aspect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.After;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个切面</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReleaseAspect</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// 匹配org.crazyit.app.service包下所有类的</span></span><br><span class="line">	<span class="comment">// 所有方法的执行作为切入点</span></span><br><span class="line">	<span class="meta">@After</span>(<span class="string">"execution(* org.crazyit.app.service.*.*(..))"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"模拟方法结束后的释放资源..."</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中的粗体字代码定义了一个<code>After</code>增强处理,不管切入点的目标方法如何结束,该增强处理都会被织入。该示例程序的目标对象依然使用<code>Hellolmpl</code>、 <code>WorldImpl</code>类, <code>HelloImpl</code>组件中的<code>deleteUser()</code>方法会因为抛出异常而结束。<br>主程序依然使用长度<code>-2</code>作为<code>deleteUser()</code>方法的参数,此时将可以看到如图8.3所示的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">执行Hello组件的addUser添加用户：悟空</span><br><span class="line">模拟方法结束后的释放资源...</span><br><span class="line">模拟方法结束后的释放资源...</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.IllegalArgumentException: 被删除用户的id不能小于0：-2</span><br><span class="line">	at org.crazyit.app.service.impl.HelloImpl.deleteUser(HelloImpl.java:14)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)</span><br><span class="line">       ......</span><br></pre></td></tr></table></figure>
+<h2 id="After增强特别特别适合用于资源回收"><a href="#After增强特别特别适合用于资源回收" class="headerlink" title="After增强特别特别适合用于资源回收"></a>After增强特别特别适合用于资源回收</h2><p>从图8.13中可以看出,虽然<code>deleteUser</code>方法因为<code>legalArgumentException</code>异常结束,但<code>After</code>增强处理依然被正常织入。由此可见,<code>After</code>增强处理的作用非常类似于异常处理中<code>finally</code>块的作用—无论如何,它总会在方法执行结束之后被织入,因此特别适用于进行资源回收。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/1ff1bbbc/">8.4.5 基于注解的 零配置 方式 5. After增强处理</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/44da435c/" rel="next" title="8.4.5 基于注解的 零配置 方式 4. 定义AfterThrowing增强处理">
+                  <i class="fa fa-chevron-left"></i> 8.4.5 基于注解的 零配置 方式 4. 定义AfterThrowing增强处理
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/622db77/" rel="prev" title="8.4.5 基于注解的 零配置 方式 6. Around增强处理">
+                  8.4.5 基于注解的 零配置 方式 6. Around增强处理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#8-4-5-基于注解的-零配置-方式-5-After增强处理"><span class="nav-number">1.</span> <span class="nav-text">8.4.5 基于注解的 零配置 方式 5. After增强处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">1.1.</span> <span class="nav-text">程序示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#After增强特别特别适合用于资源回收"><span class="nav-number">1.2.</span> <span class="nav-text">After增强特别特别适合用于资源回收</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="13.2 SQL语法 提示   13.2.2 关系数据库基本概念和MySQL基本命令 查看数据库 删除数据库 创建数据库 进入数据库 查看数据库中的所有表格 查看表结构   MySQL存储机制">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.2 SQL语法">
+<meta property="og:url" content="https://blueblue233.github.io/blog/97f1533b/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="13.2 SQL语法 提示   13.2.2 关系数据库基本概念和MySQL基本命令 查看数据库 删除数据库 创建数据库 进入数据库 查看数据库中的所有表格 查看表结构   MySQL存储机制">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="13.2 SQL语法">
+<meta name="twitter:description" content="13.2 SQL语法 提示   13.2.2 关系数据库基本概念和MySQL基本命令 查看数据库 删除数据库 创建数据库 进入数据库 查看数据库中的所有表格 查看表结构   MySQL存储机制">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/97f1533b/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>13.2 SQL语法 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/97f1533b/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">13.2 SQL语法
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-21 23:02:34" itemprop="dateCreated datePublished" datetime="2019-05-21T23:02:34+08:00">2019-05-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/97f1533b/#13-2-SQL语法">13.2 SQL语法</a><ul>
+<li><a href="/blog/97f1533b/#提示">提示</a></li>
+</ul>
+</li>
+<li><a href="/blog/97f1533b/#13-2-2-关系数据库基本概念和MySQL基本命令">13.2.2 关系数据库基本概念和MySQL基本命令</a><ul>
+<li><a href="/blog/97f1533b/#查看数据库">查看数据库</a></li>
+<li><a href="/blog/97f1533b/#删除数据库">删除数据库</a></li>
+<li><a href="/blog/97f1533b/#创建数据库">创建数据库</a></li>
+<li><a href="/blog/97f1533b/#进入数据库">进入数据库</a></li>
+<li><a href="/blog/97f1533b/#查看数据库中的所有表格">查看数据库中的所有表格</a></li>
+<li><a href="/blog/97f1533b/#查看表结构">查看表结构</a></li>
+</ul>
+</li>
+<li><a href="/blog/97f1533b/#MySQL存储机制">MySQL存储机制</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="13-2-SQL语法"><a href="#13-2-SQL语法" class="headerlink" title="13.2 SQL语法"></a>13.2 SQL语法</h1><p><strong><code>SQL</code>语句是对所有关系数据库都通用的命令语句，而<code>JDBC API</code>只是执行<code>SQL</code>语句的工具</strong>，<code>JDBC</code>允许对不同的平台、不同的数据库采用相同的编程接口来执行<code>SQL</code>语句。在开始<code>JDBC</code>编程之前必须掌握基本的<code>SQL</code>知识，本节将以<code>MySQL</code>数据库为例详细介绍<code>SQL</code>语法知识。</p>
+<h2 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h2><p><strong>除了标准的<code>SQL</code>语句之外，所有的数据库都会在标准<code>SQL</code>语句基础上进行扩展</strong>，增加一些额外的功能，这些额外的功能属于特定的数据库系统，不能在所有的数据库系统上都通用。因此，<strong>如果想让数据库应用程序可以跨数据库运行，则应该尽量少用这些属于特定数据库的扩展</strong>。</p>
+<h1 id="13-2-2-关系数据库基本概念和MySQL基本命令"><a href="#13-2-2-关系数据库基本概念和MySQL基本命令" class="headerlink" title="13.2.2 关系数据库基本概念和MySQL基本命令"></a>13.2.2 关系数据库基本概念和MySQL基本命令</h1><p>严格来说，<strong>数据库（<code>Database</code>）仅仅是存放用户数据的地方</strong>。当用户访问、操作数据库中的数据时，就需要数据库管理系统的帮助。<strong>数据库管理系统的全称是<code>Database Management System</code>，简称<code>DBMS</code></strong>。<strong>习惯上常常把数据库和数据库管理系统笼统地称为数据库</strong>，通常所说的数据库既包括存储用户数据的部分，也包括管理数据库的管理系统。<br><code>DBMS</code>是所有数据的知识库,它负责管理数据的存储、安全、一致性、并发、恢复和访问等操作。<strong><code>DBMS</code>有一个数据字典(有时也被称为系统表),用于存储它拥有的每个事务的相关信息</strong>,例如名字、结构、位置和类型,<strong>这种关于数据的数据也被称为元数据(<code>metadata</code>)</strong>。</p>
+<p>对于关系数据库而言，<strong>最基本的数据存储单元就是数据表</strong>，因此<strong>可以简单地把数据库想象成大量数据表的集合</strong></p>
+<p>数据表是存储数据的逻辑单元，<strong>可以把数据表想象成由行和列组成的表格</strong>，<strong>其中每一行也被称为一条记录</strong>，<strong>每一列也被称为一个字段</strong>。<br><strong>为数据库建表时，通常需要指定该表包含多少列，每列的数据类型信息</strong>，无须指定该数据表包含多少行——因为数据库表的行是动态改变的，每行用于保存一条用户数据。除此之外，还应该为每个数据表指定一个特殊列，该特殊列的值可以唯一地标识此行的记录，则该特殊列被称为主键列。</p>
+<h2 id="查看数据库"><a href="#查看数据库" class="headerlink" title="查看数据库"></a>查看数据库</h2><p><code>show databases;</code></p>
+<h2 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h2><p><code>drop database 数据库名称;</code></p>
+<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><p><code>create database if not exists 数据库名称;</code></p>
+<h2 id="进入数据库"><a href="#进入数据库" class="headerlink" title="进入数据库"></a>进入数据库</h2><p><code>use 数据库名称;</code></p>
+<h2 id="查看数据库中的所有表格"><a href="#查看数据库中的所有表格" class="headerlink" title="查看数据库中的所有表格"></a>查看数据库中的所有表格</h2><p><code>show tables;</code></p>
+<h2 id="查看表结构"><a href="#查看表结构" class="headerlink" title="查看表结构"></a>查看表结构</h2><p><code>desc 表名</code></p>
+<h1 id="MySQL存储机制"><a href="#MySQL存储机制" class="headerlink" title="MySQL存储机制"></a>MySQL存储机制</h1><p><code>MySQL</code>数据库通常支持如下两种存储机制。</p>
+<ol>
+<li><code>MyISAM</code>：这是<code>MySQL</code>早期默认的存储机制，<strong>对事务支持不够好</strong>。</li>
+<li><code>InnoDB</code>：<strong><code>InnoDB</code>提供事务安全的存储机制</strong>。<strong><code>InnoDB</code>通过建立<code>行级锁</code>来保证事务完整性</strong>，并以<code>Oracle</code>风格的<code>共享锁</code>来处理<code>Select</code>语句。系统默认启动<code>InnoDB</code>存储机制，如果不想使用<code>InnoDB</code>表，则可以使用<code>skip-innodb</code>选项。</li>
+</ol>
+<p>如果使用5.0以上版本的<code>MySQL</code>数据库系统，通常无须指定数据表的存储机制，因为系统默认使用<code>InnoDB</code>存储机制。如果需要在<code>建表时</code>显式指定存储机制，则可在标准<code>建表语法</code>的后面添加下面任意一句。<br><code>ENGINE=MyISAM</code>–强制使用<code>MyISAM</code>存储机制。<br><code>ENGINE=InnoDB</code>–强制使用<code>InnoDB</code>存储机制。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/97f1533b/">13.2 SQL语法</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/b01499fd/" rel="next" title="13.1 JDBC基础">
+                  <i class="fa fa-chevron-left"></i> 13.1 JDBC基础
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/4e4c0c80/" rel="prev" title="13.2.3 SQL语句基础">
+                  13.2.3 SQL语句基础 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#13-2-SQL语法"><span class="nav-number">1.</span> <span class="nav-text">13.2 SQL语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#提示"><span class="nav-number">1.1.</span> <span class="nav-text">提示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-2-2-关系数据库基本概念和MySQL基本命令"><span class="nav-number">2.</span> <span class="nav-text">13.2.2 关系数据库基本概念和MySQL基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看数据库"><span class="nav-number">2.1.</span> <span class="nav-text">查看数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除数据库"><span class="nav-number">2.2.</span> <span class="nav-text">删除数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">2.3.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入数据库"><span class="nav-number">2.4.</span> <span class="nav-text">进入数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看数据库中的所有表格"><span class="nav-number">2.5.</span> <span class="nav-text">查看数据库中的所有表格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看表结构"><span class="nav-number">2.6.</span> <span class="nav-text">查看表结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL存储机制"><span class="nav-number">3.</span> <span class="nav-text">MySQL存储机制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

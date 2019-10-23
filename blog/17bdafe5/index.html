@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="1.4 数据库语言 1.4.1 数据操纵语言 数据操纵语言分类 查询   1.4.2 数据定义语言 约束 有哪些约束   数据字典介绍">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.4 数据库语言">
+<meta property="og:url" content="https://blueblue233.github.io/blog/17bdafe5/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="1.4 数据库语言 1.4.1 数据操纵语言 数据操纵语言分类 查询   1.4.2 数据定义语言 约束 有哪些约束   数据字典介绍">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:00:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1.4 数据库语言">
+<meta name="twitter:description" content="1.4 数据库语言 1.4.1 数据操纵语言 数据操纵语言分类 查询   1.4.2 数据定义语言 约束 有哪些约束   数据字典介绍">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/17bdafe5/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>1.4 数据库语言 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/17bdafe5/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">1.4 数据库语言
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-07 21:17:21" itemprop="dateCreated datePublished" datetime="2019-10-07T21:17:21+08:00">2019-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:42" itemprop="dateModified" datetime="2019-10-14T14:00:42+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第1章-引言/" itemprop="url" rel="index"><span itemprop="name">第1章 引言</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/17bdafe5/#1-4-数据库语言">1.4 数据库语言</a></li>
+<li><a href="/blog/17bdafe5/#1-4-1-数据操纵语言">1.4.1 数据操纵语言</a><ul>
+<li><a href="/blog/17bdafe5/#数据操纵语言分类">数据操纵语言分类</a></li>
+<li><a href="/blog/17bdafe5/#查询">查询</a></li>
+</ul>
+</li>
+<li><a href="/blog/17bdafe5/#1-4-2-数据定义语言">1.4.2 数据定义语言</a><ul>
+<li><a href="/blog/17bdafe5/#约束">约束</a><ul>
+<li><a href="/blog/17bdafe5/#有哪些约束">有哪些约束</a></li>
+</ul>
+</li>
+<li><a href="/blog/17bdafe5/#数据字典介绍">数据字典介绍</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="1-4-数据库语言"><a href="#1-4-数据库语言" class="headerlink" title="1.4 数据库语言"></a>1.4 数据库语言</h1><p>数据库系统提供<code>数据定义语言</code>(<code>data-definition language</code>)来<code>定义数据库模式</code>,以及<code>数据操纵语言</code>(<code>data-manipulation language)</code>来表达数据库的<code>査询</code>和<code>更新</code>。而实际上,数据定义和数据操纵语言并不是两种分离的语言,相反地,它们简单地构成了单一的数据库语言(如广泛使用的<code>SQL</code>语言)的不同部分。</p>
+<h1 id="1-4-1-数据操纵语言"><a href="#1-4-1-数据操纵语言" class="headerlink" title="1.4.1 数据操纵语言"></a>1.4.1 数据操纵语言</h1><p>数据操纵语言(<code>Data-Manipulation Language,DML</code>)使得用户可以<code>访问</code>或<code>操纵</code>那些按照某种适当的数据模型组织起来的数据。有以下访问类型:</p>
+<ul>
+<li>对存储在数据库中的信息进行检索。</li>
+<li>向数据库中插入新的信息。</li>
+<li>从数据库中删除信息。</li>
+<li>修改数据库中存储的信息。</li>
+</ul>
+<h2 id="数据操纵语言分类"><a href="#数据操纵语言分类" class="headerlink" title="数据操纵语言分类"></a>数据操纵语言分类</h2><p>通常有两类基本的数据操纵语言:</p>
+<ol>
+<li>过程化<code>DML(procedural DML)</code>要求<strong>用户指定需要什么数据以及如何获得这些数据</strong>。</li>
+<li>声明式<code>DML(declarative DML)</code>(也称为非过程化<code>DML)</code>只要求<strong>用户指定需要什么数据,而不指明如何获得这些数据</strong>。</li>
+</ol>
+<p>通常<strong>声明式<code>DML</code></strong>比<strong>过程化<code>DML</code></strong>易学易用。但是,由于用户不必指明如何获得数据,数据库系统必须找出一种访问数据的高效途径</p>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>查询(<code>query</code>)是要求对信息进行检索的语句。<code>DML</code>中涉及信息检索的部分称作查询语言<code>query language</code>。实践中常把<code>查询语言</code>和<code>数据操纵语言</code>作为同义词使用,尽管从技术上来说这并不正确.</p>
+<h1 id="1-4-2-数据定义语言"><a href="#1-4-2-数据定义语言" class="headerlink" title="1.4.2 数据定义语言"></a>1.4.2 数据定义语言</h1><p><code>数据库模式</code>是通过一系列定义来说明的,这些定义由一种称作<code>数据定义语言</code>(<code>Data-DefinitionLanguage,DDL</code>)的特殊语言来表达。<code>DDL</code>也可用于定义数据的其他特征。<br>数据库系统所使用的<code>存储结构</code>和<code>访问方式</code>是通过一系列特殊的<code>DDL</code>语句来说明的,这种特殊的<code>DDL</code>称作<strong>数据存储和定义语言</strong>(<code>data storage and definition)</code>。这些语句<strong>定义了数据库模式的实现细节</strong>,而这些细节对用户来说通常是不可见的。</p>
+<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p>存储在数据库中的数据值必须满足某些一致性约束( <code>consistency constraint)</code>。例如,假设大学要求个系的账户余额必须不能为负值。<code>DDL</code>语言提供了指定这种约束的工具。每当数据库被更新时,数据库系统都会检查这些约束。通常,约束可以是关于数据库的任意谓词。然而,如果要测试任意谓词,可能代价比较高。因此,数据库系统实现可以以最小代价测试的<code>完整性约束</code></p>
+<h3 id="有哪些约束"><a href="#有哪些约束" class="headerlink" title="有哪些约束"></a>有哪些约束</h3><ol>
+<li><strong>域约束</strong>(<code>domain constraint</code>)。每个属性都必须对应于一个所有可能的取值构成的域(例如,整数型、字符型、日期/时间型)。<strong>声明一种属性属于某种具体的域就相当于约束它可以取的值</strong>。域约束是完整性约束的最基本形式。每当有新数据项插入到数据库中,系统就能方便地进行域约束检测。</li>
+<li><strong>参照完整性约束</strong>(<code>referential integrity</code>)。我们常常希望,<strong>一个关系中给定属性集上的取值也在另一关系的某一属性集的取值中出现</strong>(参照完整性)。例如,每门课程所列出的系必须是实际存在的系。更准确地说,一个<code>course</code>记录中的<code>dept_name</code>值必须出现在<code>department</code>关系中的某个记录的<code>dept_name</code>属性中。数据库的修改会导致参照完整性的破坏。当参照完整性约束被违反时,通常的处理是拒绝执行导致完整性被破坏的操作。</li>
+<li><strong>断言</strong>(<code>assertion)</code>。<strong>一个断言就是数据库需要时刻满足的某一条件</strong>。<strong><code>域约束</code>和<code>参照完整性约束</code>是断言的特殊形式</strong>。然而,还有许多约束不能仅用这几种特殊形式表达。例如,”每一学期每个系必须至少开设5门课程”,必须表达成一个断言。断言创建以后,系统会检测其有效性。如果断言有效,则以后只有不破坏断言的数据库更新才被允许。</li>
+<li><strong>授权</strong>(<code>authorization)</code>。我们也许想对用户加以区别,对于不同的用户在数据库中的不同数据值上允许不同的访问类型。这些区别以授权来表达,最常见的是:<ul>
+<li><strong>读权限</strong>( <code>read authorization)</code>,允许读取数据,但不能修改数据;</li>
+<li><strong>插入权限</strong>( <code>insert authorization)</code>,允许插入新数据,但不允许修改已有数据;</li>
+<li><strong>更新权限</strong>( <code>update authorization)</code>,允许修改,但不能删除数据;</li>
+<li><strong>删除权限</strong>( <code>deleteauthorization)</code>,允许删除数据。<br>我们可以赋予用户所有的权限,或者没有或部分拥有这些权限。</li>
+</ul>
+</li>
+</ol>
+<h2 id="数据字典介绍"><a href="#数据字典介绍" class="headerlink" title="数据字典介绍"></a>数据字典介绍</h2><p>正如其他任何程序设计语言一样,<strong>数据定义语言</strong>(<code>DDL</code>)以一些指令(语句)作为输入,生成一些输出。<br><code>DDL</code>的<code>输出</code>放在数据字典(<code>data dictionary</code>)中,数据字典包含了元数据(<code>metadata</code>),<strong>元数据是关于数据的数据</strong>。<br>可把数据字典看作一种特殊的表,这种表只能由数据库系统本身(不是常规的用户)来访问和修改。在读取和修改实际的数据前,数据库系统先要参考数据字典。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/17bdafe5/">1.4 数据库语言</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/f6bbcb52/" rel="next" title="1.2 数据库系统的目标">
+                  <i class="fa fa-chevron-left"></i> 1.2 数据库系统的目标
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/fa82473e/" rel="prev" title="1.5 关系数据库">
+                  1.5 关系数据库 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-4-数据库语言"><span class="nav-number">1.</span> <span class="nav-text">1.4 数据库语言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-4-1-数据操纵语言"><span class="nav-number">2.</span> <span class="nav-text">1.4.1 数据操纵语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据操纵语言分类"><span class="nav-number">2.1.</span> <span class="nav-text">数据操纵语言分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">2.2.</span> <span class="nav-text">查询</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-4-2-数据定义语言"><span class="nav-number">3.</span> <span class="nav-text">1.4.2 数据定义语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#约束"><span class="nav-number">3.1.</span> <span class="nav-text">约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有哪些约束"><span class="nav-number">3.1.1.</span> <span class="nav-text">有哪些约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据字典介绍"><span class="nav-number">3.2.</span> <span class="nav-text">数据字典介绍</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

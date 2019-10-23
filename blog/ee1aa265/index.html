@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="4.5.5 用户定义的类型 独特类型 如何自定义新类型 删除或就该自定义类型 域 域和自定义类型的区别   在数据库实现中对类型和域的支持 PostgreSQL IBM DB2 SQL Server Oracle MySQL 面向对象类型">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.5.5 用户定义的类型">
+<meta property="og:url" content="https://blueblue233.github.io/blog/ee1aa265/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="4.5.5 用户定义的类型 独特类型 如何自定义新类型 删除或就该自定义类型 域 域和自定义类型的区别   在数据库实现中对类型和域的支持 PostgreSQL IBM DB2 SQL Server Oracle MySQL 面向对象类型">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-22T16:37:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4.5.5 用户定义的类型">
+<meta name="twitter:description" content="4.5.5 用户定义的类型 独特类型 如何自定义新类型 删除或就该自定义类型 域 域和自定义类型的区别   在数据库实现中对类型和域的支持 PostgreSQL IBM DB2 SQL Server Oracle MySQL 面向对象类型">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/ee1aa265/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>4.5.5 用户定义的类型 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ee1aa265/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">4.5.5 用户定义的类型
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-21 22:56:14" itemprop="dateCreated datePublished" datetime="2019-10-21T22:56:14+08:00">2019-10-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-23 00:37:55" itemprop="dateModified" datetime="2019-10-23T00:37:55+08:00">2019-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/" itemprop="url" rel="index"><span itemprop="name">第4章 中级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第4章-中级SQL/4-5-SQL的数据类型与模式/" itemprop="url" rel="index"><span itemprop="name">4.5 SQL的数据类型与模式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/ee1aa265/#4-5-5-用户定义的类型">4.5.5 用户定义的类型</a><ul>
+<li><a href="/blog/ee1aa265/#独特类型">独特类型</a></li>
+<li><a href="/blog/ee1aa265/#如何自定义新类型">如何自定义新类型</a></li>
+<li><a href="/blog/ee1aa265/#删除或就该自定义类型">删除或就该自定义类型</a></li>
+<li><a href="/blog/ee1aa265/#域">域</a></li>
+<li><a href="/blog/ee1aa265/#域和自定义类型的区别">域和自定义类型的区别</a></li>
+</ul>
+</li>
+<li><a href="/blog/ee1aa265/#在数据库实现中对类型和域的支持">在数据库实现中对类型和域的支持</a><ul>
+<li><a href="/blog/ee1aa265/#PostgreSQL"><strong>PostgreSQL</strong></a></li>
+<li><a href="/blog/ee1aa265/#IBM-DB2"><strong>IBM DB2</strong></a></li>
+<li><a href="/blog/ee1aa265/#SQL-Server"><strong>SQL Server</strong></a></li>
+<li><a href="/blog/ee1aa265/#Oracle">Oracle</a></li>
+<li><a href="/blog/ee1aa265/#MySQL"><strong>MySQL</strong></a></li>
+<li><a href="/blog/ee1aa265/#面向对象类型">面向对象类型</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="4-5-5-用户定义的类型"><a href="#4-5-5-用户定义的类型" class="headerlink" title="4.5.5 用户定义的类型"></a>4.5.5 用户定义的类型</h1><p><code>SQL</code>支持<strong>两种</strong>形式的用户定义数据类型。</p>
+<ul>
+<li>第一种称为独特类型( <code>distinct type</code>),我们将在这里介绍。</li>
+<li>另一种称为结构化数据类型( <code>structured data type</code>),允许创建<code>具有嵌套</code>记录结构、<code>数组</code>和<code>多重集的复杂数据类型</code>。</li>
+</ul>
+<p>在本章我们不介绍结构化数据类型,而是在后面第22章描述。<br><strong>一些属性可能会有相同的数据类型</strong>。例如,用于学生名和教师名的<code>name</code>属性就可能有相同的域:所有人名的集合。<br>然而, <code>budget</code>和<code>dept_name</code>的域肯定应该是不同的。<code>name</code>和 <code>dept_name</code>是否应该有相同的域,这一点就不那么明显了。在实现层,教师姓名和系的名字都是字符串。然而,我们通常不认为“<strong>找出所有与某个系同名的教师</strong>”是一个有意义的查询。因此,如果我们在概念层而不是物理层来看待数据库的话,<code>name</code>和 <code>dept_name</code>应该有不同的域。</p>
+<h2 id="独特类型"><a href="#独特类型" class="headerlink" title="独特类型"></a>独特类型</h2><p>更重要的是,在现实中,把一个教师的姓名赋给一个系名可能是一个程序上的错误;<br>类似地,把个以美元表示的货币值直接与一个以英镑表示的货币值进行比较几乎可以肯定是程序上的错误。<br>一个好的类型系统应该能够检测出这类赋值或比较。为了支持这种检测,<code>SQL</code>提供了<strong>独特类型</strong>(<code>distincttype</code>)的概念。</p>
+<h2 id="如何自定义新类型"><a href="#如何自定义新类型" class="headerlink" title="如何自定义新类型"></a>如何自定义新类型</h2><p>可以用<code>create type</code>子句来定义新类型。例如,下面的语句:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">type</span> Dollars <span class="keyword">as</span> <span class="built_in">numeric</span>(<span class="number">12</span>,<span class="number">2</span>) <span class="keyword">final</span>;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">type</span> Pounds <span class="keyword">as</span> <span class="built_in">numeric</span>(<span class="number">12</span>,<span class="number">2</span>) <span class="keyword">final</span>;</span><br></pre></td></tr></table></figure>
+<p>把两个用户定义类型<code>Dollars</code>和<code>Pounds</code>定义为总共12位数字的十进制数,其中两位放在十进制小数点后。(在此关键字<code>final</code>并不是真的有意义,它是<code>SQL:1999</code>标准要求的,其原因我们不在这里讨论了;一些系统实现允许忽略血<code>final</code>关键字。)然后新创建的类型就可以用作关系属性的类型。例如,我们可以把<code>department</code>表定义为:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> department (</span><br><span class="line">    dept_name <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">    building <span class="built_in">varchar</span>(<span class="number">15</span>),</span><br><span class="line">    budget Dollars</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>尝试为<code>Pounds</code>类型的变量赋予一个<code>Dollars</code>类型的值会导致一个编译时错误,尽管这两者都是相同的数值类型。这样的赋值很可能是由程序错误引起的,或许是程序员忘记了货币之间的区别。为不同的货币声明不同的类型能帮助发现这些错误。<br>由于有强类型检查,表达式( <code>department.budget+20</code>)将不会被接受,因为属性和整型常数20具有不同的类型。一种类型的数值可以被<strong>转换</strong>(也即<code>cast</code>)到另一个域,如下所示:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cast(department.budget to numeric( 12, 2));</span><br></pre></td></tr></table></figure>
+<p>我们可以在数值类型上做加法,但是为了把结果存回到一个<code>Dollars</code>类型的属性中,我们需要用另一个类型转换表达式来把数值类型转换回<code>Dollars</code>类型。</p>
+<h2 id="删除或就该自定义类型"><a href="#删除或就该自定义类型" class="headerlink" title="删除或就该自定义类型"></a>删除或就该自定义类型</h2><p><code>SQL</code>提供了<code>drop type</code>和<code>alter type</code>子句来删除或修改以前创建过的类型。</p>
+<h2 id="域"><a href="#域" class="headerlink" title="域"></a>域</h2><p>在把用户定义类型加入到<code>SQL</code>(在<code>SQL:1999</code>中)之前,<code>SQL</code>有一个相似但稍有不同的概念:<code>域</code>(<code>domain</code>)(<code>domain</code>在<code>SQL-92</code>中引入),它可以在基本类型上施加完整性约束。例如,我们可以定义一个域<code>DDollars</code>,如下所示:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">domain</span> DDollars <span class="keyword">as</span> <span class="built_in">numeric</span>(<span class="number">12</span>, <span class="number">2</span>) <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="域和自定义类型的区别"><a href="#域和自定义类型的区别" class="headerlink" title="域和自定义类型的区别"></a>域和自定义类型的区别</h2><p><code>DDollars</code>域可以用作属性类型,正如我们用<code>Dollars</code>类型一样。然而,类型和域之间有两个重大的差别</p>
+<ol>
+<li><strong>在域上可以声明约束</strong>,例如<code>not null</code>,也可以为<strong>域类型变量定义默认值</strong>,然而<strong>在用户自定义类型上<code>不能</code>声明约束或默认值</strong>。设计用户定义类型不仅是用它来指定属性类型,而且还将它用在不能施加约束的地方对<code>SQL</code>进行过程扩展。</li>
+<li><strong>域并不是<code>强类型</code>的</strong>。因此一个域类型的值可以被赋给另一个域类型,只要它们的基本类型是相容的</li>
+</ol>
+<p>当把<code>check</code>子句应用到域上时,允许模式设计者指定一个谓词,被声明为来自该域的任何变量都必须满足这个谓词。例如, <code>check</code>子句可以保证教师工资域中只允许出现大于给定值的值:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">domain</span> YearlySalary <span class="built_in">numeric</span>(<span class="number">8</span>,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">constraint</span> salary_value_test <span class="keyword">check</span>(<span class="keyword">value</span> &gt;<span class="number">29000.00</span>);</span><br></pre></td></tr></table></figure>
+<p><code>YearlySalary</code>域有一个约束来保证年薪大于或等于290000美元。 <code>constraint salary_value_test</code>子句是可选的,它用来将该约束命名为<code>salary_value_test</code>。系统用这个名字来指出一个更新违反了哪个约束。<br>作为另一个例子,使用<code>in</code>子句可以限定一个域只包含指定的一组值</p>
+<h1 id="在数据库实现中对类型和域的支持"><a href="#在数据库实现中对类型和域的支持" class="headerlink" title="在数据库实现中对类型和域的支持"></a>在数据库实现中对类型和域的支持</h1><p>尽管本节描述的<code>create type</code>和<code>create domain</code>结构是<code>SQL</code>标准的部分,但这里描迷的这些结构形式还没有被大多数数据库实现完全支持。</p>
+<h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a><code>PostgreSQL</code></h2><p><code>PostgreSQL</code>支持<code>create domain</code>结构,但是其<code>create type</code>结构具有不同的语法和解释。</p>
+<h2 id="IBM-DB2"><a href="#IBM-DB2" class="headerlink" title="IBM DB2"></a><code>IBM DB2</code></h2><p><code>IBM DB2</code>支持<code>create type</code>的一个版本,它使用<code>create distinct type</code>语法,但不支持<code>create domain</code>。</p>
+<h2 id="SQL-Server"><a href="#SQL-Server" class="headerlink" title="SQL Server"></a><code>SQL Server</code></h2><p>微软的<code>SQL Server</code>实现了<code>create type</code>结构的一个版本,支持<code>域约束</code>,与<code>SQL</code>的<code>create domain</code>结构类似。</p>
+<h2 id="Oracle"><a href="#Oracle" class="headerlink" title="Oracle"></a>Oracle</h2><p><code>Oracle</code>不支持在此描述的任何一种结构。</p>
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a><code>MySQL</code></h2><p>经过我的测试<code>MySQL</code>也不支持自定义类型<code>create type</code>结构和自定义域<code>create domain</code>结构。</p>
+<h2 id="面向对象类型"><a href="#面向对象类型" class="headerlink" title="面向对象类型"></a>面向对象类型</h2><p>然而,<code>SQL</code>还定义了一个更复杂的<strong>面向对象类型</strong>系统,我们将在后面第22章学习。通过使用不同形式的<code>create type</code>结构, <code>Oracle</code>、 <code>IBM DB2</code>、 <code>PostgreSQL</code>和<code>SQL Server</code>都支持<code>面向对象类型系统</code>。</p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/ee1aa265/">4.5.5 用户定义的类型</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/f4ff90ef/" rel="next" title="4.5.4 大对象类型">
+                  <i class="fa fa-chevron-left"></i> 4.5.4 大对象类型
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/27f1fe58/" rel="prev" title="4.5.6 create table的扩展">
+                  4.5.6 create table的扩展 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-5-5-用户定义的类型"><span class="nav-number">1.</span> <span class="nav-text">4.5.5 用户定义的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#独特类型"><span class="nav-number">1.1.</span> <span class="nav-text">独特类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何自定义新类型"><span class="nav-number">1.2.</span> <span class="nav-text">如何自定义新类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除或就该自定义类型"><span class="nav-number">1.3.</span> <span class="nav-text">删除或就该自定义类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#域"><span class="nav-number">1.4.</span> <span class="nav-text">域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#域和自定义类型的区别"><span class="nav-number">1.5.</span> <span class="nav-text">域和自定义类型的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在数据库实现中对类型和域的支持"><span class="nav-number">2.</span> <span class="nav-text">在数据库实现中对类型和域的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">2.1.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IBM-DB2"><span class="nav-number">2.2.</span> <span class="nav-text">IBM DB2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-Server"><span class="nav-number">2.3.</span> <span class="nav-text">SQL Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Oracle"><span class="nav-number">2.4.</span> <span class="nav-text">Oracle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">2.5.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向对象类型"><span class="nav-number">2.6.</span> <span class="nav-text">面向对象类型</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="10.3 Checked异常和Runtime异常体系 java异常分类 Java程序必须显示处理Checked异常 Checked异常处理的两种方式 Runtime异常不需要显示处理 总结">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10.3 Checked异常和Runtime异常体系">
+<meta property="og:url" content="https://blueblue233.github.io/blog/d81e130b/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="10.3 Checked异常和Runtime异常体系 java异常分类 Java程序必须显示处理Checked异常 Checked异常处理的两种方式 Runtime异常不需要显示处理 总结">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="10.3 Checked异常和Runtime异常体系">
+<meta name="twitter:description" content="10.3 Checked异常和Runtime异常体系 java异常分类 Java程序必须显示处理Checked异常 Checked异常处理的两种方式 Runtime异常不需要显示处理 总结">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/d81e130b/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>10.3 Checked异常和Runtime异常体系 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d81e130b/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">10.3 Checked异常和Runtime异常体系
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-13 17:14:55" itemprop="dateCreated datePublished" datetime="2019-07-13T17:14:55+08:00">2019-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:45" itemprop="dateModified" datetime="2019-10-14T14:01:45+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第10章-异常处理/" itemprop="url" rel="index"><span itemprop="name">第10章 异常处理</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第10章-异常处理/10-3-Checked异常和Runtime异常体系/" itemprop="url" rel="index"><span itemprop="name">10.3 Checked异常和Runtime异常体系</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/d81e130b/#10-3-Checked异常和Runtime异常体系">10.3 Checked异常和Runtime异常体系</a><ul>
+<li><a href="/blog/d81e130b/#java异常分类">java异常分类</a></li>
+<li><a href="/blog/d81e130b/#Java程序必须显示处理Checked异常">Java程序必须显示处理Checked异常</a></li>
+<li><a href="/blog/d81e130b/#Checked异常处理的两种方式">Checked异常处理的两种方式</a></li>
+<li><a href="/blog/d81e130b/#Runtime异常不需要显示处理">Runtime异常不需要显示处理</a></li>
+<li><a href="/blog/d81e130b/#总结">总结</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="10-3-Checked异常和Runtime异常体系"><a href="#10-3-Checked异常和Runtime异常体系" class="headerlink" title="10.3 Checked异常和Runtime异常体系"></a>10.3 Checked异常和Runtime异常体系</h1><h2 id="java异常分类"><a href="#java异常分类" class="headerlink" title="java异常分类"></a>java异常分类</h2><p><code>Java</code>的异常被分为两大类: <code>Checked</code>异常和<code>Runtime</code>异常(运行时异常)。</p>
+<ul>
+<li>所有的<code>RuntimeException</code>类及其子类的实例被称为<code>Runtime</code>异常;</li>
+<li>不是<code>RuntimeException</code>类及其子类的异常实例则被称为<code>Checked</code>异常。</li>
+</ul>
+<h2 id="Java程序必须显示处理Checked异常"><a href="#Java程序必须显示处理Checked异常" class="headerlink" title="Java程序必须显示处理Checked异常"></a>Java程序必须显示处理Checked异常</h2><p>只有<code>Java</code>语言提供了<code>Checked</code>异常,其他语言都没有提供<code>Checked</code>异常。<code>Java</code>认为<code>Checked</code>异常都是可以被处理(修复)的异常,所以<strong><code>Java</code>程序必须显式处理<code>Checked</code>异常。如果程序没有处理<code>Checked</code>异常,该程序在编译时就会发生错误,无法通过编译</strong>。</p>
+<h2 id="Checked异常处理的两种方式"><a href="#Checked异常处理的两种方式" class="headerlink" title="Checked异常处理的两种方式"></a>Checked异常处理的两种方式</h2><p>对于<code>Checked</code>异常的处理方式有如下两种。</p>
+<ul>
+<li>如果<code>当前方法明确知道如何处理该异常</code>,那么程序应该使用<code>try-catch</code>块来捕获该异常,然后在对应的<code>catch</code>块中修复该异常。</li>
+<li>当前方法不知道如何处理这种异常,应该在定义该方法时声明<code>抛出</code>该异常。</li>
+</ul>
+<h2 id="Runtime异常不需要显示处理"><a href="#Runtime异常不需要显示处理" class="headerlink" title="Runtime异常不需要显示处理"></a>Runtime异常不需要显示处理</h2><p><code>Runtime</code>异常则更加灵活, <code>Runtime</code>异常无须显式声明抛出,如果程序需要捕获<code>Runtime</code>异常,也可以使用<code>try-catch</code>块来实现。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><code>Checked</code>必须显示处理,处理时可以使用<code>try-catch</code>语句,也可以直接抛出</li>
+<li><code>Runtime</code>不需要显示处理,如有必要也可以使用<code>try-catch</code>捕获<code>Runtime</code>异常.</li>
+</ul>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/d81e130b/">10.3 Checked异常和Runtime异常体系</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/655287c5/" rel="next" title="10.2.7 Java 7的自动关闭资源的try语句">
+                  <i class="fa fa-chevron-left"></i> 10.2.7 Java 7的自动关闭资源的try语句
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/d5e8f6ca/" rel="prev" title="10.3.1 使用throws声明抛出异常">
+                  10.3.1 使用throws声明抛出异常 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#10-3-Checked异常和Runtime异常体系"><span class="nav-number">1.</span> <span class="nav-text">10.3 Checked异常和Runtime异常体系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#java异常分类"><span class="nav-number">1.1.</span> <span class="nav-text">java异常分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java程序必须显示处理Checked异常"><span class="nav-number">1.2.</span> <span class="nav-text">Java程序必须显示处理Checked异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Checked异常处理的两种方式"><span class="nav-number">1.3.</span> <span class="nav-text">Checked异常处理的两种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime异常不需要显示处理"><span class="nav-number">1.4.</span> <span class="nav-text">Runtime异常不需要显示处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

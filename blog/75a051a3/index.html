@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="13.2.5 数据库约束 3.PRIMARY KEY约束 列级别约束创建主键约束 表级别约束创建主键约束 组合主键 删除主键约束 增加主键约束 通过add添加主键约束 通过modify添加主键约束   自动增长列">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.2.5 数据库约束 3.primary key约束">
+<meta property="og:url" content="https://blueblue233.github.io/blog/75a051a3/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="13.2.5 数据库约束 3.PRIMARY KEY约束 列级别约束创建主键约束 表级别约束创建主键约束 组合主键 删除主键约束 增加主键约束 通过add添加主键约束 通过modify添加主键约束   自动增长列">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="13.2.5 数据库约束 3.primary key约束">
+<meta name="twitter:description" content="13.2.5 数据库约束 3.PRIMARY KEY约束 列级别约束创建主键约束 表级别约束创建主键约束 组合主键 删除主键约束 增加主键约束 通过add添加主键约束 通过modify添加主键约束   自动增长列">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/75a051a3/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>13.2.5 数据库约束 3.primary key约束 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/75a051a3/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">13.2.5 数据库约束 3.primary key约束
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-23 18:09:25" itemprop="dateCreated datePublished" datetime="2019-05-23T18:09:25+08:00">2019-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/75a051a3/#13-2-5-数据库约束-3-PRIMARY-KEY约束">13.2.5 数据库约束 3.PRIMARY KEY约束</a><ul>
+<li><a href="/blog/75a051a3/#列级别约束创建主键约束">列级别约束创建主键约束</a></li>
+<li><a href="/blog/75a051a3/#表级别约束创建主键约束">表级别约束创建主键约束</a></li>
+<li><a href="/blog/75a051a3/#组合主键">组合主键</a></li>
+<li><a href="/blog/75a051a3/#删除主键约束">删除主键约束</a></li>
+<li><a href="/blog/75a051a3/#增加主键约束">增加主键约束</a><ul>
+<li><a href="/blog/75a051a3/#通过add添加主键约束">通过add添加主键约束</a></li>
+<li><a href="/blog/75a051a3/#通过modify添加主键约束">通过modify添加主键约束</a></li>
+</ul>
+</li>
+<li><a href="/blog/75a051a3/#自动增长列">自动增长列</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="13-2-5-数据库约束-3-PRIMARY-KEY约束"><a href="#13-2-5-数据库约束-3-PRIMARY-KEY约束" class="headerlink" title="13.2.5 数据库约束 3.PRIMARY KEY约束"></a>13.2.5 数据库约束 3.PRIMARY KEY约束</h1><p><strong>主键约束相当于非空约束和唯一约束</strong>，即<strong>主键约束的列既不允许出现重复值，也不允许出现null值</strong>；<strong>如果对多列组合建立主键约束，则多列里包含的<code>每一列都不能为空</code>，但只要求这些列<code>组合不能重复</code></strong>。主键列的值可用于唯一地标识表中的一条记录。<br><strong>每一个表中最多允许有一个主键</strong>，但这个主键约束可由多个数据列组合而成，<strong>主键是表中能唯一确定一行记录的字段或字段组合</strong>。<br>建立主键约束时既可使用列级约束语法，也可使用表级约束语法。<strong>如果需要对多个字段建立组合主键约束，则只能使用表级约束语法</strong>。<br>使用表级约束语法来建立约束时，可以为该约束指定约束名。但不管用户是否为该主键约束指定约束名，<code>MySQL</code>总是将所有的主键约束命名为<code>PRIMARY</code>。<br><strong>提示：</strong><br><code>MySQL</code>允许在建立主键约束时为该约束命名，但这个名字没有任何作用，这是为了保持与标准<code>SQL</code>的兼容性。大部分数据库都允许自行指定主键约束的名字，而且一旦指定了主键约束名，则该约束名就是用户指定的名字。<br>当创建主键约束时，<code>MySQL</code>在主键约束所在列或列组合上建立对应的唯一索引。<br>创建主键约束的语法和创建唯一约束的语法非常像，一样允许使用列级约束语法为单独的数据列创建主键，如果需要为多列组合建立主键约束或者需要为主键约束命名，则应该使用表级约束语法来建立主键约束。与建立唯一约束不同的是，建立主键约束使用<code>primary key</code>。</p>
+<h2 id="列级别约束创建主键约束"><a href="#列级别约束创建主键约束" class="headerlink" title="列级别约束创建主键约束"></a>列级别约束创建主键约束</h2><p>建表时创建主键约束，使用列级约束语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> primary_test</span><br><span class="line">(</span><br><span class="line">    test_id <span class="built_in">int</span> primary <span class="keyword">key</span>,</span><br><span class="line">    test_name <span class="built_in">varchar</span>(<span class="number">255</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="表级别约束创建主键约束"><a href="#表级别约束创建主键约束" class="headerlink" title="表级别约束创建主键约束"></a>表级别约束创建主键约束</h2><p>建表时创建主键约束，使用表级约束语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> primary_test2</span><br><span class="line">(</span><br><span class="line">    test_id <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">    test_name <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">    test_pass <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">    <span class="comment"># 指定主键约束名为test2_pk,对大部分数据库有效,但对MySQL无效</span></span><br><span class="line">    <span class="keyword">constraint</span> test2_pk primary <span class="keyword">key</span>(test_id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="组合主键"><a href="#组合主键" class="headerlink" title="组合主键"></a>组合主键</h2><p>建表时创建主键约束，以多列建立组合主键，只能使用表级约束语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> primary_test3</span><br><span class="line">(</span><br><span class="line">    test_name <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">    test_pass <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">    <span class="comment"># 建立多列组合的主键约束</span></span><br><span class="line">    primary <span class="keyword">key</span>(test_name,test_pass)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="删除主键约束"><a href="#删除主键约束" class="headerlink" title="删除主键约束"></a>删除主键约束</h2><p>如果需要删除指定表的主键约束，则在<code>alter table</code>语句后使用<code>drop primary key</code>子句即可。<code>SQL</code>语句如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> primary_test3</span><br><span class="line"><span class="keyword">drop</span> primary <span class="keyword">key</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="增加主键约束"><a href="#增加主键约束" class="headerlink" title="增加主键约束"></a>增加主键约束</h2><p>如果需要为指定表增加主键约束，<strong>既可通过<code>modify</code>修改列定义来增加主键约束</strong>，这将采用列级约束语法来增加主键约束；<strong>也可通过<code>add</code>来增加主键约束</strong>，这将采用表级约束语法来增加主键约束。<code>SQL</code>语句如下：</p>
+<h3 id="通过add添加主键约束"><a href="#通过add添加主键约束" class="headerlink" title="通过add添加主键约束"></a>通过add添加主键约束</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> primary_test3</span><br><span class="line"><span class="keyword">add</span> primary <span class="keyword">key</span>(test_name,test_pass);</span><br></pre></td></tr></table></figure>
+<h3 id="通过modify添加主键约束"><a href="#通过modify添加主键约束" class="headerlink" title="通过modify添加主键约束"></a>通过modify添加主键约束</h3><p>如果只是为单独的数据列增加主键约束，则可使用<code>modify</code>修改列定义来实现，如下<code>SQL</code>语句所示：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> primary_test3</span><br><span class="line"><span class="keyword">modify</span> test_name <span class="built_in">varchar</span>(<span class="number">255</span>) primary <span class="keyword">key</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong><br>不要连续执行上面两条<code>SQL</code>语句，因为上面两条<code>SQL</code>语句都是为<code>primary_test3</code>增加主键约束，<strong>而同一个表里最多只能有一个主键约束</strong>，所以连续执行上面两条<code>SQL</code>语句肯定出现错误。为了避免这个问题，可以在成功执行了第一条增加主键约束的<code>SQL</code>语句之后，先将<code>primary_test3</code>里的主键约束删除后再执行第二条增加主键约束的<code>SQL</code>语句。</p>
+<h2 id="自动增长列"><a href="#自动增长列" class="headerlink" title="自动增长列"></a>自动增长列</h2><p>很多数据库对主键列都支持一种自增长的特性——如果某个数据列的类型是整型，而且该列作为主键列，则可指定该列具有自增长功能。指定自增长功能通常用于设置逻辑主键列——该列的值没有任何物理意义，仅仅用于标识每行记录。<code>MySQL</code>使用<code>auto_increment</code>来设置自增长，<code>SQL</code>语句如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> primary_test4</span><br><span class="line">(</span><br><span class="line">    test_id <span class="built_in">int</span> auto_increment primary <span class="keyword">key</span>,</span><br><span class="line">    test_name <span class="built_in">varchar</span>(<span class="number">255</span>);</span><br><span class="line">    test_pass varchar(255)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><strong>一旦指定了某列具有自增长特性，则向该表插入记录时可不为该列指定值，该列的值由数据库系统自动生成。</strong></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/75a051a3/">13.2.5 数据库约束 3.primary key约束</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/b4c9e8dc/" rel="next" title="13.2.5 数据库约束 2.unique约束">
+                  <i class="fa fa-chevron-left"></i> 13.2.5 数据库约束 2.unique约束
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/802c3714/" rel="prev" title="13.2.5 数据库约束 4.foreign key约束">
+                  13.2.5 数据库约束 4.foreign key约束 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#13-2-5-数据库约束-3-PRIMARY-KEY约束"><span class="nav-number">1.</span> <span class="nav-text">13.2.5 数据库约束 3.PRIMARY KEY约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#列级别约束创建主键约束"><span class="nav-number">1.1.</span> <span class="nav-text">列级别约束创建主键约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表级别约束创建主键约束"><span class="nav-number">1.2.</span> <span class="nav-text">表级别约束创建主键约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合主键"><span class="nav-number">1.3.</span> <span class="nav-text">组合主键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除主键约束"><span class="nav-number">1.4.</span> <span class="nav-text">删除主键约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加主键约束"><span class="nav-number">1.5.</span> <span class="nav-text">增加主键约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过add添加主键约束"><span class="nav-number">1.5.1.</span> <span class="nav-text">通过add添加主键约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过modify添加主键约束"><span class="nav-number">1.5.2.</span> <span class="nav-text">通过modify添加主键约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动增长列"><span class="nav-number">1.6.</span> <span class="nav-text">自动增长列</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

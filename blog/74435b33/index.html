@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="8.4.6 基于XML配置文件的管理方式 2. 配置增强处理 XML配置方式中的切入点指示符 XML配置方式中的组合运算符 程序示例">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8.4.6 基于XML配置文件的管理方式 2. 配置增强处理">
+<meta property="og:url" content="https://blueblue233.github.io/blog/74435b33/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="8.4.6 基于XML配置文件的管理方式 2. 配置增强处理 XML配置方式中的切入点指示符 XML配置方式中的组合运算符 程序示例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8.4.6 基于XML配置文件的管理方式 2. 配置增强处理">
+<meta name="twitter:description" content="8.4.6 基于XML配置文件的管理方式 2. 配置增强处理 XML配置方式中的切入点指示符 XML配置方式中的组合运算符 程序示例">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/74435b33/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>8.4.6 基于XML配置文件的管理方式 2. 配置增强处理 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/74435b33/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">8.4.6 基于XML配置文件的管理方式 2. 配置增强处理
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-05 23:21:24" itemprop="dateCreated datePublished" datetime="2019-09-05T23:21:24+08:00">2019-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:00" itemprop="dateModified" datetime="2019-10-14T14:01:00+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/" itemprop="url" rel="index"><span itemprop="name">第8章 深入使用Spring</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-4-Spring的AOP/" itemprop="url" rel="index"><span itemprop="name">8.4 Spring的AOP</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第8章-深入使用Spring/8-4-Spring的AOP/8-4-6-基于XML配置文件的管理方式/" itemprop="url" rel="index"><span itemprop="name">8.4.6 基于XML配置文件的管理方式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/74435b33/#8-4-6-基于XML配置文件的管理方式-2-配置增强处理">8.4.6 基于XML配置文件的管理方式 2. 配置增强处理</a><ul>
+<li><a href="/blog/74435b33/#XML配置方式中的切入点指示符">XML配置方式中的切入点指示符</a></li>
+<li><a href="/blog/74435b33/#XML配置方式中的组合运算符">XML配置方式中的组合运算符</a></li>
+<li><a href="/blog/74435b33/#程序示例">程序示例</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="8-4-6-基于XML配置文件的管理方式-2-配置增强处理"><a href="#8-4-6-基于XML配置文件的管理方式-2-配置增强处理" class="headerlink" title="8.4.6 基于XML配置文件的管理方式 2. 配置增强处理"></a>8.4.6 基于XML配置文件的管理方式 2. 配置增强处理</h1><p>与使用<code>@AspectJ</code>完全一样,使用<code>XML</code>一样可以配置<code>Before</code>、<code>After</code>、 <code>AfterReturning</code>、 <code>AfterThrowing</code>和<code>Around</code>五种增强处理,而且完全支持和<code>@AspectJ</code>完全一样的语义。<br>使用<code>XML</code>配置增强处理分别依赖于如下几个元素。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><code>XML</code>元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>&lt;aop:before&gt;</code></td>
+<td align="left">配置 <code>Before</code>增强处理。</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;aop:after&gt;</code></td>
+<td align="left">配置<code>Afer</code>增强处理。</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;aop:after-returning&gt;</code></td>
+<td align="left">配置<code>AfterReturning</code>增强处理。</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;aop:after-throwing&gt;</code></td>
+<td align="left">配置<code>AfterThrowing</code>增强处理</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;aop:around&gt;</code></td>
+<td align="left">配置 <code>Around</code>增强处理。</td>
+</tr>
+<tr>
+<td align="left">上面这些元素都不支持使用子元素,但通常可指定如下属性。</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>pointcut或者pointcut-ref</code></td>
+<td align="left"><code>pointcut</code>属性指定一个切入表达式, <code>pointcut-ref</code>属性指定已有的切入点名称, <code>Spring</code>将在匹配该表达式的连接点时织入该增强处理。通常<code>pointcut</code>和<code>pointcut-ref</code>两个属性只需使用其中之一。</td>
+</tr>
+<tr>
+<td align="left"><code>method</code></td>
+<td align="left">该属性指定一个方法名,指定将切面<code>Bean</code>的该方法转换为增强处理。</td>
+</tr>
+<tr>
+<td align="left"><code>throwing</code></td>
+<td align="left">该属性只对<code>&lt;after-throwing&gt;</code>元素有效,用于指定一个形参名, <code>AfteThrowing</code>增强处理方法可通过该形参访问目标方法所抛出的异常。</td>
+</tr>
+<tr>
+<td align="left"><code>returning</code></td>
+<td align="left">该属性只对<code>&lt; after-returning</code>…&gt;元素有效,用于指定一个形参名, <code>Afterreturning</code>增强处理方法可通过该形参访问目标方法的返回值</td>
+</tr>
+</tbody></table>
+<p>既然应用选择使用<code>XML</code>配置方式来配置增强处理,所以切面类里定义切面、切入点和增强处理的注解全都可删除了。</p>
+<h2 id="XML配置方式中的切入点指示符"><a href="#XML配置方式中的切入点指示符" class="headerlink" title="XML配置方式中的切入点指示符"></a>XML配置方式中的切入点指示符</h2><p>当定义切入点表达式时,<code>XML</code>配置方式和<code>@AspectJ</code>注解方式支持完全相同的切入点指示符,一样可以支持<code>execution</code>、 <code>within</code>、<code>args</code>、 <code>this</code>、<code>target</code>和<code>bean</code>等切入点指示符。</p>
+<h2 id="XML配置方式中的组合运算符"><a href="#XML配置方式中的组合运算符" class="headerlink" title="XML配置方式中的组合运算符"></a>XML配置方式中的组合运算符</h2><p><code>XML</code>配置方式和<code>@AspectJ</code>注解方式一样支持组合切入点表达式,但<code>XML</code>配置方式不再使用简单的<code>&amp;&amp;</code>、<code>‖</code>和<code>!</code>作为组合运算符(因为直接在<code>XML</code>文件中需要使用实体引用来表示它们),而是使用如下三个组合运算符:<code>and</code>(相当于<code>&amp;&amp;</code>)、<code>or</code>(相当于<code>‖</code>)和<code>not</code>(相当于<code>!</code>)。</p>
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E:\<span class="title">workspace_QingLiangJiJavaEEQiYeYingYongShiZhang5</span>\<span class="title">XML</span>-<span class="title">config</span></span></span><br><span class="line"><span class="function">└─<span class="title">src</span>\</span></span><br><span class="line"><span class="function">  ├─<span class="title">beans.xml</span></span></span><br><span class="line"><span class="function">  ├─<span class="title">lee</span>\</span></span><br><span class="line"><span class="function">  │ └─<span class="title">BeanTest.java</span></span></span><br><span class="line"><span class="function">  └─<span class="title">org</span>\</span></span><br><span class="line"><span class="function">    └─<span class="title">crazyit</span>\</span></span><br><span class="line"><span class="function">      └─<span class="title">app</span>\</span></span><br><span class="line"><span class="function">        ├─<span class="title">aspect</span>\</span></span><br><span class="line"><span class="function">        │ ├─<span class="title">FourAdviceTest.java</span></span></span><br><span class="line"><span class="function">        │ └─<span class="title">SecondAdviceTest.java</span></span></span><br><span class="line"><span class="function">        └─<span class="title">service</span>\</span></span><br><span class="line"><span class="function">          ├─<span class="title">Hello.java</span></span></span><br><span class="line"><span class="function">          ├─<span class="title">impl</span>\</span></span><br><span class="line"><span class="function">          │ ├─<span class="title">HelloImpl.java</span></span></span><br><span class="line"><span class="function">          │ └─<span class="title">WorldImpl.java</span></span></span><br><span class="line"><span class="function">          └─<span class="title">World.java</span></span></span><br></pre></td></tr></table></figure>
+<p>下面的程序定义了一个简单的切面类,该切面类只是将前面<code>@Aspect</code>示例中切面类的全部注解删除后的结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.aspect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.*;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FourAdviceTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">processTx</span><span class="params">(ProceedingJoinPoint jp)</span> <span class="keyword">throws</span> java.lang.Throwable</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Around增强：执行目标方法之前，模拟开始事务..."</span>);</span><br><span class="line">        <span class="comment">// 访问执行目标方法的参数</span></span><br><span class="line">        Object[] args = jp.getArgs();</span><br><span class="line">        <span class="comment">// 当执行目标方法的参数存在，</span></span><br><span class="line">        <span class="comment">// 且第一个参数是字符串参数</span></span><br><span class="line">        <span class="keyword">if</span> (args != <span class="keyword">null</span> &amp;&amp; args.length &gt; <span class="number">0</span></span><br><span class="line">                &amp;&amp; args[<span class="number">0</span>].getClass() == String.class)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 修改目标方法调用参数的第一个参数</span></span><br><span class="line">            args[<span class="number">0</span>] = <span class="string">"【增加的前缀】"</span> + args[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 执行目标方法，并保存目标方法执行后的返回值</span></span><br><span class="line">        Object rvt = jp.proceed(args);</span><br><span class="line">        System.out.println(<span class="string">"Around增强：执行目标方法之后，模拟结束事务..."</span>);</span><br><span class="line">        <span class="comment">// 如果rvt的类型是Integer，将rvt改为它的平方</span></span><br><span class="line">        <span class="keyword">if</span> (rvt != <span class="keyword">null</span> &amp;&amp; rvt <span class="keyword">instanceof</span> Integer)</span><br><span class="line">            rvt = (Integer) rvt * (Integer) rvt;</span><br><span class="line">        <span class="keyword">return</span> rvt;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">authority</span><span class="params">(JoinPoint jp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"②Before增强：模拟执行权限检查"</span>);</span><br><span class="line">        <span class="comment">// 返回被织入增强处理的目标方法</span></span><br><span class="line">        System.out.println(</span><br><span class="line">                <span class="string">"②Before增强：被织入增强处理的目标方法为："</span> + jp.getSignature().getName());</span><br><span class="line">        <span class="comment">// 访问执行目标方法的参数</span></span><br><span class="line">        System.out</span><br><span class="line">                .println(<span class="string">"②Before增强：目标方法的参数为："</span> + Arrays.toString(jp.getArgs()));</span><br><span class="line">        <span class="comment">// 访问被增强处理的目标对象</span></span><br><span class="line">        System.out.println(<span class="string">"②Before增强：被织入增强处理的目标对象为："</span> + jp.getTarget());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(JoinPoint jp, Object rvt)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"AfterReturning增强：获取目标方法返回值:"</span> + rvt);</span><br><span class="line">        System.out.println(<span class="string">"AfterReturning增强：模拟记录日志功能..."</span>);</span><br><span class="line">        <span class="comment">// 返回被织入增强处理的目标方法</span></span><br><span class="line">        System.out.println(<span class="string">"AfterReturning增强：被织入增强处理的目标方法为："</span></span><br><span class="line">                + jp.getSignature().getName());</span><br><span class="line">        <span class="comment">// 访问执行目标方法的参数</span></span><br><span class="line">        System.out.println(</span><br><span class="line">                <span class="string">"AfterReturning增强：目标方法的参数为："</span> + Arrays.toString(jp.getArgs()));</span><br><span class="line">        <span class="comment">// 访问被增强处理的目标对象</span></span><br><span class="line">        System.out.println(<span class="string">"AfterReturning增强：被织入增强处理的目标对象为："</span> + jp.getTarget());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">(JoinPoint jp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"After增强：模拟方法结束后的释放资源..."</span>);</span><br><span class="line">        <span class="comment">// 返回被织入增强处理的目标方法</span></span><br><span class="line">        System.out.println(</span><br><span class="line">                <span class="string">"After增强：被织入增强处理的目标方法为："</span> + jp.getSignature().getName());</span><br><span class="line">        <span class="comment">// 访问执行目标方法的参数</span></span><br><span class="line">        System.out.println(<span class="string">"After增强：目标方法的参数为："</span> + Arrays.toString(jp.getArgs()));</span><br><span class="line">        <span class="comment">// 访问被增强处理的目标对象</span></span><br><span class="line">        System.out.println(<span class="string">"After增强：被织入增强处理的目标对象为："</span> + jp.getTarget());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的<code>FourAdviceTest.java</code>几乎是一个<code>POJO</code>类,该<code>Java</code>类的4个方法的第一个参数都是<code>JoinPoint</code>类型，之所以将4个方法的第一个参数定义为<code>JoinPoint</code>类型,是为了访问连接点的相关信息,当然<code>Spring AOP</code>只支持使用方法执行作为连接点,所以这里<strong>使用<code>JoinPoint</code>只是为了获取目标方法的方法名、参数值等信息</strong>。<br>除此之外,本示例程序中还定义了如下一个简单的切面类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.crazyit.app.aspect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondAdviceTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">// 定义Before增强处理</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">authority</span><span class="params">(String aa)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"①号Before增强：模拟执行权限检查"</span>);</span><br><span class="line">        System.out.println(<span class="string">"目标方法的第一个参数为："</span> + aa);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面切面类的<code>authority</code>方法里多了一个<code>String aa</code>的形参,则应用试图通过<code>aa</code>这个形参来访间目标方法的参数值,这需要在配置该切面<code>Bean</code>时使用<code>args</code>切入点指示符。<br>本应用中的<code>Spring</code>配置文件如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="GBK"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="tag"><span class="string">	http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">	http://www.springframework.org/schema/aop</span></span></span><br><span class="line"><span class="tag"><span class="string">	http://www.springframework.org/schema/aop/spring-aop.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 定义一个普通Bean实例，该Bean实例将被作为Aspect Bean --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"fourAdviceBean"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.crazyit.app.aspect.FourAdviceTest"</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 再定义一个普通Bean实例，该Bean实例将被作为Aspect Bean --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"secondAdviceBean"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"org.crazyit.app.aspect.SecondAdviceTest"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"hello"</span> <span class="attr">class</span>=<span class="string">"org.crazyit.app.service.impl.HelloImpl"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"world"</span> <span class="attr">class</span>=<span class="string">"org.crazyit.app.service.impl.WorldImpl"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 将fourAdviceBean转换成切面Bean 切面Bean的新名称为：fourAdviceAspect 指定该切面的优先级为2 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">"fourAdviceAspect"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">ref</span>=<span class="string">"fourAdviceBean"</span> <span class="attr">order</span>=<span class="string">"2"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 定义一个After增强处理 直接指定切入点表达式 以切面Bean中的release()方法作为增强处理方法 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after</span></span></span><br><span class="line"><span class="tag">                <span class="attr">pointcut</span>=<span class="string">"execution(* org.crazyit.app.service.impl.*.*(..))"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">method</span>=<span class="string">"release"</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 定义一个Before增强处理 直接指定切入点表达式 以切面Bean中的authority()方法作为增强处理方法 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:before</span></span></span><br><span class="line"><span class="tag">                <span class="attr">pointcut</span>=<span class="string">"execution(* org.crazyit.app.service.impl.*.*(..))"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">method</span>=<span class="string">"authority"</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 定义一个AfterReturning增强处理 直接指定切入点表达式 以切面Bean中的log()方法作为增强处理方法 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:after-returning</span></span></span><br><span class="line"><span class="tag">                <span class="attr">pointcut</span>=<span class="string">"execution(* org.crazyit.app.service.impl.*.*(..))"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">method</span>=<span class="string">"log"</span> <span class="attr">returning</span>=<span class="string">"rvt"</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 定义一个Around增强处理 直接指定切入点表达式 以切面Bean中的processTx()方法作为增强处理方法 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:around</span></span></span><br><span class="line"><span class="tag">                <span class="attr">pointcut</span>=<span class="string">"execution(* org.crazyit.app.service.impl.*.*(..))"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">method</span>=<span class="string">"processTx"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 将secondAdviceBean转换成切面Bean 切面Bean的新名称为：secondAdviceAspect 指定该切面的优先级为1，该切面里的增强处理将被优先织入 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">"secondAdviceAspect"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">ref</span>=<span class="string">"secondAdviceBean"</span> <span class="attr">order</span>=<span class="string">"1"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 定义一个Before增强处理 直接指定切入点表达式 以切面Bean中的authority()方法作为增强处理方法 </span></span><br><span class="line"><span class="comment">                且该参数必须为String类型（由authority方法声明中aa参数的类型决定） --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">aop:before</span></span></span><br><span class="line"><span class="tag">                <span class="attr">pointcut</span>=<span class="string">"execution(* org.crazyit.app.service.impl.*.*(..)) and args(aa,..)"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">method</span>=<span class="string">"authority"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的配置文件中依次配置了<code>fourAdviceBean</code>、 <code>secondAdviceBean</code>、 <code>hello</code>、<code>world</code>这4个<code>Bean</code>,它们没有丝毫特别之处,完全可以像管理普通<code>Bean</code>一样管理它们。<br>上面配置文件中的<code>aop:config</code>元素中的代码用于将<code>fourAdviceBean</code>转换成一个切面<code>Bean</code>,并将该<code>Bean</code>里包含的4个方法转换成4个增强处理。</p>
+<ul>
+<li>当配置<code>fourAdviceAspect</code>切面时,为其指定了<code>order=&quot;2&quot;</code>,这将意味着该切面里的增强处理的织入顺序为<code>2</code>;</li>
+<li>而配置<code>secondAdviceAspect</code>切面时,为其指定了<code>order=&quot;1&quot;</code>,</li>
+<li>所以<code>Spring AOP</code>将优先织入<code>secondAdviceAspect</code>里的增强处理,再织入<code>fourAdviceAspect</code>里的增强处理。</li>
+</ul>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/74435b33/">8.4.6 基于XML配置文件的管理方式 2. 配置增强处理</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/e65ae314/" rel="next" title="8.4.6 基于XML配置文件的管理方式 1. 配置切面">
+                  <i class="fa fa-chevron-left"></i> 8.4.6 基于XML配置文件的管理方式 1. 配置切面
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/b277b25b/" rel="prev" title="8.4.6 基于XML配置文件的管理方式 3. 配置切入点">
+                  8.4.6 基于XML配置文件的管理方式 3. 配置切入点 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#8-4-6-基于XML配置文件的管理方式-2-配置增强处理"><span class="nav-number">1.</span> <span class="nav-text">8.4.6 基于XML配置文件的管理方式 2. 配置增强处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#XML配置方式中的切入点指示符"><span class="nav-number">1.1.</span> <span class="nav-text">XML配置方式中的切入点指示符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML配置方式中的组合运算符"><span class="nav-number">1.2.</span> <span class="nav-text">XML配置方式中的组合运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">1.3.</span> <span class="nav-text">程序示例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

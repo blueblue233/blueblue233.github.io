@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="6.4 数据校验 输入校验   6.4.1 Spring的Validation校验框架 Validator接口 Errors接口 ValidationUtils工具类 LocalValidatorFactoryBean类   实例 表单输入校验 loginForm.jsp User.java UserValidator.java UserController.java 测试 错误填写 显示效果">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.4 数据校验 6.4.1 Spring的Validation校验框架">
+<meta property="og:url" content="https://blueblue233.github.io/blog/6e2018b3/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="6.4 数据校验 输入校验   6.4.1 Spring的Validation校验框架 Validator接口 Errors接口 ValidationUtils工具类 LocalValidatorFactoryBean类   实例 表单输入校验 loginForm.jsp User.java UserValidator.java UserController.java 测试 错误填写 显示效果">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/22.png">
+<meta property="og:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/23.png">
+<meta property="og:updated_time" content="2019-10-14T06:55:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.4 数据校验 6.4.1 Spring的Validation校验框架">
+<meta name="twitter:description" content="6.4 数据校验 输入校验   6.4.1 Spring的Validation校验框架 Validator接口 Errors接口 ValidationUtils工具类 LocalValidatorFactoryBean类   实例 表单输入校验 loginForm.jsp User.java UserValidator.java UserController.java 测试 错误填写 显示效果">
+<meta name="twitter:image" content="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/22.png">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/6e2018b3/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>6.4 数据校验 6.4.1 Spring的Validation校验框架 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6e2018b3/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">6.4 数据校验 6.4.1 Spring的Validation校验框架
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-01 17:38:44" itemprop="dateCreated datePublished" datetime="2019-06-01T17:38:44+08:00">2019-06-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:41" itemprop="dateModified" datetime="2019-10-14T14:55:41+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第6章-SpringMVC的数据转换-格式化和数据校验/" itemprop="url" rel="index"><span itemprop="name">第6章 SpringMVC的数据转换 格式化和数据校验</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/6e2018b3/#6-4-数据校验">6.4 数据校验</a><ul>
+<li><a href="/blog/6e2018b3/#输入校验">输入校验</a></li>
+</ul>
+</li>
+<li><a href="/blog/6e2018b3/#6-4-1-Spring的Validation校验框架">6.4.1 Spring的Validation校验框架</a><ul>
+<li><a href="/blog/6e2018b3/#Validator接口">Validator接口</a></li>
+<li><a href="/blog/6e2018b3/#Errors接口">Errors接口</a></li>
+<li><a href="/blog/6e2018b3/#ValidationUtils工具类">ValidationUtils工具类</a></li>
+<li><a href="/blog/6e2018b3/#LocalValidatorFactoryBean类">LocalValidatorFactoryBean类</a></li>
+</ul>
+</li>
+<li><a href="/blog/6e2018b3/#实例-表单输入校验">实例 表单输入校验</a><ul>
+<li><a href="/blog/6e2018b3/#loginForm-jsp">loginForm.jsp</a></li>
+<li><a href="/blog/6e2018b3/#User-java">User.java</a></li>
+<li><a href="/blog/6e2018b3/#UserValidator-java">UserValidator.java</a></li>
+<li><a href="/blog/6e2018b3/#UserController-java">UserController.java</a></li>
+<li><a href="/blog/6e2018b3/#测试">测试</a><ul>
+<li><a href="/blog/6e2018b3/#错误填写">错误填写</a></li>
+<li><a href="/blog/6e2018b3/#显示效果">显示效果</a></li>
+</ul>
+</li>
+<li><a href="/blog/6e2018b3/#最后说一句">最后说一句</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="6-4-数据校验"><a href="#6-4-数据校验" class="headerlink" title="6.4 数据校验"></a>6.4 数据校验</h1><h2 id="输入校验"><a href="#输入校验" class="headerlink" title="输入校验"></a>输入校验</h2><p><strong>遇到非法输入时应用程序直接返回,提用户必须重新输入</strong>,也就是将那些非法输入过滤掉。这种<strong>对非法输入的过滤,就是输入校验,也称为数据校验”</strong><br>输入校验分为<code>客户端校验</code>和<code>服务器端校验</code>,</p>
+<ul>
+<li>客户端校验主要是过滤正常用户的误操作通常通过 <code>JavaScript</code>代码完成;</li>
+<li>服务器端校验是整个应用阻止非法数据的最后防线,主要通过在应用中编程实现</li>
+</ul>
+<p><code>Spring MVC</code>提供了强大的数据校验功能,其中有两种方法可以验证输入:</p>
+<ul>
+<li>一种是利用 <code>Spring</code>自带的 <code>Validation</code>校验框架;</li>
+<li>另一种是利用<code>JSR303(Java</code>验证规范)实现校验功能。</li>
+</ul>
+<h1 id="6-4-1-Spring的Validation校验框架"><a href="#6-4-1-Spring的Validation校验框架" class="headerlink" title="6.4.1 Spring的Validation校验框架"></a>6.4.1 Spring的Validation校验框架</h1><p><code>Spring</code>拥有自己独立的数据校验框架。<code>Spring</code>在进行数据绑定时,可同时调用校验框架来完成数据校验工作。<br><code>Spring</code>的校验框架在<code>org.springframework.validation</code>包中,其中重要的接口和类如下</p>
+<h2 id="Validator接口"><a href="#Validator接口" class="headerlink" title="Validator接口"></a>Validator接口</h2><p><code>Validator</code>。最重要的接口。该接口有两个方法:</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>boolean supports(Class&lt;?&gt; clazz)</code></td>
+<td align="left">该校验器能够对<code>clazz</code>类型的对象进行校验</td>
+</tr>
+<tr>
+<td align="left"><code>void validate(Object target,Errors errors)</code></td>
+<td align="left">对目标类<code>target</code>进行校验,并将校验错误记录在<code>errors</code>当中。</td>
+</tr>
+<tr>
+<td align="left">## Errors接口 ##</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>Errors</code>是<code>Spring</code>用来存放错误信息的接口。<code>Spring MVC</code>框架在将请求数据绑定到入参对象后,就会调用校验框架实施校验,而校验结果保存在处理方法的入参对象之后的参数对象当中。<strong>这个保存校验结果的参数对象必须是<code>Errors</code>或者<code>BindingResult</code>类型</strong>。一个<code>Errors</code>对象中包含了一系列的<code>FieldError</code>和<code>ObjectError</code>对象。<code>FieldError</code>表示与被校验的对象中的某个属性相关的一个错误。<code>BindingResult</code>扩展了<code>Errors</code>接口,同时可以获取数据绑定结果对象的信息.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">## ValidationUtils工具类 ##</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>ValidationUtils</code>是<code>Spring</code>提供的一个关于校验的工具类。它提供了多个为 <code>Errors</code>对象保存错误的方法。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">## LocalValidatorFactoryBean类 ##</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>LocalValidatorFactoryBean</code>位于<code>org.springframework.validation.beanvalidation</code>包中,该类既实现了<code>Spring</code>的<code>Validator</code>接口,也实现了<code>JSR303</code>的<code>Validator</code>接口。只要在<code>Spring</code>容器中定义一个<code>LocalValidatorFactoryBean</code>,即可将其注入到需要数据校验的<code>Bean</code>中。定义一个<code>LocalValidatorFactoryBean</code>的<code>Bean</code>非常简单,如下代码所示:</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p><code>&lt;mvc:annotation-driven/&gt;</code>会默认装配好一个<code>LocalValidatorFactoryBean</code>,所以在实际开发中不需要手动配置<code>LocalValidatorFactoryBean</code>。需要注意的是,<code>Spring</code>本身没有提供<code>JSR303</code>的实现,如果要使用<code>JSR303</code>完成验证,则必须将<code>JSR303</code>的实现(注入<code>Hibernate Validator)jar</code>文件加入到应用程序的类路径下,这样<code>Spring</code>会自动加载并配好<code>JSR303</code>的实现.</p>
+<h1 id="实例-表单输入校验"><a href="#实例-表单输入校验" class="headerlink" title="实例 表单输入校验"></a>实例 表单输入校验</h1><h2 id="loginForm-jsp"><a href="#loginForm-jsp" class="headerlink" title="loginForm.jsp"></a>loginForm.jsp</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span> pageEncoding=<span class="string">"UTF-8"</span>%&gt;</span><br><span class="line">&lt;%<span class="meta">@taglib</span> prefix=<span class="string">"form"</span> uri=<span class="string">"http://www.springframework.org/tags/form"</span>%&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;测试Validator接口验证&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h3&gt;登录页面&lt;/h3&gt;</span><br><span class="line">    &lt;!-- 绑定到user对象 --&gt;</span><br><span class="line">    &lt;form:form modelAttribute=<span class="string">"user"</span> method=<span class="string">"post"</span> action=<span class="string">"login"</span>&gt;</span><br><span class="line">        &lt;table&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;登录名:&lt;/td&gt;</span><br><span class="line">                &lt;!-- 绑定user对象的loginname属性 --&gt;</span><br><span class="line">                &lt;td&gt;&lt;form:input path="loginname" /&gt;&lt;/td&gt;</span><br><span class="line">                &lt;!-- 显示loginname属性的错误信息 --&gt;</span><br><span class="line">                &lt;td&gt;&lt;form:errors path="loginname" cssStyle="color:red" /&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;密码:&lt;/td&gt;</span><br><span class="line">                &lt;!-- 绑定user对象的password属性 --&gt;</span><br><span class="line">                &lt;td&gt;&lt;form:input path="password" /&gt;&lt;/td&gt;</span><br><span class="line">                &lt;!-- 显示password属性的错误信息 --&gt;</span><br><span class="line">                &lt;td&gt;&lt;form:errors path="password" cssStyle="color:red" /&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">            &lt;tr&gt;</span><br><span class="line">                &lt;td&gt;&lt;input type="submit" value="提交" /&gt;&lt;/td&gt;</span><br><span class="line">            &lt;/tr&gt;</span><br><span class="line">        &lt;/table&gt;</span><br><span class="line">    &lt;/form:form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>页面使用<code>&lt;form: errors&gt;</code>标签显示属性的错误信息。</p>
+<h2 id="User-java"><a href="#User-java" class="headerlink" title="User.java"></a>User.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 域对象，实现序列化接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String loginname;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User [loginname="</span> + loginname + <span class="string">", password="</span> + password + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="UserValidator-java"><a href="#UserValidator-java" class="headerlink" title="UserValidator.java"></a>UserValidator.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现Spring的Validator接口</span></span><br><span class="line"><span class="meta">@Repository</span>(<span class="string">"userValidator"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserValidator</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Validator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">// 该校验器能够对clazz类型的对象进行校验。</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(Class&lt;?&gt; clazz)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// User指定的 Class 参数所表示的类或接口是否相同，或是否是其超类或超接口。</span></span><br><span class="line">        <span class="keyword">return</span> User.class.isAssignableFrom(clazz);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 对目标类target进行校验，并将校验错误记录在errors当中</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validate</span><span class="params">(Object target, Errors errors)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 使用ValidationUtils中的一个静态方法rejectIfEmpty()来对loginname属性进行校验，</span></span><br><span class="line"><span class="comment">         * 假若'loginname'属性是 null 或者空字符串的话，就拒绝验证通过 。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        ValidationUtils.rejectIfEmpty(errors, <span class="string">"loginname"</span>, <span class="keyword">null</span>, <span class="string">"登录名不能为空"</span>);</span><br><span class="line">        ValidationUtils.rejectIfEmpty(errors, <span class="string">"password"</span>, <span class="keyword">null</span>, <span class="string">"密码不能为空"</span>);</span><br><span class="line">        User user = (User) target;</span><br><span class="line">        <span class="keyword">if</span> (user.getLoginname().length() &gt; <span class="number">10</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 使用Errors的rejectValue方法验证</span></span><br><span class="line">            errors.rejectValue(<span class="string">"loginname"</span>, <span class="keyword">null</span>, <span class="string">"用户名不能超过10个字符"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (user.getPassword() != <span class="keyword">null</span> &amp;&amp; !user.getPassword().equals(<span class="string">""</span>)</span><br><span class="line">                &amp;&amp; user.getPassword().length() &lt; <span class="number">6</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            errors.rejectValue(<span class="string">"password"</span>, <span class="keyword">null</span>, <span class="string">"密码不能小于6位"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>UserValidator</code>实现了<code>Spring</code>的<code>Validator</code>接口,其可以对<code>User</code>对象进行数据校验,并分别使用<code>ValidationUtils</code>的<code>rejectIfEmpty</code>方法和<code>Errors</code>的<code>rejectValue</code>方法对<code>User</code>进行数据校验。<br>写在类定义上面的<code>@Repository(&quot;userValidator&quot;)</code>注解将该对象声明为<code>Spring</code>容器中的一个<code>Bean</code>,名字为”<code>userValidator</code>“。</p>
+<h2 id="UserController-java"><a href="#UserController-java" class="headerlink" title="UserController.java"></a>UserController.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 注入UserValidator对象</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"userValidator"</span>)</span><br><span class="line">    <span class="keyword">private</span> UserValidator userValidator;</span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/loginForm"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">loginForm</span><span class="params">(Model model)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 创建一个user对象给登录表单使用</span></span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        <span class="comment">// 添加到模型中,登陆表单会绑定这个对象</span></span><br><span class="line">        model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">        <span class="comment">// 跳转到登录页面</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"loginForm"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@PostMapping</span>(value = <span class="string">"/login"</span>)</span><br><span class="line">    <span class="comment">// @ModelAttribute User user表示使用user来绑定表单提交的数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(@ModelAttribute</span></span></span><br><span class="line"><span class="function"><span class="params">    User user, Model model, Errors errors)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(user);</span><br><span class="line">        <span class="comment">// 更新模型中的数据</span></span><br><span class="line">        model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">        <span class="comment">// 调用userValidator的验证方法</span></span><br><span class="line">        userValidator.validate(user, errors);</span><br><span class="line">        <span class="comment">// 如果验证不通过跳转到loginForm视图</span></span><br><span class="line">        <span class="keyword">if</span> (errors.hasErrors())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 重新登录</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">"loginForm"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>login</code>方法对传进来的参数进行校验,注意方法的最后一个参数<code>errors</code>,该参数是个<code>Spring</code>校验框架的<code>Errors</code>对象。在该方法中调用了之前写的<code>userValidator</code>类进行数据校验,如果校验失败,则跳转到”<code>loginForm</code>“视图.</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="错误填写"><a href="#错误填写" class="headerlink" title="错误填写"></a>错误填写</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/22.png" alt="这里有一张图片"></p>
+<h3 id="显示效果"><a href="#显示效果" class="headerlink" title="显示效果"></a>显示效果</h3><p><img src="https://image-1257720033.cos.ap-shanghai.myqcloud.com/blog/readbooknote/Spring%2BMyBatisQiYeYingYongShiZhan/chapter6/23.png" alt="这里有一张图片"></p>
+<h2 id="最后说一句"><a href="#最后说一句" class="headerlink" title="最后说一句"></a>最后说一句</h2><p>由于早期<code>Spring</code>就提供了<code>Validation</code>框架,所以之前的很多应用都使用<code>Validation</code>框架进行数据校验。<strong>由于<code>Validation</code>框架通过<code>硬编码</code>完成数据校验,在实际开发中会显得比较麻烦,因此现代开发更加推荐使用<code>JSR 303</code>完成数据校验</strong>。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/6e2018b3/">6.4 数据校验 6.4.1 Spring的Validation校验框架</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/394efdf0/" rel="next" title="6.3 数据格式化 3.使用AnnotationFormatterFactory格式化数据">
+                  <i class="fa fa-chevron-left"></i> 6.3 数据格式化 3.使用AnnotationFormatterFactory格式化数据
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/9d26e814/" rel="prev" title="6.4 数据校验 6.4.2 JSR 303校验">
+                  6.4 数据校验 6.4.2 JSR 303校验 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-4-数据校验"><span class="nav-number">1.</span> <span class="nav-text">6.4 数据校验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入校验"><span class="nav-number">1.1.</span> <span class="nav-text">输入校验</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-4-1-Spring的Validation校验框架"><span class="nav-number">2.</span> <span class="nav-text">6.4.1 Spring的Validation校验框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Validator接口"><span class="nav-number">2.1.</span> <span class="nav-text">Validator接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例-表单输入校验"><span class="nav-number">3.</span> <span class="nav-text">实例 表单输入校验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#loginForm-jsp"><span class="nav-number">3.1.</span> <span class="nav-text">loginForm.jsp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-java"><span class="nav-number">3.2.</span> <span class="nav-text">User.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UserValidator-java"><span class="nav-number">3.3.</span> <span class="nav-text">UserValidator.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UserController-java"><span class="nav-number">3.4.</span> <span class="nav-text">UserController.java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">3.5.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误填写"><span class="nav-number">3.5.1.</span> <span class="nav-text">错误填写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示效果"><span class="nav-number">3.5.2.</span> <span class="nav-text">显示效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后说一句"><span class="nav-number">3.6.</span> <span class="nav-text">最后说一句</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.7.2 分组聚集 group by子句分组原则 实例 使用dept_name属性给instructor关系分组 SQL查询 找出每个系的平均工资 先分组 再查询   省略group by子句时整个关系作为一个分组 SQL查询 找出所有教师的平均工资   SQL查询 找出每个系在2010年春季学期讲授一门课程的教师人数 没有出现在group by子句中的属性只能出现在select子句的聚集函数">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.7.2 分组聚集">
+<meta property="og:url" content="https://blueblue233.github.io/blog/cac2c24a/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.7.2 分组聚集 group by子句分组原则 实例 使用dept_name属性给instructor关系分组 SQL查询 找出每个系的平均工资 先分组 再查询   省略group by子句时整个关系作为一个分组 SQL查询 找出所有教师的平均工资   SQL查询 找出每个系在2010年春季学期讲授一门课程的教师人数 没有出现在group by子句中的属性只能出现在select子句的聚集函数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-16T01:53:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.7.2 分组聚集">
+<meta name="twitter:description" content="3.7.2 分组聚集 group by子句分组原则 实例 使用dept_name属性给instructor关系分组 SQL查询 找出每个系的平均工资 先分组 再查询   省略group by子句时整个关系作为一个分组 SQL查询 找出所有教师的平均工资   SQL查询 找出每个系在2010年春季学期讲授一门课程的教师人数 没有出现在group by子句中的属性只能出现在select子句的聚集函数">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/cac2c24a/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.7.2 分组聚集 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/cac2c24a/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.7.2 分组聚集
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-15 11:30:10" itemprop="dateCreated datePublished" datetime="2019-10-15T11:30:10+08:00">2019-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-16 09:53:39" itemprop="dateModified" datetime="2019-10-16T09:53:39+08:00">2019-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/" itemprop="url" rel="index"><span itemprop="name">第3章 SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/3-7-聚集函数/" itemprop="url" rel="index"><span itemprop="name">3.7 聚集函数</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/cac2c24a/#3-7-2-分组聚集">3.7.2 分组聚集</a><ul>
+<li><a href="/blog/cac2c24a/#group-by子句分组原则">group by子句分组原则</a><ul>
+<li><a href="/blog/cac2c24a/#实例-使用dept-name属性给instructor关系分组">实例 使用dept_name属性给instructor关系分组</a></li>
+<li><a href="/blog/cac2c24a/#SQL查询-找出每个系的平均工资">SQL查询 找出每个系的平均工资</a></li>
+<li><a href="/blog/cac2c24a/#先分组-再查询">先分组 再查询</a></li>
+</ul>
+</li>
+<li><a href="/blog/cac2c24a/#省略group-by子句时整个关系作为一个分组">省略group by子句时整个关系作为一个分组</a><ul>
+<li><a href="/blog/cac2c24a/#SQL查询-找出所有教师的平均工资">SQL查询 找出所有教师的平均工资</a></li>
+</ul>
+</li>
+<li><a href="/blog/cac2c24a/#SQL查询-找出每个系在2010年春季学期讲授一门课程的教师人数">SQL查询 找出每个系在2010年春季学期讲授一门课程的教师人数</a></li>
+<li><a href="/blog/cac2c24a/#没有出现在group-by子句中的属性只能出现在select子句的聚集函数内部">没有出现在group by子句中的属性只能出现在select子句的聚集函数<strong>内部</strong></a></li>
+<li><a href="/blog/cac2c24a/#MySQL中没有出现再group-by子句中的属性也可以出现在select子句聚集函数外面">MySQL中没有出现再group by子句中的属性也可以出现在select子句聚集函数外面</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-7-2-分组聚集"><a href="#3-7-2-分组聚集" class="headerlink" title="3.7.2 分组聚集"></a>3.7.2 分组聚集</h1><p>有时候我们不仅希望将<code>聚集函数</code>作用在单个元组集上,而且也希望将其作用到一组元组集上;在<code>SQL</code>中可用<code>group by</code>子句实现这个愿望。 <code>group by</code>子句中给出的一个或多个属性是用来构造分组的。</p>
+<h2 id="group-by子句分组原则"><a href="#group-by子句分组原则" class="headerlink" title="group by子句分组原则"></a>group by子句分组原则</h2><p>在<code>group by</code>子句中的<strong><code>所有属性</code>上<code>取值相同</code>的元组</strong>将被分在一个组中。</p>
+<h3 id="实例-使用dept-name属性给instructor关系分组"><a href="#实例-使用dept-name属性给instructor关系分组" class="headerlink" title="实例 使用dept_name属性给instructor关系分组"></a>实例 使用dept_name属性给instructor关系分组</h3><p><code>instructor</code>关系中的元组按照<code>dept_name</code>属性进行分组的情况,如下所示:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> instructor</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> dept_name;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select *</span><br><span class="line">from instructor</span><br><span class="line">group by dept_name;</span><br><span class="line">+-------+------------+------------+--------+</span><br><span class="line">| ID    | name       | dept_name  | salary |</span><br><span class="line">+-------+------------+------------+--------+</span><br><span class="line">| <span class="number">76766</span> | Crick      | Biology    | <span class="number">72000</span>  |</span><br><span class="line">| <span class="number">10101</span> | Srinivasan | <span class="built_in">Comp</span>. Sci. | <span class="number">65000</span>  |</span><br><span class="line">| <span class="number">98345</span> | Kim        | Elec. Eng. | <span class="number">80000</span>  |</span><br><span class="line">| <span class="number">12121</span> | Wu         | Finance    | <span class="number">90000</span>  |</span><br><span class="line">| <span class="number">32343</span> | El Said    | History    | <span class="number">60000</span>  |</span><br><span class="line">| <span class="number">15151</span> | Mozart     | Music      | <span class="number">40000</span>  |</span><br><span class="line">| <span class="number">22222</span> | Einstein   | Physics    | <span class="number">95000</span>  |</span><br><span class="line">+-------+------------+------------+--------+</span><br><span class="line"><span class="number">7</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h3 id="SQL查询-找出每个系的平均工资"><a href="#SQL查询-找出每个系的平均工资" class="headerlink" title="SQL查询 找出每个系的平均工资"></a>SQL查询 找出每个系的平均工资</h3><p>作为示例,考虑查询”<strong>找出每个系的平均工资</strong>“,该查询书写如下:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name, <span class="keyword">avg</span>( salary) <span class="keyword">as</span> avg_salary</span><br><span class="line"><span class="keyword">from</span> instructor</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> dept_name;</span><br></pre></td></tr></table></figure>
+<h3 id="先分组-再查询"><a href="#先分组-再查询" class="headerlink" title="先分组 再查询"></a>先分组 再查询</h3><p><strong>分组是计算查询结果的第一步</strong>。在每个分组上都要进行指定的聚集计算。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select dept_name, avg( salary) as avg_salary</span><br><span class="line">from instructor</span><br><span class="line">group by dept_name;</span><br><span class="line">+------------+--------------+</span><br><span class="line">| dept_name  | avg_salary   |</span><br><span class="line">+------------+--------------+</span><br><span class="line">| Biology    | <span class="number">72000</span>        |</span><br><span class="line">| <span class="built_in">Comp</span>. Sci. | <span class="number">77333</span>.<span class="number">333333</span> |</span><br><span class="line">| Elec. Eng. | <span class="number">80000</span>        |</span><br><span class="line">| Finance    | <span class="number">85000</span>        |</span><br><span class="line">| History    | <span class="number">61000</span>        |</span><br><span class="line">| Music      | <span class="number">40000</span>        |</span><br><span class="line">| Physics    | <span class="number">91000</span>        |</span><br><span class="line">+------------+--------------+</span><br><span class="line"><span class="number">7</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="省略group-by子句时整个关系作为一个分组"><a href="#省略group-by子句时整个关系作为一个分组" class="headerlink" title="省略group by子句时整个关系作为一个分组"></a>省略group by子句时整个关系作为一个分组</h2><h3 id="SQL查询-找出所有教师的平均工资"><a href="#SQL查询-找出所有教师的平均工资" class="headerlink" title="SQL查询 找出所有教师的平均工资"></a>SQL查询 找出所有教师的平均工资</h3><p>相反,考虑査询”找出所有教师的平均工资”。我们把此查询写做如下形式:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">avg</span>(salary)</span><br><span class="line"><span class="keyword">from</span> instructor;</span><br></pre></td></tr></table></figure>
+<p>在这里省略了<code>group by</code>子句,因此<strong>整个关系被当作是一个分组</strong>。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select avg(salary)</span><br><span class="line">from instructor;</span><br><span class="line">+--------------+</span><br><span class="line">| avg(salary)  |</span><br><span class="line">+--------------+</span><br><span class="line">| <span class="number">74833</span>.<span class="number">333333</span> |</span><br><span class="line">+--------------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="SQL查询-找出每个系在2010年春季学期讲授一门课程的教师人数"><a href="#SQL查询-找出每个系在2010年春季学期讲授一门课程的教师人数" class="headerlink" title="SQL查询 找出每个系在2010年春季学期讲授一门课程的教师人数"></a>SQL查询 找出每个系在2010年春季学期讲授一门课程的教师人数</h2><p>作为在元组分组上进行聚集操作的另一个例子,考虑查询”<strong>找出每个系在2010年春季学期讲授一门课程的教师人数</strong>“。有关每位教师在每个学期讲授每个课程段的信息在<code>teaches</code>关系中。但是,这些信息需要与来自<code>instructor</code>关系的信息进行连接,才能够得到每位教师所在的系名。这样,我们把此查询写做如下形式:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name, <span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">ID</span>) <span class="keyword">as</span> instr_count</span><br><span class="line"><span class="keyword">from</span> instructor <span class="keyword">natural</span> <span class="keyword">join</span> teaches</span><br><span class="line"><span class="keyword">where</span> semester=<span class="string">'Spring'</span> <span class="keyword">and</span> <span class="keyword">year</span> =<span class="number">2010</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> dept_name;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select dept_name, count(distinct ID) as instr_count</span><br><span class="line">from instructor natural join teaches</span><br><span class="line">where semester='Spring' and year =<span class="number">2010</span></span><br><span class="line">group by dept_name;</span><br><span class="line">+------------+-------------+</span><br><span class="line">| dept_name  | instr_count |</span><br><span class="line">+------------+-------------+</span><br><span class="line">| <span class="built_in">Comp</span>. Sci. |           <span class="number">3</span> |</span><br><span class="line">| Finance    |           <span class="number">1</span> |</span><br><span class="line">| History    |           <span class="number">1</span> |</span><br><span class="line">| Music      |           <span class="number">1</span> |</span><br><span class="line">+------------+-------------+</span><br><span class="line"><span class="number">4</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<!--SSTStop-->
+<h2 id="没有出现在group-by子句中的属性只能出现在select子句的聚集函数内部"><a href="#没有出现在group-by子句中的属性只能出现在select子句的聚集函数内部" class="headerlink" title="没有出现在group by子句中的属性只能出现在select子句的聚集函数内部"></a>没有出现在group by子句中的属性只能出现在select子句的聚集函数<code>内部</code></h2><p><strong>任何没有出现在<code>group by</code>子句中的属性如果出现在<code>select</code>子句中的话,它只能出现在聚集函数内部,否则这样的查询就是错误的</strong>。<br>例如,下述查询是错误的,<strong>因为<code>ID</code>没有出现在<code>group by</code>子句中,但它出现在了<code>select</code>子句中,但没有出现在聚集函数内部</strong>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name,<span class="keyword">ID</span>, <span class="keyword">avg</span>(salary)</span><br><span class="line"><span class="keyword">from</span> instructor</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> dept_name;</span><br></pre></td></tr></table></figure>
+<p>在一个特定分组(通过<code>dept_name</code>定义)中的每位教师都有一个不同的I,既然每个分组只输出个元组,那就无法确定选哪个D值作为输出。其结果是,<code>SQL</code>不允许这样的情况出现。</p>
+<h2 id="MySQL中没有出现再group-by子句中的属性也可以出现在select子句聚集函数外面"><a href="#MySQL中没有出现再group-by子句中的属性也可以出现在select子句聚集函数外面" class="headerlink" title="MySQL中没有出现再group by子句中的属性也可以出现在select子句聚集函数外面"></a>MySQL中没有出现再group by子句中的属性也可以出现在select子句聚集函数外面</h2><p>经过我的测试<code>MySQL</code>是可以的:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select dept_name,ID, avg(salary)</span><br><span class="line">from instructor</span><br><span class="line">group by dept_name;</span><br><span class="line">+------------+-------+--------------+</span><br><span class="line">| dept_name  | ID    | avg(salary)  |</span><br><span class="line">+------------+-------+--------------+</span><br><span class="line">| Biology    | <span class="number">76766</span> | <span class="number">72000</span>        |</span><br><span class="line">| <span class="built_in">Comp</span>. Sci. | <span class="number">10101</span> | <span class="number">77333</span>.<span class="number">333333</span> |</span><br><span class="line">| Elec. Eng. | <span class="number">98345</span> | <span class="number">80000</span>        |</span><br><span class="line">| Finance    | <span class="number">12121</span> | <span class="number">85000</span>        |</span><br><span class="line">| History    | <span class="number">32343</span> | <span class="number">61000</span>        |</span><br><span class="line">| Music      | <span class="number">15151</span> | <span class="number">40000</span>        |</span><br><span class="line">| Physics    | <span class="number">22222</span> | <span class="number">91000</span>        |</span><br><span class="line">+------------+-------+--------------+</span><br><span class="line"><span class="number">7</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/cac2c24a/">3.7.2 分组聚集</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/cd11efad/" rel="next" title="3.7 聚集函数 3.7.1 基本聚集">
+                  <i class="fa fa-chevron-left"></i> 3.7 聚集函数 3.7.1 基本聚集
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/65722d5a/" rel="prev" title="3.7.3 having子句">
+                  3.7.3 having子句 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-7-2-分组聚集"><span class="nav-number">1.</span> <span class="nav-text">3.7.2 分组聚集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#group-by子句分组原则"><span class="nav-number">1.1.</span> <span class="nav-text">group by子句分组原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-使用dept-name属性给instructor关系分组"><span class="nav-number">1.1.1.</span> <span class="nav-text">实例 使用dept_name属性给instructor关系分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL查询-找出每个系的平均工资"><span class="nav-number">1.1.2.</span> <span class="nav-text">SQL查询 找出每个系的平均工资</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#先分组-再查询"><span class="nav-number">1.1.3.</span> <span class="nav-text">先分组 再查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#省略group-by子句时整个关系作为一个分组"><span class="nav-number">1.2.</span> <span class="nav-text">省略group by子句时整个关系作为一个分组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL查询-找出所有教师的平均工资"><span class="nav-number">1.2.1.</span> <span class="nav-text">SQL查询 找出所有教师的平均工资</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL查询-找出每个系在2010年春季学期讲授一门课程的教师人数"><span class="nav-number">1.3.</span> <span class="nav-text">SQL查询 找出每个系在2010年春季学期讲授一门课程的教师人数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#没有出现在group-by子句中的属性只能出现在select子句的聚集函数内部"><span class="nav-number">1.4.</span> <span class="nav-text">没有出现在group by子句中的属性只能出现在select子句的聚集函数内部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL中没有出现再group-by子句中的属性也可以出现在select子句聚集函数外面"><span class="nav-number">1.5.</span> <span class="nav-text">MySQL中没有出现再group by子句中的属性也可以出现在select子句聚集函数外面</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

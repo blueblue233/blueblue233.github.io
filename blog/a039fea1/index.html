@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="动态生成基于注解形式的insert语句 动态生成SQL代码方法 mapper接口方法 测试类">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="11.2 基于注解的动态SQL2 insert">
+<meta property="og:url" content="https://blueblue233.github.io/blog/a039fea1/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="动态生成基于注解形式的insert语句 动态生成SQL代码方法 mapper接口方法 测试类">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="11.2 基于注解的动态SQL2 insert">
+<meta name="twitter:description" content="动态生成基于注解形式的insert语句 动态生成SQL代码方法 mapper接口方法 测试类">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/a039fea1/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>11.2 基于注解的动态SQL2 insert | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/a039fea1/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">11.2 基于注解的动态SQL2 insert
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-17 14:51:04" itemprop="dateCreated datePublished" datetime="2019-06-17T14:51:04+08:00">2019-06-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第11章-MyBatis的注解配置/" itemprop="url" rel="index"><span itemprop="name">第11章 MyBatis的注解配置</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/a039fea1/#动态生成基于注解形式的insert语句">动态生成基于注解形式的insert语句</a><ul>
+<li><a href="/blog/a039fea1/#动态生成SQL代码方法">动态生成SQL代码方法</a></li>
+<li><a href="/blog/a039fea1/#mapper接口方法">mapper接口方法</a></li>
+<li><a href="/blog/a039fea1/#测试类">测试类</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="动态生成基于注解形式的insert语句"><a href="#动态生成基于注解形式的insert语句" class="headerlink" title="动态生成基于注解形式的insert语句"></a>动态生成基于注解形式的insert语句</h1><h2 id="动态生成SQL代码方法"><a href="#动态生成SQL代码方法" class="headerlink" title="动态生成SQL代码方法"></a>动态生成SQL代码方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">insertEmployeeWithParamPO</span><span class="params">(Employee employee)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> SQL() &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 在这里写上动态SQL的生成逻辑...</span></span><br><span class="line">            INSERT_INTO(<span class="string">"tb_employee"</span>);</span><br><span class="line">            <span class="keyword">if</span> (employee.getId() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"id"</span>, <span class="string">"#&#123;id&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getLoginname() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"loginname"</span>, <span class="string">"#&#123;loginname&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getPassword() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"password"</span>, <span class="string">"#&#123;password&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getName() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"name"</span>, <span class="string">"#&#123;name&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getSex() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"sex"</span>, <span class="string">"#&#123;sex&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getAge() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"age"</span>, <span class="string">"#&#123;age&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getPhone() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"phone"</span>, <span class="string">"#&#123;phone&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getSal() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"sal"</span>, <span class="string">"#&#123;sal&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (employee.getState() != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                VALUES(<span class="string">"state"</span>, <span class="string">"#&#123;state&#125;"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="mapper接口方法"><a href="#mapper接口方法" class="headerlink" title="mapper接口方法"></a>mapper接口方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@InsertProvider</span>(</span><br><span class="line">    type = EmployeeDynamicSQLProvider.class,</span><br><span class="line">    method = <span class="string">"insertEmployeeWithParamPO"</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">// 设置使用自动增长主键,主键返回给po类的id属性</span></span><br><span class="line"><span class="meta">@Options</span>(</span><br><span class="line">    useGeneratedKeys = <span class="keyword">true</span>,</span><br><span class="line">    keyProperty = <span class="string">"id"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insertEmployeeWithParmPO</span><span class="params">(Employee employee)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这里使用了两个注解,一个注解是<code>@InsertProvider</code>注解,该注解的<code>type</code>属性支持生成动态<code>SQL</code>的类,<code>method</code>属性指出生成动态<code>SQL</code>的具体方法.<br><code>@Options</code>注解的<code>useGeneratedKeys</code>属性表示是否使用自动增长的主键,<code>keyProperty</code>属性表示用于持久化对象接收生成的主键的属性</p>
+<h2 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</span><br><span class="line"><span class="keyword">import</span> domain.Employee;</span><br><span class="line"><span class="keyword">import</span> fractory.SqlSessionFratoryTools;</span><br><span class="line"><span class="keyword">import</span> mapper.EmployeeMapper;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">insertTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        SqlSession sqlSession = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 加载mybatis-config.xml,获取SqlSession实例</span></span><br><span class="line">            sqlSession = SqlSessionFratoryTools.getSqlSession();</span><br><span class="line">            <span class="comment">// 获取mapper接口代理对象</span></span><br><span class="line">            EmployeeMapper employeeMapper = sqlSession.getMapper(EmployeeMapper.class);</span><br><span class="line">            Employee employee = <span class="keyword">new</span> Employee();</span><br><span class="line">            <span class="comment">// employee.setLoginname("xiaozhang");</span></span><br><span class="line">            <span class="comment">// employee.setPassword("xiaozhang");</span></span><br><span class="line">            employee.setName(<span class="string">"小张"</span>);</span><br><span class="line">            employee.setSex(<span class="string">"男"</span>);</span><br><span class="line">            employee.setAge(<span class="number">22</span>);</span><br><span class="line">            employee.setPhone(<span class="string">"123456789123"</span>);</span><br><span class="line">            employee.setSal(<span class="number">6800.0</span>);</span><br><span class="line">            employee.setState(<span class="string">"经理"</span>);</span><br><span class="line">            employeeMapper.insertEmployeeWithParmPO(employee);</span><br><span class="line">            System.out.println(<span class="string">"生成的主键:"</span> + employee.getId());</span><br><span class="line">            <span class="comment">// 提交事务</span></span><br><span class="line">            sqlSession.commit();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 出错回滚事务</span></span><br><span class="line">            sqlSession.rollback();</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 关闭会话</span></span><br><span class="line">            <span class="keyword">if</span> (sqlSession != <span class="keyword">null</span>)</span><br><span class="line">                sqlSession.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行该测试类,给持久化对象的一些属性赋值,然后调用<code>mapper</code>接口的方法把信息插入到数据库中<code>.mybatis</code>会根据参数设置的数据动态生成<code>valuse</code>子句.运行效果如下所示:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] ==&gt;  Preparing: INSERT INTO tb_employee (name, sex, age, phone, sal, state) VALUES (?, ?, ?, ?, ?, ?) </span><br><span class="line">DEBUG [main] ==&gt; Parameters: 小张(String), 男(String), <span class="number">22</span>(Integer), <span class="number">123456789123</span>(String), <span class="number">6800</span>.<span class="number">0</span>(Double), 经理(String)</span><br><span class="line">DEBUG [main] &lt;==    Updates: <span class="number">1</span></span><br><span class="line">生成的主键:<span class="number">5</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/a039fea1/">11.2 基于注解的动态SQL2 insert</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/34bd845a/" rel="next" title="18.4 使用反射生成并操作对象 18.4.3 访问成员变量值">
+                  <i class="fa fa-chevron-left"></i> 18.4 使用反射生成并操作对象 18.4.3 访问成员变量值
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/a0888d77/" rel="prev" title="11.2 基于注解的动态SQL1 select">
+                  11.2 基于注解的动态SQL1 select <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#动态生成基于注解形式的insert语句"><span class="nav-number">1.</span> <span class="nav-text">动态生成基于注解形式的insert语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态生成SQL代码方法"><span class="nav-number">1.1.</span> <span class="nav-text">动态生成SQL代码方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapper接口方法"><span class="nav-number">1.2.</span> <span class="nav-text">mapper接口方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试类"><span class="nav-number">1.3.</span> <span class="nav-text">测试类</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

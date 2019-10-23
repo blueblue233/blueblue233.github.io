@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="16.5.5 同步锁Lock Lock的优点 锁接口和实现类 StampedLock类 比较常用的锁 程序示例 Lock和同步方法的区别 同步代码块,同步方法 锁三者的区别 Lock提供了同步方法和同步代码块没有的功能   重入性">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.5.5 同步锁Lock">
+<meta property="og:url" content="https://blueblue233.github.io/blog/41c447ea/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="16.5.5 同步锁Lock Lock的优点 锁接口和实现类 StampedLock类 比较常用的锁 程序示例 Lock和同步方法的区别 同步代码块,同步方法 锁三者的区别 Lock提供了同步方法和同步代码块没有的功能   重入性">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="16.5.5 同步锁Lock">
+<meta name="twitter:description" content="16.5.5 同步锁Lock Lock的优点 锁接口和实现类 StampedLock类 比较常用的锁 程序示例 Lock和同步方法的区别 同步代码块,同步方法 锁三者的区别 Lock提供了同步方法和同步代码块没有的功能   重入性">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/41c447ea/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>16.5.5 同步锁Lock | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/41c447ea/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">16.5.5 同步锁Lock
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-17 17:56:10" itemprop="dateCreated datePublished" datetime="2019-07-17T17:56:10+08:00">2019-07-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/" itemprop="url" rel="index"><span itemprop="name">第16章 多线程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/16-5-线程同步/" itemprop="url" rel="index"><span itemprop="name">16.5 线程同步</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/41c447ea/#16-5-5-同步锁Lock">16.5.5 同步锁Lock</a><ul>
+<li><a href="/blog/41c447ea/#Lock的优点">Lock的优点</a></li>
+<li><a href="/blog/41c447ea/#锁接口和实现类">锁接口和实现类</a></li>
+<li><a href="/blog/41c447ea/#StampedLock类">StampedLock类</a></li>
+<li><a href="/blog/41c447ea/#比较常用的锁">比较常用的锁</a></li>
+<li><a href="/blog/41c447ea/#程序示例">程序示例</a></li>
+<li><a href="/blog/41c447ea/#Lock和同步方法的区别">Lock和同步方法的区别</a></li>
+<li><a href="/blog/41c447ea/#同步代码块,同步方法-锁三者的区别">同步代码块,同步方法 锁三者的区别</a><ul>
+<li><a href="/blog/41c447ea/#Lock提供了同步方法和同步代码块没有的功能">Lock提供了同步方法和同步代码块没有的功能</a></li>
+</ul>
+</li>
+<li><a href="/blog/41c447ea/#重入性">重入性</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="16-5-5-同步锁Lock"><a href="#16-5-5-同步锁Lock" class="headerlink" title="16.5.5 同步锁Lock"></a>16.5.5 同步锁Lock</h1><p>从<code>Java 5</code>开始,<code>Java</code>提供了一种功能更强大的线程同步机制——通过显式定义同步锁对象来实现同步,在这种机制下,<strong>同步锁由<code>Lock</code>对象充当</strong>。</p>
+<h2 id="Lock的优点"><a href="#Lock的优点" class="headerlink" title="Lock的优点"></a>Lock的优点</h2><p><code>Lock</code>提供了比<code>synchronized</code>方法和<code>synchronized</code>代码块更广泛的锁定操作,<code>Lock</code>允许实现更灵活的结构,可以具有差别很大的属性,并且支持多个相关的<code>Condition</code>对象。<br><code>Lock</code>是控制多个线程对共享资源进行访问的工具。通常,锁提供了对共享资源的独占访问,每次只能有一个线程对<code>Lock</code>对象加锁,线程开始访问共享资源之前应先获得<code>Lock</code>对象。</p>
+<h2 id="锁接口和实现类"><a href="#锁接口和实现类" class="headerlink" title="锁接口和实现类"></a>锁接口和实现类</h2><p>某些锁可能允许对共享资源并发访问,如<code>ReadWriteLock</code>(读写锁)。<br><code>Lock</code>、 <code>ReadWriteLock</code>是<code>Java 5</code>提供的两个根接口,并为<code>Lock</code>提供了<code>ReentrantLock</code>(可重入锁)实现类,为<code>ReadWriteLock</code>提供了<code>ReentrantReadWriteLock</code>实现类。<code>ReentrantReadWriteLock</code>为读写操作提供了三种锁模式: <code>Writing</code>、 <code>ReadingOptimistic</code>、 <code>Reading</code>。</p>
+<h2 id="StampedLock类"><a href="#StampedLock类" class="headerlink" title="StampedLock类"></a>StampedLock类</h2><p><code>Java 8</code>新增了新型的<code>StampedLock</code>类,在大多数场景中它可以替代传统的<code>ReentrantReadWriteLock</code>,</p>
+<h2 id="比较常用的锁"><a href="#比较常用的锁" class="headerlink" title="比较常用的锁"></a>比较常用的锁</h2><p>在实现线程安全的控制中,比较常用的是<code>ReentrantLock</code>(可重入锁)。使用该<code>Lock</code>对象可以显式地加锁、释放锁,通常使用<code>ReentrantLock</code>的代码格式如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">//定义锁对象</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock lock new <span class="title">ReentrantLock</span><span class="params">()</span></span>;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//定义需要保证线程安全的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//加锁</span></span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//需要保证线程安全的代码</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//使用 finally块来保证释放锁</span></span><br><span class="line">        <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>ReentrantLock</code>对象来进行同步,加锁和释放锁出现在不同的作用范围内时,通常建议使用<code>finally</code>块来确保在必要时释放锁。</p>
+<!--SSTStop-->
+<h2 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h2><p>通过使用<code>ReentrantLock</code>对象,可以把<code>Account</code>类改为如下形式,它依然是线程安全的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// 1.定义锁对象</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="comment">// 封装账户编号、账户余额的两个成员变量</span></span><br><span class="line">	<span class="keyword">private</span> String accountNo;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> balance;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Account</span><span class="params">(String accountNo , <span class="keyword">double</span> balance)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.accountNo = accountNo;</span><br><span class="line">		<span class="keyword">this</span>.balance = balance;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// accountNo的setter和getter方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAccountNo</span><span class="params">(String accountNo)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.accountNo = accountNo;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getAccountNo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.accountNo;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 因此账户余额不允许随便修改，所以只为balance提供getter方法，</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getBalance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.balance;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 提供一个线程安全draw()方法来完成取钱操作</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(<span class="keyword">double</span> drawAmount)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// 2.加锁</span></span><br><span class="line">		lock.lock();</span><br><span class="line">		<span class="keyword">try</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 账户余额大于取钱数目</span></span><br><span class="line">			<span class="keyword">if</span> (balance &gt;= drawAmount)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">// 吐出钞票</span></span><br><span class="line">				System.out.println(Thread.currentThread().getName()</span><br><span class="line">					+ <span class="string">"取钱成功！吐出钞票:"</span> + drawAmount);</span><br><span class="line">				<span class="keyword">try</span></span><br><span class="line">				&#123;</span><br><span class="line">					Thread.sleep(<span class="number">1</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">catch</span> (InterruptedException ex)</span><br><span class="line">				&#123;</span><br><span class="line">					ex.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="comment">// 修改余额</span></span><br><span class="line">				balance -= drawAmount;</span><br><span class="line">				System.out.println(<span class="string">"\t余额为: "</span> + balance);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				System.out.println(Thread.currentThread().getName()</span><br><span class="line">					+ <span class="string">"取钱失败！余额不足！"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">finally</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 3.修改完成，释放锁</span></span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 下面两个方法根据accountNo来重写hashCode()和equals()方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> accountNo.hashCode();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">this</span> == obj)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">if</span> (obj !=<span class="keyword">null</span></span><br><span class="line">			&amp;&amp; obj.getClass() == Account.class)</span><br><span class="line">		&#123;</span><br><span class="line">			Account target = (Account)obj;</span><br><span class="line">			<span class="keyword">return</span> target.getAccountNo().equals(accountNo);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序中的代码1定义了一个<code>ReentrantLock</code>对象,程序中实现<code>draw()</code>方法时,进入该方法后立即请求对<code>ReentrantLock</code>对象进行加锁,当执行完<code>draw()</code>方法的取钱逻辑之后,程序使用<code>finally</code>块来确保释放锁。</p>
+<!--SSTStart-->
+<h2 id="Lock和同步方法的区别"><a href="#Lock和同步方法的区别" class="headerlink" title="Lock和同步方法的区别"></a>Lock和同步方法的区别</h2><p>使用<code>Lock</code>与使用<code>同步方法</code>有点相似,<br>只是使用<code>Lock</code>时显式使用<code>Lock</code>对象作为同步锁,<br>而使用同步方法时系统隐式使用当前对象作为同步监视器,<br>同样都符合”加锁→修改→释放锁”的操作模式,而且使用<code>Lock</code>对象时每个<code>Lock</code>对象对应一个<code>Account</code>对象,一样可以保证对于<strong>同一个<code>Account</code>对象,同一时刻只能有一个线程能进入临界区</strong>。</p>
+<h2 id="同步代码块-同步方法-锁三者的区别"><a href="#同步代码块-同步方法-锁三者的区别" class="headerlink" title="同步代码块,同步方法 锁三者的区别"></a>同步代码块,同步方法 锁三者的区别</h2><p>同步方法或同步代码块使用与竞争资源相关的、隐式的同步监视器,并且强制要求加锁和释放锁要出现在一个块结构中,而且当获取了多个锁时,它们必须以相反的顺序释放,且必须在与所有锁被获取时相同的范围内释放所有锁。</p>
+<h3 id="Lock提供了同步方法和同步代码块没有的功能"><a href="#Lock提供了同步方法和同步代码块没有的功能" class="headerlink" title="Lock提供了同步方法和同步代码块没有的功能"></a>Lock提供了同步方法和同步代码块没有的功能</h3><p>虽然同步方法和同步代码块的范围机制使得多线程安全编程非常方便,而且还可以避免很多涉及锁的常见编程错误,但有时也需要以更为灵活的方式使用锁。<code>Lock</code>提供了同步方法和同步代码块所没有的其他功能,包括用于非块结构的<code>tryLock()</code>方法,以及试图获取可中断锁的<code>lockInterruptibly()</code>方法,还有获取超时失效锁的<code>tryLock(long, TimeUnit)</code>方法。</p>
+<h2 id="重入性"><a href="#重入性" class="headerlink" title="重入性"></a>重入性</h2><p><code>ReentrantLock</code>锁具有可重入性,也就是说,一个线程可以对已被加锁的<code>ReentrantLock</code>锁再次加锁,<code>ReentrantLock</code>对象会维持一个计数器来追踪<code>locko</code>方法的嵌套调用,线程在每次调用<code>lockO</code>加锁后,必须显式调用<code>unlock</code>来释放锁,所以<strong>一段被锁保护的代码可以调用另一个被相同锁保护的方法。</strong></p>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/41c447ea/">16.5.5 同步锁Lock</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/92d64df1/" rel="next" title="16.5.4 释放同步监视器的锁定">
+                  <i class="fa fa-chevron-left"></i> 16.5.4 释放同步监视器的锁定
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/19eb4b92/" rel="prev" title="16.5.6 死锁">
+                  16.5.6 死锁 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#16-5-5-同步锁Lock"><span class="nav-number">1.</span> <span class="nav-text">16.5.5 同步锁Lock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock的优点"><span class="nav-number">1.1.</span> <span class="nav-text">Lock的优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁接口和实现类"><span class="nav-number">1.2.</span> <span class="nav-text">锁接口和实现类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StampedLock类"><span class="nav-number">1.3.</span> <span class="nav-text">StampedLock类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较常用的锁"><span class="nav-number">1.4.</span> <span class="nav-text">比较常用的锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例"><span class="nav-number">1.5.</span> <span class="nav-text">程序示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock和同步方法的区别"><span class="nav-number">1.6.</span> <span class="nav-text">Lock和同步方法的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步代码块-同步方法-锁三者的区别"><span class="nav-number">1.7.</span> <span class="nav-text">同步代码块,同步方法 锁三者的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Lock提供了同步方法和同步代码块没有的功能"><span class="nav-number">1.7.1.</span> <span class="nav-text">Lock提供了同步方法和同步代码块没有的功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重入性"><span class="nav-number">1.8.</span> <span class="nav-text">重入性</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

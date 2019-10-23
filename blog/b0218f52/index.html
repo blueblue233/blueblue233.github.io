@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="3.3 SQL查询的基本结构 3.3.1 单关系查询 instructor关系模式定义如下 找出所有教师的名字 找出所有教师所在的系名 去除查询结果中的重复 select distinct 保留查询结果中的重复 select all 算术运算符 算术运算符可用于常数或者元组的属性   特定类型的算术函数   where子句 找出所有在Computer Science系并且工资超过70000美元的">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.3 SQL查询的基本结构 3.3.1 单关系查询">
+<meta property="og:url" content="https://blueblue233.github.io/blog/b0218f52/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="3.3 SQL查询的基本结构 3.3.1 单关系查询 instructor关系模式定义如下 找出所有教师的名字 找出所有教师所在的系名 去除查询结果中的重复 select distinct 保留查询结果中的重复 select all 算术运算符 算术运算符可用于常数或者元组的属性   特定类型的算术函数   where子句 找出所有在Computer Science系并且工资超过70000美元的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-16T01:53:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.3 SQL查询的基本结构 3.3.1 单关系查询">
+<meta name="twitter:description" content="3.3 SQL查询的基本结构 3.3.1 单关系查询 instructor关系模式定义如下 找出所有教师的名字 找出所有教师所在的系名 去除查询结果中的重复 select distinct 保留查询结果中的重复 select all 算术运算符 算术运算符可用于常数或者元组的属性   特定类型的算术函数   where子句 找出所有在Computer Science系并且工资超过70000美元的">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/b0218f52/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>3.3 SQL查询的基本结构 3.3.1 单关系查询 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/b0218f52/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">3.3 SQL查询的基本结构 3.3.1 单关系查询
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-13 00:05:54" itemprop="dateCreated datePublished" datetime="2019-10-13T00:05:54+08:00">2019-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-16 09:53:39" itemprop="dateModified" datetime="2019-10-16T09:53:39+08:00">2019-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/" itemprop="url" rel="index"><span itemprop="name">第3章 SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第3章-SQL/3-3-SQL查询的基本结构/" itemprop="url" rel="index"><span itemprop="name">3.3 SQL查询的基本结构</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/b0218f52/#3-3-SQL查询的基本结构">3.3 SQL查询的基本结构</a></li>
+<li><a href="/blog/b0218f52/#3-3-1-单关系查询">3.3.1 单关系查询</a><ul>
+<li><a href="/blog/b0218f52/#instructor关系模式定义如下">instructor关系模式定义如下</a></li>
+<li><a href="/blog/b0218f52/#找出所有教师的名字">找出所有教师的名字</a></li>
+<li><a href="/blog/b0218f52/#找出所有教师所在的系名">找出所有教师所在的系名</a></li>
+<li><a href="/blog/b0218f52/#去除查询结果中的重复-select-distinct">去除查询结果中的重复 select distinct</a></li>
+<li><a href="/blog/b0218f52/#保留查询结果中的重复-select-all">保留查询结果中的重复 select all</a></li>
+<li><a href="/blog/b0218f52/#算术运算符">算术运算符</a><ul>
+<li><a href="/blog/b0218f52/#算术运算符可用于常数或者元组的属性">算术运算符可用于常数或者元组的属性</a></li>
+</ul>
+</li>
+<li><a href="/blog/b0218f52/#特定类型的算术函数">特定类型的算术函数</a></li>
+</ul>
+</li>
+<li><a href="/blog/b0218f52/#where子句">where子句</a><ul>
+<li><a href="/blog/b0218f52/#找出所有在Computer-Science系并且工资超过70000美元的教师的姓名">找出所有在Computer Science系并且工资超过70000美元的教师的姓名</a></li>
+<li><a href="/blog/b0218f52/#逻辑连词">逻辑连词</a><ul>
+<li><a href="/blog/b0218f52/#逻辑连词的运算对象是包含比较运算符的表达式">逻辑连词的运算对象是包含比较运算符的表达式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/b0218f52/#大学数据库模式">大学数据库模式</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="3-3-SQL查询的基本结构"><a href="#3-3-SQL查询的基本结构" class="headerlink" title="3.3 SQL查询的基本结构"></a>3.3 SQL查询的基本结构</h1><p><code>SQL</code>查询的基本结构由三个子句构成:<code>select</code>、<code>from</code>和<code>where</code>。<br>查询的输入是在<code>from</code>子句中列出的关系,在这些关系上进行<code>where</code>和<code>select</code>子句中指定的运算,然后产生一个关系作为结果。<br>我们通过例子介绍<code>SQL</code>的语法,后面再描述<code>SQL</code>查询的通用结构。</p>
+<h1 id="3-3-1-单关系查询"><a href="#3-3-1-单关系查询" class="headerlink" title="3.3.1 单关系查询"></a>3.3.1 单关系查询</h1><h2 id="instructor关系模式定义如下"><a href="#instructor关系模式定义如下" class="headerlink" title="instructor关系模式定义如下"></a>instructor关系模式定义如下</h2><p><code>instructor(<u>ID</u>,name,dept_name,salary)</code></p>
+<h2 id="找出所有教师的名字"><a href="#找出所有教师的名字" class="headerlink" title="找出所有教师的名字"></a>找出所有教师的名字</h2><p>我们考虑使用<code>大学数据库例子</code>的一个简单查询:<strong>“找出所有教师的名字”</strong>。教师的名字可以在<code>instructor</code>关系中找到,因此我们把<code>instructor</code>关系放到<code>from</code>子句中。教师的名字出现在<code>name</code>属性中,因此我们把<code>name</code>放到<code>select</code>子句中。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> instructor;</span><br></pre></td></tr></table></figure>
+<p>其结果是由属性名为<code>name</code>的单个属性构成的关系。</p>
+<h2 id="找出所有教师所在的系名"><a href="#找出所有教师所在的系名" class="headerlink" title="找出所有教师所在的系名"></a>找出所有教师所在的系名</h2><p>现在考虑另一个查询:”找出所有教师所在的系名”,此查询可写为:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name <span class="keyword">from</span> instructor;</span><br></pre></td></tr></table></figure>
+<p>因为一个系有多个教师,所以在<code>instructor</code>关系中,一个系的名称可以出现不止一次。<br>在关系模型的形式化数学定义中,关系是一个集合。因此,重复的元组不会出现在关系中。<br>在实践中,去除重复是相当费时的,所以<strong><code>SQL</code>允许在关系以及<code>SQL</code>表达式结果中出现重复</strong>。因此,在上述<code>SQL</code>查询中,每个系名在<code>instructor</code>关系的元组中每出现一次,都会在查询结果中列出一次。</p>
+<h2 id="去除查询结果中的重复-select-distinct"><a href="#去除查询结果中的重复-select-distinct" class="headerlink" title="去除查询结果中的重复 select distinct"></a>去除查询结果中的重复 select distinct</h2><p>有时候我们想要强行删除重复,可<strong>在<code>select</code>后加入<code>distinct</code>关键词</strong>。如果我们想去除重复,可将上述查询重写为:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> dept_name <span class="keyword">from</span> instructor;</span><br></pre></td></tr></table></figure>
+<p>在上述查询的结果中,每个系名最多只出现一次。</p>
+<h2 id="保留查询结果中的重复-select-all"><a href="#保留查询结果中的重复-select-all" class="headerlink" title="保留查询结果中的重复 select all"></a>保留查询结果中的重复 select all</h2><p><code>SQL</code>允许我们使用关键词<code>all</code>来显式指明不去除重复:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">all</span> dept_name <span class="keyword">from</span> instructor;</span><br></pre></td></tr></table></figure>
+<p>不过<code>SQL</code>是默认保留重复元组的,所以<code>all</code>关键词可以省略。</p>
+<h2 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h2><p><code>select</code>子句还可带含有加(<code>+</code>)、减(<code>-</code>)、乘(<code>*</code>)、除(<code>/</code>)运算符的算术表达式。</p>
+<h3 id="算术运算符可用于常数或者元组的属性"><a href="#算术运算符可用于常数或者元组的属性" class="headerlink" title="算术运算符可用于常数或者元组的属性"></a>算术运算符可用于常数或者元组的属性</h3><p>算术运算符的运算对象可以是<code>常数</code>或元组的<code>属性</code>。例如,查询语句:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">ID</span>, <span class="keyword">name</span>, dept_name, salary*<span class="number">1.1</span> <span class="keyword">from</span> instructor;</span><br></pre></td></tr></table></figure>
+<p>将返回一个与<code>instructor</code>一样的关系,只是属性<code>salary</code>的值是原来的<code>1.1</code>倍。这显示了如果我们给每位教师增长10%的工资的结果。注意这并不导致对<code>instructor</code>关系的任何改变。</p>
+<h2 id="特定类型的算术函数"><a href="#特定类型的算术函数" class="headerlink" title="特定类型的算术函数"></a>特定类型的算术函数</h2><p><code>SQL</code>还提供了一些特殊数据类型,如各种形式的<code>日期类型</code>,并允许一些作用于这些类型上的<code>算术函数</code>。我们在4.5.1节进一步讨论这个问题。</p>
+<h1 id="where子句"><a href="#where子句" class="headerlink" title="where子句"></a>where子句</h1><p><code>where</code>子句允许我们只选出那些在<code>from</code>子句的<code>结果关系</code>中满足特定谓词的元组。</p>
+<h2 id="找出所有在Computer-Science系并且工资超过70000美元的教师的姓名"><a href="#找出所有在Computer-Science系并且工资超过70000美元的教师的姓名" class="headerlink" title="找出所有在Computer Science系并且工资超过70000美元的教师的姓名"></a>找出所有在Computer Science系并且工资超过70000美元的教师的姓名</h2><p>考虑查询”找出所有在Computer Science系并且工资超过70000美元的教师的姓名”,该查询用<code>SQL</code>可以写为:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> instructor</span><br><span class="line"><span class="keyword">where</span> dept_name =<span class="string">'Comp.Sci'</span> <span class="keyword">and</span> salary &gt;<span class="number">70000</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="逻辑连词"><a href="#逻辑连词" class="headerlink" title="逻辑连词"></a>逻辑连词</h2><p><code>SQL</code>允许在<code>where</code>子句中使用逻辑连词<code>and</code>、<code>or</code>和<code>not</code>。</p>
+<h3 id="逻辑连词的运算对象是包含比较运算符的表达式"><a href="#逻辑连词的运算对象是包含比较运算符的表达式" class="headerlink" title="逻辑连词的运算对象是包含比较运算符的表达式"></a>逻辑连词的运算对象是包含比较运算符的表达式</h3><p><strong>逻辑连词`运算对象</strong>可以是<strong>包含比较运算符</strong><code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>、<code>=</code>和<code>&lt;&gt;</code><strong>的表达式</strong>。<br><code>SQL</code>允许我们使用比较运算符来比较字符串、算术表达式以及特殊类型,如日期类型。<br>在本章的后面,我们将研究<code>where</code>子句谓词的其他特征。</p>
+<!--SSTStop-->
+<h1 id="大学数据库模式"><a href="#大学数据库模式" class="headerlink" title="大学数据库模式"></a>大学数据库模式</h1><p><code>classroom(<u>building</u>,room_number,capacity)</code><br><code>department(<u>dept_name</u>,building,budget)</code><br><code>course(<u>course_id</u>,title,dept_name,credits)</code><br><code>instructor(<u>ID</u>,name,dept_name,salary)</code><br><code>section(<u>course_id,sec_id,semester,year</u>,building,room_number,time_slot_id)</code><br><code>teaches(<u>ID,course_id,sec_id,semester,year</u>)</code><br><code>student(<u>ID</u>,name,dept_name,tot_cred)</code><br><code>takes(<u>ID,course_id,sec_id,semester,year</u>,grade)</code><br><code>advisor(<u>s_ID,i_ID</u>)</code><br><code>time_slot(<u>time_slot_id,day,start_time</u>,end_time)</code><br><code>prereq(<u>course_id,prereq_id</u>)</code></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/b0218f52/">3.3 SQL查询的基本结构 3.3.1 单关系查询</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/4ef029b8/" rel="next" title="3.2.2 基本模式定义">
+                  <i class="fa fa-chevron-left"></i> 3.2.2 基本模式定义
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/43da05aa/" rel="prev" title="3.3.2 多关系查询">
+                  3.3.2 多关系查询 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-3-SQL查询的基本结构"><span class="nav-number">1.</span> <span class="nav-text">3.3 SQL查询的基本结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-3-1-单关系查询"><span class="nav-number">2.</span> <span class="nav-text">3.3.1 单关系查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#instructor关系模式定义如下"><span class="nav-number">2.1.</span> <span class="nav-text">instructor关系模式定义如下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#找出所有教师的名字"><span class="nav-number">2.2.</span> <span class="nav-text">找出所有教师的名字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#找出所有教师所在的系名"><span class="nav-number">2.3.</span> <span class="nav-text">找出所有教师所在的系名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除查询结果中的重复-select-distinct"><span class="nav-number">2.4.</span> <span class="nav-text">去除查询结果中的重复 select distinct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保留查询结果中的重复-select-all"><span class="nav-number">2.5.</span> <span class="nav-text">保留查询结果中的重复 select all</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算术运算符"><span class="nav-number">2.6.</span> <span class="nav-text">算术运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算术运算符可用于常数或者元组的属性"><span class="nav-number">2.6.1.</span> <span class="nav-text">算术运算符可用于常数或者元组的属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特定类型的算术函数"><span class="nav-number">2.7.</span> <span class="nav-text">特定类型的算术函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#where子句"><span class="nav-number">3.</span> <span class="nav-text">where子句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#找出所有在Computer-Science系并且工资超过70000美元的教师的姓名"><span class="nav-number">3.1.</span> <span class="nav-text">找出所有在Computer Science系并且工资超过70000美元的教师的姓名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑连词"><span class="nav-number">3.2.</span> <span class="nav-text">逻辑连词</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑连词的运算对象是包含比较运算符的表达式"><span class="nav-number">3.2.1.</span> <span class="nav-text">逻辑连词的运算对象是包含比较运算符的表达式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大学数据库模式"><span class="nav-number">4.</span> <span class="nav-text">大学数据库模式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

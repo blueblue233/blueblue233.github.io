@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="9.4.5 ResultMaps 每条记录转换成一个Map   示例: 测试ResultMaps 简单映射 一条记录封装成map SelectMapTest.java 对应的select标签 数据库表 运行结果   简单映射 每条记录封装成一个持久化对象 ResultMap标签 数据表列名和持久化对象属性名不一致的情况 resultMap标签详解 resultMap标签详解 resultMap标">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9.4.5 ResultMaps">
+<meta property="og:url" content="https://blueblue233.github.io/blog/d63c6e62/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="9.4.5 ResultMaps 每条记录转换成一个Map   示例: 测试ResultMaps 简单映射 一条记录封装成map SelectMapTest.java 对应的select标签 数据库表 运行结果   简单映射 每条记录封装成一个持久化对象 ResultMap标签 数据表列名和持久化对象属性名不一致的情况 resultMap标签详解 resultMap标签详解 resultMap标">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-14T06:55:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="9.4.5 ResultMaps">
+<meta name="twitter:description" content="9.4.5 ResultMaps 每条记录转换成一个Map   示例: 测试ResultMaps 简单映射 一条记录封装成map SelectMapTest.java 对应的select标签 数据库表 运行结果   简单映射 每条记录封装成一个持久化对象 ResultMap标签 数据表列名和持久化对象属性名不一致的情况 resultMap标签详解 resultMap标签详解 resultMap标">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/d63c6e62/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>9.4.5 ResultMaps | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d63c6e62/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">9.4.5 ResultMaps
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-05 16:30:14" itemprop="dateCreated datePublished" datetime="2019-06-05T16:30:14+08:00">2019-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:41" itemprop="dateModified" datetime="2019-10-14T14:55:41+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第9章-MyBatis的基本用法/" itemprop="url" rel="index"><span itemprop="name">第9章 MyBatis的基本用法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/d63c6e62/#9-4-5-ResultMaps">9.4.5 ResultMaps</a><ul>
+<li><a href="/blog/d63c6e62/#每条记录转换成一个Map">每条记录转换成一个Map</a></li>
+</ul>
+</li>
+<li><a href="/blog/d63c6e62/#示例-测试ResultMaps">示例: 测试ResultMaps</a><ul>
+<li><a href="/blog/d63c6e62/#简单映射-一条记录封装成map">简单映射 一条记录封装成map</a><ul>
+<li><a href="/blog/d63c6e62/#SelectMapTest-java">SelectMapTest.java</a></li>
+<li><a href="/blog/d63c6e62/#对应的select标签">对应的select标签</a></li>
+<li><a href="/blog/d63c6e62/#数据库表">数据库表</a></li>
+<li><a href="/blog/d63c6e62/#运行结果">运行结果</a></li>
+</ul>
+</li>
+<li><a href="/blog/d63c6e62/#简单映射-每条记录封装成一个持久化对象">简单映射 每条记录封装成一个持久化对象</a></li>
+<li><a href="/blog/d63c6e62/#ResultMap标签">ResultMap标签</a><ul>
+<li><a href="/blog/d63c6e62/#数据表列名和持久化对象属性名不一致的情况">数据表列名和持久化对象属性名不一致的情况</a><ul>
+<li><a href="/blog/d63c6e62/#resultMap标签详解">resultMap标签详解</a><ul>
+<li><a href="/blog/d63c6e62/#resultMap标签详解">resultMap标签详解</a><ul>
+<li><a href="/blog/d63c6e62/#resultMap标签的id子标签">resultMap标签的id子标签</a></li>
+<li><a href="/blog/d63c6e62/#resultMap标签的result子标签">resultMap标签的result子标签</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/d63c6e62/#关联映射">关联映射</a><ul>
+<li><a href="/blog/d63c6e62/#Clazz-java">Clazz.java</a></li>
+<li><a href="/blog/d63c6e62/#Student-java">Student.java</a></li>
+<li><a href="/blog/d63c6e62/#映射配置">映射配置</a></li>
+<li><a href="/blog/d63c6e62/#SelectStudentTest-java">SelectStudentTest.java</a></li>
+<li><a href="/blog/d63c6e62/#运行结果">运行结果</a></li>
+</ul>
+</li>
+<li><a href="/blog/d63c6e62/#集合映射">集合映射</a><ul>
+<li><a href="/blog/d63c6e62/#映射配置">映射配置</a></li>
+<li><a href="/blog/d63c6e62/#collection标签详解">collection标签详解</a></li>
+<li><a href="/blog/d63c6e62/#SelectClazzTest-java">SelectClazzTest.java</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="9-4-5-ResultMaps"><a href="#9-4-5-ResultMaps" class="headerlink" title="9.4.5 ResultMaps"></a>9.4.5 ResultMaps</h1><p><code>resultMap</code>元素是<code>MyBatis</code>中最重要最强大的元素。它的作用是告诉<code>MyBatis</code>将从结果集中取出的数据转换成开发者所需要的对象。</p>
+<h2 id="每条记录转换成一个Map"><a href="#每条记录转换成一个Map" class="headerlink" title="每条记录转换成一个Map"></a>每条记录转换成一个Map</h2><p>下面是最简单的映射语句示例:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=<span class="string">"selectUser"</span> resultType=<span class="string">"map"</span>&gt;</span><br><span class="line">    select * from tb_user</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>selectUser</code>的<code>select</code>元素执行一条查询语句,查询<code>tb_user</code>表的所有数据。</li>
+<li><code>resultType=&quot;map&quot;</code>表示返回的每条数据是都是一个<code>Map</code>集合(使用这条记录的列名作为<code>key</code>,列值作为<code>value</code>)。</li>
+</ul>
+<h1 id="示例-测试ResultMaps"><a href="#示例-测试ResultMaps" class="headerlink" title="示例: 测试ResultMaps"></a>示例: 测试ResultMaps</h1><h2 id="简单映射-一条记录封装成map"><a href="#简单映射-一条记录封装成map" class="headerlink" title="简单映射 一条记录封装成map"></a>简单映射 一条记录封装成map</h2><h3 id="SelectMapTest-java"><a href="#SelectMapTest-java" class="headerlink" title="SelectMapTest.java"></a>SelectMapTest.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectMapTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 1.定义SqlSession变量</span></span><br><span class="line">        SqlSession sqlSession = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 2.创建SqlSession实例</span></span><br><span class="line">            sqlSession = FKSqlSessionFactory.getSqlSession();</span><br><span class="line">            <span class="comment">// 3.查询TB_USER表所有记录,每一条记录都封装Map,</span></span><br><span class="line">            <span class="comment">// 该记录的属性作为key,属性值作为value</span></span><br><span class="line">            List&lt;Map&lt;String, Object&gt;&gt; list = sqlSession</span><br><span class="line">                .selectList(<span class="string">"org.fkit.mapper.UserMapper.selectUser"</span>);</span><br><span class="line">            <span class="comment">// 遍历List集合，打印每一个Map对象</span></span><br><span class="line">            list.forEach(row -&gt; System.out.println(row));</span><br><span class="line">            <span class="comment">// 4.提交事务</span></span><br><span class="line">            sqlSession.commit();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 5.回滚事务</span></span><br><span class="line">            sqlSession.rollback();</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 关闭SqlSession</span></span><br><span class="line">            <span class="keyword">if</span> (sqlSession != <span class="keyword">null</span>)</span><br><span class="line">                sqlSession.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="对应的select标签"><a href="#对应的select标签" class="headerlink" title="对应的select标签"></a>对应的select标签</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- select操作</span></span><br><span class="line"><span class="comment">    resultType="map"返回的每条记录都封装成一个Map</span></span><br><span class="line"><span class="comment">    对于每条记录,使用这条记录的列名做key，值做value --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectUser"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultType</span>=<span class="string">"map"</span>&gt;</span> SELECT * FROM TB_USER</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据库表"><a href="#数据库表" class="headerlink" title="数据库表"></a>数据库表</h3><p>此时<code>tb_user</code>表中的数据如下:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from tb_user;</span><br><span class="line">+----+------+-----+-----+</span><br><span class="line">| id | name | sex | age |</span><br><span class="line">+----+------+-----+-----+</span><br><span class="line">|  <span class="number">2</span> | 小丽 | 男  |  <span class="number">22</span> |</span><br><span class="line">|  <span class="number">3</span> | 小李 | 男  |  <span class="number">22</span> |</span><br><span class="line">|  <span class="number">4</span> | 小王 | 女  |  <span class="number">20</span> |</span><br><span class="line">|  <span class="number">5</span> | 小明 | 女  |  <span class="number">20</span> |</span><br><span class="line">+----+------+-----+-----+</span><br><span class="line"><span class="number">4</span> rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p>运行<code>SelectMapTest</code>类的<code>main</code>方法,控制台显示如下:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] ==&gt;  Preparing: SELECT * FROM TB_USER </span><br><span class="line">DEBUG [main] ==&gt; Parameters: </span><br><span class="line">DEBUG [main] &lt;==      Total: <span class="number">4</span></span><br><span class="line">&#123;sex=男, name=小丽, id=<span class="number">2</span>, age=<span class="number">22</span>&#125;</span><br><span class="line">&#123;sex=男, name=小李, id=<span class="number">3</span>, age=<span class="number">22</span>&#125;</span><br><span class="line">&#123;sex=女, name=小王, id=<span class="number">4</span>, age=<span class="number">20</span>&#125;</span><br><span class="line">&#123;sex=女, name=小明, id=<span class="number">5</span>, age=<span class="number">20</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到,査询语句返回的每一条记录都被封装成一个<code>Map</code>集合,这条记录的列名作为<code>Map</code>集合的<code>key</code>,而列的值作为<code>Map</code>的<code>value</code>.</p>
+<h2 id="简单映射-每条记录封装成一个持久化对象"><a href="#简单映射-每条记录封装成一个持久化对象" class="headerlink" title="简单映射 每条记录封装成一个持久化对象"></a>简单映射 每条记录封装成一个持久化对象</h2><p>虽然数据被封装成<code>Map</code>集合返回,但是<code>Map</code>集合并不能很好地描述一个领域模型。在实际项目开发中更加建议使用<code>JavaBean</code>或<code>POJO(Plain Old Java Object</code>,普通<code>Java</code>对象)作为领域模型描述数据。例如:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectUser"</span> <span class="attr">resultType</span>=<span class="string">"org.fkit.domain.User"</span>&gt;</span></span><br><span class="line">    select * from tb_user</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="ResultMap标签"><a href="#ResultMap标签" class="headerlink" title="ResultMap标签"></a>ResultMap标签</h2><h3 id="数据表列名和持久化对象属性名不一致的情况"><a href="#数据表列名和持久化对象属性名不一致的情况" class="headerlink" title="数据表列名和持久化对象属性名不一致的情况"></a>数据表列名和持久化对象属性名不一致的情况</h3><p>默认情况下,<code>MyBatis</code>会将査询到的记录的列和需要返回的对象(<code>User</code>)的属性逐一进行匹配赋值,但是如果查询到的记录的列和需要返回的对象(<code>User</code>)的属性不一致则<code>MyBatis</code>就不会自动赋值了,这时,可以使用<code>ResultMap</code>标签进行处理.</p>
+<h4 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h4><p>进入<code>mybatis</code>数据库,创建一个表<code>tb_user2</code>,并插入几条测试数据:<br>在<code>cmd</code>命令行中输入下面的<code>sql</code>语句进行创建,注意是在<code>cmd</code>命令行,如果使用<code>Navicat</code>的话先保存成<code>sql</code>文件,然后通过导入<code>SQL</code>文件的方式创建,不要使用<code>Navicat</code>的命令行界面,因为直接复制粘贴下面代码插入数据的时候,会出现乱码.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> names "gbk";</span><br><span class="line">use mybatis;</span><br><span class="line">DROP TABLE <span class="keyword">IF</span> EXISTS `tb_user2`;</span><br><span class="line">CREATE TABLE `tb_user2` (</span><br><span class="line">  `user_id` int(<span class="number">11</span>) <span class="keyword">NOT</span> NULL AUTO_INCREMENT,</span><br><span class="line">  `user_name` varchar(<span class="number">18</span>) <span class="keyword">NOT</span> NULL,</span><br><span class="line">  `user_sex` varchar(<span class="number">18</span>) <span class="keyword">NOT</span> NULL,</span><br><span class="line">  `user_age` int(<span class="number">11</span>) <span class="keyword">NOT</span> NULL,</span><br><span class="line">  PRIMARY KEY (`user_id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</span><br><span class="line"></span><br><span class="line">INSERT INTO tb_user2 VALUES (null, '小明', '男', <span class="number">24</span>);</span><br><span class="line">INSERT INTO tb_user2 VALUES (null, '小王', '男', <span class="number">25</span>);</span><br><span class="line">INSERT INTO tb_user2 VALUES (null, '小丽', '女', <span class="number">22</span>);</span><br><span class="line">INSERT INTO tb_user2 VALUES (null, '小花', '女', <span class="number">25</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="创建持久化对象"><a href="#创建持久化对象" class="headerlink" title="创建持久化对象"></a>创建持久化对象</h4><p>接下来创建一个<code>User</code>对象映射<code>tb_user2</code>表:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name, String sex, Integer age)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.sex = sex;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User [id="</span> + id + <span class="string">", name="</span> + name + <span class="string">", sex="</span> + sex + <span class="string">", age="</span> + age + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="创建resultMap标签"><a href="#创建resultMap标签" class="headerlink" title="创建resultMap标签"></a>创建resultMap标签</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 映射数据库表的列名和持久化对象的属性名 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 用在两者不同名的情况 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"userResultMap"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">type</span>=<span class="string">"org.fkit.domain.User"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"id"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"user_id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"name"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"user_name"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"sex"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"user_sex"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"age"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"user_age"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 使用自定义的映射 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectUser2"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultMap</span>=<span class="string">"userResultMap"</span>&gt;</span> SELECT * FROM TB_USER2</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="resultMap标签详解"><a href="#resultMap标签详解" class="headerlink" title="resultMap标签详解"></a>resultMap标签详解</h5><p>上面使用了一个新的元素<code>resultMap</code>,该元素常用属性如下</p>
+<ul>
+<li><code>resultMap</code>元素的<code>id</code>属性,是<code>resultMap</code>的唯一标识符。</li>
+<li><code>resultMap</code>元素的<code>type</code>属性,表示<code>resultMap</code>实际返回的类型。</li>
+</ul>
+<p>上面使用了<code>resultMap</code>的两个子元素<code>id</code>和<code>result</code>。</p>
+<h6 id="resultMap标签的id子标签"><a href="#resultMap标签的id子标签" class="headerlink" title="resultMap标签的id子标签"></a>resultMap标签的id子标签</h6><ul>
+<li><code>id</code>,表示数据库表的主键列,其中,<ul>
+<li><code>column</code>属性表示数据库表的列名,</li>
+<li><code>property</code>表示数据库列映射到返回类型的属性。</li>
+</ul>
+</li>
+</ul>
+<h6 id="resultMap标签的result子标签"><a href="#resultMap标签的result子标签" class="headerlink" title="resultMap标签的result子标签"></a>resultMap标签的result子标签</h6><ul>
+<li><code>result</code>,表示数据库表的普通列,其中,<ul>
+<li><code>column</code>属性表示<strong>数据库表的列名</strong>,</li>
+<li><code>property</code>表示这个数据库列名要映射到的持久化对象的属性名。</li>
+</ul>
+</li>
+</ul>
+<h4 id="ResultMapTest-java"><a href="#ResultMapTest-java" class="headerlink" title="ResultMapTest.java"></a>ResultMapTest.java</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResultMapTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 定义SqlSession变量</span></span><br><span class="line">        SqlSession sqlSession = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 1.创建SqlSession实例</span></span><br><span class="line">            sqlSession = FKSqlSessionFactory.getSqlSession();</span><br><span class="line">            <span class="comment">// </span></span><br><span class="line">            List&lt;User&gt; user_list = sqlSession.selectList(<span class="string">"org.fkit.mapper.UserMapper.selectUser2"</span>);</span><br><span class="line">            <span class="comment">// 遍历List集合，打印每一个Map对象</span></span><br><span class="line">            user_list.forEach(user -&gt; System.out.println(user));</span><br><span class="line">            <span class="comment">// 提交事务</span></span><br><span class="line">            sqlSession.commit();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 回滚事务</span></span><br><span class="line">            sqlSession.rollback();</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 关闭SqlSession</span></span><br><span class="line">            <span class="keyword">if</span> (sqlSession != <span class="keyword">null</span>)</span><br><span class="line">                sqlSession.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行<code>ResultMapTest</code>类的<code>main</code>方法,控制台显示如下:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] ==&gt;  Preparing: SELECT * FROM TB_USER2 </span><br><span class="line">DEBUG [main] ==&gt; Parameters: </span><br><span class="line">DEBUG [main] &lt;==      Total: <span class="number">4</span></span><br><span class="line">User [id=<span class="number">1</span>, name=小明, sex=男, age=<span class="number">24</span>]</span><br><span class="line">User [id=<span class="number">2</span>, name=小王, sex=男, age=<span class="number">25</span>]</span><br><span class="line">User [id=<span class="number">3</span>, name=小丽, sex=女, age=<span class="number">22</span>]</span><br><span class="line">User [id=<span class="number">4</span>, name=小花, sex=女, age=<span class="number">25</span>]</span><br></pre></td></tr></table></figure>
+<p>可以看到,<code>TB_USER</code>的列名虽然和<code>User</code>对象的属性名不一致,数据依然被正确封装到<code>User</code>对象当中。</p>
+<h2 id="关联映射"><a href="#关联映射" class="headerlink" title="关联映射"></a>关联映射</h2><p>在实际项目开发中,还有更加复杂的情况,例如执行的是一个多表查询语句,而返回的对象关联到另一个对象,此时简单地映射已经无法解决问题,必须使用<code>resultMap</code>元素来完成<strong>关联映射</strong><br>进入<code>mybatis</code>数据库,创建两个表<code>tb_cazz</code>和<code>tb_student</code>,并分别插入几条测试数据:<br>此处代码后面补上…<br>以上<code>SQL</code>语句插入了两个班级记录和4个学生记录,两个学生分配在1班,两个学生分配在2班。需要指出的是,<code>tb_student</code>表中的clazz_id列作为外键引用<code>tb_clazz</code>表的<code>id</code>列,表示学生对应的班级。<br>接下来我们要做的是查询出所有的学生信息,同时关联查询出学生对应的班级信息。<br>创建一个<code>Clazz</code>对象和<code>Student</code>对象并分别映射<code>tb_clazz</code>表和<code>tb_student</code>表。</p>
+<h3 id="Clazz-java"><a href="#Clazz-java" class="headerlink" title="Clazz.java"></a>Clazz.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Clazz</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Student&gt; students;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Clazz</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Student&gt; <span class="title">getStudents</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> students;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStudents</span><span class="params">(List&lt;Student&gt; students)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.students = students;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Clazz [id="</span> + id + <span class="string">", code="</span> + code + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Student-java"><a href="#Student-java" class="headerlink" title="Student.java"></a>Student.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="comment">// 关联的Clazz对象</span></span><br><span class="line">    <span class="keyword">private</span> Clazz clazz;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 此处省略getter和setter方法,请自己补上</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Student [id="</span> + id + <span class="string">", name="</span> + name + <span class="string">", sex="</span> + sex + <span class="string">", age="</span> + age + <span class="string">", clazz="</span></span><br><span class="line">                + clazz + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是,<code>Student</code>中的属性<code>Clazz</code>是一个对象,该对象包括<code>Clazz</code>的<code>id</code>和<code>code</code>这是现代开发中最常用的对象关联方式。</p>
+<h3 id="映射配置"><a href="#映射配置" class="headerlink" title="映射配置"></a>映射配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectStudent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultMap</span>=<span class="string">"studentResultMap"</span>&gt;</span> SELECT * FROM TB_STUDENT</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 映射学生对象的resultMap --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"studentResultMap"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">type</span>=<span class="string">"org.fkit.domain.Student"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"id"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"name"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"name"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"sex"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"sex"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"age"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"age"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 关联映射 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">association</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"clazz"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"clazz_id"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">javaType</span>=<span class="string">"org.fkit.domain.Clazz"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">select</span>=<span class="string">"selectClazzWithId"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 根据班级id查询班级 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectClazzWithId"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultType</span>=<span class="string">"org.fkit.domain.Clazz"</span>&gt;</span> SELECT * FROM TB_CLAZZ where id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的映射相对之前复杂了一些,具体解释如下:<br>①首先执行<code>id</code>为<code>selectstudent</code>的<code>select</code>元素,查询所有的学生数据,此时返回的不是简单的<code>Student</code>对象,因为<code>Student</code>对象中还包含了<code>Clazz</code>对象,所以使用<code>resultMap</code>去映射返回类型。<br>②<code>id</code>为<code>studentResultMap</code>的<code>resultMap</code>元素返回类型为<code>org.fkit.domain.Student</code>,其中,<code>id</code>、<code>name</code>、<code>sex</code>和<code>age</code>都是简单的属性映射,而查询的班级<code>id</code>列<code>clazz</code>则使用了关联映射<code>association</code><br><code>assoclation</code>元素的解释如下</p>
+<ul>
+<li><code>column</code>。表示数据库表的列名</li>
+<li><code>property</code>。表示返回类型<code>Student</code>的属性名<code>clazz</code>。</li>
+<li><code>javaType</code>。表示该<code>clazz</code>属性对应的类型名称,本示例是一个<code>Clazz</code>类型。</li>
+<li><code>select</code>。表示执行一条査询语句,将查询到的记录封装到<code>property</code>所代表的类型对象当中。上面的<code>selectClazzWithId</code>执行一条<code>SQL</code>语句,将学生的<code>clazz_id</code>作为参数查询对应的班级信息</li>
+</ul>
+<h3 id="SelectStudentTest-java"><a href="#SelectStudentTest-java" class="headerlink" title="SelectStudentTest.java"></a>SelectStudentTest.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectStudentTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 定义SqlSession变量</span></span><br><span class="line">        SqlSession sqlSession = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 创建SqlSession实例</span></span><br><span class="line">            sqlSession = FKSqlSessionFactory.getSqlSession();</span><br><span class="line">            <span class="comment">// 查询TB_USER表所有数据返回List集合,集合中的每个元素都是一个Student对象</span></span><br><span class="line">            List&lt;Student&gt; student_list = sqlSession</span><br><span class="line">                .selectList(<span class="string">"org.fkit.mapper.UserMapper.selectStudent"</span>);</span><br><span class="line">            <span class="comment">// 遍历List集合，打印每一个Student对象，该对象包含关联的Clazz对象</span></span><br><span class="line">            student_list.forEach(stu -&gt; System.out.println(stu));</span><br><span class="line">            <span class="comment">// 提交事务</span></span><br><span class="line">            sqlSession.commit();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 回滚事务</span></span><br><span class="line">            sqlSession.rollback();</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 关闭SqlSession</span></span><br><span class="line">            <span class="keyword">if</span> (sqlSession != <span class="keyword">null</span>)</span><br><span class="line">                sqlSession.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="运行结果-1"><a href="#运行结果-1" class="headerlink" title="运行结果"></a>运行结果</h3><p>运行<code>SelectStudentTest</code>类的<code>main</code>方法,控制台显示如下:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] ==&gt;  Preparing: SELECT * FROM TB_STUDENT </span><br><span class="line">DEBUG [main] ==&gt; Parameters: </span><br><span class="line">DEBUG [main] ====&gt;  Preparing: SELECT * FROM TB_CLAZZ where id = ? </span><br><span class="line">DEBUG [main] ====&gt; Parameters: <span class="number">1</span>(Integer)</span><br><span class="line">DEBUG [main] &lt;====      Total: <span class="number">1</span></span><br><span class="line">DEBUG [main] ====&gt;  Preparing: SELECT * FROM TB_CLAZZ where id = ? </span><br><span class="line">DEBUG [main] ====&gt; Parameters: <span class="number">2</span>(Integer)</span><br><span class="line">DEBUG [main] &lt;====      Total: <span class="number">1</span></span><br><span class="line">DEBUG [main] &lt;==      Total: <span class="number">4</span></span><br><span class="line">Student [id=<span class="number">1</span>, name=小明, sex=男, age=<span class="number">22</span>, clazz=Clazz [id=<span class="number">1</span>, code=B180102]]</span><br><span class="line">Student [id=<span class="number">2</span>, name=小王, sex=男, age=<span class="number">22</span>, clazz=Clazz [id=<span class="number">2</span>, code=B180203]]</span><br><span class="line">Student [id=<span class="number">3</span>, name=小丽, sex=男, age=<span class="number">21</span>, clazz=Clazz [id=<span class="number">2</span>, code=B180203]]</span><br><span class="line">Student [id=<span class="number">4</span>, name=小芳, sex=男, age=<span class="number">23</span>, clazz=Clazz [id=<span class="number">1</span>, code=B180102]]</span><br></pre></td></tr></table></figure>
+<p>可以看到,因为使用了<strong>关联映射</strong>,查询学生信息时学生对应的班级对象也被查询出来了。</p>
+<h2 id="集合映射"><a href="#集合映射" class="headerlink" title="集合映射"></a>集合映射</h2><p>现在査询所有学生时可以关联查询出班级信息了,那如果反过来,查询所有班级时需要查询出班级中的所有学生对象,应该如何映射呢?<br>学生通常只对应一个班级,但是班级中会有多个学生存在,所以首先在<code>Clazz.java</code>类中增加一个字段<code>students</code>,该字段是一个<code>List</code>集合,表示班级的多个学生。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Clazz</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Serializable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Student&gt; students;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="映射配置-1"><a href="#映射配置-1" class="headerlink" title="映射配置"></a>映射配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 查询所有班级信息 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectClazz"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultMap</span>=<span class="string">"clazzResultMap"</span>&gt;</span> SELECT * FROM TB_CLAZZ</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 映射班级对象的resultMap --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"clazzResultMap"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">type</span>=<span class="string">"org.fkit.domain.Clazz"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"id"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"code"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"code"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 班级的学生属性，因为一个班级有多个学生，所以该属性是一个集合 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">collection</span></span></span><br><span class="line"><span class="tag">        <span class="attr">property</span>=<span class="string">"students"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">javaType</span>=<span class="string">"ArrayList"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">column</span>=<span class="string">"id"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">ofType</span>=<span class="string">"org.fkit.domain.Student"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">select</span>=<span class="string">"selectStudentWithId"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 根据班级id查询学生 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span></span></span><br><span class="line"><span class="tag">    <span class="attr">id</span>=<span class="string">"selectStudentWithId"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">resultType</span>=<span class="string">"org.fkit.domain.Student"</span>&gt;</span> SELECT * FROM TB_STUDENT where clazz_id = #&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的映射和查询学生关联班级类似,具体解释如下:<br>①首先执行<code>id</code>为<code>selectClazz</code>的<code>select</code>元素,查询所有的班级数据,此时返回的不是简单的<code>Clazz</code>对象,因为<code>Clazz</code>对象中还包含了学生的集合对象,所以使用<code>resultMap</code>去映射返回类型。<br><code>id</code>为<code>clazzResultMap</code>素返回类型为<code>org.fkit.domain.Clazz</code><br>其中,<code>id</code>和<code>code</code>都是简单的属性映射,而査询班级所有学生时则使用了<strong>集合映射</strong><code>collection</code></p>
+<h3 id="collection标签详解"><a href="#collection标签详解" class="headerlink" title="collection标签详解"></a>collection标签详解</h3><ul>
+<li><code>collection</code>元素的解释如下:</li>
+<li><code>property</code>。表示返回类型<code>Clazz</code>的属性名<code>students</code></li>
+<li><code>javaType</code>。表示该属性对应的类型名称,本示例中是一个<code>Arraylist</code>集合。</li>
+<li><code>ofType</code>。表示集合当中的类型,本示例中是<code>Student</code>类型。</li>
+<li><code>column</code>。表示使用<code>id</code>作为参数进行之后的<code>select</code>语句查询。</li>
+<li><code>select</code>。表示执行一条查询语句,将查询到的数据封装到<code>property</code>所代表的类型对象当中。上面的<code>selectStudentWithId</code>执行一条<code>SQL</code>语句,将班级的<code>id</code>作为参数查询班级对应的所有学生信息。</li>
+</ul>
+<h3 id="SelectClazzTest-java"><a href="#SelectClazzTest-java" class="headerlink" title="SelectClazzTest.java"></a>SelectClazzTest.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectClazzTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 定义SqlSession变量</span></span><br><span class="line">        SqlSession sqlSession = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 创建SqlSession实例</span></span><br><span class="line">            sqlSession = FKSqlSessionFactory.getSqlSession();</span><br><span class="line">            <span class="comment">// 查询TB_CLAZZ表所有数据返回List集合,集合中的每个元素都是一个Clazz对象</span></span><br><span class="line">            List&lt;Clazz&gt; clazz_list = sqlSession</span><br><span class="line">                .selectList(<span class="string">"org.fkit.mapper.UserMapper.selectClazz"</span>);</span><br><span class="line">            <span class="comment">// 遍历List集合，打印每一个Clazz对象和该Clazz关联的所有Student对象</span></span><br><span class="line">            <span class="keyword">for</span> (Clazz clazz : clazz_list)</span><br><span class="line">            &#123;</span><br><span class="line">                System.out.println(clazz);</span><br><span class="line">                List&lt;Student&gt; student_list = clazz.getStudents();</span><br><span class="line">                <span class="keyword">for</span> (Student stu : student_list)</span><br><span class="line">                &#123;</span><br><span class="line">                    System.out.println(stu.getId() + <span class="string">" "</span> + stu.getName() + <span class="string">" "</span> + stu.getSex() + <span class="string">" "</span></span><br><span class="line">                            + stu.getAge());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 提交事务</span></span><br><span class="line">            sqlSession.commit();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 回滚事务</span></span><br><span class="line">            sqlSession.rollback();</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 关闭SqlSession</span></span><br><span class="line">            <span class="keyword">if</span> (sqlSession != <span class="keyword">null</span>)</span><br><span class="line">                sqlSession.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>行<code>SelectClazzTest</code>类的<code>main</code>方法,控制台显示如下</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] ==&gt;  Preparing: SELECT * FROM TB_CLAZZ </span><br><span class="line">DEBUG [main] ==&gt; Parameters: </span><br><span class="line">DEBUG [main] ====&gt;  Preparing: SELECT * FROM TB_STUDENT where clazz_id = ? </span><br><span class="line">DEBUG [main] ====&gt; Parameters: <span class="number">1</span>(Integer)</span><br><span class="line">DEBUG [main] &lt;====      Total: <span class="number">2</span></span><br><span class="line">DEBUG [main] ====&gt;  Preparing: SELECT * FROM TB_STUDENT where clazz_id = ? </span><br><span class="line">DEBUG [main] ====&gt; Parameters: <span class="number">2</span>(Integer)</span><br><span class="line">DEBUG [main] &lt;====      Total: <span class="number">2</span></span><br><span class="line">DEBUG [main] &lt;==      Total: <span class="number">2</span></span><br><span class="line">Clazz [id=<span class="number">1</span>, code=B180102]</span><br><span class="line"><span class="number">1</span> 小明 男 <span class="number">22</span></span><br><span class="line"><span class="number">4</span> 小芳 男 <span class="number">23</span></span><br><span class="line">Clazz [id=<span class="number">2</span>, code=B180203]</span><br><span class="line"><span class="number">2</span> 小王 男 <span class="number">22</span></span><br><span class="line"><span class="number">3</span> 小丽 男 <span class="number">21</span></span><br></pre></td></tr></table></figure>
+<p>以看到,因为使用了集合映射,所以査询班级信息时班级对应的所有学生对象也被查询出来了。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/d63c6e62/">9.4.5 ResultMaps</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/741976a5/" rel="next" title="9.4 深入Mapper XML映射文件 示例 测试select,insert,update和delete操作">
+                  <i class="fa fa-chevron-left"></i> 9.4 深入Mapper XML映射文件 示例 测试select,insert,update和delete操作
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/3191fb1d/" rel="prev" title="9.5 本章小结">
+                  9.5 本章小结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#9-4-5-ResultMaps"><span class="nav-number">1.</span> <span class="nav-text">9.4.5 ResultMaps</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#每条记录转换成一个Map"><span class="nav-number">1.1.</span> <span class="nav-text">每条记录转换成一个Map</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-测试ResultMaps"><span class="nav-number">2.</span> <span class="nav-text">示例: 测试ResultMaps</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单映射-一条记录封装成map"><span class="nav-number">2.1.</span> <span class="nav-text">简单映射 一条记录封装成map</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SelectMapTest-java"><span class="nav-number">2.1.1.</span> <span class="nav-text">SelectMapTest.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对应的select标签"><span class="nav-number">2.1.2.</span> <span class="nav-text">对应的select标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库表"><span class="nav-number">2.1.3.</span> <span class="nav-text">数据库表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行结果"><span class="nav-number">2.1.4.</span> <span class="nav-text">运行结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单映射-每条记录封装成一个持久化对象"><span class="nav-number">2.2.</span> <span class="nav-text">简单映射 每条记录封装成一个持久化对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResultMap标签"><span class="nav-number">2.3.</span> <span class="nav-text">ResultMap标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据表列名和持久化对象属性名不一致的情况"><span class="nav-number">2.3.1.</span> <span class="nav-text">数据表列名和持久化对象属性名不一致的情况</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建数据库表"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">创建数据库表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建持久化对象"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">创建持久化对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建resultMap标签"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">创建resultMap标签</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#resultMap标签详解"><span class="nav-number">2.3.1.3.1.</span> <span class="nav-text">resultMap标签详解</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#resultMap标签的id子标签"><span class="nav-number">2.3.1.3.1.1.</span> <span class="nav-text">resultMap标签的id子标签</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#resultMap标签的result子标签"><span class="nav-number">2.3.1.3.1.2.</span> <span class="nav-text">resultMap标签的result子标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ResultMapTest-java"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">ResultMapTest.java</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关联映射"><span class="nav-number">2.4.</span> <span class="nav-text">关联映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clazz-java"><span class="nav-number">2.4.1.</span> <span class="nav-text">Clazz.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Student-java"><span class="nav-number">2.4.2.</span> <span class="nav-text">Student.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#映射配置"><span class="nav-number">2.4.3.</span> <span class="nav-text">映射配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SelectStudentTest-java"><span class="nav-number">2.4.4.</span> <span class="nav-text">SelectStudentTest.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行结果-1"><span class="nav-number">2.4.5.</span> <span class="nav-text">运行结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合映射"><span class="nav-number">2.5.</span> <span class="nav-text">集合映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#映射配置-1"><span class="nav-number">2.5.1.</span> <span class="nav-text">映射配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#collection标签详解"><span class="nav-number">2.5.2.</span> <span class="nav-text">collection标签详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SelectClazzTest-java"><span class="nav-number">2.5.3.</span> <span class="nav-text">SelectClazzTest.java</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1152</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">330</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>
