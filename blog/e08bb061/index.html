@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="5.1.2 ODBC 1 建立一个和服务器的链接 2 通过SQLExecDirect语句把命令发送到数据库 3 断开连接释放句柄 ADO.NET">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.1.2 ODBC">
+<meta property="og:url" content="https://blueblue233.github.io/blog/e08bb061/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="5.1.2 ODBC 1 建立一个和服务器的链接 2 通过SQLExecDirect语句把命令发送到数据库 3 断开连接释放句柄 ADO.NET">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-24T03:43:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5.1.2 ODBC">
+<meta name="twitter:description" content="5.1.2 ODBC 1 建立一个和服务器的链接 2 通过SQLExecDirect语句把命令发送到数据库 3 断开连接释放句柄 ADO.NET">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/e08bb061/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>5.1.2 ODBC | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/e08bb061/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">5.1.2 ODBC
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-24 11:32:04 / 修改时间：11:43:46" itemprop="dateCreated datePublished" datetime="2019-10-24T11:32:04+08:00">2019-10-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第5章-高级SQL/" itemprop="url" rel="index"><span itemprop="name">第5章 高级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第5章-高级SQL/5-1-使用程序设计语言访问数据库/" itemprop="url" rel="index"><span itemprop="name">5.1 使用程序设计语言访问数据库</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/null/#5-1-2-ODBC">5.1.2 ODBC</a><ul>
+<li><a href="/blog/null/#1-建立一个和服务器的链接">1 建立一个和服务器的链接</a></li>
+<li><a href="/blog/null/#2-通过SQLExecDirect语句把命令发送到数据库">2 通过<strong>SQLExecDirect</strong>语句把命令发送到数据库</a></li>
+<li><a href="/blog/null/#3-断开连接释放句柄">3 断开连接释放句柄</a></li>
+<li><a href="/blog/null/#ADO-NET"><strong>ADO.NET</strong></a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="5-1-2-ODBC"><a href="#5-1-2-ODBC" class="headerlink" title="5.1.2 ODBC"></a>5.1.2 ODBC</h1><p><strong>开放数据库互连</strong>(<code>Open DataBase Connectivity</code>,<code>ODBC</code>)标准定义了一个<code>API</code>,应用程序用它来打开一个数据库连接、发送查询和更新,以及获取返回结果等。应用程序(例如图形界面、统计程序包或者电子表格)可以使用相同的<code>ODBC API</code>来访问任何一个支持<code>ODBC</code>标准的数据库。<br>每一个支持<code>ODBC</code>的数据库系统都提供一个和客户端程序相连接的库,当客户端发出一个<code>ODBC API</code>请求,库中的代码就可以和服务器通信来执行被请求的动作并取回结果.</p>
+<h2 id="1-建立一个和服务器的链接"><a href="#1-建立一个和服务器的链接" class="headerlink" title="1 建立一个和服务器的链接"></a>1 建立一个和服务器的链接</h2><!--SSTStop-->
+<p>利用<code>ODBC</code>和服务器通信的第一步是,建立一个和服务器的连接。</p>
+<p>为了实现这一步,程序先分配一个<code>SQL</code>的环境变量,然后是一个数据库连接句柄。<code>ODBC</code>定义了<code>HENV</code>、<code>HDBC</code>和<code>RETCODE</code>几种类型。程序随后利用<code>SQLConnect</code>打开和数据库的连接,这个调用有几个参数,包括数据库的连接句柄、要连接的服务器、用户的身份和密码等。常数<code>SQL_ NTS</code>表示前面参数是一个以n结尾的字符串。</p>
+<!--SSTStart-->
+<h2 id="2-通过SQLExecDirect语句把命令发送到数据库"><a href="#2-通过SQLExecDirect语句把命令发送到数据库" class="headerlink" title="2 通过SQLExecDirect语句把命令发送到数据库"></a>2 通过<code>SQLExecDirect</code>语句把命令发送到数据库</h2><!--SSTStop-->
+<p>一旦一个连接建立了,C语言就可以通过<code>SQLExecDirect</code>语句把命令发送到数据库。</p>
+<p>因为C语言的变量可以和查询结果的属性绑定,所以当一个元组被<code>SQLFetch</code>语句取回的时候,结果中相应的属性的值就可以放到对应的C变量里了。 <code>SQLBindCol</code>做这项工作;在<code>SQLBindCol</code>函数里面第二个参数代表选择属性中哪一个位置的值,第三个参数代表<code>SQL</code>应该把属性转化成什么类型的C变量。再下一个参数给出了存放变量的地址。对于诸如字符数组这样的变长类型,最后两个参数还要给出变量的最大长度和一个位置来存放元组取回时的实际长度。如果长度域返回一个负值,那么代表着这个值为空(<code>mu</code>)。对于定长类型的变量如整型或浮点型,最大长度的域被忽略,然而当长度域返回一个负值时表示该值为空值。</p>
+<p><code>SQLFetch</code>在<code>while</code>循环中一直执行,直到<code>SQLFetch</code>返回一个非<code>sQL_ SUCCESS</code>的值,在每一次<code>fetch</code>过程中,程序把值存放在调用<code>SQLBindCol</code>所说明的C变量中并把它们打印出来。</p>
+<!--SSTStart-->
+<h2 id="3-断开连接释放句柄"><a href="#3-断开连接释放句柄" class="headerlink" title="3 断开连接释放句柄"></a>3 断开连接释放句柄</h2><p>在会话结束的时候,程序释放语句的句柄,断开与数据库的连接,同时释放连接和<code>SQL</code>环境句柄。好的编程风格要求检查每一个函数的结果,确保它们没有错误,为了简洁,我们在这里忽略了大部分检查。</p>
+<!--SSTStop-->
+<p>可以创建带有参数的<code>SQL</code>语句,例如, <code>insert into department values(?,?,?)</code>。问号是为将来提供值的占位符。上面的语句可以先被”准备”,也就是在数据库中先编译,然后可以通过为占位符提供具体值来反复执行——在该例中,为<code>department</code>关系提供系名、楼宇名和预算数。</p>
+<p><code>ODBC</code>为各种不同的任务定义了函数,例如查找数据库中所有的关系,以及查找数据库中某个关系的列的名称和类型,或者一个查询结果的列的名称和类型。<br>在默认情况下,每一个<code>SQL</code>语句都被认为是一个自动提交的独立事务。调用<code>sQLSet ConnectOption(comn, SQL_ AUTOCOMMIT,0)</code>可以关闭连接<code>com</code>的自动提交,事务必须通过显式地调用<code>SQLTransact(comn, SQL _COMMIT)</code>来提交或通过显式地调用<code>SQLTransact(comn, SQL_ROLLBACK)</code>来回滚。<br><code>ODBC</code>标准定义了符合性级别( <code>conformance level</code>),用于指定标准定义的功能的子集。一个<code>ODBC</code>实现可以仅提供核心级特性,也可以提供更多的高级特性( <code>level</code> 1或<code>level2</code>)。 <code>level I</code>需要支持取得目录的有关信息,例如什么关系存在,它们的属性是什么类型的等。 <code>level</code>2需要更多的特性,例如发送和提取参数值数组以及检索有关目录的更详细信息的能力.<br><code>SQL</code>标准定义了调用级接口( <code>Call level Interface,CI</code>),它与<code>ODBC</code>接口类似。</p>
+<h2 id="ADO-NET"><a href="#ADO-NET" class="headerlink" title="ADO.NET"></a><code>ADO.NET</code></h2><p><code>ADO.NET API</code>是为<code>Visual basic.NET</code>和C#语言设计的,它提供了一系列访问数据的函数,与<code>JDBC</code>在上层架构没有什么不同,只是在细节上有差别。像<code>JDBC</code>和<code>ODBC</code>一样,<code>ADO.NET API</code>可以访问<code>SL</code>查询的结果,以及元数据,但使用起来比<code>ODBC</code>简单得多。可以使用<code>ADO.NET API</code>来访问支持<code>ODBC</code>的数据库,此时,<code>ADO.NET</code>调用被转换成<code>ODBC</code>调用。<code>ADO.NET API</code>也可以用在某些非关系教据源上,例如微软的<code>OLE</code>-<code>DB</code>、<code>XML</code>(在第23章介绍),以及微软最近开发的实体框架。有关<code>ADO.NET</code>的更多信息请参考文献注解。</p>
+<!--SSTStart-->
+<p>我这里主要是用<code>java</code>来操作数据库,<code>ODBC</code>这里了解个大概即可</p>
+<!--SSTStop-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/51c132fd/" rel="next" title="5.1.1 JDBC">
+                  <i class="fa fa-chevron-left"></i> 5.1.1 JDBC
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/29029c86/" rel="prev" title="5.1.3 嵌入式SQL">
+                  5.1.3 嵌入式SQL <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-1-2-ODBC"><span class="nav-number">1.</span> <span class="nav-text">5.1.2 ODBC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-建立一个和服务器的链接"><span class="nav-number">1.1.</span> <span class="nav-text">1 建立一个和服务器的链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-通过SQLExecDirect语句把命令发送到数据库"><span class="nav-number">1.2.</span> <span class="nav-text">2 通过SQLExecDirect语句把命令发送到数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-断开连接释放句柄"><span class="nav-number">1.3.</span> <span class="nav-text">3 断开连接释放句柄</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ADO-NET"><span class="nav-number">1.4.</span> <span class="nav-text">ADO.NET</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1158</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">332</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

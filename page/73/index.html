@@ -166,6 +166,203 @@
           <div id="content" class="content">
   <div class="posts-expand">
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d5151950/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/d5151950/" class="post-title-link" itemprop="url">16.2 线程的创建和启动 16.2.1 继承Thread类创建线程类</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-15 21:14:18" itemprop="dateCreated datePublished" datetime="2019-07-15T21:14:18+08:00">2019-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/" itemprop="url" rel="index"><span itemprop="name">第16章 多线程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/16-2-线程的创建和启动/" itemprop="url" rel="index"><span itemprop="name">16.2 线程的创建和启动</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/d5151950/#16-2-线程的创建和启动">16.2 线程的创建和启动</a></li>
+<li><a href="/blog/d5151950/#16-2-1-继承Thread类创建线程类">16.2.1 继承Thread类创建线程类</a><ul>
+<li><a href="/blog/d5151950/#主线程">主线程</a></li>
+<li><a href="/blog/d5151950/#Thread类常用方法">Thread类常用方法</a></li>
+<li><a href="/blog/d5151950/#继承Thread类来创建线程的缺点">继承Thread类来创建线程的缺点</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/d5151950/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/17942968/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/17942968/" class="post-title-link" itemprop="url">16.1.2 多线程的优势</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-15 21:07:19" itemprop="dateCreated datePublished" datetime="2019-07-15T21:07:19+08:00">2019-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/" itemprop="url" rel="index"><span itemprop="name">第16章 多线程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/16-1-线程概述/" itemprop="url" rel="index"><span itemprop="name">16.1 线程概述</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/17942968/#16-1-2-多线程的优势">16.1.2 多线程的优势</a><ul>
+<li><a href="/blog/17942968/#多线程编程优点">多线程编程优点</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/17942968/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/11feab9f/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/11feab9f/" class="post-title-link" itemprop="url">16.1 线程概述 16.1.1 线程和进程</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-07-15 20:45:38" itemprop="dateCreated datePublished" datetime="2019-07-15T20:45:38+08:00">2019-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/" itemprop="url" rel="index"><span itemprop="name">第16章 多线程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第16章-多线程/16-1-线程概述/" itemprop="url" rel="index"><span itemprop="name">16.1 线程概述</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/11feab9f/#16-1-线程概述">16.1 线程概述</a></li>
+<li><a href="/blog/11feab9f/#16-1-1-线程和进程">16.1.1 线程和进程</a><ul>
+<li><a href="/blog/11feab9f/#进程的三个特征">进程的三个特征</a><ul>
+<li><a href="/blog/11feab9f/#并发性和并行性的区别">并发性和并行性的区别</a></li>
+</ul>
+</li>
+<li><a href="/blog/11feab9f/#多进程并发策略">多进程并发策略</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/11feab9f/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d184d1d1/">
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="蓝蓝">
@@ -618,206 +815,6 @@
           <div class="post-eof"></div>
       </footer>
   </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/712f16a6/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/712f16a6/" class="post-title-link" itemprop="url">18.3.2 从Class中获取信息</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-07-15 11:23:29" itemprop="dateCreated datePublished" datetime="2019-07-15T11:23:29+08:00">2019-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/" itemprop="url" rel="index"><span itemprop="name">第18章 类加载机制与反射</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/18-3-通过反射查看类信息/" itemprop="url" rel="index"><span itemprop="name">18.3 通过反射查看类信息</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/712f16a6/#18-3-2从Class中获取信息">18.3. 2从Class中获取信息</a><ul>
-<li><a href="/blog/712f16a6/#获取构造器">获取构造器</a></li>
-<li><a href="/blog/712f16a6/#获取方法">获取方法</a></li>
-<li><a href="/blog/712f16a6/#获取成员变量">获取成员变量</a></li>
-<li><a href="/blog/712f16a6/#获取Annotation">获取Annotation</a></li>
-<li><a href="/blog/712f16a6/#获取包含的内部类">获取包含的内部类</a></li>
-<li><a href="/blog/712f16a6/#获取所在的外部类">获取所在的外部类</a></li>
-<li><a href="/blog/712f16a6/#访问该Class对象对应类所实现的接口">访问该Class对象对应类所实现的接口</a></li>
-<li><a href="/blog/712f16a6/#获取所继承的父类">获取所继承的父类</a></li>
-<li><a href="/blog/712f16a6/#获取修饰符-所在包-类名等基本信息">获取修饰符 所在包 类名等基本信息</a></li>
-<li><a href="/blog/712f16a6/#判断该类是否为接口-枚举-注解类型">判断该类是否为接口 枚举 注解类型</a></li>
-<li><a href="/blog/712f16a6/#如何通过反射获取一个方法">如何通过反射获取一个方法</a></li>
-<li><a href="/blog/712f16a6/#如何通过反射获取一个构造器">如何通过反射获取一个构造器</a></li>
-<li><a href="/blog/712f16a6/#程序示例">程序示例</a></li>
-<li><a href="/blog/712f16a6/#Class无法获取值显示在源代码上的注解">Class无法获取值显示在源代码上的注解</a></li>
-<li><a href="/blog/712f16a6/#本文重点">本文重点</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/712f16a6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/63dab91d/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/63dab91d/" class="post-title-link" itemprop="url">18.3.1 获得Class对象</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-07-15 00:56:10" itemprop="dateCreated datePublished" datetime="2019-07-15T00:56:10+08:00">2019-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/" itemprop="url" rel="index"><span itemprop="name">第18章 类加载机制与反射</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/18-3-通过反射查看类信息/" itemprop="url" rel="index"><span itemprop="name">18.3 通过反射查看类信息</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/63dab91d/#18-3-1-获得Class对象">18.3.1 获得Class对象</a><ul>
-<li><a href="/blog/63dab91d/#本文重点">本文重点</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/63dab91d/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1549d22/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/1549d22/" class="post-title-link" itemprop="url">18.3 通过反射查看类信息</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-07-14 23:50:32" itemprop="dateCreated datePublished" datetime="2019-07-14T23:50:32+08:00">2019-07-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/" itemprop="url" rel="index"><span itemprop="name">第18章 类加载机制与反射</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第18章-类加载机制与反射/18-3-通过反射查看类信息/" itemprop="url" rel="index"><span itemprop="name">18.3 通过反射查看类信息</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/1549d22/#18-3-通过反射查看类信息">18.3 通过反射查看类信息</a></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/1549d22/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
   </div>
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/72/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/72/">72</a><span class="page-number current">73</span><a class="page-number" href="/page/74/">74</a><span class="space">&hellip;</span><a class="page-number" href="/page/116/">116</a><a class="extend next" rel="next" href="/page/74/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -855,13 +852,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
-          <span class="site-state-item-count">1155</span>
+          <span class="site-state-item-count">1158</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">331</span>
+        <span class="site-state-item-count">332</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
