@@ -44,18 +44,18 @@
     sidebarPadding: 40
   };
 </script>
-  <meta name="description" content="5.2 函数和过程">
+  <meta name="description" content="5.2 函数和过程 使用函数和过程的好处 如何定义函数 过程 和方法 不同的数据库实现的SQL语法可能不同   5.2.1 声明和调用SQL函数和过程 表函数 带参数的视图 过程 调用存储过程 存储过程和函数可”重载”">
 <meta name="keywords" content="程序员,java,读书,SQL,MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="5.2 函数和过程">
 <meta property="og:url" content="https://blueblue233.github.io/blog/2ddaa0b5/index.html">
 <meta property="og:site_name" content="蓝蓝的读书笔记">
-<meta property="og:description" content="5.2 函数和过程">
+<meta property="og:description" content="5.2 函数和过程 使用函数和过程的好处 如何定义函数 过程 和方法 不同的数据库实现的SQL语法可能不同   5.2.1 声明和调用SQL函数和过程 表函数 带参数的视图 过程 调用存储过程 存储过程和函数可”重载”">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-24T07:06:23.000Z">
+<meta property="og:updated_time" content="2019-10-25T09:47:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="5.2 函数和过程">
-<meta name="twitter:description" content="5.2 函数和过程">
+<meta name="twitter:description" content="5.2 函数和过程 使用函数和过程的好处 如何定义函数 过程 和方法 不同的数据库实现的SQL语法可能不同   5.2.1 声明和调用SQL函数和过程 表函数 带参数的视图 过程 调用存储过程 存储过程和函数可”重载”">
   <link rel="canonical" href="https://blueblue233.github.io/blog/2ddaa0b5/">
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
@@ -192,6 +192,13 @@
               <span class="post-meta-item-text">发表于</span>
               <time title="创建时间：2019-10-24 15:06:23" itemprop="dateCreated datePublished" datetime="2019-10-24T15:06:23+08:00">2019-10-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-25 17:47:31" itemprop="dateModified" datetime="2019-10-25T17:47:31+08:00">2019-10-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -209,19 +216,59 @@
       </header>
     <div class="post-body" itemprop="articleBody">
         <ul>
-<li><a href="/blog/null/#5-2-函数和过程">5.2 函数和过程</a></li>
+<li><a href="/blog/2ddaa0b5/#5-2-函数和过程">5.2 函数和过程</a><ul>
+<li><a href="/blog/2ddaa0b5/#使用函数和过程的好处">使用函数和过程的好处</a></li>
+<li><a href="/blog/2ddaa0b5/#如何定义函数-过程-和方法">如何定义函数 过程 和方法</a></li>
+<li><a href="/blog/2ddaa0b5/#不同的数据库实现的SQL语法可能不同">不同的数据库实现的SQL语法可能不同</a></li>
+</ul>
+</li>
+<li><a href="/blog/2ddaa0b5/#5-2-1-声明和调用SQL函数和过程">5.2.1 声明和调用SQL函数和过程</a><ul>
+<li><a href="/blog/2ddaa0b5/#表函数">表函数</a></li>
+<li><a href="/blog/2ddaa0b5/#带参数的视图">带参数的视图</a></li>
+<li><a href="/blog/2ddaa0b5/#过程">过程</a></li>
+<li><a href="/blog/2ddaa0b5/#调用存储过程">调用存储过程</a></li>
+<li><a href="/blog/2ddaa0b5/#存储过程和函数可" 重载"">存储过程和函数可”重载”</a></li>
+</ul>
+</li>
 </ul>
 <a id="more"></a>
 <script src="/js/src/jquery.slim.min.js"></script>
 <script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
 <!--end-->
+<!--SSTStart-->
 <h1 id="5-2-函数和过程"><a href="#5-2-函数和过程" class="headerlink" title="5.2 函数和过程"></a>5.2 函数和过程</h1><p>我们已经介绍了<code>SQL</code>语言的几个内建函数。在本节中,我们将演示开发者如何来编写他们自己的函数和过程,把它们存储在数据库里并在<code>SQL</code>语句中调用。<br><strong>函数对于<code>特定的数据类型</code>比如图像和几何对象来说特别有用</strong>。例如,用在地图数据库中的一个线段数据类型可能有一个相关函数用于判断两个线段是否交叠,一个图像数据类型可能有一个相关函数用于比较两幅图的相似性。</p>
 <h2 id="使用函数和过程的好处"><a href="#使用函数和过程的好处" class="headerlink" title="使用函数和过程的好处"></a>使用函数和过程的好处</h2><p><strong>函数和过程允许”业务逻辑”作为存储过程记录在数据库中,并在数据库内执行</strong>。<br>例如,大学里通常有许多规章制度,规定在一个学期里每个学生能选多少课,在一年里一个全职的教师至少要上多少节课,一个学生最多可以在多少个专业中注册,等等。尽管这样的业务逻辑能够被写成程序设计语言过程并完全存储在数据库以外,但把它们定义成数据库中的存储过程有几个优点。例如,它<strong>允许多个应用访问这些过程,允许当业务规则发生变化时进行单个点的改变,而不必改变应用系统的其他部分</strong>。<br>应用代码可以调用存储过程,而不是直接更新数据库关系</p>
 <h2 id="如何定义函数-过程-和方法"><a href="#如何定义函数-过程-和方法" class="headerlink" title="如何定义函数 过程 和方法"></a>如何定义函数 过程 和方法</h2><p><code>SQL</code>允许定义函数、过程和方法。可以通过<code>SQL</code>的有关过程的组件来定义,也可以通过外部的程序设计语言来定义,例如<code>Java</code>、C或C++。我们首先查看<code>SQL</code>中的定义,然后在5.2.3节了解如何使用外部语言中的定义。</p>
 <h2 id="不同的数据库实现的SQL语法可能不同"><a href="#不同的数据库实现的SQL语法可能不同" class="headerlink" title="不同的数据库实现的SQL语法可能不同"></a>不同的数据库实现的SQL语法可能不同</h2><p>我们在这里介绍的是<code>SQL</code>标准所定义的语法,然而大多数数据库都实现了它们自己的非标准版本的语法。例如<code>Oracle(PL/SQL)</code>、 <code>Microsoft SQL Sever(TransactSQL)</code>和<code>PostgreSQL(PL/ pgSQL)</code>所支持的过程语言都与我们在这里描述的标准语法有所差别。我们将在后面用<code>Oracle</code>来举例说明某些不同之处更进一步的详细信息可参见各自的系统手册。尽管我们介绍的部分语法在这些系统上并不支持,但是所阐述的概念在不同的实现上都是适用的,只是语法上有所区别。</p>
-<h1 id="5-2-1-声明和调用SQL函数和过程"><a href="#5-2-1-声明和调用SQL函数和过程" class="headerlink" title="5.2.1 声明和调用SQL函数和过程"></a>5.2.1 声明和调用SQL函数和过程</h1><p>假定我们想要这样一个函数:给定一个系的名字,返回该系的教师数目。我们可以如图5-5所示定义函数。这个函数可以用在返回教师数大于12的所有系的名称和预算的查询中:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> dept_count(dept_name <span class="built_in">varchar</span>(<span class="number">20</span>))</span><br><span class="line"><span class="keyword">returns</span> <span class="built_in">integer</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> d_count <span class="built_in">integer</span>;</span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">into</span> d_count</span><br><span class="line">        <span class="keyword">from</span> instructor</span><br><span class="line">        <span class="keyword">where</span> instructor.dept_name = dept_name</span><br><span class="line">    <span class="keyword">return</span> d_count;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name,budget</span><br><span class="line"><span class="keyword">from</span> department</span><br><span class="line"><span class="keyword">where</span> dept_count(dept_name)&gt;<span class="number">12</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="5-2-1-声明和调用SQL函数和过程"><a href="#5-2-1-声明和调用SQL函数和过程" class="headerlink" title="5.2.1 声明和调用SQL函数和过程"></a>5.2.1 声明和调用SQL函数和过程</h1><p>假定我们想要这样一个函数:给定一个系的名字,返回该系的教师数目。我们可以如下所示定义函数:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> dept_count(dept_name <span class="built_in">varchar</span>(<span class="number">20</span>))</span><br><span class="line"><span class="keyword">returns</span> <span class="built_in">integer</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> d_count <span class="built_in">integer</span>;</span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">into</span> d_count</span><br><span class="line">        <span class="keyword">from</span> instructor</span><br><span class="line">        <span class="keyword">where</span> instructor.dept_name = dept_name;</span><br><span class="line">    return d_count;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+<p>这个函数可以用在<strong>返回教师数大于12的所有系的名称和预算</strong>的查询中:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dept_name,budget</span><br><span class="line">    <span class="keyword">from</span> department</span><br><span class="line">    <span class="keyword">where</span> dept_count(dept_name)&gt;<span class="number">12</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select dept_name,budget</span><br><span class="line">    from department</span><br><span class="line">    where dept_count(dept_name)&gt;<span class="number">12</span>;</span><br><span class="line">Empty <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+<h2 id="表函数"><a href="#表函数" class="headerlink" title="表函数"></a>表函数</h2><p><code>SQL</code>标准支持<strong>返回关系作为结果的函数</strong>;这种函数称为<strong>表函数</strong>(<code>table functions</code>)。考虑图5-6中定义的函数:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> instructor_of(dept_name <span class="built_in">varchar</span>(<span class="number">20</span>))</span><br><span class="line">    <span class="keyword">returns</span> <span class="keyword">table</span>(</span><br><span class="line">        <span class="keyword">ID</span> <span class="built_in">varchar</span>(<span class="number">5</span>),</span><br><span class="line">        <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">        dept_name <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">        salary <span class="built_in">numeric</span>(<span class="number">8</span>,<span class="number">2</span>))</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">table</span>(</span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">ID</span>,<span class="keyword">name</span>,dept_name,salary</span><br><span class="line">        <span class="keyword">from</span> instructor</span><br><span class="line">        <span class="keyword">where</span> instructor.dept_name=instructor_of.dept <span class="keyword">name</span>;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>该函数<strong>返回一个包含某特定系的所有教师的表</strong>。注意,<strong>使用函数的参数时需要加上函数名</strong>作为前缀( <code>instructor_of.dept_name</code>)。<br>这种函数可以如下在一个查询中使用:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> <span class="keyword">table</span>(instructor_of(<span class="string">'Finance'</span>));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">经过的测试MySQL的函数好像不能返回表,也就是MySQL不支持**返回关系作为结果的函数**</span><br></pre></td></tr></table></figure>
+<h2 id="带参数的视图"><a href="#带参数的视图" class="headerlink" title="带参数的视图"></a>带参数的视图</h2><p>这个査询返回’<code>金融</code>‘系的所有教师。在上面的简单情况下直接写这个查询而不用以表为值的函数也是很直观的。<br>但通常<strong>以表为值的函数可以被看作带参数的视图</strong>( <code>parameterized view</code>),它通过允许参数把视图的概念更加一般化</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p><code>SQL</code>也支持过程。 <code>dept_count</code>函数也可以写成一个过程:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span></span><br><span class="line">    dept_count_proc(<span class="keyword">in</span> dept_name <span class="built_in">varchar</span>(<span class="number">20</span>), <span class="keyword">out</span> d_count <span class="built_in">integer</span>)</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">into</span> d_count</span><br><span class="line">    <span class="keyword">where</span> instructor.dept_name=dept_count_proc.dept_name;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create procedure</span><br><span class="line">    dept_count_proc( <span class="keyword">in</span> dept_name varchar(<span class="number">20</span>), out d_count integer)</span><br><span class="line">begin</span><br><span class="line">    select count(*) into d_count</span><br><span class="line">    where instructor.dept_name=dept_count_proc.dept_name;</span><br><span class="line">end;</span><br><span class="line">Query OK, <span class="number">0</span> rows affected</span><br></pre></td></tr></table></figure>
+<ul>
+<li>关键字<code>in</code>表示待赋值的参数</li>
+<li>关键字<code>out</code>为返回结果</li>
+</ul>
+<h2 id="调用存储过程"><a href="#调用存储过程" class="headerlink" title="调用存储过程"></a>调用存储过程</h2><p>可以从一个<code>SQL</code>过程中或者从嵌入式<code>SQL</code>中使用<code>call</code>语句调用过程:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> d_count <span class="built_in">integer</span>;</span><br><span class="line"><span class="keyword">call</span> dept_count_proc(<span class="string">'Physics'</span>, d_count);</span><br></pre></td></tr></table></figure>
+<p>过程和函数可以通过动态<code>SQL</code>触发,如5.1.1.4节中<code>JDBC</code>语法所示.</p>
+<h2 id="存储过程和函数可”重载”"><a href="#存储过程和函数可”重载”" class="headerlink" title="存储过程和函数可”重载”"></a>存储过程和函数可”重载”</h2><ul>
+<li><strong><code>SQL</code>允许多个过程同名,只要同名过程的参数个数不同</strong>。名称和参数个数用于标识一个过程。</li>
+<li><strong><code>SQL</code>也允许多个函数同名,只要这些同名的不同函数的参数个数不同</strong>,或者对于那些有相同参数个数的函数,至少有一个参数的类型不同。</li>
+</ul>
+<!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/2ddaa0b5/">5.2 函数和过程</a></p>
+</blockquote>
     </div>
       <footer class="post-footer">
           <div class="post-nav">
@@ -232,6 +279,9 @@
             </div>
             <span class="post-nav-divider"></span>
             <div class="post-nav-prev post-nav-item">
+                <a href="/blog/6b42b3d6/" rel="prev" title="数据库系统概念原书 第6版 图5-5 创建函数的SQL代码报错">
+                  数据库系统概念原书 第6版 图5-5 创建函数的SQL代码报错 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
       </footer>
@@ -256,7 +306,7 @@
       </ul>
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-2-函数和过程"><span class="nav-number">1.</span> <span class="nav-text">5.2 函数和过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用函数和过程的好处"><span class="nav-number">1.1.</span> <span class="nav-text">使用函数和过程的好处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何定义函数-过程-和方法"><span class="nav-number">1.2.</span> <span class="nav-text">如何定义函数 过程 和方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同的数据库实现的SQL语法可能不同"><span class="nav-number">1.3.</span> <span class="nav-text">不同的数据库实现的SQL语法可能不同</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-2-1-声明和调用SQL函数和过程"><span class="nav-number">2.</span> <span class="nav-text">5.2.1 声明和调用SQL函数和过程</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-2-函数和过程"><span class="nav-number">1.</span> <span class="nav-text">5.2 函数和过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用函数和过程的好处"><span class="nav-number">1.1.</span> <span class="nav-text">使用函数和过程的好处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何定义函数-过程-和方法"><span class="nav-number">1.2.</span> <span class="nav-text">如何定义函数 过程 和方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同的数据库实现的SQL语法可能不同"><span class="nav-number">1.3.</span> <span class="nav-text">不同的数据库实现的SQL语法可能不同</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-2-1-声明和调用SQL函数和过程"><span class="nav-number">2.</span> <span class="nav-text">5.2.1 声明和调用SQL函数和过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#表函数"><span class="nav-number">2.1.</span> <span class="nav-text">表函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带参数的视图"><span class="nav-number">2.2.</span> <span class="nav-text">带参数的视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过程"><span class="nav-number">2.3.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用存储过程"><span class="nav-number">2.4.</span> <span class="nav-text">调用存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储过程和函数可”重载”"><span class="nav-number">2.5.</span> <span class="nav-text">存储过程和函数可”重载”</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
       <div class="site-overview-wrap sidebar-panel">
@@ -271,13 +321,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
-          <span class="site-state-item-count">1158</span>
+          <span class="site-state-item-count">1164</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">332</span>
+        <span class="site-state-item-count">333</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
