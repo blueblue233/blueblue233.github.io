@@ -166,6 +166,289 @@
           <div id="content" class="content">
   <div class="posts-expand">
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/c2bbf8dd/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/c2bbf8dd/" class="post-title-link" itemprop="url">5.6.3 super限定</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-22 19:22:48" itemprop="dateCreated datePublished" datetime="2019-09-22T19:22:48+08:00">2019-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/" itemprop="url" rel="index"><span itemprop="name">第5章 面向对象(上)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/5-6-类的继承/" itemprop="url" rel="index"><span itemprop="name">5.6 类的继承</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/c2bbf8dd/#5-6-3-super限定">5.6.3 super限定</a><ul>
+<li><a href="/blog/c2bbf8dd/#super不能出现在staitc修饰的方法中">super不能出现在staitc修饰的方法中</a></li>
+<li><a href="/blog/c2bbf8dd/#子类同名实例变量会覆盖父类变量">子类同名实例变量会覆盖父类变量</a></li>
+<li><a href="/blog/c2bbf8dd/#系统查找变量的顺序">系统查找变量的顺序</a></li>
+<li><a href="/blog/c2bbf8dd/#被覆盖的是类变量的情况">被覆盖的是类变量的情况</a></li>
+<li><a href="/blog/c2bbf8dd/#系统依旧为被覆盖的变量分配内存空间">系统依旧为被覆盖的变量分配内存空间</a></li>
+<li><a href="/blog/c2bbf8dd/#引用变量类型绝对调用的是哪个实例变量">引用变量类型绝对调用的是哪个实例变量</a><ul>
+<li><a href="/blog/c2bbf8dd/#实例">实例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/c2bbf8dd/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/41b0ea4/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/41b0ea4/" class="post-title-link" itemprop="url">5.6.2 重写父类的方法</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-22 18:55:32" itemprop="dateCreated datePublished" datetime="2019-09-22T18:55:32+08:00">2019-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/" itemprop="url" rel="index"><span itemprop="name">第5章 面向对象(上)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/5-6-类的继承/" itemprop="url" rel="index"><span itemprop="name">5.6 类的继承</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/41b0ea4/#5-6-2-重写父类的方法">5.6.2 重写父类的方法</a><ul>
+<li><a href="/blog/41b0ea4/#方法重写">方法重写</a></li>
+<li><a href="/blog/41b0ea4/#方法重写规则">方法重写规则</a></li>
+<li><a href="/blog/41b0ea4/#子类-对象-无法访问被覆盖父类的方法">子类 对象 无法访问被覆盖父类的方法</a></li>
+<li><a href="/blog/41b0ea4/#子类-方法-可以调用被覆盖的父类方法">子类 方法 可以调用被覆盖的父类方法</a></li>
+<li><a href="/blog/41b0ea4/#子类方法-中如何调用被覆盖的父类方法">子类方法 中如何调用被覆盖的父类方法</a></li>
+<li><a href="/blog/41b0ea4/#父类中private修饰的方法无法重写">父类中private修饰的方法无法重写</a></li>
+<li><a href="/blog/41b0ea4/#所谓重写父类private方法只不过是子类中定义的新方法,不算重写">所谓重写父类private方法只不过是子类中定义的新方法,不算重写</a></li>
+<li><a href="/blog/41b0ea4/#重载和重写的区别">重载和重写的区别</a></li>
+<li><a href="/blog/41b0ea4/#父类方法和子类方法-可以重载">父类方法和子类方法 可以重载</a><ul>
+<li><a href="/blog/41b0ea4/#方法重写要求">方法重写要求</a></li>
+</ul>
+</li>
+<li><a href="/blog/41b0ea4/#方法重载的要求">方法重载的要求</a><ul>
+<li><a href="/blog/41b0ea4/#什么时候发生子类方法和父类方法的重载">什么时候发生子类方法和父类方法的重载</a></li>
+</ul>
+</li>
+<li><a href="/blog/41b0ea4/#参考资料">参考资料</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/41b0ea4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/a9f29b11/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/a9f29b11/" class="post-title-link" itemprop="url">5.6 类的继承 5.6.1 继承的特点</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-22 18:55:03" itemprop="dateCreated datePublished" datetime="2019-09-22T18:55:03+08:00">2019-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/" itemprop="url" rel="index"><span itemprop="name">第5章 面向对象(上)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/5-6-类的继承/" itemprop="url" rel="index"><span itemprop="name">5.6 类的继承</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/a9f29b11/#5-6-类的继承">5.6 类的继承</a></li>
+<li><a href="/blog/a9f29b11/#5-6-1-继承的特点">5.6.1 继承的特点</a><ul>
+<li><a href="/blog/a9f29b11/#继承关键字">继承关键字</a></li>
+<li><a href="/blog/a9f29b11/#继承语法格式">继承语法格式</a></li>
+<li><a href="/blog/a9f29b11/#extends关键字也可以叫扩展">extends关键字也可以叫扩展</a></li>
+<li><a href="/blog/a9f29b11/#默认父类">默认父类</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/a9f29b11/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/9748ca41/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/9748ca41/" class="post-title-link" itemprop="url">5.5.2 构造器重载</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-09-22 18:36:13" itemprop="dateCreated datePublished" datetime="2019-09-22T18:36:13+08:00">2019-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/" itemprop="url" rel="index"><span itemprop="name">第5章 面向对象(上)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/5-5-深入构造器/" itemprop="url" rel="index"><span itemprop="name">5.5 深入构造器</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/9748ca41/#5-5-2-构造器重载">5.5.2 构造器重载</a><ul>
+<li><a href="/blog/9748ca41/#什么是构造器重载">什么是构造器重载</a></li>
+<li><a href="/blog/9748ca41/#通过this关键调用其他构造器">通过this关键调用其他构造器</a></li>
+<li><a href="/blog/9748ca41/#使用this调用构造器的条件">使用this调用构造器的条件</a></li>
+<li><a href="/blog/9748ca41/#this如果确定调用哪个构造器">this如果确定调用哪个构造器</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/9748ca41/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/b31bc110/">
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="蓝蓝">
@@ -599,254 +882,6 @@
           <div class="post-eof"></div>
       </footer>
   </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/c3787bc4/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/c3787bc4/" class="post-title-link" itemprop="url">5.3.3 局部变量的初始化和内存中的运行机制</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-09-22 10:48:56" itemprop="dateCreated datePublished" datetime="2019-09-22T10:48:56+08:00">2019-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/" itemprop="url" rel="index"><span itemprop="name">第5章 面向对象(上)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/5-3-成员变量和局部变量/" itemprop="url" rel="index"><span itemprop="name">5.3 成员变量和局部变量</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/c3787bc4/#5-3-3-局部变量的初始化和内存中的运行机制">5.3.3 局部变量的初始化和内存中的运行机制</a><ul>
-<li><a href="/blog/c3787bc4/#局部变量不会默认初始化">局部变量不会默认初始化</a><ul>
-<li><a href="/blog/c3787bc4/#局部变量保存在方法栈内存中">局部变量保存在方法栈内存中</a></li>
-<li><a href="/blog/c3787bc4/#局部变量无须垃圾会后">局部变量无须垃圾会后</a></li>
-<li><a href="/blog/c3787bc4/#局部变量的作用域">局部变量的作用域</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/c3787bc4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/f7be9a07/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/f7be9a07/" class="post-title-link" itemprop="url">5.3.2 成员变量的初始化和内存中的运行机制</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-09-22 10:39:32" itemprop="dateCreated datePublished" datetime="2019-09-22T10:39:32+08:00">2019-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/" itemprop="url" rel="index"><span itemprop="name">第5章 面向对象(上)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第5章-面向对象-上/5-3-成员变量和局部变量/" itemprop="url" rel="index"><span itemprop="name">5.3 成员变量和局部变量</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/f7be9a07/#5-3-2-成员变量的初始化和内存中的运行机制">5.3.2 成员变量的初始化和内存中的运行机制</a></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/f7be9a07/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/95d0c0d7/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/95d0c0d7/" class="post-title-link" itemprop="url">10.2 模板方法模式的定义</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-09-22 00:14:22" itemprop="dateCreated datePublished" datetime="2019-09-22T00:14:22+08:00">2019-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:51" itemprop="dateModified" datetime="2019-10-14T14:00:51+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式之禅-第2版/" itemprop="url" rel="index"><span itemprop="name">设计模式之禅(第2版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式之禅-第2版/第二部分-真刀实枪-23种设计模式完美演绎/" itemprop="url" rel="index"><span itemprop="name">第二部分 真刀实枪 23种设计模式完美演绎</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式之禅-第2版/第二部分-真刀实枪-23种设计模式完美演绎/第10章-模板方法模式/" itemprop="url" rel="index"><span itemprop="name">第10章 模板方法模式</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/95d0c0d7/#10-2-模板方法模式的定义">10.2 模板方法模式的定义</a></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/95d0c0d7/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6800df02/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/6800df02/" class="post-title-link" itemprop="url">10.1 辉煌工程 制造悍马</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-09-22 00:14:22" itemprop="dateCreated datePublished" datetime="2019-09-22T00:14:22+08:00">2019-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:51" itemprop="dateModified" datetime="2019-10-14T14:00:51+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式之禅-第2版/" itemprop="url" rel="index"><span itemprop="name">设计模式之禅(第2版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式之禅-第2版/第二部分-真刀实枪-23种设计模式完美演绎/" itemprop="url" rel="index"><span itemprop="name">第二部分 真刀实枪 23种设计模式完美演绎</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式之禅-第2版/第二部分-真刀实枪-23种设计模式完美演绎/第10章-模板方法模式/" itemprop="url" rel="index"><span itemprop="name">第10章 模板方法模式</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/6800df02/#10-1-辉煌工程-制造悍马">10.1 辉煌工程 制造悍马</a></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/6800df02/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
   </div>
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/117/">117</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -884,13 +919,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
-          <span class="site-state-item-count">1164</span>
+          <span class="site-state-item-count">1168</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">333</span>
+        <span class="site-state-item-count">337</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>

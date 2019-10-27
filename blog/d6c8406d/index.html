@@ -44,18 +44,18 @@
     sidebarPadding: 40
   };
 </script>
-  <meta name="description" content="5.3.2 SQL中的触发器">
+  <meta name="description" content="5.3.2 SQL中的触发器 非标准的触发器语法 使触发器无效 删除触发器 参考资料">
 <meta name="keywords" content="程序员,java,读书,SQL,MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="5.3.2 SQL中的触发器">
 <meta property="og:url" content="https://blueblue233.github.io/blog/d6c8406d/index.html">
 <meta property="og:site_name" content="蓝蓝的读书笔记">
-<meta property="og:description" content="5.3.2 SQL中的触发器">
+<meta property="og:description" content="5.3.2 SQL中的触发器 非标准的触发器语法 使触发器无效 删除触发器 参考资料">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-25T10:08:24.000Z">
+<meta property="og:updated_time" content="2019-10-27T08:57:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="5.3.2 SQL中的触发器">
-<meta name="twitter:description" content="5.3.2 SQL中的触发器">
+<meta name="twitter:description" content="5.3.2 SQL中的触发器 非标准的触发器语法 使触发器无效 删除触发器 参考资料">
   <link rel="canonical" href="https://blueblue233.github.io/blog/d6c8406d/">
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
@@ -190,8 +190,15 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-10-25 18:07:17 / 修改时间：18:08:24" itemprop="dateCreated datePublished" datetime="2019-10-25T18:07:17+08:00">2019-10-25</time>
+              <time title="创建时间：2019-10-25 18:07:17" itemprop="dateCreated datePublished" datetime="2019-10-25T18:07:17+08:00">2019-10-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-27 16:57:24" itemprop="dateModified" datetime="2019-10-27T16:57:24+08:00">2019-10-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -210,6 +217,10 @@
     <div class="post-body" itemprop="articleBody">
         <ul>
 <li><a href="/blog/d6c8406d/#5-3-2-SQL中的触发器">5.3.2 SQL中的触发器</a></li>
+<li><a href="/blog/d6c8406d/#非标准的触发器语法">非标准的触发器语法</a></li>
+<li><a href="/blog/d6c8406d/#使触发器无效">使触发器无效</a></li>
+<li><a href="/blog/d6c8406d/#删除触发器">删除触发器</a></li>
+<li><a href="/blog/d6c8406d/#参考资料">参考资料</a></li>
 </ul>
 <a id="more"></a>
 <script src="/js/src/jquery.slim.min.js"></script>
@@ -217,8 +228,13 @@
 <!--end-->
 <h1 id="5-3-2-SQL中的触发器"><a href="#5-3-2-SQL中的触发器" class="headerlink" title="5.3.2 SQL中的触发器"></a>5.3.2 SQL中的触发器</h1><p>现在我们来看如何在<code>SQL</code>中实现触发器。我们在这里介绍的是<code>SQL</code>标准定义的语法,但是大部分数据库实现的是非标准版本的语法。尽管这里所述的语法可能不被这些系统支持,但是我们阐述的概念对于不同的实现方法都是适用的。我们将在本章末尾讨论非标准的触发器实现。<br>图5-8展示了如何使用触发器来确保关系<code>section</code>中属性<code>time_sotd</code>的参照完整性。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 在插入时启动触发器</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> timeslot_check <span class="keyword">after</span> <span class="keyword">insert</span> <span class="keyword">on</span> <span class="keyword">section</span></span><br><span class="line">    <span class="comment">-- 过渡变量：插入完成后存储所插入行的值</span></span><br><span class="line">    <span class="keyword">referencing</span> <span class="keyword">new</span> <span class="keyword">row</span> <span class="keyword">as</span> nrow</span><br><span class="line">    <span class="comment">-- 对每一个插入行迭代</span></span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span> </span><br><span class="line">    <span class="comment">-- time_slot_id不存在该id</span></span><br><span class="line">    <span class="keyword">when</span> (nrow.time_slot_id <span class="keyword">not</span> <span class="keyword">in</span> </span><br><span class="line">            (<span class="keyword">select</span> time_slot_id <span class="keyword">from</span> time_slot))</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">rollback</span></span><br><span class="line">    <span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
-<p>图中第一个触发器的定义指明该触发器在任何一次对关系<code>section</code>的插入操作执行之后被启动,以确保所插入元组的<code>time slot id</code>字段是合法的。一个<code>SQL</code>插人语句可以向关系中插入多个元组,在触发器代码中的<code>foreach row</code>语句可以显式地在每一个被插入的行上进行迭代。 <code>referencing new row as</code>语句建立了一个变量<code>mo</code>(称为过渡变量<code>transition variable</code>),用来在插入完成后存储所插入行的值。</p>
+<p>图中第一个触发器的定义指明该触发器在任何一次对关系<code>section</code>的插入操作执行之后被启动,以确保所插入元组的<code>time slot id</code>字段是合法的。一个<code>SQL</code>插人语句可以向关系中插入多个元组,在触发器代码中的<code>foreach row</code>语句可以显式地在每一个被插入的行上进行迭代。 <code>referencing new row as</code>语句建立了一个变量<code>mo</code>(称为过渡变量<code>transition variable</code>),用来在插入完成后存储所插入行的值。<br>这里省略大部分,有空再补上.</p>
+<h1 id="非标准的触发器语法"><a href="#非标准的触发器语法" class="headerlink" title="非标准的触发器语法"></a>非标准的触发器语法</h1><h1 id="使触发器无效"><a href="#使触发器无效" class="headerlink" title="使触发器无效"></a>使触发器无效</h1><p>触发器可以设为有效或者无效:默认情况下它们在创建时是有效的,但是可以通过使用<code>alter trigger trigger_name disable</code>(某些数据库使用另一种语法,比如<code>disable trigger trigger_name</code>)将其设为无效。<br>设为无效的触发器可以重新设为有效。</p>
+<h1 id="删除触发器"><a href="#删除触发器" class="headerlink" title="删除触发器"></a>删除触发器</h1><p>通过使用命令<code>drop trigger trigger_name</code>,触发器也可以被丢弃,即将其永久移除。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/Reese1995/article/details/77656173" target="_blank" rel="noopener">《数据库系统概念（第六版）》读书笔记——第6章：高级SQL</a></p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/d6c8406d/">5.3.2 SQL中的触发器</a></p>
+</blockquote>
     </div>
       <footer class="post-footer">
           <div class="post-nav">
@@ -229,8 +245,8 @@
             </div>
             <span class="post-nav-divider"></span>
             <div class="post-nav-prev post-nav-item">
-                <a href="/blog/9daba997/" rel="prev" title="测试">
-                  测试 <i class="fa fa-chevron-right"></i>
+                <a href="/blog/7e5aa449/" rel="prev" title="5.3.3 何时不用触发器">
+                  5.3.3 何时不用触发器 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -256,7 +272,7 @@
       </ul>
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-3-2-SQL中的触发器"><span class="nav-number">1.</span> <span class="nav-text">5.3.2 SQL中的触发器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-3-2-SQL中的触发器"><span class="nav-number">1.</span> <span class="nav-text">5.3.2 SQL中的触发器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#非标准的触发器语法"><span class="nav-number">2.</span> <span class="nav-text">非标准的触发器语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使触发器无效"><span class="nav-number">3.</span> <span class="nav-text">使触发器无效</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除触发器"><span class="nav-number">4.</span> <span class="nav-text">删除触发器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
       <div class="site-overview-wrap sidebar-panel">
@@ -271,13 +287,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
-          <span class="site-state-item-count">1164</span>
+          <span class="site-state-item-count">1168</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">333</span>
+        <span class="site-state-item-count">337</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>

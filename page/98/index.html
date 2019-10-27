@@ -166,6 +166,340 @@
           <div id="content" class="content">
   <div class="posts-expand">
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/8d4ebfd8/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/8d4ebfd8/" class="post-title-link" itemprop="url">13.2.12 多表连接查询 2. SQL99的连接查询</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-28 17:56:30" itemprop="dateCreated datePublished" datetime="2019-05-28T17:56:30+08:00">2019-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/8d4ebfd8/#13-2-12-多表连接查询-2-SQL99的连接查询">13.2.12 多表连接查询 2. SQL99的连接查询</a><ul>
+<li><a href="/blog/8d4ebfd8/#交叉连接">交叉连接</a></li>
+</ul>
+</li>
+<li><a href="/blog/8d4ebfd8/#SQL99多表连接查询from后只有一个表名">SQL99多表连接查询from后只有一个表名</a></li>
+<li><a href="/blog/8d4ebfd8/#SQL99多表连接查询from后只有一个表名">SQL99多表连接查询from后只有一个表名</a><ul>
+<li><a href="/blog/8d4ebfd8/#自然连接">自然连接</a></li>
+</ul>
+</li>
+<li><a href="/blog/8d4ebfd8/#SQL99多表连接查询from后只有一个表名">SQL99多表连接查询from后只有一个表名</a></li>
+<li><a href="/blog/8d4ebfd8/#natural-join-自然连接使用两个表中的同名列作为连接条件">natural join 自然连接使用两个表中的同名列作为连接条件</a></li>
+<li><a href="/blog/8d4ebfd8/#SQL99多表连接查询from后只有一个表名">SQL99多表连接查询from后只有一个表名</a></li>
+<li><a href="/blog/8d4ebfd8/#natural-join-自然连接使用两个表中的同名列作为连接条件">natural join 自然连接使用两个表中的同名列作为连接条件</a><ul>
+<li><a href="/blog/8d4ebfd8/#using子句">using子句</a></li>
+</ul>
+</li>
+<li><a href="/blog/8d4ebfd8/#join-连接另一个表">join 连接另一个表</a></li>
+<li><a href="/blog/8d4ebfd8/#join-连接另一个表">join 连接另一个表</a><ul>
+<li><a href="/blog/8d4ebfd8/#on子句连接">on子句连接</a></li>
+</ul>
+</li>
+<li><a href="/blog/8d4ebfd8/#使用on来指定连接条件-非等值连接">使用on来指定连接条件:非等值连接</a></li>
+<li><a href="/blog/8d4ebfd8/#使用on来指定连接条件-非等值连接">使用on来指定连接条件:非等值连接</a><ul>
+<li><a href="/blog/8d4ebfd8/#外连接">外连接</a><ul>
+<li><a href="/blog/8d4ebfd8/#右外连接">右外连接</a></li>
+<li><a href="/blog/8d4ebfd8/#左外连接">左外连接</a></li>
+<li><a href="/blog/8d4ebfd8/#全外连接">全外连接</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/8d4ebfd8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/910b9810/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/910b9810/" class="post-title-link" itemprop="url">13.2.12 多表连接查询 1. SQL92的连接查询</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-28 13:35:35" itemprop="dateCreated datePublished" datetime="2019-05-28T13:35:35+08:00">2019-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/910b9810/#13-2-12-多表连接查询">13.2.12 多表连接查询</a><ul>
+<li><a href="/blog/910b9810/#两种连接规范">两种连接规范</a><ul>
+<li><a href="/blog/910b9810/#SQL92">SQL92</a></li>
+<li><a href="/blog/910b9810/#SQL99">SQL99</a></li>
+</ul>
+</li>
+<li><a href="/blog/910b9810/#1-SQL92的连接查询">1. SQL92的连接查询</a><ul>
+<li><a href="/blog/910b9810/#语法格式">语法格式</a></li>
+<li><a href="/blog/910b9810/#列同名的情况">列同名的情况</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/910b9810/#指定多个数据表,并指定表别名">指定多个数据表,并指定表别名</a></li>
+<li><a href="/blog/910b9810/#使用where指定连接条件">使用where指定连接条件</a></li>
+<li><a href="/blog/910b9810/#指定多个数据表,并指定表别名">指定多个数据表,并指定表别名</a></li>
+<li><a href="/blog/910b9810/#使用where指定连接条件">使用where指定连接条件</a><pre><code>- [伪代码](/blog/910b9810/#伪代码)
+- [广义笛卡尔积](/blog/910b9810/#广义笛卡尔积)</code></pre></li>
+<li><a href="/blog/910b9810/#指定多个数据表,并指定表别名">指定多个数据表,并指定表别名</a></li>
+<li><a href="/blog/910b9810/#非等值连接">非等值连接</a></li>
+<li><a href="/blog/910b9810/#指定多个数据表,并指定表别名">指定多个数据表,并指定表别名</a></li>
+<li><a href="/blog/910b9810/#非等值连接">非等值连接</a></li>
+<li><a href="/blog/910b9810/#指定多个数据表,并指定表别名">指定多个数据表,并指定表别名</a></li>
+<li><a href="/blog/910b9810/#使用where指定连接条件,并指定student-name列不能不为null">使用where指定连接条件,并指定student_name列不能不为null</a></li>
+<li><a href="/blog/910b9810/#指定多个数据表,并指定表别名">指定多个数据表,并指定表别名</a></li>
+<li><a href="/blog/910b9810/#使用where指定连接条件,并指定student-name列不能不为null">使用where指定连接条件,并指定student_name列不能不为null</a><pre><code>- [外连接](/blog/910b9810/#外连接)</code></pre></li>
+<li><a href="/blog/910b9810/#右外连接">右外连接</a><pre><code>- [自连接](/blog/910b9810/#自连接)</code></pre></li>
+<li><a href="/blog/910b9810/#简写形式insert,要给所有列赋值,">简写形式insert,要给所有列赋值,</a></li>
+<li><a href="/blog/910b9810/#第一列自增长,可以随意赋值,这里赋值null">第一列自增长,可以随意赋值,这里赋值null</a></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/910b9810/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/d1920f7c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/d1920f7c/" class="post-title-link" itemprop="url">13.2.11 分组和组函数</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-27 11:34:36" itemprop="dateCreated datePublished" datetime="2019-05-27T11:34:36+08:00">2019-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/d1920f7c/#13-2-11-分组和组函数">13.2.11 分组和组函数</a><ul>
+<li><a href="/blog/d1920f7c/#实例">实例</a><ul>
+<li><a href="/blog/d1920f7c/#sum函数">sum函数</a></li>
+<li><a href="/blog/d1920f7c/#max函数">max函数</a></li>
+<li><a href="/blog/d1920f7c/#min函数">min函数</a></li>
+<li><a href="/blog/d1920f7c/#count方法">count方法</a></li>
+<li><a href="/blog/d1920f7c/#avg方法">avg方法</a></li>
+</ul>
+</li>
+<li><a href="/blog/d1920f7c/#分组的情况">分组的情况</a><ul>
+<li><a href="/blog/d1920f7c/#根据某一列进行分组">根据某一列进行分组</a></li>
+<li><a href="/blog/d1920f7c/#根据多列分组">根据多列分组</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/d1920f7c/#要求java-teacher,student-name这两列的值都相同的记录作为一组">要求java_teacher,student_name这两列的值都相同的记录作为一组</a></li>
+<li><a href="/blog/d1920f7c/#要求java-teacher,student-name这两列的值都相同的记录作为一组">要求java_teacher,student_name这两列的值都相同的记录作为一组</a><pre><code>- [处理不在group by以及组函数中的列](/blog/d1920f7c/#处理不在group-by以及组函数中的列)</code></pre></li>
+<li><a href="/blog/d1920f7c/#student-name这列没有出现在group-by子句中,">student_name这列没有出现在group by子句中,</a></li>
+<li><a href="/blog/d1920f7c/#也没有出现在分组函数count之中,">也没有出现在分组函数count之中,</a></li>
+<li><a href="/blog/d1920f7c/#MySQL将显示遇到的第一条记录时student-name的值。">MySQL将显示遇到的第一条记录时student_name的值。</a></li>
+<li><a href="/blog/d1920f7c/#也没有出现在分组函数count之中,">也没有出现在分组函数count之中,</a></li>
+<li><a href="/blog/d1920f7c/#MySQL将显示遇到的第一条记录时student-name的值。">MySQL将显示遇到的第一条记录时student_name的值。</a><ul>
+<li><a href="/blog/d1920f7c/#having子句">having子句</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/d1920f7c/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1dace4b4/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/1dace4b4/" class="post-title-link" itemprop="url">13.2.10 数据库函数</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-05-26 14:17:38" itemprop="dateCreated datePublished" datetime="2019-05-26T14:17:38+08:00">2019-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/1dace4b4/#13-2-10数据库函数">13.2.10数据库函数</a><ul>
+<li><a href="/blog/1dace4b4/#单行函数">单行函数</a><ul>
+<li><a href="/blog/1dace4b4/#单行函数分类">单行函数分类</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/1dace4b4/#长度,sin-长度">长度,sin(长度)</a><pre><code>- [处理null的函数](/blog/1dace4b4/#处理null的函数)
+- [case函数](/blog/1dace4b4/#case函数)</code></pre><ul>
+<li><a href="/blog/1dace4b4/#小结">小结</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/1dace4b4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ac20faa4/">
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="蓝蓝">
@@ -633,289 +967,6 @@
           <div class="post-eof"></div>
       </footer>
   </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/a6b49a0b/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/a6b49a0b/" class="post-title-link" itemprop="url">13.2.6 索引</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-05-23 22:47:24" itemprop="dateCreated datePublished" datetime="2019-05-23T22:47:24+08:00">2019-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/a6b49a0b/#13-2-6-索引">13.2.6 索引</a><ul>
-<li><a href="/blog/a6b49a0b/#提示">提示</a></li>
-<li><a href="/blog/a6b49a0b/#创建索引">创建索引</a></li>
-<li><a href="/blog/a6b49a0b/#删除索引">删除索引</a></li>
-<li><a href="/blog/a6b49a0b/#手动创建索引">手动创建索引</a><ul>
-<li><a href="/blog/a6b49a0b/#单列索引">单列索引</a></li>
-<li><a href="/blog/a6b49a0b/#多列索引">多列索引</a></li>
-<li><a href="/blog/a6b49a0b/#删除索引">删除索引</a></li>
-</ul>
-</li>
-<li><a href="/blog/a6b49a0b/#索引优缺点">索引优缺点</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/a6b49a0b/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/c89ede6a/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/c89ede6a/" class="post-title-link" itemprop="url">13.2.5 数据库约束 5.check约束</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-05-23 22:35:20" itemprop="dateCreated datePublished" datetime="2019-05-23T22:35:20+08:00">2019-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/c89ede6a/#13-2-5-数据库约束-5-CHECK约束">13.2.5 数据库约束 5.CHECK约束</a></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/c89ede6a/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/802c3714/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/802c3714/" class="post-title-link" itemprop="url">13.2.5 数据库约束 4.foreign key约束</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-05-23 21:44:39" itemprop="dateCreated datePublished" datetime="2019-05-23T21:44:39+08:00">2019-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/802c3714/#13-2-5-数据库约束-4-FOREIGN-KEY约束">13.2.5 数据库约束 4.FOREIGN KEY约束</a><pre><code>- [从表](/blog/802c3714/#从表)</code></pre><ul>
-<li><a href="/blog/802c3714/#如何确定外键设置的位置">如何确定外键设置的位置</a><ul>
-<li><a href="/blog/802c3714/#一对多关联关系">一对多关联关系</a></li>
-<li><a href="/blog/802c3714/#一对一关联关系">一对一关联关系</a></li>
-<li><a href="/blog/802c3714/#多对多联系">多对多联系</a></li>
-</ul>
-</li>
-<li><a href="/blog/802c3714/#外键约束写在哪里">外键约束写在哪里</a><ul>
-<li><a href="/blog/802c3714/#列级约束语法建立外键约束">列级约束语法建立外键约束</a></li>
-<li><a href="/blog/802c3714/#MySQL中外键约束正确语法">MySQL中外键约束正确语法</a></li>
-</ul>
-</li>
-<li><a href="/blog/802c3714/#指定外键约束的名字">指定外键约束的名字</a></li>
-<li><a href="/blog/802c3714/#组合外键">组合外键</a></li>
-<li><a href="/blog/802c3714/#删除外键约束">删除外键约束</a></li>
-<li><a href="/blog/802c3714/#增加外键约束">增加外键约束</a></li>
-<li><a href="/blog/802c3714/#自关联">自关联</a></li>
-<li><a href="/blog/802c3714/#删除主表记录时从表记录也删除">删除主表记录时从表记录也删除</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/802c3714/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/75a051a3/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/75a051a3/" class="post-title-link" itemprop="url">13.2.5 数据库约束 3.primary key约束</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-05-23 18:09:25" itemprop="dateCreated datePublished" datetime="2019-05-23T18:09:25+08:00">2019-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:01:46" itemprop="dateModified" datetime="2019-10-14T14:01:46+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/" itemprop="url" rel="index"><span itemprop="name">疯狂Java讲义 (第4版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/" itemprop="url" rel="index"><span itemprop="name">第13章 MySQL数据库与JDBC编程</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/疯狂Java讲义-第4版/第13章-MySQL数据库与JDBC编程/13-2-SQL语法/" itemprop="url" rel="index"><span itemprop="name">13.2 SQL语法</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/75a051a3/#13-2-5-数据库约束-3-PRIMARY-KEY约束">13.2.5 数据库约束 3.PRIMARY KEY约束</a><ul>
-<li><a href="/blog/75a051a3/#列级别约束创建主键约束">列级别约束创建主键约束</a></li>
-<li><a href="/blog/75a051a3/#表级别约束创建主键约束">表级别约束创建主键约束</a></li>
-<li><a href="/blog/75a051a3/#组合主键">组合主键</a></li>
-<li><a href="/blog/75a051a3/#删除主键约束">删除主键约束</a></li>
-<li><a href="/blog/75a051a3/#增加主键约束">增加主键约束</a><ul>
-<li><a href="/blog/75a051a3/#通过add添加主键约束">通过add添加主键约束</a></li>
-<li><a href="/blog/75a051a3/#通过modify添加主键约束">通过modify添加主键约束</a></li>
-</ul>
-</li>
-<li><a href="/blog/75a051a3/#自动增长列">自动增长列</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/75a051a3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
   </div>
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/97/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/97/">97</a><span class="page-number current">98</span><a class="page-number" href="/page/99/">99</a><span class="space">&hellip;</span><a class="page-number" href="/page/117/">117</a><a class="extend next" rel="next" href="/page/99/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -953,13 +1004,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
-          <span class="site-state-item-count">1164</span>
+          <span class="site-state-item-count">1168</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">333</span>
+        <span class="site-state-item-count">337</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>

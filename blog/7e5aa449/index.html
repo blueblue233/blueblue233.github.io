@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="5.3.3 何时不用触发器">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.3.3 何时不用触发器">
+<meta property="og:url" content="https://blueblue233.github.io/blog/7e5aa449/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="5.3.3 何时不用触发器">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-27T09:42:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5.3.3 何时不用触发器">
+<meta name="twitter:description" content="5.3.3 何时不用触发器">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/7e5aa449/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>5.3.3 何时不用触发器 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/7e5aa449/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">5.3.3 何时不用触发器
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-27 17:05:19 / 修改时间：17:42:49" itemprop="dateCreated datePublished" datetime="2019-10-27T17:05:19+08:00">2019-10-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/" itemprop="url" rel="index"><span itemprop="name">第一部分 关系数据库</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第5章-高级SQL/" itemprop="url" rel="index"><span itemprop="name">第5章 高级SQL</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第一部分-关系数据库/第5章-高级SQL/5-3-触发器/" itemprop="url" rel="index"><span itemprop="name">5.3 触发器</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/7e5aa449/#5-3-3-何时不用触发器">5.3.3 何时不用触发器</a></li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<h1 id="5-3-3-何时不用触发器"><a href="#5-3-3-何时不用触发器" class="headerlink" title="5.3.3 何时不用触发器"></a>5.3.3 何时不用触发器</h1><p>触发器有很多合适的用途,例如我们刚刚在5.3.2节中看到的那些,然而有<strong>一些场合最好用别的技术来处理</strong>。比如,我们<strong>可以用触发器替代级联特性来实现外码约束的<code>on delete cascade</code>特性</strong>。然而这样不仅需要完成更大的工作量,而且使数据库中实现的约束集合对于数据库用户来说更加难以理解。</p>
+<p>举另外一个例子,<strong>可以用触发器来维护物化视图</strong>。例如,如果我们希望能够<strong>快速得到每节课所注册的学生总数</strong>,我们可以创建一个<strong>关系</strong>来实现这个功能:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">section_registration( course_id, sec_id, semester, year, total_students);</span><br></pre></td></tr></table></figure>
+<p>它由以下查询所定义:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> course_id, sec_id, semester, <span class="keyword">year</span>, <span class="keyword">count</span>(<span class="keyword">ID</span>) <span class="keyword">as</span> total_students</span><br><span class="line"><span class="keyword">from</span> takes</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> course_id, sec_id, semester, <span class="keyword">year</span>;</span><br></pre></td></tr></table></figure>
+<p>在对关系<code>takes</code>进行<code>插入</code>、<code>删除</code>或<code>更新</code>时,每门课的<code>total_students</code>的值必须由触发器来维护到最新状态。维护时可能要对<code>section_regustration</code>做<code>插入</code>、<code>更新</code>或<code>删除</code>,这些都相应地写在触发器里。<br>然而,许多数据库现在支持物化视图,由数据库系统自动维护(见4.2.3节)。因此<strong>没必要编写代码让触发器来维护这样的物化视图</strong>。</p>
+<p><strong>触发器也被用来复制或者备份数据库</strong>;在每一个关系的插入、删除或更新的操作上创建触发器,将改变记录在称为<code>change</code>或<code>deta</code>的关系上。一个单独的进程将这些改变复制到数据库的副本。然而,<strong>现代的数据库系统提供内置的数据库复制工具,使得复制在大多数情况下不必使用触发器</strong>。本书将在第19章详细讨论复制数据库。<br>触发器的另一个问题是当数据从一个备份的拷贝中加载,或者一个站点上的数据库更新复制到备份站点的时候,触发器动作的非故意执行。在该情况下,触发器动作已经执行了,通常不应该再次执行。<strong>在加载数据的时候,触发器应当显式设为无效</strong>。<strong>对于要接管主系统的备份复制系统,触发器应该一开始就设为无效,而在备份站点接管了主系统的业务后,再设为有效</strong>。作为取代的方法,<strong>一些数据库系统允许触发器定义为<code>not for replication</code>,保证触发器不会在数据库备份的时候在备份站点执行</strong>。另一些数据库系统提供了一个系统变量用于指明该数据库是一个副本,数据库动作在其上是重放;触发器会检查这个变量,如果为真则退出执行。这<strong>两种解决方案都不需要显式地将触发器设为失效或有效</strong>。<br>写触发器时,应特别小心,这是因为在运行期间一个触发器错误会导致引发该触发器的动作语句失败。而且,<strong>一个触发器的动作可以引发另一个触发器</strong>。<strong>在最坏的情况下,这甚至会导致一个无限的触发链</strong>。例如,假设在一个关系上的插入触发器里有一个动作引起在同一关系上的另一个(新的)插人,该新插入动作也会引起另一个新插人,如此无穷循环下去。有些数据库系统会限制这种触发器链的长度(例如16或32),把超过此长度的触发器链看作是一个错误。另一些系统把引用特定关系的触发器标记为错误,对该关系的修改导致了位于链首的触发器被执行。</p>
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/7e5aa449/">5.3.3 何时不用触发器</a></p>
+</blockquote>
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/d6c8406d/" rel="next" title="5.3.2 SQL中的触发器">
+                  <i class="fa fa-chevron-left"></i> 5.3.2 SQL中的触发器
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+                <a href="/blog/7e860377/" rel="prev" title="5.4 递归查询">
+                  5.4 递归查询 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5-3-3-何时不用触发器"><span class="nav-number">1.</span> <span class="nav-text">5.3.3 何时不用触发器</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1168</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">337</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>

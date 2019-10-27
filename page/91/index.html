@@ -166,6 +166,278 @@
           <div id="content" class="content">
   <div class="posts-expand">
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/1822ba96/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/1822ba96/" class="post-title-link" itemprop="url">10.3 MyBatis调用存储过程 10.3.3根据id查询数据返回对象</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-11 17:27:00" itemprop="dateCreated datePublished" datetime="2019-06-11T17:27:00+08:00">2019-06-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第10章-深入使用MyBatis/" itemprop="url" rel="index"><span itemprop="name">第10章 深入使用MyBatis</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/1822ba96/#10-3-MyBatis调用存储过程-10-3-3根据id查询数据返回对象">10.3 MyBatis调用存储过程 10.3.3根据id查询数据返回对象</a><ul>
+<li><a href="/blog/1822ba96/#创建存储过程">创建存储过程</a></li>
+<li><a href="/blog/1822ba96/#创建映射标签">创建映射标签</a></li>
+<li><a href="/blog/1822ba96/#mapper接口方法">mapper接口方法</a></li>
+<li><a href="/blog/1822ba96/#运行效果">运行效果</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/1822ba96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ff749202/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/ff749202/" class="post-title-link" itemprop="url">10.3 MyBatis调用存储过程 10.3.2查询数据返回集合</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-11 16:45:24" itemprop="dateCreated datePublished" datetime="2019-06-11T16:45:24+08:00">2019-06-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第10章-深入使用MyBatis/" itemprop="url" rel="index"><span itemprop="name">第10章 深入使用MyBatis</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/ff749202/#10-3-MyBatis调用存储过程-10-3-2查询数据返回集合">10.3 MyBatis调用存储过程 10.3.2查询数据返回集合</a><ul>
+<li><a href="/blog/ff749202/#创建存储过程">创建存储过程</a></li>
+<li><a href="/blog/ff749202/#mapper-xml映射">mapper.xml映射</a></li>
+<li><a href="/blog/ff749202/#mapper接口方法">mapper接口方法</a></li>
+<li><a href="/blog/ff749202/#测试类">测试类</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/ff749202/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/3025e48/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/3025e48/" class="post-title-link" itemprop="url">10.3 MyBatis调用存储过程 10.3.1插入数据</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-10 19:13:12" itemprop="dateCreated datePublished" datetime="2019-06-10T19:13:12+08:00">2019-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第10章-深入使用MyBatis/" itemprop="url" rel="index"><span itemprop="name">第10章 深入使用MyBatis</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/3025e48/#10-3-MyBatis调用存储过程">10.3 MyBatis调用存储过程</a></li>
+<li><a href="/blog/3025e48/#10-3-1插入数据">10.3.1插入数据</a><ul>
+<li><a href="/blog/3025e48/#测试数据">测试数据</a></li>
+</ul>
+</li>
+<li><a href="/blog/3025e48/#创建数据表">创建数据表</a></li>
+<li><a href="/blog/3025e48/#插入数据">插入数据</a><ul>
+<li><a href="/blog/3025e48/#创建存储过程">创建存储过程</a><ul>
+<li><a href="/blog/3025e48/#存储过程代码详解">存储过程代码详解</a></li>
+<li><a href="/blog/3025e48/#命令行调用存储过程">命令行调用存储过程</a></li>
+<li><a href="/blog/3025e48/#显示存储过程的输出">显示存储过程的输出</a></li>
+</ul>
+</li>
+<li><a href="/blog/3025e48/#创建持久化对象">创建持久化对象</a></li>
+<li><a href="/blog/3025e48/#编写Mapper-xml映射文件">编写Mapper.xml映射文件</a></li>
+<li><a href="/blog/3025e48/#编写mapper接口">编写mapper接口</a></li>
+<li><a href="/blog/3025e48/#编写测试类">编写测试类</a></li>
+<li><a href="/blog/3025e48/#运行效果">运行效果</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/3025e48/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/60971bb7/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/60971bb7/" class="post-title-link" itemprop="url">10.2 MyBatis动态SQL 10.2.6 bind标签</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-06-10 17:37:13" itemprop="dateCreated datePublished" datetime="2019-06-10T17:37:13+08:00">2019-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第10章-深入使用MyBatis/" itemprop="url" rel="index"><span itemprop="name">第10章 深入使用MyBatis</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/60971bb7/#10-2-MyBatis动态SQL-10-2-6-bind标签">10.2 MyBatis动态SQL 10.2.6 bind标签</a></li>
+<li><a href="/blog/60971bb7/#实例">实例</a><ul>
+<li><a href="/blog/60971bb7/#xml标签">xml标签</a><ul>
+<li><a href="/blog/60971bb7/#bind标签解释">bind标签解释</a></li>
+</ul>
+</li>
+<li><a href="/blog/60971bb7/#mapper接口方法">mapper接口方法</a></li>
+<li><a href="/blog/60971bb7/#测试类">测试类</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/60971bb7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/4add08ee/">
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="蓝蓝">
@@ -573,344 +845,6 @@
           <div class="post-eof"></div>
       </footer>
   </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/18ab9715/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/18ab9715/" class="post-title-link" itemprop="url">10.1.3 多对多</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-06-08 16:20:27" itemprop="dateCreated datePublished" datetime="2019-06-08T16:20:27+08:00">2019-06-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第10章-深入使用MyBatis/" itemprop="url" rel="index"><span itemprop="name">第10章 深入使用MyBatis</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/18ab9715/#10-1-3-多对多">10.1.3 多对多</a></li>
-<li><a href="/blog/18ab9715/#示例-ManyToManyTest">示例: ManyToManyTest</a><ul>
-<li><a href="/blog/18ab9715/#创建数据库表">创建数据库表</a></li>
-</ul>
-</li>
-<li><a href="/blog/18ab9715/#创建用户表">创建用户表</a></li>
-<li><a href="/blog/18ab9715/#插入用户">插入用户</a></li>
-<li><a href="/blog/18ab9715/#创建商品表">创建商品表</a></li>
-<li><a href="/blog/18ab9715/#插入商品">插入商品</a></li>
-<li><a href="/blog/18ab9715/#创建订单表">创建订单表</a></li>
-<li><a href="/blog/18ab9715/#插入订单">插入订单</a></li>
-<li><a href="/blog/18ab9715/#创建订单-商品关系表">创建订单-商品关系表</a></li>
-<li><a href="/blog/18ab9715/#插入商品-订单">插入商品-订单</a><ul>
-<li><a href="/blog/18ab9715/#创建持久化类">创建持久化类</a><ul>
-<li><a href="/blog/18ab9715/#创建持久化类User-java">创建持久化类User.java</a></li>
-<li><a href="/blog/18ab9715/#创建持久化类Order-java">创建持久化类Order.java</a></li>
-<li><a href="/blog/18ab9715/#创建持久化类Article-java">创建持久化类Article.java</a></li>
-</ul>
-</li>
-<li><a href="/blog/18ab9715/#创建XML映射文件">创建XML映射文件</a><ul>
-<li><a href="/blog/18ab9715/#UserMapper-xml">UserMapper.xml</a></li>
-<li><a href="/blog/18ab9715/#OrderMapper-xml">OrderMapper.xml</a></li>
-<li><a href="/blog/18ab9715/#ArticleMapper-xml">ArticleMapper.xml</a></li>
-</ul>
-</li>
-<li><a href="/blog/18ab9715/#编写Mapper接口">编写Mapper接口</a><ul>
-<li><a href="/blog/18ab9715/#UserMapper接口">UserMapper接口</a></li>
-<li><a href="/blog/18ab9715/#OrderMapper接口">OrderMapper接口</a></li>
-</ul>
-</li>
-<li><a href="/blog/18ab9715/#编写测试类">编写测试类</a></li>
-</ul>
-</li>
-<li><a href="/blog/18ab9715/#总结">总结</a><ul>
-<li><a href="/blog/18ab9715/#collection标签">collection标签</a><ul>
-<li><a href="/blog/18ab9715/#collection标签的属性">collection标签的属性</a></li>
-<li><a href="/blog/18ab9715/#collection标签的子标签">collection标签的子标签</a></li>
-</ul>
-</li>
-<li><a href="/blog/18ab9715/#association标签">association标签</a><ul>
-<li><a href="/blog/18ab9715/#association标签的属性">association标签的属性</a></li>
-<li><a href="/blog/18ab9715/#association标签的子标签">association标签的子标签</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/18ab9715/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/26e4bb72/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/26e4bb72/" class="post-title-link" itemprop="url">10.1.2 一对多</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-06-06 15:11:47" itemprop="dateCreated datePublished" datetime="2019-06-06T15:11:47+08:00">2019-06-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第10章-深入使用MyBatis/" itemprop="url" rel="index"><span itemprop="name">第10章 深入使用MyBatis</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/26e4bb72/#10-1-2-一对多">10.1.2 一对多</a></li>
-<li><a href="/blog/26e4bb72/#示例-OneToManyTest">示例:OneToManyTest</a><ul>
-<li><a href="/blog/26e4bb72/#创建数据库表">创建数据库表</a></li>
-</ul>
-</li>
-<li><a href="/blog/26e4bb72/#取消外键检查">取消外键检查</a></li>
-<li><a href="/blog/26e4bb72/#创建tb-clazz表">创建tb_clazz表</a></li>
-<li><a href="/blog/26e4bb72/#插入数据到tb-clazz表">插入数据到tb_clazz表</a><ul>
-<li><a href="/blog/26e4bb72/#创建持久化对象">创建持久化对象</a></li>
-<li><a href="/blog/26e4bb72/#创建XML映射文件">创建XML映射文件</a><ul>
-<li><a href="/blog/26e4bb72/#ClazzMapper-xml">ClazzMapper.xml</a><ul>
-<li><a href="/blog/26e4bb72/#属性">属性</a><ul>
-<li><a href="/blog/26e4bb72/#属性">属性</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="/blog/26e4bb72/#MyBatis根配置文件中支持懒加载">MyBatis根配置文件中支持懒加载</a></li>
-<li><a href="/blog/26e4bb72/#StudentMapper-xml">StudentMapper.xml</a></li>
-<li><a href="/blog/26e4bb72/#提示">提示</a></li>
-</ul>
-</li>
-<li><a href="/blog/26e4bb72/#创建mapper接口对象">创建mapper接口对象</a><ul>
-<li><a href="/blog/26e4bb72/#ClazzMapper接口">ClazzMapper接口</a></li>
-<li><a href="/blog/26e4bb72/#StudentMapper接口">StudentMapper接口</a></li>
-</ul>
-</li>
-<li><a href="/blog/26e4bb72/#测试类">测试类</a></li>
-<li><a href="/blog/26e4bb72/#运行结果">运行结果</a></li>
-</ul>
-</li>
-<li><a href="/blog/26e4bb72/#总结">总结</a><ul>
-<li><a href="/blog/26e4bb72/#collection标签">collection标签</a><ul>
-<li><a href="/blog/26e4bb72/#collection标签的属性">collection标签的属性</a></li>
-<li><a href="/blog/26e4bb72/#collection标签的子标签">collection标签的子标签</a></li>
-</ul>
-</li>
-<li><a href="/blog/26e4bb72/#association标签">association标签</a><ul>
-<li><a href="/blog/26e4bb72/#association标签的属性">association标签的属性</a></li>
-<li><a href="/blog/26e4bb72/#association标签的子标签">association标签的子标签</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/26e4bb72/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/3de7370b/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/3de7370b/" class="post-title-link" itemprop="url">10.1 MyBatis关联映射 10.1.1 一对一联系</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-06-05 21:30:34" itemprop="dateCreated datePublished" datetime="2019-06-05T21:30:34+08:00">2019-06-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:55:40" itemprop="dateModified" datetime="2019-10-14T14:55:40+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第10章-深入使用MyBatis/" itemprop="url" rel="index"><span itemprop="name">第10章 深入使用MyBatis</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/3de7370b/#10-1-MyBatis关联映射">10.1 MyBatis关联映射</a><ul>
-<li><a href="/blog/3de7370b/#什么是关联关系">什么是关联关系</a></li>
-<li><a href="/blog/3de7370b/#关联关系分类">关联关系分类</a></li>
-</ul>
-</li>
-<li><a href="/blog/3de7370b/#10-1-1-一对一联系">10.1.1 一对一联系</a><ul>
-<li><a href="/blog/3de7370b/#示例-OneToOneTest">示例: OneToOneTest</a><ul>
-<li><a href="/blog/3de7370b/#创建数据库表">创建数据库表</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="/blog/3de7370b/#创建tb-card表">创建tb_card表</a></li>
-<li><a href="/blog/3de7370b/#插入一条数据">插入一条数据</a></li>
-<li><a href="/blog/3de7370b/#创建tb-person表">创建tb_person表</a></li>
-<li><a href="/blog/3de7370b/#插入一条数据">插入一条数据</a><pre><code>- [创建持久化类](/blog/3de7370b/#创建持久化类)
-- [XML映射文件](/blog/3de7370b/#XML映射文件)
-- [mapper接口](/blog/3de7370b/#mapper接口)
-- [测试类](/blog/3de7370b/#测试类)</code></pre></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/3de7370b/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/3191fb1d/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/3191fb1d/" class="post-title-link" itemprop="url">9.5 本章小结</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-06-05 17:00:32" itemprop="dateCreated datePublished" datetime="2019-06-05T17:00:32+08:00">2019-06-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:55:41" itemprop="dateModified" datetime="2019-10-14T14:55:41+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/" itemprop="url" rel="index"><span itemprop="name">Spring+Mybatis企业应用实战(第2版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spring-Mybatis企业应用实战-第2版/第9章-MyBatis的基本用法/" itemprop="url" rel="index"><span itemprop="name">第9章 MyBatis的基本用法</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/3191fb1d/#9-5-本章小结">9.5 本章小结</a></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/3191fb1d/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
   </div>
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/90/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/90/">90</a><span class="page-number current">91</span><a class="page-number" href="/page/92/">92</a><span class="space">&hellip;</span><a class="page-number" href="/page/117/">117</a><a class="extend next" rel="next" href="/page/92/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -948,13 +882,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
-          <span class="site-state-item-count">1164</span>
+          <span class="site-state-item-count">1168</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">333</span>
+        <span class="site-state-item-count">337</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
