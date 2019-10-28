@@ -166,6 +166,495 @@
           <div id="content" class="content">
   <div class="posts-expand">
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/ac12660e/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/ac12660e/" class="post-title-link" itemprop="url">7.7 创建Bean的3种方式 7.7.1 使用构造器创建Bean实例</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-27 21:36:45" itemprop="dateCreated datePublished" datetime="2019-08-27T21:36:45+08:00">2019-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-7-创建Bean的3种方式/" itemprop="url" rel="index"><span itemprop="name">7.7 创建Bean的3种方式</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/ac12660e/#7-7-创建Bean的3种方式">7.7 创建Bean的3种方式</a></li>
+<li><a href="/blog/ac12660e/#7-7-1-使用构造器创建Bean实例">7.7.1 使用构造器创建Bean实例</a><ul>
+<li><a href="/blog/ac12660e/#采用设值注入时">采用设值注入时</a></li>
+<li><a href="/blog/ac12660e/#采用构造注入时">采用构造注入时</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/ac12660e/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/27cba665/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/27cba665/" class="post-title-link" itemprop="url">7.6 Spring提供的Java配置管理</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-27 21:06:07" itemprop="dateCreated datePublished" datetime="2019-08-27T21:06:07+08:00">2019-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-6-Spring提供的Java配置管理/" itemprop="url" rel="index"><span itemprop="name">7.6 Spring提供的Java配置管理</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/27cba665/#7-6-Spring提供的Java配置管理">7.6 Spring提供的Java配置管理</a><ul>
+<li><a href="/blog/27cba665/#使用XML配置文件管理Bean和使用配置类管理Bean的对比">使用XML配置文件管理Bean和使用配置类管理Bean的对比</a></li>
+<li><a href="/blog/27cba665/#为什么引入配置类来管理Bean">为什么引入配置类来管理Bean</a></li>
+<li><a href="/blog/27cba665/#使用XML还是使用注解">使用XML还是使用注解</a></li>
+<li><a href="/blog/27cba665/#为什么会混用XML和注解">为什么会混用XML和注解</a></li>
+<li><a href="/blog/27cba665/#以XML配置为主还是以Java类配置为主">以XML配置为主还是以Java类配置为主</a><ul>
+<li><a href="/blog/27cba665/#以XML配置为主时">以XML配置为主时</a></li>
+<li><a href="/blog/27cba665/#如果以Java类配置为主">如果以Java类配置为主</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/27cba665/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/268bff0c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/268bff0c/" class="post-title-link" itemprop="url">7.5.10 Spring的Bean和JavaBean</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-27 20:45:59" itemprop="dateCreated datePublished" datetime="2019-08-27T20:45:59+08:00">2019-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/268bff0c/#7-5-10-Spring的Bean和JavaBean">7.5.10 Spring的Bean和JavaBean</a></li>
+<li><a href="/blog/268bff0c/#程序示例">程序示例</a><ul>
+<li><a href="/blog/268bff0c/#项目结构">项目结构</a></li>
+<li><a href="/blog/268bff0c/#data-sql">data.sql</a></li>
+<li><a href="/blog/268bff0c/#beans-xml">beans.xml</a></li>
+<li><a href="/blog/268bff0c/#BeanTest-java">BeanTest.java</a></li>
+<li><a href="/blog/268bff0c/#Spring中的Bean要满足的原则">Spring中的Bean要满足的原则</a></li>
+<li><a href="/blog/268bff0c/#Java-Bean和Spring中的Bean的区别">Java Bean和Spring中的Bean的区别</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/268bff0c/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6120f479/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/6120f479/" class="post-title-link" itemprop="url">7.5.9 组合属性</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-27 20:26:40" itemprop="dateCreated datePublished" datetime="2019-08-27T20:26:40+08:00">2019-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/6120f479/#7-5-9-组合属性">7.5.9 组合属性</a><ul>
+<li><a href="/blog/6120f479/#项目结构">项目结构</a></li>
+<li><a href="/blog/6120f479/#ExampleBean-java">ExampleBean.java</a></li>
+<li><a href="/blog/6120f479/#beans-xml">beans.xml</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/6120f479/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/3cf6e267/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/3cf6e267/" class="post-title-link" itemprop="url">7.5.8 注入集合值</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-27 18:28:49" itemprop="dateCreated datePublished" datetime="2019-08-27T18:28:49+08:00">2019-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/3cf6e267/#7-5-8-注入集合值">7.5.8 注入集合值</a><ul>
+<li><a href="/blog/3cf6e267/#项目结构">项目结构</a></li>
+<li><a href="/blog/3cf6e267/#Chinese-java">Chinese.java</a><ul>
+<li><a href="/blog/3cf6e267/#props元素说明">props元素说明</a></li>
+<li><a href="/blog/3cf6e267/#map元素说明">map元素说明</a></li>
+</ul>
+</li>
+<li><a href="/blog/3cf6e267/#集合的合并">集合的合并</a></li>
+<li><a href="/blog/3cf6e267/#泛型支持">泛型支持</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/3cf6e267/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6156be3c/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/6156be3c/" class="post-title-link" itemprop="url">7.5.7 注入嵌套Bean</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-27 12:05:53" itemprop="dateCreated datePublished" datetime="2019-08-27T12:05:53+08:00">2019-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/6156be3c/#7-5-7-注入嵌套Bean">7.5.7 注入嵌套Bean</a><ul>
+<li><a href="/blog/6156be3c/#什么时候用嵌套Bean">什么时候用嵌套Bean</a></li>
+<li><a href="/blog/6156be3c/#项目结构">项目结构</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/6156be3c/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/9eaa638/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="/blog/9eaa638/" class="post-title-link" itemprop="url">7.5.6 使用自动装配注入合作者Bean</a>
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-08-27 10:58:19" itemprop="dateCreated datePublished" datetime="2019-08-27T10:58:19+08:00">2019-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li><a href="/blog/9eaa638/#7-5-6-使用自动装配注入合作者Bean">7.5.6 使用自动装配注入合作者Bean</a><ul>
+<li><a href="/blog/9eaa638/#Spring的自动装配">Spring的自动装配</a></li>
+<li><a href="/blog/9eaa638/#autowire属性值">autowire属性值</a></li>
+</ul>
+</li>
+<li><a href="/blog/9eaa638/#7-5-6-1-byName规则">7.5.6.1 byName规则</a><ul>
+<li><a href="/blog/9eaa638/#程序示例">程序示例</a><ul>
+<li><a href="/blog/9eaa638/#项目结构">项目结构</a></li>
+<li><a href="/blog/9eaa638/#beans-xml">beans.xml</a></li>
+<li><a href="/blog/9eaa638/#Chinese-java">Chinese.java</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/blog/9eaa638/#7-5-6-2-byType规则">7.5.6.2 byType规则</a><ul>
+<li><a href="/blog/9eaa638/#程序示例">程序示例</a><ul>
+<li><a href="/blog/9eaa638/#项目结构">项目结构</a></li>
+<li><a href="/blog/9eaa638/#beans-xml">beans.xml</a></li>
+<li><a href="/blog/9eaa638/#只有一个类型的Bean对象的情况">只有一个类型的Bean对象的情况</a></li>
+<li><a href="/blog/9eaa638/#有两个同类型的Bean对象的情况">有两个同类型的Bean对象的情况</a></li>
+</ul>
+</li>
+<li><a href="/blog/9eaa638/#同时指定自动装配和使用ref显示指定依赖时">同时指定自动装配和使用ref显示指定依赖时</a></li>
+<li><a href="/blog/9eaa638/#将某些Bean排除在自动装配之外">将某些Bean排除在自动装配之外</a></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/9eaa638/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+      </footer>
+  </article>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/7eeef051/">
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="蓝蓝">
@@ -361,496 +850,9 @@
           <div class="post-eof"></div>
       </footer>
   </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/dcd14c65/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/dcd14c65/" class="post-title-link" itemprop="url">7.5.2 容器中Bean的作用域</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-08-26 14:03:40" itemprop="dateCreated datePublished" datetime="2019-08-26T14:03:40+08:00">2019-08-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/dcd14c65/#7-5-2-容器中Bean的作用域">7.5.2 容器中Bean的作用域</a><ul>
-<li><a href="/blog/dcd14c65/#通过scope属性执行Bean的作用域">通过scope属性执行Bean的作用域</a></li>
-<li><a href="/blog/dcd14c65/#程序示例">程序示例</a></li>
-<li><a href="/blog/dcd14c65/#beans-xml">beans.xml</a></li>
-<li><a href="/blog/dcd14c65/#BeanTest-java">BeanTest.java</a></li>
-<li><a href="/blog/dcd14c65/#通过singleton属性指定Bean的作用域">通过singleton属性指定Bean的作用域</a></li>
-<li><a href="/blog/dcd14c65/#request和session作用域">request和session作用域</a></li>
-<li><a href="/blog/dcd14c65/#如何使得request作用域生效">如何使得request作用域生效</a></li>
-<li><a href="/blog/dcd14c65/#程序示例2">程序示例2</a></li>
-<li><a href="/blog/dcd14c65/#Spring-MVC默认支持request作用域">Spring MVC默认支持request作用域</a></li>
-<li><a href="/blog/dcd14c65/#test-jsp">test.jsp</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/dcd14c65/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/59bb5897/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/59bb5897/" class="post-title-link" itemprop="url">7.5.1 Bean的基本定义和Bean别名</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-08-26 12:08:43" itemprop="dateCreated datePublished" datetime="2019-08-26T12:08:43+08:00">2019-08-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/59bb5897/#7-5-1-Bean的基本定义和Bean别名">7.5.1 Bean的基本定义和Bean别名</a><ul>
-<li><a href="/blog/59bb5897/#beans元素">beans元素</a></li>
-<li><a href="/blog/59bb5897/#bean元素">bean元素</a><ul>
-<li><a href="/blog/59bb5897/#bean元素常用属性">bean元素常用属性</a></li>
-<li><a href="/blog/59bb5897/#通过name属性在定义Bean是给Bean指定别名">通过name属性在定义Bean是给Bean指定别名</a></li>
-<li><a href="/blog/59bb5897/#id属性命名规范">id属性命名规范</a></li>
-<li><a href="/blog/59bb5897/#为什么要使用别名">为什么要使用别名</a></li>
-</ul>
-</li>
-<li><a href="/blog/59bb5897/#在其他地方为一个已经存在的Bean实例指定别名">在其他地方为一个已经存在的Bean实例指定别名</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/59bb5897/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/71a6157d/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/71a6157d/" class="post-title-link" itemprop="url">7.5 Spring容器中的Bean</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-08-26 12:03:51" itemprop="dateCreated datePublished" datetime="2019-08-26T12:03:51+08:00">2019-08-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-5-Spring容器中的Bean/" itemprop="url" rel="index"><span itemprop="name">7.5 Spring容器中的Bean</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/71a6157d/#7-5-Spring容器中的Bean">7.5 Spring容器中的Bean</a></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/71a6157d/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/7c13f2ca/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/7c13f2ca/" class="post-title-link" itemprop="url">7.4.5 让Bean获取Spring容器</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-08-25 23:11:12" itemprop="dateCreated datePublished" datetime="2019-08-25T23:11:12+08:00">2019-08-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-4-使用Spring容器/" itemprop="url" rel="index"><span itemprop="name">7.4 使用Spring容器</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/7c13f2ca/#7-4-5-让Bean获取Spring容器">7.4.5 让Bean获取Spring容器</a><ul>
-<li><a href="/blog/7c13f2ca/#如何获取Bean所在的Spring容器">如何获取Bean所在的Spring容器</a></li>
-</ul>
-</li>
-<li><a href="/blog/7c13f2ca/#程序示例">程序示例</a><ul>
-<li><a href="/blog/7c13f2ca/#项目结构">项目结构</a></li>
-<li><a href="/blog/7c13f2ca/#Person-java">Person.java</a></li>
-<li><a href="/blog/7c13f2ca/#beans-xml">beans.xml</a></li>
-<li><a href="/blog/7c13f2ca/#SpringTest-java">SpringTest.java</a></li>
-<li><a href="/blog/7c13f2ca/#Bean获取它所在容器的好处">Bean获取它所在容器的好处</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/7c13f2ca/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/103a103a/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/103a103a/" class="post-title-link" itemprop="url">7.4.4 ApplicationContext的事件机制</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-08-25 20:22:31" itemprop="dateCreated datePublished" datetime="2019-08-25T20:22:31+08:00">2019-08-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-4-使用Spring容器/" itemprop="url" rel="index"><span itemprop="name">7.4 使用Spring容器</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/103a103a/#7-4-4-ApplicationContext的事件机制">7.4.4 ApplicationContext的事件机制</a></li>
-<li><a href="/blog/103a103a/#程序示例">程序示例</a><ul>
-<li><a href="/blog/103a103a/#项目结构">项目结构</a></li>
-<li><a href="/blog/103a103a/#beans-xml">beans.xml</a></li>
-<li><a href="/blog/103a103a/#如何创建Spring容器的容器事件">如何创建Spring容器的容器事件</a></li>
-<li><a href="/blog/103a103a/#容器事件的监听器">容器事件的监听器</a></li>
-<li><a href="/blog/103a103a/#EmailNotifier-java">EmailNotifier.java</a></li>
-<li><a href="/blog/103a103a/#beans-xml">beans.xml</a></li>
-<li><a href="/blog/103a103a/#SpringTest-java">SpringTest.java</a></li>
-<li><a href="/blog/103a103a/#Spring内置事件">Spring内置事件</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/103a103a/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/22e47721/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/22e47721/" class="post-title-link" itemprop="url">7.4.3 ApplicationContext的国际化支持</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-08-25 13:04:02" itemprop="dateCreated datePublished" datetime="2019-08-25T13:04:02+08:00">2019-08-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-4-使用Spring容器/" itemprop="url" rel="index"><span itemprop="name">7.4 使用Spring容器</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/22e47721/#7-4-3-ApplicationContext的国际化支持">7.4.3 ApplicationContext的国际化支持</a><ul>
-<li><a href="/blog/22e47721/#MessageSource接口中用于国际化的方法">MessageSource接口中用于国际化的方法</a></li>
-</ul>
-</li>
-<li><a href="/blog/22e47721/#程序示例">程序示例</a><ul>
-<li><a href="/blog/22e47721/#项目结构">项目结构</a></li>
-<li><a href="/blog/22e47721/#beans-xml">beans.xml</a></li>
-<li><a href="/blog/22e47721/#message-en-US-properties">message_en_US.properties</a></li>
-<li><a href="/blog/22e47721/#message-zh-CN-properties">message_zh_CN.properties</a></li>
-<li><a href="/blog/22e47721/#SpringTest-java">SpringTest.java</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/22e47721/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/6fb8d1da/">
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="蓝蓝">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="蓝蓝的读书笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            <a href="/blog/6fb8d1da/" class="post-title-link" itemprop="url">7.4.2 使用ApplicationContext</a>
-        </h1>
-        <div class="post-meta">
-          <!-- 置顶插件添加 开始 -->
-          <!-- 置顶插件添加 结束 -->
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-08-25 11:45:02" itemprop="dateCreated datePublished" datetime="2019-08-25T11:45:02+08:00">2019-08-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-14 14:00:59" itemprop="dateModified" datetime="2019-10-14T14:00:59+08:00">2019-10-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/" itemprop="url" rel="index"><span itemprop="name">轻量级Java EE企业应用实战(第5版)</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/" itemprop="url" rel="index"><span itemprop="name">第7章 Spring的基本用法</span></a></span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/轻量级Java-EE企业应用实战-第5版/第7章-Spring的基本用法/7-4-使用Spring容器/" itemprop="url" rel="index"><span itemprop="name">7.4 使用Spring容器</span></a></span>
-            </span>
-        </div>
-      </header>
-    <div class="post-body" itemprop="articleBody">
-          <ul>
-<li><a href="/blog/6fb8d1da/#7-4-2-使用ApplicationContext">7.4.2 使用ApplicationContext</a><ul>
-<li><a href="/blog/6fb8d1da/#ApplicationContext额外功能">ApplicationContext额外功能</a></li>
-<li><a href="/blog/6fb8d1da/#程序示例">程序示例</a><ul>
-<li><a href="/blog/6fb8d1da/#项目结构">项目结构</a></li>
-<li><a href="/blog/6fb8d1da/#beans-xml">beans.xml</a></li>
-<li><a href="/blog/6fb8d1da/#Person-java">Person.java</a></li>
-<li><a href="/blog/6fb8d1da/#测试">测试</a></li>
-</ul>
-</li>
-<li><a href="/blog/6fb8d1da/#如何阻止Spring容器预初始化Bean">如何阻止Spring容器预初始化Bean</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blog/6fb8d1da/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-    </div>
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-      </footer>
-  </article>
   </div>
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/37/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><span class="space">&hellip;</span><a class="page-number" href="/page/117/">117</a><a class="extend next" rel="next" href="/page/39/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/37/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><span class="space">&hellip;</span><a class="page-number" href="/page/118/">118</a><a class="extend next" rel="next" href="/page/39/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
           </div>
         </div>
@@ -885,13 +887,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
-          <span class="site-state-item-count">1168</span>
+          <span class="site-state-item-count">1175</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">337</span>
+        <span class="site-state-item-count">345</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>

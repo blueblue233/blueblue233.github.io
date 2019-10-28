@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"right","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"flat"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+  <meta name="description" content="7.2 实体-联系模型 7.2.1 实体集 什么是实体 什么是实体集 外延 属性 属性值">
+<meta name="keywords" content="程序员,java,读书,SQL,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7.2 实体-联系模型 7.2.1 实体集">
+<meta property="og:url" content="https://blueblue233.github.io/blog/9965d025/index.html">
+<meta property="og:site_name" content="蓝蓝的读书笔记">
+<meta property="og:description" content="7.2 实体-联系模型 7.2.1 实体集 什么是实体 什么是实体集 外延 属性 属性值">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-28T10:14:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7.2 实体-联系模型 7.2.1 实体集">
+<meta name="twitter:description" content="7.2 实体-联系模型 7.2.1 实体集 什么是实体 什么是实体集 外延 属性 属性值">
+  <link rel="canonical" href="https://blueblue233.github.io/blog/9965d025/">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+  <title>7.2 实体-联系模型 7.2.1 实体集 | 蓝蓝的读书笔记</title>
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">蓝蓝的读书笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+  </li>
+        <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+  </li>
+        <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+  </li>
+        <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+  </li>
+        <li class="menu-item menu-item-lover">
+    <a href="/lover/" rel="section"><i class="fa fa-fw fa-heart"></i>恋爱</a>
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">
+          <i class="fa fa-search fa-fw"></i>搜索</a>
+      </li>
+  </ul>
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+</div>
+<div class="search-pop-overlay"></div>
+  </div>
+</div>
+    </header>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+  <div class="posts-expand">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blueblue233.github.io/blog/9965d025/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="蓝蓝">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="蓝蓝的读书笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">7.2 实体-联系模型 7.2.1 实体集
+        </h1>
+        <div class="post-meta">
+          <!-- 置顶插件添加 开始 -->
+          <!-- 置顶插件添加 结束 -->
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="创建时间：2019-10-28 18:13:38 / 修改时间：18:14:43" itemprop="dateCreated datePublished" datetime="2019-10-28T18:13:38+08:00">2019-10-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/" itemprop="url" rel="index"><span itemprop="name">数据库系统概念 原书第6版</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第二部分-数据库设计/" itemprop="url" rel="index"><span itemprop="name">第二部分 数据库设计</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第二部分-数据库设计/第7章-数据库设计和E-R模型/" itemprop="url" rel="index"><span itemprop="name">第7章 数据库设计和E-R模型</span></a></span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库系统概念-原书第6版/第二部分-数据库设计/第7章-数据库设计和E-R模型/7-2-实体-联系模型/" itemprop="url" rel="index"><span itemprop="name">7.2 实体-联系模型</span></a></span>
+            </span>
+        </div>
+      </header>
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><a href="/blog/null/#7-2-实体-联系模型">7.2 实体-联系模型</a></li>
+<li><a href="/blog/null/#7-2-1-实体集">7.2.1 实体集</a><ul>
+<li><a href="/blog/null/#什么是实体">什么是实体</a></li>
+<li><a href="/blog/null/#什么是实体集">什么是实体集</a></li>
+<li><a href="/blog/null/#外延">外延</a></li>
+<li><a href="/blog/null/#属性">属性</a></li>
+<li><a href="/blog/null/#属性值">属性值</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<script src="/js/src/jquery.slim.min.js"></script>
+<script>$(document).ready(function () {$(".post-body > ul:nth-child(1)").hide();});</script>
+<!--end-->
+<!--SSTStart-->
+<h1 id="7-2-实体-联系模型"><a href="#7-2-实体-联系模型" class="headerlink" title="7.2 实体-联系模型"></a>7.2 实体-联系模型</h1><p>实体-联系(<code>entity-relationship,E-R</code>)数据模型的提出旨在方便数据库的设计,它是通过允许定义代表数据库全局逻辑结构的企业模式实现的。<br><code>E-R</code>模型在将现实世界<code>企业的含义和交互</code>映射到<code>概念模式</code>上非常有用,因此,许多数据库设计工具都利用了<code>E-R</code>模型的概念。<br><code>E-R</code>数据模型釆用了三个基本概念:<code>实体集</code>、<code>联系集</code>和<code>属性</code>,我们首先对此进行学习;<br><code>E-R</code>模型还有一个相关联的<code>图形表示</code>(<code>E-R</code>图),我们在本章后面学习。</p>
+<h1 id="7-2-1-实体集"><a href="#7-2-1-实体集" class="headerlink" title="7.2.1 实体集"></a>7.2.1 实体集</h1><h2 id="什么是实体"><a href="#什么是实体" class="headerlink" title="什么是实体"></a>什么是实体</h2><p>实体(<code>entity</code>)是现实世界中可区别于所有其他对象的一个”事物”或”对象”。<br>例如,大学中的每个人都是一个实体。每个实体有一组性质,其中一些性质的值可以唯一地标识一个实体。例如,个人可能具有<code>person_id</code>性质唯一标识这个人。因此, <code>person_id</code>的值677-89-9011将唯一标识大学中个特定的人。<br>与此类似,课程也可以看作实体,而<code>course_id</code>唯一标识了大学中的某个课程实体。<br>实体可以是实实在在的,如人或书;也可以是<code>抽象的</code>,如课程、课程段开课或者机票预订。</p>
+<h2 id="什么是实体集"><a href="#什么是实体集" class="headerlink" title="什么是实体集"></a>什么是实体集</h2><p>实体集(<code>entity set</code>)是相同类型即具有相同性质(或属性)的一个<code>实体集合</code>。例如,一所给定大学的<code>所有教师的集合</code>可定义为<code>实体集``instructor</code>。类似地,实体集<code>student</code>可以表示大学中<strong>所有学生的集合</strong>。</p>
+<h2 id="外延"><a href="#外延" class="headerlink" title="外延"></a>外延</h2><p>在建模的过程中,我么通常抽象地使用术语实体集,而不是指某个个别实体的特别集合。我们用术语<strong>实体集的<code>外延</code></strong>(<code>extension</code>)来指<strong>属于实体集的实体的实际集合</strong>。因此,<strong>大学中实际教师的集合构成了实体集<code>instructor</code>的<code>外延</code></strong>。我们在第2章看到过的联系和联系实例之间的区别和上述区别类似。</p>
+<p>实体集不必互不相交。例如,可以定义大学里所有人的实体集( <code>person</code>)。一个<code>person</code>实体可以是<code>instructor</code>实体,可以是<code>student</code>实体,可以既是<code>instructor</code>实体又是<code>student</code>实体,也可以都不是。</p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>实体通过一组属性(<code>attribute</code>)来表示。<strong>属性是实体集中每个成员所拥有的描述性性质</strong>。为某实体集指定一个属性表明数据库为该实体集中每个实体存储相似的信息;但每个实体在每个属性上都有各自的值。</p>
+<ul>
+<li>实体集<code>instructor</code>可能具有属性<code>ID</code>、<code>name</code>、 <code>dept_name</code>、和<code>salary</code>。在现实生活中,可能还有更多的属性,如街道号、房间号、州、邮政编码和国家,但是为了使我们的例子简单,我们省略了这些属性。</li>
+<li><code>course</code>实体集可能的属性有<code>course_id</code>、<code>tile</code>、 <code>dept_name</code>和<code>credits</code></li>
+</ul>
+<h2 id="属性值"><a href="#属性值" class="headerlink" title="属性值"></a>属性值</h2><p>每个实体的每个属性都有一个值( <code>value</code>)。<br>例如,一个特定的<code>instructor</code>实体可能<code>ID</code>的值为<code>12121</code>,<code>name</code>的值为<code>王小明</code>,<code>dept_name</code>的值为<code>金融</code>, <code>salary</code>的值为90000。</p>
+<p><code>ID</code>属性用来唯一地标识教师,因为可能会有多个教师拥有相同的名字。在美国,许多企业发现将个人的<code>社会保障号</code>用作其值唯一标识该人的属性很方便。一般来说,大学必须给每个教师创建和分配一个唯一的标识符。</p>
+<p>因此,数据库包括一组实体集,每个实体集包括任意数量的相同类型的实体。图7-1为一个大学数据库的一部分,其中有两个实体集: <code>instructor</code>和<code>student</code>。为了使图示简单,只显示了两个实体集的部分属性。<br><strong>一个大学数据库可能包含许多其他的实体集</strong>。例如,除了跟踪记录教师和学生外,大学还具有课程信息,用实体集<code>course</code>来表示,它包括属性<code>accoun_ number</code>、 <code>course id</code>、 <code>title</code>、 <code>dept_name</code>和<code>credits</code>。<strong>在真实环境中,一个大学数据库可能会包含<code>数十个</code>实体集</strong>。</p>
+<!--SSTStop-->
+    </div>
+      <footer class="post-footer">
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/blog/69c614d4/" rel="next" title="7.1 设计过程概览">
+                  <i class="fa fa-chevron-left"></i> 7.1 设计过程概览
+                </a>
+            </div>
+            <span class="post-nav-divider"></span>
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+  </article>
+  </div>
+          </div>
+        </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-2-实体-联系模型"><span class="nav-number">1.</span> <span class="nav-text">7.2 实体-联系模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-2-1-实体集"><span class="nav-number">2.</span> <span class="nav-text">7.2.1 实体集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是实体"><span class="nav-number">2.1.</span> <span class="nav-text">什么是实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是实体集"><span class="nav-number">2.2.</span> <span class="nav-text">什么是实体集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外延"><span class="nav-number">2.3.</span> <span class="nav-text">外延</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性"><span class="nav-number">2.4.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性值"><span class="nav-number">2.5.</span> <span class="nav-text">属性值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="蓝蓝">
+  <p class="site-author-name" itemprop="name">蓝蓝</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+          <span class="site-state-item-count">1175</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">345</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+  </nav>
+</div>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">蓝蓝</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.1</div>
+      </div>
+    </footer>
+  </div>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script><script src="/js/bookmark.js?v=7.4.1"></script>
+  <script src="/js/local-search.js?v=7.4.1"></script>
+</body>
+</html>
