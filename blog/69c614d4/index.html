@@ -44,18 +44,18 @@
     sidebarPadding: 40
   };
 </script>
-  <meta name="description" content="7.1 设计过程概览">
+  <meta name="description" content="7.1 设计过程概览 7.1.1 设计阶段 改变物理模式相对简单 改变逻辑模式比较困难 小结   7.1.2 设计选择 要避免的数据库模式缺陷 1 冗余 2 不完整">
 <meta name="keywords" content="程序员,java,读书,SQL,MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="7.1 设计过程概览">
 <meta property="og:url" content="https://blueblue233.github.io/blog/69c614d4/index.html">
 <meta property="og:site_name" content="蓝蓝的读书笔记">
-<meta property="og:description" content="7.1 设计过程概览">
+<meta property="og:description" content="7.1 设计过程概览 7.1.1 设计阶段 改变物理模式相对简单 改变逻辑模式比较困难 小结   7.1.2 设计选择 要避免的数据库模式缺陷 1 冗余 2 不完整">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-28T09:16:46.000Z">
+<meta property="og:updated_time" content="2019-10-28T10:27:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="7.1 设计过程概览">
-<meta name="twitter:description" content="7.1 设计过程概览">
+<meta name="twitter:description" content="7.1 设计过程概览 7.1.1 设计阶段 改变物理模式相对简单 改变逻辑模式比较困难 小结   7.1.2 设计选择 要避免的数据库模式缺陷 1 冗余 2 不完整">
   <link rel="canonical" href="https://blueblue233.github.io/blog/69c614d4/">
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
@@ -190,7 +190,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="创建时间：2019-10-28 17:16:46" itemprop="dateCreated datePublished" datetime="2019-10-28T17:16:46+08:00">2019-10-28</time>
+              <time title="创建时间：2019-10-28 17:16:46 / 修改时间：18:27:32" itemprop="dateCreated datePublished" datetime="2019-10-28T17:16:46+08:00">2019-10-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,7 +209,21 @@
       </header>
     <div class="post-body" itemprop="articleBody">
         <ul>
-<li><a href="/blog/null/#7-1-设计过程概览">7.1 设计过程概览</a></li>
+<li><a href="/blog/69c614d4/#7-1-设计过程概览">7.1 设计过程概览</a></li>
+<li><a href="/blog/69c614d4/#7-1-1-设计阶段">7.1.1 设计阶段</a><ul>
+<li><a href="/blog/69c614d4/#改变物理模式相对简单">改变物理模式相对简单</a></li>
+<li><a href="/blog/69c614d4/#改变逻辑模式比较困难">改变逻辑模式比较困难</a></li>
+<li><a href="/blog/69c614d4/#小结">小结</a></li>
+</ul>
+</li>
+<li><a href="/blog/69c614d4/#7-1-2-设计选择">7.1.2 设计选择</a><ul>
+<li><a href="/blog/69c614d4/#要避免的数据库模式缺陷">要避免的数据库模式缺陷</a><ul>
+<li><a href="/blog/69c614d4/#1-冗余">1 冗余</a></li>
+<li><a href="/blog/69c614d4/#2-不完整">2 不完整</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <a id="more"></a>
 <script src="/js/src/jquery.slim.min.js"></script>
@@ -250,6 +264,9 @@
 <h3 id="2-不完整"><a href="#2-不完整" class="headerlink" title="2 不完整"></a>2 不完整</h3><p>一个不好的设计可能会使得企事业机构的某些方面难于甚至无法建模。例如,假设在上述案例(1)中,我们只有对应于开课的实体,而没有对应于课程的实体。从关系的角度说,这就是假设我们有单个关系,对一门课程的每一次开课都重复存储课程的所有信息。那么一门新课程的信息将无法表示,除非开设了该课程。我们可能会尝试将开课信息设置为空值的方法来解决这个有问题的设计。这种绕开问题的措施不仅不吸引人,而且有可能由于主码约束而无法实行。</p>
 <p><strong>仅仅避免不好的设计是不够的</strong>。可能存在大量好的设计,我们必须从中选择一个。作为一个简单的例子,考虑买了某产品的一个客户。该产品的销售是客户和产品之间的联系吗?还是销售本身是一个与客户和产品都相关的实体?这个选择,虽然简单,却可能对企业某些方面建模的好坏有很大的影响。考虑为一个现实企业中的大量实体和联系做类似这样的选择的需要,不难看出数据库设计是一个很有挑战性的问题。事实上我们将看到,它需要科学和”好的品味”的结合。</p>
 <!--SSTStop-->
+<blockquote>
+<p>原文链接: <a href="https://blueblue233.github.io/blog/69c614d4/">7.1 设计过程概览</a></p>
+</blockquote>
     </div>
       <footer class="post-footer">
           <div class="post-nav">
@@ -308,7 +325,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">345</span>
+        <span class="site-state-item-count">346</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
